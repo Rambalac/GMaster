@@ -1,0 +1,18 @@
+﻿<Application
+    x:Class="LumixMaster.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LumixMaster"
+    RequestedTheme="Light">
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:UpnpDeviceNameConverter x:Key="UpnpDeviceNameConverter"/>
+            <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter"/>
+            <!-- Application resource dictionary -->
+            <local:MainPageModel x:Key="MainPageModel"/>
+            <local:SwitchFullScreenCommand x:Key="SwitchFullScreen"/>
+            <local:ConnectCommand x:Key="StartListeningCommand" Model="{StaticResource MainPageModel}"/>
+            <local:DisconnectCommand x:Key="StopListeningCommand" Model="{StaticResource MainPageModel}"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
