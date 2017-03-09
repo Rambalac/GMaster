@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LumixMaster
+namespace GMaster
 {
     public class LumixException : Exception
     {

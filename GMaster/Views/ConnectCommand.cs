@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 
-namespace LumixMaster
+namespace GMaster.Views
 {
     public class ConnectCommand : ICommand
     {
         private MainPageModel model;
+
         public MainPageModel Model
         {
             set
@@ -13,11 +15,6 @@ namespace LumixMaster
                 model = value;
                 model.PropertyChanged += Model_PropertyChanged;
             }
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(model.SelectedDevice) || e.PropertyName == nameof(model.SelectedCamera)) OnCanExecuteChanged();
         }
 
         public bool CanExecute(object parameter) => model.SelectedDevice != null && model.SelectedCamera == null;
@@ -31,6 +28,12 @@ namespace LumixMaster
         }
 
         public event EventHandler CanExecuteChanged;
+
+        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(model.SelectedDevice) || e.PropertyName == nameof(model.SelectedCamera))
+                OnCanExecuteChanged();
+        }
 
         protected virtual void OnCanExecuteChanged()
         {

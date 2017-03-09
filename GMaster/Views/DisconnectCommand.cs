@@ -2,11 +2,12 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace LumixMaster
+namespace GMaster.Views
 {
     public class DisconnectCommand : ICommand
     {
         private MainPageModel model;
+
         public MainPageModel Model
         {
             set
@@ -14,11 +15,6 @@ namespace LumixMaster
                 model = value;
                 model.PropertyChanged += Model_PropertyChanged;
             }
-        }
-
-        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(model.SelectedCamera)) OnCanExecuteChanged();
         }
 
 
@@ -30,6 +26,11 @@ namespace LumixMaster
         }
 
         public event EventHandler CanExecuteChanged;
+
+        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(model.SelectedCamera)) OnCanExecuteChanged();
+        }
 
         protected virtual void OnCanExecuteChanged()
         {

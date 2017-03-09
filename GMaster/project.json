@@ -1,7 +1,10 @@
 ﻿{
   "dependencies": {
+    "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
     "Microsoft.AspNet.WebApi.Client": "5.2.3",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
+    "Serilog": "2.4.0",
+    "Serilog.Sinks.ApplicationInsights": "2.2.1",
     "SSDP.Portable": "1.0.17"
   },
   "frameworks": {

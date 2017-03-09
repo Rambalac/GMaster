@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Windows.UI.ViewManagement;
 
-namespace LumixMaster
+namespace GMaster.Views
 {
     public class SwitchFullScreenCommand : ICommand
     {
@@ -12,16 +12,16 @@ namespace LumixMaster
         {
             var view = ApplicationView.GetForCurrentView();
             if (!view.IsFullScreenMode)
-            {
                 view.TryEnterFullScreenMode();
-
-            }
             else
-            {
                 view.ExitFullScreenMode();
-            }
         }
 
         public event EventHandler CanExecuteChanged;
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
