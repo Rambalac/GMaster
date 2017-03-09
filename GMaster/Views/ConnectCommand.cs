@@ -6,15 +6,12 @@ namespace GMaster.Views
 {
     public class ConnectCommand : ICommand
     {
-        private MainPageModel model;
+        private readonly CameraViewModel model;
 
-        public MainPageModel Model
+        public ConnectCommand(CameraViewModel cameraViewModel)
         {
-            set
-            {
-                model = value;
-                model.PropertyChanged += Model_PropertyChanged;
-            }
+            this.model = cameraViewModel;
+            model.PropertyChanged += Model_PropertyChanged;
         }
 
         public bool CanExecute(object parameter) => model.SelectedDevice != null && model.SelectedCamera == null;
@@ -23,7 +20,7 @@ namespace GMaster.Views
         {
             var lumix = new Lumix(model.SelectedDevice);
             await lumix.Connect();
-            model.AddConnectedDevice(lumix);
+            model.GlobalModel.AddConnectedDevice(lumix);
             model.SelectedCamera = lumix;
         }
 

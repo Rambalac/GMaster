@@ -5,45 +5,22 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    DataContext="{StaticResource MainPageModel}">
+    mc:Ignorable="d" RequestedTheme="Dark">
     <Page.Resources>
         <ResourceDictionary>
-            <local:VisibilityConverter x:Key="VisibilityConverter" />
-            <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
-            <!-- Application resource dictionary -->
             <local:SwitchFullScreenCommand x:Key="SwitchFullScreen" />
-            <local:ConnectCommand x:Key="ConnectCommand" Model="{StaticResource MainPageModel}" />
-            <local:DisconnectCommand x:Key="DisconnectCommand" Model="{StaticResource MainPageModel}" />
         </ResourceDictionary>
     </Page.Resources>
-
+<Page.DataContext>
+        <local:MainPageModel/>
+    </Page.DataContext>
+    
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="59*" />
-        </Grid.RowDefinitions>
-        <Image x:Name="image" Grid.Row="0" Grid.RowSpan="2"
-               Source="{Binding SelectedCamera.LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" />
-
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="180,9,0,5" VerticalAlignment="Top"
-                Visibility="{Binding IsConnectVisibile, Converter={StaticResource VisibilityConverter}}"
-                Command="{StaticResource ConnectCommand}" Height="32" Width="75" />
-        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="180,9,0,5" VerticalAlignment="Top"
-                Visibility="{Binding IsDisconnectVisibile, Converter={StaticResource VisibilityConverter}}"
-                Command="{StaticResource DisconnectCommand}" Height="32" Width="75" />
-        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="165"
-                  ItemsSource="{Binding Path=Devices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" Height="32">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <Border>
-                        <TextBlock Text="{Binding FriendlyName}" />
-                    </Border>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Content="Button" HorizontalAlignment="Left" Height="32" Margin="260,10,0,0" VerticalAlignment="Top"
-                Width="65" Command="{StaticResource SwitchFullScreen}" />
+        <local:CameraViewControl DataContext="{Binding View1}"/>
+        
+        <Button Content="↗" HorizontalAlignment="Right" Height="32" Margin="0,0,0,0" VerticalAlignment="Top"
+                Width="32" Command="{StaticResource SwitchFullScreen}" Background="#99000000" BorderBrush="White" />
 
     </Grid>
 </Page>

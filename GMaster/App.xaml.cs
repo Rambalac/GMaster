@@ -11,7 +11,6 @@ using GMaster.Views;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
-using Serilog;
 
 namespace GMaster
 {
@@ -19,7 +18,7 @@ namespace GMaster
     {
         private static CoreDispatcher dispatcher;
 
-        public static TelemetryClient Telemetry;
+        
 
         /// <summary>
         ///     Initializes the singleton application object.  This is the first line of authored code
@@ -27,20 +26,6 @@ namespace GMaster
         /// </summary>
         public App()
         {
-            var config = new TelemetryConfiguration
-            {
-                InstrumentationKey = "132c2cbe-e02d-4d36-85bf-efe3bc8ee3e6"
-                //TelemetryChannel = new MyChannel()
-            };
-
-            Telemetry = new TelemetryClient(config);
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.ApplicationInsightsTraces(Telemetry)
-                .CreateLogger();
-
-
             InitializeComponent();
             Suspending += OnSuspending;
             UnhandledException += App_UnhandledException;
@@ -48,8 +33,7 @@ namespace GMaster
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Telemetry.TrackException(e.Exception);
-            Telemetry.Flush();
+            Log.Error(e.Exception);
 #if !DEBUG
             e.Handled = true;
 #endif

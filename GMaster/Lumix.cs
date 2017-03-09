@@ -14,7 +14,6 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using GMaster.Annotations;
 using GMaster.LumixResponces;
-using Serilog;
 using UPnP;
 
 namespace GMaster

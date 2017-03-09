@@ -6,17 +6,13 @@ namespace GMaster.Views
 {
     public class DisconnectCommand : ICommand
     {
-        private MainPageModel model;
+        private readonly CameraViewModel model;
 
-        public MainPageModel Model
+        public DisconnectCommand(CameraViewModel cameraViewModel)
         {
-            set
-            {
-                model = value;
-                model.PropertyChanged += Model_PropertyChanged;
-            }
+            this.model = cameraViewModel;
+            model.PropertyChanged += Model_PropertyChanged;
         }
-
 
         public bool CanExecute(object parameter) => model.SelectedCamera != null;
 
