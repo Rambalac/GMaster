@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Enumeration;
 using Windows.Devices.WiFiDirect;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace GMaster
 {
@@ -11,6 +13,7 @@ namespace GMaster
     {
         private WiFiDirectConnectionListener _listener;
         private WiFiDirectAdvertisementPublisher _publisher;
+        private DeviceWatcher _deviceWatcher;
 
         public WiFiDirectHelper()
         {
@@ -36,7 +39,39 @@ namespace GMaster
             _publisher.Advertisement.IsAutonomousGroupOwnerEnabled = true;
             _publisher.Start();
 
+            var deviceSelector = WiFiDirectDevice.GetDeviceSelector(WiFiDirectDeviceSelectorType.AssociationEndpoint);
+
+            _deviceWatcher = DeviceInformation.CreateWatcher(deviceSelector, new string[] { "System.Devices.WiFiDirect.InformationElements" });
+
+            _deviceWatcher.Added += OnDeviceAdded;
+            _deviceWatcher.Removed += OnDeviceRemoved;
+            _deviceWatcher.Updated += OnDeviceUpdated;
+            _deviceWatcher.EnumerationCompleted += OnEnumerationCompleted;
+            _deviceWatcher.Stopped += OnStopped;
+
+            _deviceWatcher.Start();
+
             return _publisher.Status;
+        }
+
+        private void OnStopped(DeviceWatcher sender, object args)
+        {
+        }
+
+        private void OnEnumerationCompleted(DeviceWatcher sender, object args)
+        {
+        }
+
+        private void OnDeviceUpdated(DeviceWatcher sender, DeviceInformationUpdate args)
+        {
+        }
+
+        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
+        {
+        }
+
+        private void OnDeviceAdded(DeviceWatcher sender, DeviceInformation args)
+        {
         }
 
         public void Stop()
