@@ -15,20 +15,10 @@ namespace GMaster
 
         public void Start()
         {
-            PeerFinder.ConnectionRequested += PeerFinder_ConnectionRequested;
-            PeerFinder.Start();
         }
-
-        private void PeerFinder_ConnectionRequested(object sender, ConnectionRequestedEventArgs args)
-        {
-           // throw new NotImplementedException();
-        }
-
 
         public void Stop()
         {
-            PeerFinder.ConnectionRequested -= PeerFinder_ConnectionRequested;
-            PeerFinder.Stop();
         }
     }
 }
