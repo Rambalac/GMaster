@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -20,9 +19,14 @@ namespace GMaster.Views
             set
             {
                 globalModel = value;
-                globalModel.PropertyChanged += GlobalModel_PropertyChanged;
                 globalModel.CameraDisconnected += GlobalModel_CameraDisconnected;
+                globalModel.PropertyChanged += GlobalModel_PropertyChanged;
             }
+        }
+
+        private void GlobalModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (SelectedDevice == null && GlobalModel.Devices.Any()) SelectedDevice = GlobalModel.Devices.First();
         }
 
         private void GlobalModel_CameraDisconnected(Lumix lumix)
@@ -33,14 +37,6 @@ namespace GMaster.Views
         public ICommand ConnectCommand { get; }
         public ICommand DisconnectCommand { get; }
 
-        private void GlobalModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(GlobalModel.Devices))
-            {
-                if (SelectedDevice == null && GlobalModel.Devices.Any()) SelectedDevice = GlobalModel.Devices[0];
-            }
-        }
-
         private Lumix selectedCamera;
 
         private Device selectedDevice;
@@ -48,6 +44,8 @@ namespace GMaster.Views
 
         public CameraViewModel()
         {
+            CaptureCommand = new CaptureCommand(this);
+            RecCommand = new RecCommand(this);
             DisconnectCommand = new DisconnectCommand(this);
             ConnectCommand = new ConnectCommand(this);
         }
@@ -61,23 +59,14 @@ namespace GMaster.Views
             get { return selectedDevice; }
             set
             {
-                try
-                {
-                    selectedDevice = value;
-                    OnPropertyChanged();
+                selectedDevice = value;
+                OnPropertyChanged();
 
-                    Lumix connectedDevice;
-                    if (selectedDevice != null && GlobalModel.TryGetConnectedDevice(selectedDevice.UDN, out connectedDevice))
-                        SelectedCamera = connectedDevice;
-                    else
-                        SelectedCamera = null;
-                    OnPropertyChanged(nameof(IsConnectVisibile));
-                    OnPropertyChanged(nameof(IsDisconnectVisibile));
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                Lumix connectedDevice;
+                if (selectedDevice != null && GlobalModel.TryGetConnectedDevice(selectedDevice.UDN, out connectedDevice))
+                    SelectedCamera = connectedDevice;
+                else
+                    SelectedCamera = null;
             }
         }
 
@@ -87,12 +76,14 @@ namespace GMaster.Views
             set
             {
                 selectedCamera = value;
-                OnPropertyChanged(nameof(SelectedCamera));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(IsConnectVisibile));
                 OnPropertyChanged(nameof(IsDisconnectVisibile));
             }
         }
 
+        public ICommand RecCommand { get; }
+        public ICommand CaptureCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
 

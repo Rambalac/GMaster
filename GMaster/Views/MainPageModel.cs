@@ -58,6 +58,7 @@ namespace GMaster.Views
                     {
                         Devices.Add(device);
                     }
+                    OnPropertyChanged();
                 });
             }
             catch (Exception e)

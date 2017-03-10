@@ -116,6 +116,7 @@
     <Compile Include="Views\CameraViewControl.xaml.cs">
       <DependentUpon>CameraViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RecCommand.cs" />
     <Compile Include="Views\SwitchFullScreenCommand.cs" />
     <Compile Include="Views\DisconnectCommand.cs" />
     <Compile Include="Views\UpnpDeviceNameConverter.cs" />

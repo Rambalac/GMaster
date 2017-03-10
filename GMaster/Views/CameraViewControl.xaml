@@ -10,17 +10,26 @@
     d:DesignWidth="400" d:DataContext="{d:DesignInstance local:CameraViewModel}">
 
     <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="74*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="59*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.RowSpan="2"
-               Source="{Binding SelectedCamera.LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}"/>
+        <Image Grid.Row="0" Grid.RowSpan="6"
+               Source="{Binding SelectedCamera.LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" Grid.ColumnSpan="3"/>
 
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="180,9,0,5" VerticalAlignment="Top"
+        <Button Content="Connect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
                 Visibility="{Binding IsConnectVisibile, Converter={StaticResource VisibilityConverter}}"
                 Command="{Binding ConnectCommand}" Height="32" Width="75"/>
-        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="180,9,0,5" VerticalAlignment="Top"
+        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
                 Visibility="{Binding IsDisconnectVisibile, Converter={StaticResource VisibilityConverter}}"
                 Command="{Binding DisconnectCommand}" Height="32" Width="75" Background="#99000000" BorderBrush="White"/>
         <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="165"
@@ -33,5 +42,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+        <Button Content="Rec" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" Command="{Binding RecCommand}"/>
+        <Button Content="Shot" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="4" Command="{Binding CaptureCommand}"/>
     </Grid>
 </UserControl>

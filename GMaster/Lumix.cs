@@ -2,13 +2,16 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -22,7 +25,7 @@ namespace GMaster
     {
         private const int LiveViewPort = 49152;
 
-        private static readonly XmlMediaTypeFormatter Formatter = new XmlMediaTypeFormatter {UseXmlSerializer = true};
+        private static readonly XmlMediaTypeFormatter Formatter = new XmlMediaTypeFormatter { UseXmlSerializer = true };
         private static DatagramSocket liveviewUdp;
 
         private static readonly ConcurrentDictionary<string, Lumix> Listeners =
@@ -34,7 +37,7 @@ namespace GMaster
 
         private readonly object messageRecieving = new object();
 
-        private readonly DispatcherTimer stateTimer = new DispatcherTimer {Interval = TimeSpan.FromSeconds(4)};
+        private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
 
         private MemoryStream currentImageStream;
 
@@ -55,7 +58,7 @@ namespace GMaster
         {
             this.device = device;
             cameraHost = new Uri(device.URLBase).Host;
-            camcgi = new HttpClient {BaseAddress = new Uri($"http://{cameraHost}/cam.cgi")};
+            camcgi = new HttpClient { BaseAddress = new Uri($"http://{cameraHost}/cam.cgi") };
             camcgi.DefaultRequestHeaders.Accept.Clear();
             camcgi.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
             stateTimer.Tick += StateTimer_Tick;
@@ -90,11 +93,46 @@ namespace GMaster
             return devices.Where(d => d.ModelName == "LUMIX");
         }
 
-        private async Task<T> Get<T>(string path) where T : BaseRequestResult
+        private async Task<TResponse> Get<TResponse>(string path) where TResponse : BaseRequestResult
         {
             var response = await camcgi.GetAsync(path);
             if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
-            var product = await response.Content.ReadAsAsync<T>(new[] {Formatter});
+            var product = await response.Content.ReadAsAsync<TResponse>(new[] { Formatter });
+            if (product.Result != "ok")
+                throw new LumixException(
+                    $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
+            return product;
+        }
+
+        private async Task SetSetting<TRequest>(string settingName, TRequest settings)
+        {
+            var properties = settings.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .ToDictionary(prop => prop.Name, prop => PropertyString(prop.GetValue(settings, null)));
+            await Post<BaseRequestResult>("?mode=setsetting", properties);
+        }
+
+        private static string PropertyString(object value)
+        {
+            if (value is Enum)
+            {
+                var attribute = value.GetType()
+                    .GetMember(value.ToString())
+                    .First()
+                    .GetCustomAttribute<XmlElementAttribute>();
+                return attribute?.ElementName ?? value.ToString();
+            }
+
+            return value.ToString();
+        }
+
+        private async Task<TResponse> Post<TResponse>(string path, Dictionary<string, string> parameters) where TResponse : BaseRequestResult
+        {
+            var content = new FormUrlEncodedContent(parameters);
+
+            var response = await camcgi.PostAsync(path, content);
+            if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
+            var product = await response.Content.ReadAsAsync<TResponse>(new[] { Formatter });
             if (product.Result != "ok")
                 throw new LumixException(
                     $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
@@ -104,11 +142,16 @@ namespace GMaster
         private async Task<CameraState> UpdateState()
         {
             var newState = await Get<CameraStateRequestResult>("?mode=getstate");
-            if (!(newState.State?.Equals(State) ?? State == null))
-            {
-                State = newState.State;
-                OnPropertyChanged(nameof(State));
-            }
+            if (State != null && newState.State.Equals(State)) return State;
+
+            State = newState.State;
+
+            if (State == null) throw new NullReferenceException();
+
+            RecState = State.Rec == OnOff.On ? RecState.Started : RecState.Stopped;
+
+            OnPropertyChanged(nameof(State));
+            OnPropertyChanged(nameof(RecState));
             return State;
         }
 
@@ -225,6 +268,27 @@ namespace GMaster
             }
         }
 
+        public RecState RecState { get; private set; } = RecState.Unknown;
+
+        public async Task RecStart()
+        {
+            await Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
+            RecState = RecState.Unknown;
+            OnPropertyChanged(nameof(RecState));
+        }
+
+        public async Task Capture()
+        {
+            await Get<BaseRequestResult>("?mode=camcmd&value=capture");
+        }
+
+        public async Task RecStop()
+        {
+            await Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
+            RecState = RecState.Unknown;
+            OnPropertyChanged(nameof(RecState));
+        }
+
         private static void StopListening()
         {
             liveviewUdp?.Dispose();
@@ -252,7 +316,7 @@ namespace GMaster
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Lumix) obj);
+            return obj.GetType() == GetType() && Equals((Lumix)obj);
         }
 
         public override int GetHashCode()
@@ -260,4 +324,12 @@ namespace GMaster
             return Udn?.GetHashCode() ?? 0;
         }
     }
+
+    public enum RecState
+    {
+        Stopped,
+        Unknown,
+        Started
+    }
+
 }
