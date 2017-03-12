@@ -50,7 +50,7 @@ namespace GMaster.Views
             ConnectCommand = new ConnectCommand(this);
         }
 
-        public bool IsConnectVisibile => SelectedDevice != null && SelectedCamera == null;
+        public bool IsConnectVisibile => SelectedCamera == null;
 
         public bool IsDisconnectVisibile => SelectedCamera != null;
 
