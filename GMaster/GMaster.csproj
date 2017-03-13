@@ -19,7 +19,7 @@
     <PackageCertificateKeyFile>GMaster_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>A9061FAE4A66E4E47EFE1EEFE3D81AAE085D78EB</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -136,6 +136,10 @@
     <Content Include="Assets\PackageLogo.scale-150.png" />
     <Content Include="Assets\PackageLogo.scale-200.png" />
     <Content Include="Assets\PackageLogo.scale-400.png" />
+    <Content Include="Assets\Screenshots\App tile.png" />
+    <Content Include="Assets\Screenshots\Mobile screenshot 1.png" />
+    <Content Include="Assets\Screenshots\PC screenshot 1.png" />
+    <Content Include="Assets\Screenshots\PC screenshot 2.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />

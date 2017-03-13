@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -64,8 +63,6 @@ namespace GMaster
         private MemoryStream currentImageStream;
 
         private byte lastByte;
-        private static List<Socket> liveviewUdpSockets2;
-        private static Task liveviewSocketsTask;
 
         static Lumix()
         {
@@ -76,6 +73,14 @@ namespace GMaster
             Camcgi = new HttpClient(rootFilter);
             Camcgi.DefaultRequestHeaders.Accept.Clear();
             Camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("application/xml"));
+
+            NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
+        }
+
+        private static async void NetworkInformation_NetworkStatusChanged(object sender)
+        {
+            StopListening();
+            await StartListening();
         }
 
         public Lumix(Device device)
@@ -265,33 +270,31 @@ namespace GMaster
         {
             var cp = NetworkInformation.GetInternetConnectionProfile();
             return NetworkInformation.GetHostNames()
-                .Where(hn => hn.Type == HostNameType.Ipv4 &&
+                .Where(hn => (hn.Type == HostNameType.Ipv4 || hn.Type == HostNameType.Ipv6) &&
                              hn.IPInformation.NetworkAdapter.NetworkAdapterId == cp.NetworkAdapter.NetworkAdapterId)
                 .Select(h => h.CanonicalName);
         }
 
         public static async Task StartListening()
         {
+            foreach (var listener in Listeners.Values)
+            {
+                lock (listener.messageRecieving)
+                {
+                    listener.currentImageStream = null;
+                    listener.lastByte = 0;
+                }
+            }
+
             liveviewUdpSockets = new List<DatagramSocket>();
-            //liveviewUdpSockets2 = new List<Socket>();
             foreach (var profile in GetLocalAddresses())
             {
                 var liveviewUdp = new DatagramSocket();
                 liveviewUdp.MessageReceived += LiveviewUdp_MessageReceived;
-                await liveviewUdp.ConnectAsync(new HostName("192.168.11.15"), LiveViewPort.ToString());
-//                await liveviewUdp.BindEndpointAsync(new HostName(profile), LiveViewPort.ToString());
+                await liveviewUdp.BindEndpointAsync(new HostName(profile), LiveViewPort.ToString());
 
                 liveviewUdpSockets.Add(liveviewUdp);
-
-
-                //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                //socket.DualMode = false;
-                //socket.Bind(new IPEndPoint(IPAddress.Parse(profile), LiveViewPort));
-
-                //              liveviewUdpSockets2.Add(socket);
             }
-
-//            liveviewSocketsTask = Task.Factory.StartNew(ProcessSockets, TaskCreationOptions.LongRunning);
 
             deviceLocators = new List<SsdpDeviceLocator>();
 
@@ -306,27 +309,7 @@ namespace GMaster
                 deviceLocator.StartListeningForNotifications();
                 deviceLocators.Add(deviceLocator);
             }
-        }
 
-        private static void ProcessSockets()
-        {
-            var buf = new byte[65536];
-            while (true)
-            {
-                var readList = liveviewUdpSockets2.ToList();
-                var errorList = liveviewUdpSockets2.ToList();
-                Socket.Select(readList, null, errorList, 100);
-                foreach (var socket in readList.Concat(errorList))
-                {
-                    var endpoint = socket.RemoteEndPoint as IPEndPoint;
-                    var red = socket.Receive(buf);
-                    if (!Listeners.TryGetValue(endpoint.Address.ToString(), out Lumix camera)) continue;
-                    foreach (var bt in buf.Take(red))
-                    {
-                        camera.ProcessByte(bt);
-                    }
-                }
-            }
         }
 
         private static async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
@@ -375,7 +358,6 @@ namespace GMaster
         private void ProcessByte(byte curByte)
         {
             currentImageStream?.WriteByte(curByte);
-
 
             if (lastByte == 0xff)
                 if (currentImageStream == null && curByte == 0xd8)
