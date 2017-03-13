@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml;
 using GMaster.Annotations;
-using UPnP;
 
 namespace GMaster.Views
 {
@@ -62,9 +57,8 @@ namespace GMaster.Views
                 selectedDevice = value;
                 OnPropertyChanged();
 
-                Lumix connectedDevice;
-                if (selectedDevice != null && GlobalModel.TryGetConnectedDevice(selectedDevice.UDN, out connectedDevice))
-                    SelectedCamera = connectedDevice;
+                if (selectedDevice != null && GlobalModel.TryGetConnectedCamera(selectedDevice, out Lumix connectedCamera))
+                    SelectedCamera = connectedCamera;
                 else
                     SelectedCamera = null;
             }
@@ -84,6 +78,7 @@ namespace GMaster.Views
 
         public ICommand RecCommand { get; }
         public ICommand CaptureCommand { get; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 

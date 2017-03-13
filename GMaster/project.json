@@ -1,9 +1,9 @@
 ﻿{
   "dependencies": {
+    "Microsoft.ApplicationInsights": "2.2.0",
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
-    "Microsoft.AspNet.WebApi.Client": "5.2.3",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
-    "SSDP.Portable": "1.0.17"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.1",
+    "Rssdp": "3.0.0"
   },
   "frameworks": {
     "uap10.0": {}

@@ -8,9 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GMaster.Views;
-using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.Extensibility;
 
 namespace GMaster
 {
@@ -44,8 +42,10 @@ namespace GMaster
         ///     will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            await Lumix.StartListening();
+
 #if DEBUG
             if (Debugger.IsAttached)
                 DebugSettings.EnableFrameRateCounter = true;
@@ -101,7 +101,7 @@ namespace GMaster
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+            Lumix.StopListening();
             deferral.Complete();
         }
 

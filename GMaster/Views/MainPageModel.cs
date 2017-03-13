@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using GMaster.Annotations;
-using UPnP;
 
 namespace GMaster.Views
 {
@@ -24,6 +21,8 @@ namespace GMaster.Views
 
             if (!DesignMode.DesignModeEnabled)
             {
+                Lumix.DeviceDiscovered += Lumix_DeviceDiscovered;
+
                 cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
                 cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
                 cameraRefreshTimer.Start();
@@ -31,6 +30,23 @@ namespace GMaster.Views
 
                 wifidirect = new WiFiDirectHelper();
                 wifidirect.Start();
+            }
+        }
+
+        private async void Lumix_DeviceDiscovered(Device dev)
+        {
+            try
+            {
+                await App.RunAsync(() =>
+                {
+                    Devices.Add(dev);
+                    OnPropertyChanged();
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                throw;
             }
         }
 
@@ -42,33 +58,16 @@ namespace GMaster.Views
         {
             try
             {
-                var newDevices = await Lumix.SearchCameras();
-                var toRemove = Devices.Where(d1 => newDevices.All(d2 => d1.UDN != d2.UDN)).ToList();
-                toRemove.RemoveAll(d1 => connectedDevices.ContainsKey(d1.UDN));
-
-                var toAdd = newDevices.Where(d2 => Devices.All(d1 => d1.UDN != d2.UDN)).ToList();
-
-                await App.RunAsync(() =>
-                {
-                    foreach (var device in toRemove)
-                    {
-                        Devices.Remove(device);
-                    }
-                    foreach (var device in toAdd)
-                    {
-                        Devices.Add(device);
-                    }
-                    OnPropertyChanged();
-                });
+                await Lumix.SearchCameras();
             }
             catch (Exception e)
             {
-                Log.Error(e, "Camera refresh");
+                Log.Error(e);
                 throw;
             }
         }
 
-        private readonly Dictionary<string, Lumix> connectedDevices = new Dictionary<string, Lumix>();
+        private readonly Dictionary<Device, Lumix> connectedCameras = new Dictionary<Device, Lumix>();
         private WiFiDirectHelper wifidirect;
 
         public event Action<Lumix> CameraDisconnected;
@@ -80,14 +79,14 @@ namespace GMaster.Views
 
         public void AddConnectedDevice(Lumix lumix)
         {
-            connectedDevices.Add(lumix.Udn, lumix);
+            connectedCameras.Add(lumix.Device, lumix);
             lumix.Disconnected += Lumix_Disconnected;
         }
 
         private void Lumix_Disconnected(Lumix lumix)
         {
             lumix.Disconnected -= Lumix_Disconnected;
-            connectedDevices.Remove(lumix.Udn);
+            connectedCameras.Remove(lumix.Device);
             OnCameraDisconnected(lumix);
         }
 
@@ -99,9 +98,9 @@ namespace GMaster.Views
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool TryGetConnectedDevice(string udn, out Lumix connectedDevice)
+        public bool TryGetConnectedCamera(Device dev, out Lumix connectedDevice)
         {
-            return connectedDevices.TryGetValue(udn, out connectedDevice);
+            return connectedCameras.TryGetValue(dev, out connectedDevice);
         }
 
         protected virtual void OnCameraDisconnected(Lumix obj)

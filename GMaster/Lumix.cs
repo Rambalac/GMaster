@@ -2,75 +2,101 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Windows.Networking;
+using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
+using Windows.Web.Http.Headers;
 using GMaster.Annotations;
 using GMaster.LumixResponces;
-using UPnP;
+using Rssdp;
+using Rssdp.Infrastructure;
+using HttpClient = Windows.Web.Http.HttpClient;
+using HttpResponseMessage = Windows.Web.Http.HttpResponseMessage;
 
 namespace GMaster
 {
+    public class Device
+    {
+        internal Device(SsdpRootDevice dev)
+        {
+            Udn = dev.Udn;
+            Host = dev.Location.Host;
+            FriendlyName = dev.FriendlyName;
+        }
+
+        public string Udn { get; }
+        public string Host { get; }
+
+        public string FriendlyName { get; }
+    }
+
     public class Lumix : INotifyPropertyChanged
     {
         private const int LiveViewPort = 49152;
 
-        private static readonly XmlMediaTypeFormatter Formatter = new XmlMediaTypeFormatter { UseXmlSerializer = true };
-        private static DatagramSocket liveviewUdp;
+        private static List<DatagramSocket> liveviewUdpSockets;
 
         private static readonly ConcurrentDictionary<string, Lumix> Listeners =
             new ConcurrentDictionary<string, Lumix>();
 
-        private readonly HttpClient camcgi;
-        private readonly string cameraHost;
-        private readonly Device device;
+        private static List<SsdpDeviceLocator> deviceLocators;
+        private readonly Uri baseUri;
+
+        private static readonly HttpClient Camcgi;
 
         private readonly object messageRecieving = new object();
 
-        private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
+        private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
 
         private MemoryStream currentImageStream;
 
         private byte lastByte;
+        private static List<Socket> liveviewUdpSockets2;
+        private static Task liveviewSocketsTask;
 
-        /**
-         * Create the Lumix videostream reader.
-         * 
-         * @param cameraIp IPv4 address of the camera.
-         * @param cameraNetmaskBitSize Size of the camera network's subnet.
-         * @param udpPort The UDP port to listen on.
-         * 
-         * @throws UnknownHostException If the camera IP address cannot be parsed.
-         * @throws SocketException On network communication errors.
-         */
+        static Lumix()
+        {
+            var rootFilter = new HttpBaseProtocolFilter();
+            rootFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+            rootFilter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+
+            Camcgi = new HttpClient(rootFilter);
+            Camcgi.DefaultRequestHeaders.Accept.Clear();
+            Camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("application/xml"));
+        }
 
         public Lumix(Device device)
         {
-            this.device = device;
-            cameraHost = new Uri(device.URLBase).Host;
-            camcgi = new HttpClient { BaseAddress = new Uri($"http://{cameraHost}/cam.cgi") };
-            camcgi.DefaultRequestHeaders.Accept.Clear();
-            camcgi.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+            Device = device;
+            baseUri = new Uri($"http://{CameraHost}/cam.cgi");
             stateTimer.Tick += StateTimer_Tick;
         }
 
+        public string CameraHost => Device.Host;
+        public Device Device { get; }
+
         public bool IsConnected { get; private set; }
 
-        public string Udn => device.UDN;
+        public string Udn => Device.Udn;
 
         public MemoryStream LiveViewFrame { get; private set; }
 
         public CameraState State { get; private set; }
+
+        public RecState RecState { get; private set; } = RecState.Unknown;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,22 +112,36 @@ namespace GMaster
             }
         }
 
-        public static async Task<IEnumerable<Device>> SearchCameras()
+        public static async Task SearchCameras()
         {
-            var devices = await new Ssdp().SearchUPnPDevices("MediaServer");
+            foreach (var dev in deviceLocators)
+            {
+                await dev.SearchAsync();
+            }
+        }
 
-            return devices.Where(d => d.ModelName == "LUMIX");
+        private static async Task<TResponse> ReadResponse<TResponse>(HttpResponseMessage response)
+        {
+            using (var content = response.Content)
+            using (var str = await content.ReadAsInputStreamAsync())
+            {
+                var serializer = new XmlSerializer(typeof(TResponse));
+                return (TResponse)serializer.Deserialize(str.AsStreamForRead());
+            }
         }
 
         private async Task<TResponse> Get<TResponse>(string path) where TResponse : BaseRequestResult
         {
-            var response = await camcgi.GetAsync(path);
-            if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
-            var product = await response.Content.ReadAsAsync<TResponse>(new[] { Formatter });
-            if (product.Result != "ok")
-                throw new LumixException(
-                    $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
-            return product;
+            var uri = new Uri(baseUri, path);
+            using (var response = await Camcgi.GetAsync(uri))
+            {
+                if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
+                var product = await ReadResponse<TResponse>(response);
+                if (product.Result != "ok")
+                    throw new LumixException(
+                        $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
+                return product;
+            }
         }
 
         private async Task SetSetting<TRequest>(string settingName, TRequest settings)
@@ -114,29 +154,36 @@ namespace GMaster
 
         private static string PropertyString(object value)
         {
-            if (value is Enum)
+            switch (value)
             {
-                var attribute = value.GetType()
-                    .GetMember(value.ToString())
-                    .First()
-                    .GetCustomAttribute<XmlElementAttribute>();
-                return attribute?.ElementName ?? value.ToString();
+                case null:
+                    return null;
+                case Enum en:
+                    var attribute = value.GetType()
+                        .GetMember(value.ToString())
+                        .First()
+                        .GetCustomAttribute<XmlElementAttribute>();
+                    return attribute?.ElementName ?? value.ToString();
+                default:
+                    return value.ToString();
             }
-
-            return value.ToString();
         }
 
-        private async Task<TResponse> Post<TResponse>(string path, Dictionary<string, string> parameters) where TResponse : BaseRequestResult
+        private async Task<TResponse> Post<TResponse>(string path, Dictionary<string, string> parameters)
+            where TResponse : BaseRequestResult
         {
-            var content = new FormUrlEncodedContent(parameters);
+            var uri = new Uri(baseUri, path);
+            var content = new HttpFormUrlEncodedContent(parameters);
 
-            var response = await camcgi.PostAsync(path, content);
-            if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
-            var product = await response.Content.ReadAsAsync<TResponse>(new[] { Formatter });
-            if (product.Result != "ok")
-                throw new LumixException(
-                    $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
-            return product;
+            using (var response = await Camcgi.PostAsync(uri, content))
+            {
+                if (!response.IsSuccessStatusCode) throw new LumixException("Request failed: " + path);
+                var product = await ReadResponse<TResponse>(response);
+                if (product.Result != "ok")
+                    throw new LumixException(
+                        $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
+                return product;
+            }
         }
 
         private async Task<CameraState> UpdateState()
@@ -167,38 +214,42 @@ namespace GMaster
                 currentImageStream = null;
                 lastByte = 0;
 
-                if (liveviewUdp == null)
-                    await StartListening();
                 await SwitchToRec();
                 await UpdateState();
                 stateTimer.Start();
                 await Get<BaseRequestResult>($"?mode=startstream&value={LiveViewPort}");
                 IsConnected = true;
                 OnPropertyChanged(nameof(IsConnected));
-                if (!Listeners.TryAdd(cameraHost, this))
+                if (!Listeners.TryAdd(CameraHost, this))
                     throw new Exception("Should not be more than one listener for address");
             }
             catch (Exception e)
             {
-                Log.Error(e, "Connect");
-                StopListening();
+                Log.Error(e);
                 throw;
             }
         }
 
         public async Task Disconnect()
         {
-            StopListening();
             try
             {
                 stateTimer.Stop();
-                await Get<BaseRequestResult>("?mode=stopstream");
-                Lumix camera;
-                if (!Listeners.TryRemove(cameraHost, out camera)) throw new Exception("Listener is not connected");
+                try
+                {
+                    await Get<BaseRequestResult>("?mode=stopstream");
+                }
+                catch (Exception)
+                {
+                    //Ignore
+                }
+
+                if (!Listeners.TryRemove(CameraHost, out var camera)) throw new Exception("Listener is not connected");
                 if (!ReferenceEquals(camera, this)) throw new Exception("Wrong listener");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e);
             }
             finally
             {
@@ -210,12 +261,99 @@ namespace GMaster
 
         public event Action<Lumix> Disconnected;
 
-        private static async Task StartListening()
+        private static IEnumerable<string> GetLocalAddresses()
         {
-            liveviewUdp = new DatagramSocket();
-            liveviewUdp.MessageReceived += LiveviewUdp_MessageReceived;
-            await liveviewUdp.BindServiceNameAsync(LiveViewPort.ToString());
+            var cp = NetworkInformation.GetInternetConnectionProfile();
+            return NetworkInformation.GetHostNames()
+                .Where(hn => hn.Type == HostNameType.Ipv4 &&
+                             hn.IPInformation.NetworkAdapter.NetworkAdapterId == cp.NetworkAdapter.NetworkAdapterId)
+                .Select(h => h.CanonicalName);
         }
+
+        public static async Task StartListening()
+        {
+            liveviewUdpSockets = new List<DatagramSocket>();
+            //liveviewUdpSockets2 = new List<Socket>();
+            foreach (var profile in GetLocalAddresses())
+            {
+                var liveviewUdp = new DatagramSocket();
+                liveviewUdp.MessageReceived += LiveviewUdp_MessageReceived;
+                await liveviewUdp.ConnectAsync(new HostName("192.168.11.15"), LiveViewPort.ToString());
+//                await liveviewUdp.BindEndpointAsync(new HostName(profile), LiveViewPort.ToString());
+
+                liveviewUdpSockets.Add(liveviewUdp);
+
+
+                //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                //socket.DualMode = false;
+                //socket.Bind(new IPEndPoint(IPAddress.Parse(profile), LiveViewPort));
+
+                //              liveviewUdpSockets2.Add(socket);
+            }
+
+//            liveviewSocketsTask = Task.Factory.StartNew(ProcessSockets, TaskCreationOptions.LongRunning);
+
+            deviceLocators = new List<SsdpDeviceLocator>();
+
+            foreach (var host in GetLocalAddresses())
+            {
+                var deviceLocator =
+                    new SsdpDeviceLocator(new SsdpCommunicationsServer(new SocketFactory(host)))
+                    {
+                        NotificationFilter = "urn:schemas-upnp-org:device:MediaServer:1"
+                    };
+                deviceLocator.DeviceAvailable += DeviceLocator_DeviceAvailable;
+                deviceLocator.StartListeningForNotifications();
+                deviceLocators.Add(deviceLocator);
+            }
+        }
+
+        private static void ProcessSockets()
+        {
+            var buf = new byte[65536];
+            while (true)
+            {
+                var readList = liveviewUdpSockets2.ToList();
+                var errorList = liveviewUdpSockets2.ToList();
+                Socket.Select(readList, null, errorList, 100);
+                foreach (var socket in readList.Concat(errorList))
+                {
+                    var endpoint = socket.RemoteEndPoint as IPEndPoint;
+                    var red = socket.Receive(buf);
+                    if (!Listeners.TryGetValue(endpoint.Address.ToString(), out Lumix camera)) continue;
+                    foreach (var bt in buf.Take(red))
+                    {
+                        camera.ProcessByte(bt);
+                    }
+                }
+            }
+        }
+
+        private static async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
+        {
+            try
+            {
+                if (!arg.IsNewlyDiscovered) return;
+
+                var info = await arg.DiscoveredDevice.GetDeviceInfo() as SsdpRootDevice;
+                if (info == null) return;
+                if (info.ModelName != "LUMIX") return;
+
+                var dev = new Device(info);
+                OnDeviceDiscovered(dev);
+            }
+            catch (HttpRequestException)
+            {
+                //Workaround
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        public static event Action<Device> DeviceDiscovered;
+
 
         private void ProcessMessage(DataReader reader)
         {
@@ -227,29 +365,34 @@ namespace GMaster
                         while (reader.UnconsumedBufferLength > 0)
                         {
                             var curByte = reader.ReadByte();
-                            currentImageStream?.WriteByte(curByte);
-
-
-                            if (lastByte == 0xff)
-                                if (currentImageStream == null && curByte == 0xd8)
-                                {
-                                    currentImageStream = new MemoryStream(32768);
-                                    currentImageStream.WriteByte(0xff);
-                                    currentImageStream.WriteByte(0xd8);
-                                }
-                                else if (currentImageStream != null && curByte == 0xd9)
-                                {
-                                    LiveViewFrame = currentImageStream;
-                                    App.RunAsync(() => OnPropertyChanged(nameof(LiveViewFrame)));
-
-                                    currentImageStream = null;
-                                }
-
-                            lastByte = curByte;
+                            ProcessByte(curByte);
                         }
                     }
                 }
             }
+        }
+
+        private void ProcessByte(byte curByte)
+        {
+            currentImageStream?.WriteByte(curByte);
+
+
+            if (lastByte == 0xff)
+                if (currentImageStream == null && curByte == 0xd8)
+                {
+                    currentImageStream = new MemoryStream(32768);
+                    currentImageStream.WriteByte(0xff);
+                    currentImageStream.WriteByte(0xd8);
+                }
+                else if (currentImageStream != null && curByte == 0xd9)
+                {
+                    LiveViewFrame = currentImageStream;
+                    App.RunAsync(() => OnPropertyChanged(nameof(LiveViewFrame)));
+
+                    currentImageStream = null;
+                }
+
+            lastByte = curByte;
         }
 
         private static void LiveviewUdp_MessageReceived(DatagramSocket sender,
@@ -257,18 +400,18 @@ namespace GMaster
         {
             try
             {
-                Lumix camera;
-                if (!Listeners.TryGetValue(args.RemoteAddress.CanonicalName, out camera))
-                    throw new NullReferenceException(@"Camera not found: {args.RemoteAddress.CanonicalName}");
-                camera.ProcessMessage(args.GetDataReader());
+                if (!Listeners.TryGetValue(args.RemoteAddress.CanonicalName, out Lumix camera))
+                    return;
+                using (var reader = args.GetDataReader())
+                {
+                    camera.ProcessMessage(reader);
+                }
             }
             catch (Exception e)
             {
-                Log.Error(e, "UDP Message");
+                Log.Error(e);
             }
         }
-
-        public RecState RecState { get; private set; } = RecState.Unknown;
 
         public async Task RecStart()
         {
@@ -280,6 +423,7 @@ namespace GMaster
         public async Task Capture()
         {
             await Get<BaseRequestResult>("?mode=camcmd&value=capture");
+            await Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
         }
 
         public async Task RecStop()
@@ -289,10 +433,21 @@ namespace GMaster
             OnPropertyChanged(nameof(RecState));
         }
 
-        private static void StopListening()
+        public static void StopListening()
         {
-            liveviewUdp?.Dispose();
-            liveviewUdp = null;
+            foreach (var liveviewUdpSocket in liveviewUdpSockets)
+            {
+                liveviewUdpSocket.Dispose();
+            }
+            liveviewUdpSockets = null;
+
+            foreach (var deviceLocator in deviceLocators)
+            {
+                deviceLocator.StopListeningForNotifications();
+                deviceLocator.Dispose();
+            }
+
+            deviceLocators = null;
         }
 
         [NotifyPropertyChangedInvocator]
@@ -323,6 +478,11 @@ namespace GMaster
         {
             return Udn?.GetHashCode() ?? 0;
         }
+
+        protected static void OnDeviceDiscovered(Device obj)
+        {
+            DeviceDiscovered?.Invoke(obj);
+        }
     }
 
     public enum RecState
@@ -331,5 +491,4 @@ namespace GMaster
         Unknown,
         Started
     }
-
 }

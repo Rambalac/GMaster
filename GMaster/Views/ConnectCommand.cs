@@ -10,7 +10,7 @@ namespace GMaster.Views
 
         public ConnectCommand(CameraViewModel cameraViewModel)
         {
-            this.model = cameraViewModel;
+            model = cameraViewModel;
             model.PropertyChanged += Model_PropertyChanged;
         }
 

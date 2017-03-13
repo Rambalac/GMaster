@@ -5,7 +5,6 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interop="using:Windows.UI.Xaml.Interop"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400" d:DataContext="{d:DesignInstance local:CameraViewModel}">
@@ -65,13 +64,13 @@
                                     <VisualState x:Name="Disabled">
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#000000"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#000000"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#000000"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -85,7 +84,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid >
+    <Grid Background="DarkBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="74*"/>
             <ColumnDefinition Width="75"/>
@@ -101,15 +100,18 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Grid.RowSpan="6"
                Source="{Binding SelectedCamera.LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" Grid.ColumnSpan="3"/>
+        <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="5" Visibility="{Binding IsConnectVisibile, Converter={StaticResource VisibilityConverter}}">
+            <TextBlock Foreground="White">NO CONNECTION</TextBlock>
+        </Viewbox>
 
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
+        <Button Grid.Row="0" Grid.Column="0" Content="Connect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
                 Visibility="{Binding IsConnectVisibile, Converter={StaticResource VisibilityConverter}}"
-                Command="{Binding ConnectCommand}" Height="32" Width="75"/>
-        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
+                Command="{Binding ConnectCommand}" Height="32" Width="75" Background="#99000000" BorderBrush="White"/>
+        <Button Grid.Row="0" Grid.Column="0" Content="Disconnect" HorizontalAlignment="Left" Margin="180,9,0,0" VerticalAlignment="Top"
                 Visibility="{Binding IsDisconnectVisibile, Converter={StaticResource VisibilityConverter}}"
                 Command="{Binding DisconnectCommand}" Height="32" Width="75" Background="#99000000" BorderBrush="White"/>
-        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="165"
-                  ItemsSource="{Binding Path=GlobalModel.Devices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" Height="32" BorderBrush="#66FFFFFF">
+        <ComboBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="165"
+                  ItemsSource="{Binding Path=GlobalModel.Devices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" Height="32" BorderBrush="#FFFFFF">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
