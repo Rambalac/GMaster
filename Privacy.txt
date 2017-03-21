@@ -1,3 +1,4 @@
 Application is using remote telemetry to get more information about crashes to solve problems in general and add more supported cameras. 
 It does not send any private information intentionally and app permissions are minimal.
 Cruch dumps get sent to MS HockeyApp service using original library.
+Application sources are available at GitHub https://raw.githubusercontent.com/Rambalac/GMaster so you can check what exactly is sent.
