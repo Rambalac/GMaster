@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMaster", "GMaster\GMaster.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMaster.Tests", "GMaster.Tests\GMaster.Tests.csproj", "{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F62F18F9-E4C4-4A8F-B6A2-13454D945AC7}"
+	ProjectSection(SolutionItems) = preProject
+		Privacy.txt = Privacy.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
