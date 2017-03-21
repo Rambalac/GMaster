@@ -1,19 +1,22 @@
-﻿using System.Xml.Serialization;
-
-namespace GMaster.LumixResponces
+﻿namespace GMaster.Camera.LumixResponces
 {
-    [XmlRoot(ElementName = "camrply")]
-    public class BaseRequestResult
-    {
-        [XmlElement(ElementName = "result")]
-        public string Result { get; set; }
-    }
+    using System.Xml.Serialization;
 
     public enum OnOff
     {
-        [XmlEnum(Name = "on")] On,
+        [XmlEnum(Name = "on")]
+        On,
 
-        [XmlEnum(Name = "off")] Off
+        [XmlEnum(Name = "off")]
+        Off
+    }
+
+    public enum YesNo
+    {
+        [XmlEnum(Name = "no")]
+        No = 0,
+        [XmlEnum(Name = "yes")]
+        Yes = 1
     }
 
     [XmlRoot(ElementName = "state")]
@@ -108,10 +111,22 @@ namespace GMaster.LumixResponces
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((CameraState) obj);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((CameraState)obj);
         }
 
         public override int GetHashCode()
@@ -124,18 +139,18 @@ namespace GMaster.LumixResponces
                 hashCode = (hashCode * 397) ^ (Sdcardstatus?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SdMemory?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ VideoRemaincapacity;
-                hashCode = (hashCode * 397) ^ (int) Rec;
+                hashCode = (hashCode * 397) ^ (int)Rec;
                 hashCode = (hashCode * 397) ^ (BurstIntervalStatus?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (SdAccess?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (RemDispTyp?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ ProgressTime;
                 hashCode = (hashCode * 397) ^ (Operate?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ StopMotionNum;
-                hashCode = (hashCode * 397) ^ (int) StopMotion;
+                hashCode = (hashCode * 397) ^ (int)StopMotion;
                 hashCode = (hashCode * 397) ^ (Temperature?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Lens?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (int) AddLocationData;
-                hashCode = (hashCode * 397) ^ (int) IntervalStatus;
+                hashCode = (hashCode * 397) ^ (int)AddLocationData;
+                hashCode = (hashCode * 397) ^ (int)IntervalStatus;
                 hashCode = (hashCode * 397) ^ (SdiState?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (WarnDisp?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Version?.GetHashCode() ?? 0);

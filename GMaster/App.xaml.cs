@@ -1,26 +1,24 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using GMaster.Views;
-using Microsoft.ApplicationInsights.Channel;
-
-namespace GMaster
+﻿namespace GMaster
 {
+    using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+    using Views;
+    using Windows.ApplicationModel;
+    using Windows.ApplicationModel.Activation;
+    using Windows.UI.Core;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Navigation;
+
     public partial class App : Application
     {
         private static CoreDispatcher dispatcher;
 
-        
-
         /// <summary>
-        ///     Initializes the singleton application object.  This is the first line of authored code
-        ///     executed, and as such is the logical equivalent of main() or WinMain().
+        /// Initializes a new instance of the <see cref="App"/> class.
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
@@ -28,6 +26,8 @@ namespace GMaster
             Suspending += OnSuspending;
             UnhandledException += App_UnhandledException;
         }
+
+        public MainPageModel MainModel { get; private set; }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
@@ -44,11 +44,14 @@ namespace GMaster
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            await Lumix.StartListening();
+            MainModel = Resources[nameof(MainModel)] as MainPageModel;
+            await MainModel.StartListening();
 
 #if DEBUG
             if (Debugger.IsAttached)
+            {
                 DebugSettings.EnableFrameRateCounter = true;
+            }
 #endif
             var rootFrame = Window.Current.Content as Frame;
 
@@ -73,12 +76,19 @@ namespace GMaster
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
+                {
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                }
+
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
             dispatcher = Window.Current.Dispatcher;
-            if (dispatcher == null) throw new NullReferenceException("Null dispatcher");
+            if (dispatcher == null)
+            {
+                throw new NullReferenceException("Null dispatcher");
+            }
         }
 
         /// <summary>
@@ -101,7 +111,7 @@ namespace GMaster
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            Lumix.StopListening();
+            MainModel.StopListening();
             deferral.Complete();
         }
 
@@ -117,23 +127,5 @@ namespace GMaster
                 return Task.CompletedTask;
             }
         }
-    }
-
-    public class MyChannel : ITelemetryChannel
-    {
-        public void Dispose()
-        {
-        }
-
-        public void Send(ITelemetry item)
-        {
-        }
-
-        public void Flush()
-        {
-        }
-
-        public bool? DeveloperMode { get; set; }
-        public string EndpointAddress { get; set; }
     }
 }

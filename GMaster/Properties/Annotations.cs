@@ -20,8 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-using System;
-
 #pragma warning disable 1591
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -32,6 +30,8 @@ using System;
 
 namespace GMaster.Annotations
 {
+    using System;
+
     /// <summary>
     ///     Indicates that the value of the marked element could be <c>null</c> sometimes,
     ///     so the check for <c>null</c> is necessary before its usage.
@@ -39,7 +39,7 @@ namespace GMaster.Annotations
     /// <example>
     ///     <code>
     /// [CanBeNull] object Test() => null;
-    /// 
+    ///
     /// void UseTest() {
     ///   var p = Test();
     ///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
@@ -105,7 +105,7 @@ namespace GMaster.Annotations
     ///     <code>
     /// [StringFormatMethod("message")]
     /// void ShowError(string message, params object[] args) { /* do something */ }
-    /// 
+    ///
     /// void Foo() {
     ///   ShowError("Failed: {0}"); // Warning: Non-existing argument in format string
     /// }
@@ -193,12 +193,12 @@ namespace GMaster.Annotations
     ///     <code>
     ///  public class Foo : INotifyPropertyChanged {
     ///    public event PropertyChangedEventHandler PropertyChanged;
-    ///  
+    ///
     ///    [NotifyPropertyChangedInvocator]
     ///    protected virtual void NotifyChanged(string propertyName) { ... }
-    /// 
+    ///
     ///    string _name;
-    ///  
+    ///
     ///    public string Name {
     ///      get { return _name; }
     ///      set { _name = value; NotifyChanged("LastName"); /* Warning */ }
@@ -282,7 +282,7 @@ namespace GMaster.Annotations
     /// // A method that returns null if the parameter is null,
     /// // and not null if the parameter is not null
     /// [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
-    /// public object Transform(object data) 
+    /// public object Transform(object data)
     /// </code>
     ///         </item>
     ///         <item>
@@ -349,7 +349,7 @@ namespace GMaster.Annotations
     ///     <code>
     /// [CannotApplyEqualityOperator]
     /// class NoEquality { }
-    /// 
+    ///
     /// class UsesNoEquality {
     ///   void Test() {
     ///     var ca1 = new NoEquality();
@@ -374,7 +374,7 @@ namespace GMaster.Annotations
     ///     <code>
     /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
     /// class ComponentAttribute : Attribute { }
-    /// 
+    ///
     /// [Component] // ComponentAttribute requires implementing IComponent interface
     /// class MyComponent : IComponent { }
     /// </code>
@@ -535,7 +535,7 @@ namespace GMaster.Annotations
     /// <example>
     ///     <code>
     /// [Pure] int Multiply(int x, int y) => x * y;
-    /// 
+    ///
     /// void M() {
     ///   Multiply(123, 42); // Waring: Return value of pure method is not used
     /// }
@@ -574,7 +574,7 @@ namespace GMaster.Annotations
     ///     <code>
     /// class Foo {
     ///   [ProvidesContext] IBarService _barService = ...;
-    /// 
+    ///
     ///   void ProcessNode(INode node) {
     ///     DoSomething(node, node.GetGlobalServices().Bar);
     ///     //              ^ Warning: use value of '_barService' field

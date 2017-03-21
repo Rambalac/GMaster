@@ -101,11 +101,38 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Camera\LumixResponces\BaseRequestResult.cs" />
+    <Compile Include="Camera\LumixResponces\MenuSetRuquestResult.cs" />
+    <Compile Include="Camera\DeviceInfo.cs" />
+    <Compile Include="Camera\LumixResponces\HashCollection.cs" />
+    <Compile Include="Camera\CameraMenuItem.cs" />
+    <Compile Include="Camera\AbstractMenuSetParser.cs" />
+    <Compile Include="Camera\MenuSetParserGH3.cs" />
+    <Compile Include="Camera\MenuSetParserGH4.cs" />
+    <Compile Include="Camera\RecState.cs" />
+    <Compile Include="Camera\TitledList.cs" />
+    <Compile Include="Camera\TitledListExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="Views\ConnectCommand.cs" />
-    <Compile Include="Lumix.cs" />
-    <Compile Include="LumixException.cs" />
-    <Compile Include="LumixResponces\RequestStatus.cs" />
+    <Compile Include="Camera\LumixManager.cs" />
+    <Compile Include="Views\CameraSettingsPage.xaml.cs">
+      <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GeneralSettings.cs" />
+    <Compile Include="Views\GeneralSettingsPage.xaml.cs">
+      <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Commands\AbstractParameterModelCommand.cs" />
+    <Compile Include="Views\Commands\AbstractModelCommand.cs" />
+    <Compile Include="Views\Commands\AbstractSimpleCommand.cs" />
+    <Compile Include="Views\Commands\AbstractSimpleParameterCommand.cs" />
+    <Compile Include="Views\Commands\CaptureCommand.cs" />
+    <Compile Include="Views\Commands\ConnectCommand.cs" />
+    <Compile Include="Camera\Lumix.cs" />
+    <Compile Include="Camera\LumixException.cs" />
+    <Compile Include="Camera\LumixResponces\CameraStateRequestResult.cs" />
+    <Compile Include="Views\Commands\OpenSplitViewCommand.cs" />
+    <Compile Include="Views\ConnectedCamera.cs" />
     <Compile Include="Views\MainPageModel.cs" />
     <Compile Include="Views\ImageMemoryStreamConverter.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
@@ -117,10 +144,12 @@
     <Compile Include="Views\CameraViewControl.xaml.cs">
       <DependentUpon>CameraViewControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecCommand.cs" />
-    <Compile Include="Views\SwitchFullScreenCommand.cs" />
-    <Compile Include="Views\DisconnectCommand.cs" />
-    <Compile Include="Views\UpnpDeviceNameConverter.cs" />
+    <Compile Include="Views\Commands\RecCommand.cs" />
+    <Compile Include="Views\Commands\SwitchFullScreenCommand.cs" />
+    <Compile Include="Views\Commands\DisconnectCommand.cs" />
+    <Compile Include="Views\Commands\SelectCameraCommand.cs" />
+    <Compile Include="Views\SettingsContainer.cs" />
+    <Compile Include="Views\VisibilityConverter.cs" />
     <Compile Include="WiFiDirectHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +218,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\CameraSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GeneralSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

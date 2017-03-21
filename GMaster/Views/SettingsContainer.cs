@@ -1,0 +1,101 @@
+namespace GMaster.Views
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using Annotations;
+    using Camera.LumixResponces;
+    using Newtonsoft.Json.Linq;
+
+    public class SettingsContainer : INotifyPropertyChanged
+    {
+        public SettingsContainer()
+        {
+            foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
+                {
+                    var propvalue = (AbstractNotifyProperty)Activator.CreateInstance(prop.PropertyType);
+                    prop.SetValue(this, propvalue);
+
+                    propvalue.PropertyChanged += (sender, args) => OnPropertyChanged(prop.Name);
+                }
+            }
+        }
+
+        protected void Load(IDictionary<string, object> settings)
+        {
+            foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
+                {
+                    var propvalue = (AbstractNotifyProperty)prop.GetValue(this);
+                    if (settings.TryGetValue(prop.Name, out var val))
+                    {
+                        propvalue.SetValue(val);
+                    }
+                }
+                else if (typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
+                {
+                    if (settings.TryGetValue(prop.Name, out var itemsave) && itemsave is JObject jobj)
+                    {
+                        var col = (IObservableHashCollection)prop.GetValue(this);
+                        var collection = jobj.ToObject<Dictionary<string, object>>();
+                        foreach (var pair in collection)
+                        {
+                            var cont = (SettingsContainer)Activator.CreateInstance(prop.PropertyType.GenericTypeArguments[0]);
+                            if (pair.Value is JObject jObject)
+                            {
+                                cont.Load(jObject.ToObject<Dictionary<string, object>>());
+                            }
+
+                            var iditem = (IIdItem)cont;
+                            iditem.Id = pair.Key;
+                            col.Add(pair.Key, iditem);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        protected void Save(IDictionary<string, object> settings)
+        {
+            foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
+                {
+                    var propvalue = (AbstractNotifyProperty)prop.GetValue(this);
+                    settings[prop.Name] = propvalue.GetValue();
+                }
+                else if (typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
+                {
+                    var col = (IObservableHashCollection)prop.GetValue(this);
+                    var collection = new Dictionary<string, object>();
+
+                    foreach (var item in col.GetAll())
+                    {
+                        var itemsave = new Dictionary<string, object>();
+
+                        var cont = (SettingsContainer)item;
+                        cont.Save(itemsave);
+
+                        collection[item.Id] = itemsave;
+                    }
+
+                    settings[prop.Name] = collection;
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

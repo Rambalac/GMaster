@@ -1,0 +1,303 @@
+﻿<camrply>
+  <result>ok</result>
+  <menuinfo model="GH4" version="2.0">
+    <mainmenu>
+      <item id="menu_item_id_liveview_quality" enable="yes" value="vga"/>
+      <item id="menu_item_id_liveviewsize_vga" enable="yes"/>
+      <item id="menu_item_id_liveviewsize_qvga" enable="yes"/>
+    </mainmenu>
+    <photosettings>
+      <item id="menu_item_id_crtv_ctrl" enable="no" value="pop"/>
+      <item id="menu_item_id_scn_gid" enable="no" value="portrait"/>
+      <item id="menu_item_id_afmode" enable="yes" value="facedetection"/>
+      <item id="menu_item_id_afmode_facedetection" enable="yes"/>
+      <item id="menu_item_id_afmode_aftracking" enable="yes"/>
+      <item id="menu_item_id_afmode_49area" enable="yes"/>
+      <item id="menu_item_id_afmode_23area" enable="no"/>
+      <item id="menu_item_id_afmode_1area" enable="yes"/>
+      <item id="menu_item_id_afmode_pinpoint" enable="yes"/>
+      <item id="menu_item_id_afmode_custom_multi" enable="yes" value="horizontal"/>
+      <item id="menu_item_id_afmode_custom_multi_vertical" enable="no"/>
+      <item id="menu_item_id_afmode_custom_multi_horizontal" enable="yes"/>
+      <item id="menu_item_id_afmode_custom_multi_free" enable="no"/>
+      <item id="menu_item_id_afmode_custom_multi_custom_1" enable="no"/>
+      <item id="menu_item_id_afmode_custom_multi_custom_2" enable="no"/>
+      <item id="menu_item_id_afmode_custom_multi_custom_3" enable="no"/>
+      <item id="menu_item_id_ph_sty" enable="yes" value="natural"/>
+      <item id="menu_item_id_ph_sty_standard" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_vivid" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_natural" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_bw" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_scenery" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_portrait" enable="yes" option="detail"/>
+      <item id="menu_item_id_ph_sty_cinelike_d" enable="no" option="detail"/>
+      <item id="menu_item_id_ph_sty_cinelike_v" enable="no" option="detail"/>
+      <item id="menu_item_id_ph_sty_vlog_l" enable="no" option="detail"/>
+      <item id="menu_item_id_ph_sty_custom" enable="yes" option="detail"/>
+      <item id="menu_item_id_flash" enable="yes" value="forcedflashon"/>
+      <item id="menu_item_id_flash_iauto" enable="no"/>
+      <item id="menu_item_id_flash_forcedflashon" enable="yes"/>
+      <item id="menu_item_id_flash_forced_on_redeye" enable="yes"/>
+      <item id="menu_item_id_flash_slowsync" enable="yes"/>
+      <item id="menu_item_id_flash_slowsyncredeye" enable="yes"/>
+      <item id="menu_item_id_flash_forcedflashoff" enable="no"/>
+      <item id="menu_item_id_asprat" enable="yes" value="4:3"/>
+      <item id="menu_item_id_asprat_4:3" enable="yes"/>
+      <item id="menu_item_id_asprat_3:2" enable="yes"/>
+      <item id="menu_item_id_asprat_16:9" enable="yes"/>
+      <item id="menu_item_id_asprat_1:1" enable="yes"/>
+      <item id="menu_item_id_pctsiz" enable="yes" value="16m"/>
+      <item id="menu_item_id_pctsiz_20m" enable="no"/>
+      <item id="menu_item_id_pctsiz_18m" enable="no"/>
+      <item id="menu_item_id_pctsiz_17m" enable="no"/>
+      <item id="menu_item_id_pctsiz_16m" enable="yes"/>
+      <item id="menu_item_id_pctsiz_ex16m" enable="no"/>
+      <item id="menu_item_id_pctsiz_14m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex14m" enable="no"/>
+      <item id="menu_item_id_pctsiz_13m" enable="no"/>
+      <item id="menu_item_id_pctsiz_12m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex12m" enable="no"/>
+      <item id="menu_item_id_pctsiz_11.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex11.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_10m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex10m" enable="no"/>
+      <item id="menu_item_id_pctsiz_9m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex9m" enable="no"/>
+      <item id="menu_item_id_pctsiz_8m" enable="yes"/>
+      <item id="menu_item_id_pctsiz_ex8m" enable="no"/>
+      <item id="menu_item_id_pctsiz_7m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex7m" enable="no"/>
+      <item id="menu_item_id_pctsiz_6m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex6m" enable="no"/>
+      <item id="menu_item_id_pctsiz_5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_4.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex4.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_4m" enable="yes"/>
+      <item id="menu_item_id_pctsiz_ex4m" enable="no"/>
+      <item id="menu_item_id_pctsiz_3.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex3.5m" enable="no"/>
+      <item id="menu_item_id_pctsiz_3m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex3m" enable="no"/>
+      <item id="menu_item_id_pctsiz_2m" enable="no"/>
+      <item id="menu_item_id_pctsiz_ex2m" enable="no"/>
+      <item id="menu_item_id_quality" enable="yes" value="raw_fine"/>
+      <item id="menu_item_id_quality_fine" enable="yes"/>
+      <item id="menu_item_id_quality_standard" enable="yes"/>
+      <item id="menu_item_id_quality_raw_fine" enable="yes"/>
+      <item id="menu_item_id_quality_raw_standard" enable="yes"/>
+      <item id="menu_item_id_quality_raw" enable="yes"/>
+      <item id="menu_item_id_quality_mpo_fine" enable="no"/>
+      <item id="menu_item_id_quality_mpo_standard" enable="no"/>
+      <item id="menu_item_id_focusmode" enable="no" value="afs"/>
+      <item id="menu_item_id_lightmet" enable="yes" value="multi"/>
+      <item id="menu_item_id_lightmet_multi" enable="yes"/>
+      <item id="menu_item_id_lightmet_center" enable="yes"/>
+      <item id="menu_item_id_lightmet_spot" enable="yes"/>
+      <item id="menu_item_id_macro" enable="no" value="off"/>
+      <item id="menu_item_id_4kphoto_video" enable="no" value="off"/>
+      <item id="menu_item_id_4kphoto_set_video" enable="no"/>
+      <item id="menu_item_id_4kphoto_aspect" enable="no" value="4:3"/>
+      <item id="menu_item_id_4kphoto_looprec" enable="no" value="off"/>
+      <item id="menu_item_id_4kphoto_burst" enable="yes"/>
+      <item id="menu_item_id_4kphoto_burst_mode" enable="yes" value="off"/>
+      <item id="menu_item_id_4kphoto_burst_mode_burst" enable="yes"/>
+      <item id="menu_item_id_4kphoto_burst_mode_start_stop" enable="yes"/>
+      <item id="menu_item_id_4kphoto_burst_mode_pre_burst" enable="yes"/>
+      <item id="menu_item_id_4kphoto_burst_mode_off" enable="yes"/>
+      <item id="menu_item_id_4kphoto_burst_looprec" enable="no" value="off"/>
+      <item id="menu_item_id_focus_select" enable="yes" value="off"/>
+      <item id="menu_item_id_focus_action" enable="no" value="mode1"/>
+      <item id="menu_item_id_videoformat" enable="yes" value="mp4"/>
+      <item id="menu_item_id_videoformat_avchd" enable="yes"/>
+      <item id="menu_item_id_videoformat_mp4" enable="yes"/>
+      <item id="menu_item_id_videoformat_mp4ed" enable="yes"/>
+      <item id="menu_item_id_videoformat_mov" enable="yes"/>
+      <item id="menu_item_id_v_quality" enable="yes" value="mp4_60p_28mbps"/>
+      <item id="menu_item_id_v_quality_avchd_60p_28mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_50p_28mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_60i_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_50i_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_60i_17mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_50i_17mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_30p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_25p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_c24p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_24p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_60p_17mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_avchd_50p_17mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_30p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_25p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_24p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_30p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_25p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_24p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_60p_28mbps" enable="yes"/>
+      <item id="menu_item_id_v_quality_mp4_50p_28mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_30p_20mbps" enable="yes"/>
+      <item id="menu_item_id_v_quality_mp4_25p_20mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_24p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_30p_10mbps" enable="yes"/>
+      <item id="menu_item_id_v_quality_mp4_25p_10mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4_30p_4mbps" enable="yes"/>
+      <item id="menu_item_id_v_quality_mp4_25p_4mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_100mbps_c4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_24p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_30p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_25p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_24p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_30p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_25p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_60p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_50p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_60p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_50p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_60p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_50p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_30p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_25p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_30p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_25p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_30p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_25p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_24p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_24p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_c24p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mp4ed_24p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_100mbps_c4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_100mbps_4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_100mbps_a4k" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_60p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_50p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_60p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_50p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_60p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_50p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_72mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_72mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_30p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_25p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_200mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_100mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_72mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_c24p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_50mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_24p_24mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_60p_72mbps" enable="no"/>
+      <item id="menu_item_id_v_quality_mov_50p_72mbps" enable="no"/>
+      <item id="menu_item_id_stp_mtn_anm" enable="no"/>
+    </photosettings>
+    <qmenu2>
+      <item id="menu_item_id_f_and_ss" enable="no"/>
+      <item id="menu_item_id_shutter_speed" enable="no"/>
+      <item id="menu_item_id_aperture" enable="yes"/>
+      <item id="menu_item_id_ss" enable="no"/>
+      <item id="menu_item_id_f" enable="no"/>
+      <item id="menu_item_id_f_and_ss_angle" enable="no"/>
+      <item id="menu_item_id_ss_angle" enable="no"/>
+      <item id="menu_item_id_f_and_ss_sync" enable="no"/>
+      <item id="menu_item_id_ss_sync" enable="no"/>
+      <item id="menu_item_id_f_and_ss_angle_sync" enable="no"/>
+      <item id="menu_item_id_ss_angle_sync" enable="no"/>
+      <item id="menu_item_id_exposure2" enable="yes" value="0"/>
+      <item id="menu_item_id_exposure_m5" enable="yes"/>
+      <item id="menu_item_id_exposure_m14_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m13_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m4" enable="yes"/>
+      <item id="menu_item_id_exposure_m11_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m10_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m3" enable="yes"/>
+      <item id="menu_item_id_exposure_m8_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m7_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m2" enable="yes"/>
+      <item id="menu_item_id_exposure_m5_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m4_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m1" enable="yes"/>
+      <item id="menu_item_id_exposure_m2_3" enable="yes"/>
+      <item id="menu_item_id_exposure_m1_3" enable="yes"/>
+      <item id="menu_item_id_exposure_0" enable="yes"/>
+      <item id="menu_item_id_exposure_p1_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p2_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p1" enable="yes"/>
+      <item id="menu_item_id_exposure_p4_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p5_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p2" enable="yes"/>
+      <item id="menu_item_id_exposure_p7_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p8_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p3" enable="yes"/>
+      <item id="menu_item_id_exposure_p10_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p11_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p12_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p13_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p14_3" enable="yes"/>
+      <item id="menu_item_id_exposure_p15_3" enable="yes"/>
+      <item id="menu_item_id_sensitivity" enable="yes" value="i_iso"/>
+      <item id="menu_item_id_sensitivity_auto" enable="yes"/>
+      <item id="menu_item_id_sensitivity_i_iso" enable="yes"/>
+      <item id="menu_item_id_sensitivity_100" enable="yes"/>
+      <item id="menu_item_id_sensitivity_125" enable="yes"/>
+      <item id="menu_item_id_sensitivity_160" enable="yes"/>
+      <item id="menu_item_id_sensitivity_200" enable="yes"/>
+      <item id="menu_item_id_sensitivity_250" enable="yes"/>
+      <item id="menu_item_id_sensitivity_320" enable="yes"/>
+      <item id="menu_item_id_sensitivity_400" enable="yes"/>
+      <item id="menu_item_id_sensitivity_500" enable="yes"/>
+      <item id="menu_item_id_sensitivity_640" enable="yes"/>
+      <item id="menu_item_id_sensitivity_800" enable="yes"/>
+      <item id="menu_item_id_sensitivity_1000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_1250" enable="yes"/>
+      <item id="menu_item_id_sensitivity_1600" enable="yes"/>
+      <item id="menu_item_id_sensitivity_2000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_2500" enable="yes"/>
+      <item id="menu_item_id_sensitivity_3200" enable="yes"/>
+      <item id="menu_item_id_sensitivity_4000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_5000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_6400" enable="yes"/>
+      <item id="menu_item_id_sensitivity_8000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_10000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_12800" enable="yes"/>
+      <item id="menu_item_id_sensitivity_16000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_20000" enable="yes"/>
+      <item id="menu_item_id_sensitivity_25600" enable="yes"/>
+      <item id="menu_item_id_sensitivity_db" enable="no" value="auto"/>
+      <item id="menu_item_id_whitebalance" enable="yes" value="cloudy"/>
+      <item id="menu_item_id_whitebalance_auto" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_daylight" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_cloudy" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_shade" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_halogen" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_flash" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_white_set1" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_white_set2" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_white_set3" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_white_set4" enable="yes" option="0/0"/>
+      <item id="menu_item_id_whitebalance_color_temp" enable="yes" option="0/0" option2="8400"/>
+      <item id="menu_item_id_1shoot" enable="yes" active="no"/>
+      <item id="menu_item_id_burst" enable="no"/>
+      <item id="menu_item_id_autobracket" enable="no"/>
+      <item id="menu_item_id_selftimer" enable="no"/>
+      <item id="menu_item_id_stopmotion_interval" enable="no"/>
+      <item id="menu_item_id_program_shift" enable="no"/>
+      <item id="menu_item_id_peaking" enable="yes" value="off"/>
+      <item id="menu_item_id_peaking_off" enable="yes"/>
+      <item id="menu_item_id_peaking_low" enable="yes"/>
+      <item id="menu_item_id_peaking_high" enable="yes"/>
+    </qmenu2>
+  </menuinfo>
+</camrply>

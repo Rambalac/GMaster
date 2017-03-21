@@ -1,29 +1,38 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.ApplicationInsights;
+﻿using System.Net.Sockets;
 
 namespace GMaster
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.HockeyApp;
+
     public static class Log
     {
-        private static readonly TelemetryClient Telemetry;
-
         static Log()
         {
-            Telemetry = new TelemetryClient() { InstrumentationKey = "132c2cbe-e02d-4d36-85bf-efe3bc8ee3e6" };
-            //TelemetryConfiguration.Active.InstrumentationKey = "132c2cbe-e02d-4d36-85bf-efe3bc8ee3e6";
+            HockeyClient.Current.Configure("7d7a7144b068445db1eb29135444562a");
         }
 
         [Conditional("DEBUG")]
         public static void Error(Exception eException)
         {
-            Telemetry.TrackException(eException);
+            HockeyClient.Current.TrackException(eException);
         }
 
         [Conditional("DEBUG")]
         public static void Trace(string str)
         {
-            Telemetry.TrackTrace(str);
+            HockeyClient.Current.TrackTrace(str, SeverityLevel.Information);
+        }
+
+        public static void Warn(string str)
+        {
+            HockeyClient.Current.TrackTrace(str, SeverityLevel.Warning);
+        }
+
+        public static void Debug(Exception socketException)
+        {
+            
         }
     }
 }

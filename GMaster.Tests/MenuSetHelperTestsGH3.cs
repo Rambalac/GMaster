@@ -1,0 +1,38 @@
+﻿namespace GMasterTests
+{
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+    using GMaster.Camera;
+    using GMaster.Camera.LumixResponces;
+    using Xunit;
+
+    public class MenuSetHelperTestsGh3
+    {
+        private AbstractMenuSetParser menuset;
+
+        public async Task Load(string filename)
+        {
+            var file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(filename);
+            using (var stream = await file.OpenSequentialReadAsync())
+            {
+                var serializer = new XmlSerializer(typeof(MenuSetRuquestResult));
+                var result = (MenuSetRuquestResult)serializer.Deserialize(stream.AsStreamForRead());
+                menuset = AbstractMenuSetParser.TryParse(result.MenuSet, "en");
+            }
+        }
+
+        [Theory]
+        [InlineData("TestMenuSetGH3.xml")]
+        [InlineData("TestMenuSetGH3_M.xml")]
+        [InlineData("TestMenuSetGH3_S.xml")]
+        public async Task TestLiveviewQualiyty(string filename)
+        {
+            await Load(filename);
+            Assert.Equal(2, menuset.LiveviewQuality.Count);
+            Assert.True(menuset.LiveviewQuality.Any(q => q.Value == "vga"));
+        }
+    }
+}

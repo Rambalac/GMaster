@@ -5,9 +5,8 @@
     xmlns:local="using:GMaster.Views"
     RequestedTheme="Light">
     <Application.Resources>
-        <ResourceDictionary>
-            <local:VisibilityConverter x:Key="VisibilityConverter" />
-            <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
-        </ResourceDictionary>
+        <local:MainPageModel x:Key="MainModel"/>
+        <local:VisibilityConverter x:Key="VisibilityConverter" />
+        <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
     </Application.Resources>
 </Application>

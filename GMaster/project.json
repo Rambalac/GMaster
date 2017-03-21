@@ -1,9 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.ApplicationInsights": "2.2.0",
-    "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
+    "HockeySDK.UWP": "4.1.6",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.1",
-    "Rssdp": "3.0.0"
+    "Newtonsoft.Json": "10.0.1",
+    "Rssdp": "3.0.0",
+    "StyleCop.Analyzers": "1.0.0"
   },
   "frameworks": {
     "uap10.0": {}

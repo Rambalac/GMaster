@@ -2,7 +2,6 @@
 {
     public class WiFiDirectHelper
     {
-
         public void Start()
         {
         }
