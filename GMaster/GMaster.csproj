@@ -107,6 +107,7 @@
     <Compile Include="Camera\LumixResponces\HashCollection.cs" />
     <Compile Include="Camera\CameraMenuItem.cs" />
     <Compile Include="Camera\AbstractMenuSetParser.cs" />
+    <Compile Include="Camera\LumixResponces\ObservableHashCollection.cs" />
     <Compile Include="Camera\MenuSetParserGH3.cs" />
     <Compile Include="Camera\MenuSetParserGH4.cs" />
     <Compile Include="Camera\RecState.cs" />

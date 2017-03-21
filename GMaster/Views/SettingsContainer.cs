@@ -15,14 +15,26 @@ namespace GMaster.Views
         {
             foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
+                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType) ||
+                    typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
                 {
-                    var propvalue = (AbstractNotifyProperty)Activator.CreateInstance(prop.PropertyType);
-                    prop.SetValue(this, propvalue);
+                    var propvalue = GetOrCreate<INotifyPropertyChanged>(prop);
 
                     propvalue.PropertyChanged += (sender, args) => OnPropertyChanged(prop.Name);
                 }
             }
+        }
+
+        private T GetOrCreate<T>(PropertyInfo prop)
+        {
+            var propvalue = prop.GetValue(this);
+            if (propvalue == null)
+            {
+                propvalue = Activator.CreateInstance(prop.PropertyType);
+                prop.SetValue(this, propvalue);
+            }
+
+            return (T)propvalue;
         }
 
         protected void Load(IDictionary<string, object> settings)

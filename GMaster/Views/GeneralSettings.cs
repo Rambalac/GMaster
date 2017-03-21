@@ -59,6 +59,11 @@ namespace GMaster.Views
             return prop.Value;
         }
 
+        public static implicit operator NotifyProperty<TValue>(TValue val)
+        {
+            return new NotifyProperty<TValue> { Value = val };
+        }
+
         public NotifyProperty()
         {
             value = default(TValue);
@@ -77,26 +82,12 @@ namespace GMaster.Views
 
     public class GeneralSettings : SettingsContainer
     {
-        public NotifyProperty<bool> Autoconnect { get; private set; }
+        public NotifyProperty<bool> Autoconnect { get; } = true;
 
-        public ObservableHashCollection<CameraSettings> Cameras { get; } = new ObservableHashCollection<CameraSettings>();
+        public ObservableHashCollection<CameraSettings> Cameras { get; private set; }
 
         public GeneralSettings()
         {
-            Cameras.ItemAdded +=
-                (col, set) =>
-                {
-                    set.PropertyChanged += Settings_PropertyChanged;
-                    Save();
-                };
-
-            Cameras.ItemRemoved +=
-                (col, set) =>
-                {
-                    set.PropertyChanged -= Settings_PropertyChanged;
-                    Save();
-                };
-
             var localSettings = ApplicationData.Current.LocalSettings;
             if (localSettings.Values.TryGetValue("settings", out var settingsobj) && settingsobj is string settings)
             {
@@ -119,21 +110,11 @@ namespace GMaster.Views
             Save(dict);
             localSettings.Values["settings"] = JsonConvert.SerializeObject(dict);
         }
-
-        private bool IsSavableType(Type propertyTypeGenericTypeArgument)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Cameras));
-        }
     }
 
     public class CameraSettings : SettingsContainer, IIdItem
     {
-        public NotifyProperty<bool> Autoconnect { get; private set; }
+        public NotifyProperty<bool> Autoconnect { get; } = true;
 
         public string Id { get; set; }
 
