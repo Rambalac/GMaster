@@ -1,29 +1,65 @@
-﻿using System.Threading;
-using Windows.Networking;
-using Windows.Networking.Sockets;
+﻿using System.Collections.Immutable;
 
 namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
     using Annotations;
     using LumixResponces;
     using Windows.Storage.Streams;
     using Windows.UI.Xaml;
-    using Windows.Web.Http;
     using Windows.Web.Http.Filters;
     using Windows.Web.Http.Headers;
     using HttpClient = Windows.Web.Http.HttpClient;
     using HttpResponseMessage = Windows.Web.Http.HttpResponseMessage;
 
-    public class Lumix : INotifyPropertyChanged
+    public struct TextBinValue
+    {
+        public TextBinValue(string text, int bin)
+        {
+            Text = text;
+            Bin = bin;
+        }
+
+        public string Text { get; }
+
+        public int Bin { get; }
+
+        public bool Equals(TextBinValue other)
+        {
+            return string.Equals(Text, other.Text) && Bin == other.Bin;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is TextBinValue && Equals((TextBinValue) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Text?.GetHashCode() ?? 0) * 397) ^ Bin;
+            }
+        }
+    }
+
+    public partial class Lumix : INotifyPropertyChanged
     {
         private readonly Uri baseUri;
 
@@ -33,11 +69,23 @@ namespace GMaster.Camera
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
 
+        private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
+
+        public async Task SendMenuItem(CameraMenuItem value)
+        {
+            await Get<BaseRequestResult>(new Dictionary<string, string>
+                {
+                    { "mode", value.Command },
+                    { "type", value.CommandType },
+                    { "value", value.Value }
+                });
+        }
+
         private MemoryStream currentImageStream;
 
         private byte lastByte;
 
-        private AbstractMenuSetParser menuset;
+        public MenuSet MenuSet { get; private set; }
 
         internal Lumix(DeviceInfo device)
         {
@@ -64,11 +112,22 @@ namespace GMaster.Camera
 
         public DeviceInfo Device { get; }
 
+        public TextBinValue CurrentIso { get; private set; }
+
+        public TextBinValue CurrentShutter { get; private set; }
+
+        public TextBinValue CurrentAperture { get; private set; }
+
+        public CameraMode CurrentCameraMode { get; private set; }
+
+        private static IReadOnlyDictionary<int, CameraMode> IntToCameraMode =
+            Enum.GetValues(typeof(CameraMode)).Cast<CameraMode>().ToImmutableDictionary(m => (int)m);
+
         public bool IsConnected { get; private set; }
 
-        public bool IsLimited => menuset == null;
+        public bool IsLimited => MenuSet == null;
 
-        public MemoryStream LiveViewFrame { get; private set; }
+        public Stream LiveViewFrame { get; private set; }
 
         public RecState RecState { get; private set; } = RecState.Unknown;
 
@@ -104,8 +163,6 @@ namespace GMaster.Camera
                 throw;
             }
         }
-
-        //http://192.168.11.15/cam.cgi?mode=getinfo&type=curmenu
 
         public async Task Disconnect()
         {
@@ -186,6 +243,25 @@ namespace GMaster.Camera
                     }
                 }
             }
+        }
+
+        public async Task ReadCurMenu()
+        {
+            var allmenuString = await GetString("?mode=getinfo&type=curmenu");
+            var result = ReadResponse<MenuSetRuquestResult>(allmenuString);
+
+            try
+            {
+                MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            }
+            catch (AggregateException ex)
+            {
+                Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
+            }
+
+            await Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
+            RecState = RecState.Unknown;
+            OnPropertyChanged(nameof(RecState));
         }
 
         public async Task RecStart()
@@ -294,37 +370,41 @@ namespace GMaster.Camera
             }
         }
 
-        private async Task<TResponse> Post<TResponse>(string path, Dictionary<string, string> parameters)
+        private async Task<TResponse> Get<TResponse>(Dictionary<string, string> parameters)
             where TResponse : BaseRequestResult
         {
-            var uri = new Uri(baseUri, path);
-            var content = new HttpFormUrlEncodedContent(parameters);
-
-            using (var response = await camcgi.PostAsync(uri, content))
+            var uri = new Uri(baseUri, "?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)));
+            using (var response = await camcgi.GetAsync(uri))
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new LumixException("Request failed: " + path);
+                    throw new LumixException("Request failed: ");
                 }
 
                 var product = await ReadResponse<TResponse>(response);
                 if (product.Result != "ok")
                 {
-                    throw new LumixException($"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
+                    throw new LumixException($"Not ok result\r\nRequest: \r\n{await response.Content.ReadAsStringAsync()}");
                 }
 
                 return product;
             }
         }
 
+        private MemoryStream offframeBytes;
+
         private void ProcessByte(byte curByte)
         {
             currentImageStream?.WriteByte(curByte);
+
+            offframeBytes?.WriteByte(curByte);
 
             if (lastByte == 0xff)
             {
                 if (curByte == 0xd8)
                 {
+                    ProcessOffframeBytes();
+                    offframeBytes = null;
                     currentImageStream = new MemoryStream(32768);
                     currentImageStream.WriteByte(0xff);
                     currentImageStream.WriteByte(0xd8);
@@ -335,10 +415,102 @@ namespace GMaster.Camera
                     App.RunAsync(() => OnPropertyChanged(nameof(LiveViewFrame)));
 
                     currentImageStream = null;
+
+                    offframeBytes = new MemoryStream();
                 }
             }
 
             lastByte = curByte;
+        }
+
+        public int CurrentIsoBin { get; private set; }
+
+        private void ProcessOffframeBytes()
+        {
+            try
+            {
+                if (offframeBytes == null || offframeBytes.Length < 130 || !offframeBytes.TryGetBuffer(out var array))
+                {
+                    return;
+                }
+
+                App.RunAsync(() =>
+                {
+                    try
+                    {
+                        var newIso = MenuSet.GetIso(array);
+                        if (!Equals(newIso, CurrentIso))
+                        {
+                            CurrentIso = newIso;
+                            OnPropertyChanged(nameof(CurrentIso));
+                        }
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + Device.ModelName, e));
+                        CurrentIso = new TextBinValue("!", -1);
+                        OnPropertyChanged(nameof(CurrentIso));
+                    }
+
+                    try
+                    {
+                        var newShutter = MenuSet.GetShutter(array);
+                        if (!Equals(newShutter, CurrentShutter))
+                        {
+                            CurrentShutter = newShutter;
+                            OnPropertyChanged(nameof(CurrentShutter));
+                        }
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + Device.ModelName, e));
+                        CurrentShutter = new TextBinValue("!", -1);
+                        OnPropertyChanged(nameof(CurrentShutter));
+                    }
+
+                    try
+                    {
+                        var newAperture = MenuSet.GetAperture(array);
+                        if (!Equals(newAperture, CurrentAperture))
+                        {
+                            CurrentAperture = newAperture;
+                            OnPropertyChanged(nameof(CurrentAperture));
+                        }
+                    }
+                    catch (KeyNotFoundException e)
+                    {
+                        Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + Device.ModelName, e));
+                        CurrentAperture = new TextBinValue("!", -1);
+                        OnPropertyChanged(nameof(CurrentAperture));
+                    }
+
+                    var newMode = IntToCameraMode.TryGetValue(array.Array[92], out var mode) ? mode : CameraMode.Unknown;
+                    if (newMode != CurrentCameraMode)
+                    {
+                        CurrentCameraMode = newMode;
+                        OnPropertyChanged(nameof(CurrentCameraMode));
+                        OnCameraModeUpdated();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + Device.ModelName, e));
+            }
+        }
+
+        public int CurrentShutterBin { get; private set; }
+
+        public bool CanChangeAperture { get; private set; } = true;
+
+        public bool CanChangeShutter { get; private set; } = true;
+
+        private void OnCameraModeUpdated()
+        {
+            CanChangeAperture = CurrentCameraMode != CameraMode.S;
+            CanChangeShutter = CurrentCameraMode != CameraMode.A;
+            OnPropertyChanged(nameof(CanChangeAperture));
+            OnPropertyChanged(nameof(CanChangeShutter));
         }
 
         private async Task ReadMenuSet(string lang)
@@ -348,23 +520,13 @@ namespace GMaster.Camera
 
             try
             {
-                menuset = AbstractMenuSetParser.TryParse(result.MenuSet, lang);
+                MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, lang);
             }
             catch (AggregateException ex)
             {
                 Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
             }
         }
-
-        private async Task SetSetting<TRequest>(string settingName, TRequest settings)
-        {
-            var properties = settings.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .ToDictionary(prop => prop.Name, prop => PropertyString(prop.GetValue(settings, null)));
-            await Post<BaseRequestResult>("?mode=setsetting", properties);
-        }
-
-        private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
 
         private async void StateTimer_Tick(object sender, object e)
         {

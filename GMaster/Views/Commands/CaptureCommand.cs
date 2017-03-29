@@ -22,11 +22,10 @@ namespace GMaster.Views.Commands
 
             try
             {
-                await lumix.Capture();
+                await lumix.Camera.Capture();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                
             }
         }
     }

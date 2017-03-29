@@ -10,5 +10,10 @@ namespace GMaster.Views.Commands
         public bool CanExecute(object parameter) => true;
 
         public abstract void Execute(object parameter);
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

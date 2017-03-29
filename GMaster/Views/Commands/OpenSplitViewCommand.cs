@@ -1,7 +1,6 @@
 ﻿namespace GMaster.Views.Commands
 {
     using System.Diagnostics;
-    using Windows.UI.Xaml.Controls;
 
     public class OpenSplitViewCommand : AbstractSimpleParameterCommand
     {

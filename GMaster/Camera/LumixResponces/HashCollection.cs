@@ -1,22 +1,24 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace GMaster.Camera.LumixResponces
+﻿namespace GMaster.Camera.LumixResponces
 {
     using System.Collections;
     using System.Collections.Generic;
-
-    public interface IObservableHashCollection: INotifyPropertyChanged
-    {
-        void Add(string pairKey, IIdItem pairValue);
-
-        IEnumerable<IIdItem> GetAll();
-    }
 
     public class HashCollection<TItem> : ICollection<TItem>
         where TItem : IIdItem
     {
         private readonly Dictionary<string, TItem> dictionary = new Dictionary<string, TItem>();
+
+        public HashCollection()
+        {
+        }
+
+        public HashCollection(IEnumerable<TItem> items)
+        {
+            foreach (var item in items)
+            {
+                dictionary.Add(item.Id, item);
+            }
+        }
 
         public int Count => dictionary.Count;
 

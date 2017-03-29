@@ -9,6 +9,6 @@
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding GeneralSettings}" Padding="20">
         <TextBlock FontSize="20">Connection</TextBlock>
-        <CheckBox Content="Autoconnect all new cameras" IsChecked="{Binding Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0"/>
+        <ToggleSwitch OffContent="Enable Autoconnect for all new cameras" OnContent="Disable Autoconnect for all new cameras" IsOn="{Binding Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0"/>
     </StackPanel>
 </Page>

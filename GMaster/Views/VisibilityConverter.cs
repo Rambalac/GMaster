@@ -16,4 +16,17 @@ namespace GMaster.Views
             return value;
         }
     }
+
+    public class NotVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return !(value as bool? ?? false) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+    }
 }

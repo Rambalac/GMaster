@@ -101,21 +101,36 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Camera\CameraMode.cs" />
     <Compile Include="Camera\LumixResponces\BaseRequestResult.cs" />
+    <Compile Include="Camera\LumixResponces\CameraState.cs" />
+    <Compile Include="Camera\LumixResponces\IIdItem.cs" />
+    <Compile Include="Camera\LumixResponces\IObservableHashCollection.cs" />
+    <Compile Include="Camera\LumixResponces\Item.cs" />
+    <Compile Include="Camera\LumixResponces\Language.cs" />
+    <Compile Include="Camera\LumixResponces\MenuHolder.cs" />
     <Compile Include="Camera\LumixResponces\MenuSetRuquestResult.cs" />
     <Compile Include="Camera\DeviceInfo.cs" />
     <Compile Include="Camera\LumixResponces\HashCollection.cs" />
     <Compile Include="Camera\CameraMenuItem.cs" />
     <Compile Include="Camera\AbstractMenuSetParser.cs" />
     <Compile Include="Camera\LumixResponces\ObservableHashCollection.cs" />
-    <Compile Include="Camera\MenuSetParserGH3.cs" />
-    <Compile Include="Camera\MenuSetParserGH4.cs" />
+    <Compile Include="Camera\GH3Parser.cs" />
+    <Compile Include="Camera\GH4Parser.cs" />
+    <Compile Include="Camera\LumixResponces\OnOff.cs" />
+    <Compile Include="Camera\LumixResponces\RawMenuSet.cs" />
+    <Compile Include="Camera\LumixResponces\Title.cs" />
+    <Compile Include="Camera\LumixResponces\TitleList.cs" />
+    <Compile Include="Camera\LumixResponces\YesNo.cs" />
+    <Compile Include="Camera\MenuSet.cs" />
     <Compile Include="Camera\RecState.cs" />
     <Compile Include="Camera\TitledList.cs" />
     <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
+    <Compile Include="Views\AbstractNotifyProperty.cs" />
+    <Compile Include="Views\CameraSettings.cs" />
     <Compile Include="Views\CameraSettingsPage.xaml.cs">
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
@@ -147,11 +162,12 @@
     </Compile>
     <Compile Include="Views\Commands\RecCommand.cs" />
     <Compile Include="Views\Commands\SwitchFullScreenCommand.cs" />
-    <Compile Include="Views\Commands\DisconnectCommand.cs" />
+    <Compile Include="Views\Commands\CameraDisconnectCommand.cs" />
     <Compile Include="Views\Commands\SelectCameraCommand.cs" />
+    <Compile Include="Views\NotifyProperty.cs" />
     <Compile Include="Views\SettingsContainer.cs" />
     <Compile Include="Views\VisibilityConverter.cs" />
-    <Compile Include="WiFiDirectHelper.cs" />
+    <Compile Include="WiFiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

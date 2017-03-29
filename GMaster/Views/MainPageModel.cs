@@ -1,7 +1,4 @@
-﻿using System.Net.Sockets;
-using System.Threading;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
     using System;
     using System.Collections.ObjectModel;
@@ -9,6 +6,7 @@ namespace GMaster.Views
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
@@ -20,7 +18,7 @@ namespace GMaster.Views
     {
         private readonly DispatcherTimer cameraRefreshTimer;
         private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
-        private readonly WiFiDirectHelper wifidirect;
+        private readonly WiFiHelper wifidirect;
         private bool leftPanelOpened;
         private DeviceInfo selectedDevice;
 
@@ -37,7 +35,7 @@ namespace GMaster.Views
                 cameraRefreshTimer.Start();
                 Task.Run(CameraRefresh);
 
-                wifidirect = new WiFiDirectHelper();
+                wifidirect = new WiFiHelper();
                 wifidirect.Start();
             }
 
@@ -100,18 +98,31 @@ namespace GMaster.Views
             }
         }
 
-        public void AddConnectedDevice(Lumix lumix)
+        public ConnectedCamera AddConnectedDevice(Lumix lumix)
         {
             ConnectableDevices.Remove(lumix.Device);
             if (!GeneralSettings.Cameras.TryGetValue(lumix.Udn, out var settings))
             {
-                settings = new CameraSettings { Id = lumix.Udn };
+                settings = new CameraSettings(lumix.Udn);
             }
 
             settings.GeneralSettings = GeneralSettings;
 
-            ConnectedCameras.Add(new ConnectedCamera { Camera = lumix, Model = this, Settings = settings });
+            var connectedCamera = new ConnectedCamera { Camera = lumix, Model = this, Settings = settings };
+            ConnectedCameras.Add(connectedCamera);
             lumix.Disconnected += Lumix_Disconnected;
+            return connectedCamera;
+        }
+
+        public async Task ConnectCamera(DeviceInfo modelSelectedDevice)
+        {
+            var lumix = await LumixManager.ConnectCamera(modelSelectedDevice);
+            var connectedCamera = AddConnectedDevice(lumix);
+
+            if (View1.SelectedCamera == null)
+            {
+                View1.SelectedCamera = connectedCamera;
+            }
         }
 
         public async Task StartListening()
@@ -177,7 +188,14 @@ namespace GMaster.Views
 
                     if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
                     {
-                        await ConnectCamera(dev);
+                        try
+                        {
+                            await ConnectCamera(dev);
+                        }
+                        catch (Exception)
+                        {
+                            
+                        }
                     }
                     else
                     {
@@ -202,17 +220,6 @@ namespace GMaster.Views
             }
 
             OnCameraDisconnected(lumix);
-        }
-
-        public async Task ConnectCamera(DeviceInfo modelSelectedDevice)
-        {
-            var lumix = await LumixManager.ConnectCamera(modelSelectedDevice);
-            AddConnectedDevice(lumix);
-
-            if (View1.SelectedCamera == null)
-            {
-                View1.SelectedCamera = lumix;
-            }
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Net.Sockets;
-
-namespace GMaster
+﻿namespace GMaster
 {
     using System;
     using System.Diagnostics;
@@ -32,7 +30,6 @@ namespace GMaster
 
         public static void Debug(Exception socketException)
         {
-            
         }
     }
 }

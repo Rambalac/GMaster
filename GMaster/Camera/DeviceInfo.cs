@@ -9,6 +9,7 @@ namespace GMaster.Camera
             Udn = dev.Udn;
             Host = dev.Location.Host;
             FriendlyName = dev.FriendlyName;
+            ModelName = dev.ModelName;
         }
 
         public string Udn { get; }
@@ -16,5 +17,7 @@ namespace GMaster.Camera
         public string Host { get; }
 
         public string FriendlyName { get; }
+
+        public object ModelName { get; }
     }
 }

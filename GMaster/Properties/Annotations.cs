@@ -21,13 +21,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 #pragma warning disable 1591
+#pragma warning disable SA1402 // File may only contain a single class
+#pragma warning disable SA1649 // File name must match first type name
+#pragma warning disable SA1604 // Element documentation must have summary
+#pragma warning disable SA1128 // Put constructor initializers on their own line
+#pragma warning disable SA1201 // Elements must appear in the correct order
+#pragma warning disable SA1623 // Property summary documentation must match accessors
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable IntroduceOptionalParameters.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
-
 namespace GMaster.Annotations
 {
     using System;
@@ -1250,3 +1256,9 @@ namespace GMaster.Annotations
     {
     }
 }
+#pragma warning restore SA1402 // File may only contain a single class
+#pragma warning restore SA1649 // File name must match first type name
+#pragma warning restore SA1604 // Element documentation must have summary
+#pragma warning restore SA1128 // Put constructor initializers on their own line
+#pragma warning restore SA1201 // Elements must appear in the correct order
+#pragma warning restore SA1623 // Property summary documentation must match accessors

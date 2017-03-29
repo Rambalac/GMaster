@@ -11,7 +11,12 @@
 
     public class MenuSetHelperTestsGh4
     {
-        private AbstractMenuSetParser menuset;
+        private MenuSet menuset;
+
+        public MenuSetHelperTestsGh4()
+        {
+            Load().GetAwaiter().GetResult();
+        }
 
         public async Task Load()
         {
@@ -20,13 +25,8 @@
             {
                 var serializer = new XmlSerializer(typeof(MenuSetRuquestResult));
                 var result = (MenuSetRuquestResult)serializer.Deserialize(stream.AsStreamForRead());
-                menuset = AbstractMenuSetParser.TryParse(result.MenuSet, "en");
+                menuset = MenuSet.TryParseMenuSet(result.MenuSet, "en");
             }
-        }
-
-        public MenuSetHelperTestsGh4()
-        {
-            Load().GetAwaiter().GetResult();
         }
 
         [Fact]

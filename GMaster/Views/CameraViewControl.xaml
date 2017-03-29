@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400" d:DataContext="{d:DesignInstance local:CameraViewModel}">
+    d:DataContext="{d:DesignInstance local:CameraViewModel}">
     <UserControl.Resources>
         <Style x:Key="TransparentButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
@@ -84,31 +83,48 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-
-    <Grid Background="DarkBlue">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="75" />
-            <ColumnDefinition Width="10"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="75" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="75" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.RowSpan="5"
-               Source="{Binding SelectedCamera.LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" Grid.ColumnSpan="3" />
-        <Viewbox Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Visibility="{Binding IsDisconnected, Converter={StaticResource VisibilityConverter}}">
+    <Grid Background="DarkBlue" >
+        <Image Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" />
+        <Viewbox Visibility="{Binding IsDisconnected, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Foreground="White">NO CONNECTION</TextBlock>
         </Viewbox>
 
-        <Button Grid.Column="1" Grid.Row="1" Command="{Binding RecCommand}" Style="{StaticResource TransparentButtonStyle}" >
-            <Image Stretch="Fill"  Source="/images/rec.png" />
-        </Button>
-        <Button Grid.Column="1" Grid.Row="3" Command="{Binding CaptureCommand}" Style="{StaticResource TransparentButtonStyle}" >
-            <Image Stretch="Fill"  Source="/images/icon.png" />
-        </Button>
+        <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="3" Grid.Row="1" Command="{Binding RecCommand}" Style="{StaticResource TransparentButtonStyle}" >
+                <Image Stretch="Fill"  Source="/images/rec.png" Margin="10"/>
+            </Button>
+            <Button Grid.Column="3" Grid.Row="3" Command="{Binding CaptureCommand}" Style="{StaticResource TransparentButtonStyle}" Margin="10,10,0,10">
+                <Image Stretch="Fill"  Source="/images/icon.png" />
+            </Button>
+            <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
+                <StackPanel Width="100">
+                    <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.ShutterSpeeds}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentShutter, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource VisibilityConverter}}"/>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.CurrentShutter.Text}" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Width="100">
+                    <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.Apertures}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentAperture, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource VisibilityConverter}}"/>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.CurrentAperture.Text}" VerticalAlignment="Stretch" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource NotVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Width="100">
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.IsoValues}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentIso, Mode=TwoWay}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

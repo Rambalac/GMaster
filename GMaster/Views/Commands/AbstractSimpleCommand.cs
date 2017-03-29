@@ -15,5 +15,10 @@ namespace GMaster.Views.Commands
         }
 
         protected abstract void InternalExecute();
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

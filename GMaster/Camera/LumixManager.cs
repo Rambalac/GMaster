@@ -1,7 +1,3 @@
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
-
 namespace GMaster.Camera
 {
     using System;
@@ -21,10 +17,10 @@ namespace GMaster.Camera
     {
         private const int LiveViewPort = 49152;
 
+        private readonly string lang;
         private readonly ConcurrentDictionary<string, Lumix> listeners = new ConcurrentDictionary<string, Lumix>();
         private List<SsdpDeviceLocator> deviceLocators;
         private List<DatagramSocket> liveviewUdpSockets;
-        private readonly string lang;
 
         public LumixManager(string lang)
         {
@@ -76,7 +72,7 @@ namespace GMaster.Camera
                     await liveviewUdp.BindEndpointAsync(profile, LiveViewPort.ToString());
                     liveviewUdpSockets.Add(liveviewUdp);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     liveviewUdp.Dispose();
                 }
@@ -99,17 +95,23 @@ namespace GMaster.Camera
 
         public void StopListening()
         {
-            foreach (var liveviewUdpSocket in liveviewUdpSockets)
+            if (liveviewUdpSockets != null)
             {
-                liveviewUdpSocket.Dispose();
+                foreach (var liveviewUdpSocket in liveviewUdpSockets)
+                {
+                    liveviewUdpSocket.Dispose();
+                }
             }
 
             liveviewUdpSockets = null;
 
-            foreach (var deviceLocator in deviceLocators)
+            if (deviceLocators != null)
             {
-                deviceLocator.StopListeningForNotifications();
-                deviceLocator.Dispose();
+                foreach (var deviceLocator in deviceLocators)
+                {
+                    deviceLocator.StopListeningForNotifications();
+                    deviceLocator.Dispose();
+                }
             }
 
             deviceLocators = null;
@@ -145,7 +147,7 @@ namespace GMaster.Camera
             }
             catch (HttpRequestException)
             {
-                //var status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
+                // var status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
             }
             catch (Exception e)
             {
@@ -158,23 +160,6 @@ namespace GMaster.Camera
             return NetworkInformation.GetHostNames()
                 .Where(hn => (hn.Type == HostNameType.Ipv4 || hn.Type == HostNameType.Ipv6))
                 .Select(h => h.CanonicalName);
-        }
-
-        private void MessageReceived(ArraySegment<byte> buf, string host)
-        {
-            try
-            {
-                if (!listeners.TryGetValue(host, out Lumix camera))
-                {
-                    return;
-                }
-
-                camera.ProcessMessage(buf);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
         }
 
         private void LiveviewUdp_MessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)

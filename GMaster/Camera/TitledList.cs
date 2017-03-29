@@ -1,8 +1,10 @@
 ﻿namespace GMaster.Camera
 {
     using System.Collections.Generic;
+    using LumixResponces;
 
-    public class TitledList<TItem> : List<TItem>
+    public class TitledList<TItem> : HashCollection<TItem>
+        where TItem : IIdItem
     {
         public TitledList()
         {

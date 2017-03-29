@@ -7,6 +7,7 @@
     <Application.Resources>
         <local:MainPageModel x:Key="MainModel"/>
         <local:VisibilityConverter x:Key="VisibilityConverter" />
+        <local:NotVisibilityConverter x:Key="NotVisibilityConverter" />
         <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
     </Application.Resources>
 </Application>

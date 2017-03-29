@@ -25,17 +25,7 @@ namespace GMaster.Views
             }
         }
 
-        private T GetOrCreate<T>(PropertyInfo prop)
-        {
-            var propvalue = prop.GetValue(this);
-            if (propvalue == null)
-            {
-                propvalue = Activator.CreateInstance(prop.PropertyType);
-                prop.SetValue(this, propvalue);
-            }
-
-            return (T)propvalue;
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void Load(IDictionary<string, object> settings)
         {
@@ -57,20 +47,24 @@ namespace GMaster.Views
                         var collection = jobj.ToObject<Dictionary<string, object>>();
                         foreach (var pair in collection)
                         {
-                            var cont = (SettingsContainer)Activator.CreateInstance(prop.PropertyType.GenericTypeArguments[0]);
+                            var cont = (SettingsContainer)Activator.CreateInstance(prop.PropertyType.GenericTypeArguments[0], pair.Key);
                             if (pair.Value is JObject jObject)
                             {
                                 cont.Load(jObject.ToObject<Dictionary<string, object>>());
                             }
 
                             var iditem = (IIdItem)cont;
-                            iditem.Id = pair.Key;
                             col.Add(pair.Key, iditem);
                         }
-
                     }
                 }
             }
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected void Save(IDictionary<string, object> settings)
@@ -102,12 +96,16 @@ namespace GMaster.Views
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private T GetOrCreate<T>(PropertyInfo prop)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var propvalue = prop.GetValue(this);
+            if (propvalue == null)
+            {
+                propvalue = Activator.CreateInstance(prop.PropertyType);
+                prop.SetValue(this, propvalue);
+            }
+
+            return (T)propvalue;
         }
     }
 }

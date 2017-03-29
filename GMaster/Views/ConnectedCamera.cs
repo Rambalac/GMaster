@@ -2,10 +2,10 @@
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Camera;
     using Annotations;
+    using Camera;
 
-    public class ConnectedCamera:INotifyPropertyChanged
+    public class ConnectedCamera : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

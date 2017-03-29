@@ -12,7 +12,7 @@
         }
 
         protected override bool InternalCanExecute()
-            => Model.SelectedCamera != null && Model.SelectedCamera.RecState != RecState.Unknown;
+            => Model.SelectedCamera != null && Model.SelectedCamera.Camera.RecState != RecState.Unknown;
 
         protected override async Task InternalExecute()
         {
@@ -24,18 +24,17 @@
 
             try
             {
-                if (lumix.RecState == RecState.Stopped)
+                if (lumix.Camera.RecState == RecState.Stopped)
                 {
-                    await lumix.RecStart();
+                    await lumix.Camera.RecStart();
                 }
-                else if (lumix.RecState == RecState.Started)
+                else if (lumix.Camera.RecState == RecState.Started)
                 {
-                    await lumix.RecStop();
+                    await lumix.Camera.RecStop();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
             }
         }
     }

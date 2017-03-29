@@ -29,12 +29,17 @@
 
         public MainPageModel MainModel { get; private set; }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        public static Task RunAsync(DispatchedHandler action)
         {
-            Log.Error(e.Exception);
-#if !DEBUG
-            e.Handled = true;
-#endif
+            try
+            {
+                return dispatcher.RunAsync(CoreDispatcherPriority.Normal, action).AsTask();
+            }
+            catch (Exception)
+            {
+                // throw;
+                return Task.CompletedTask;
+            }
         }
 
         /// <summary>
@@ -66,7 +71,7 @@
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    // TODO: Load state from previously suspended application
                 }
 
                 // Place the frame in the current Window
@@ -91,6 +96,14 @@
             }
         }
 
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Log.Error(e.Exception);
+#if !DEBUG
+            e.Handled = true;
+#endif
+        }
+
         /// <summary>
         ///     Invoked when Navigation to a certain page fails
         /// </summary>
@@ -113,19 +126,6 @@
             var deferral = e.SuspendingOperation.GetDeferral();
             MainModel.StopListening();
             deferral.Complete();
-        }
-
-        public static Task RunAsync(DispatchedHandler action)
-        {
-            try
-            {
-                return dispatcher.RunAsync(CoreDispatcherPriority.Normal, action).AsTask();
-            }
-            catch (Exception)
-            {
-                //  throw;
-                return Task.CompletedTask;
-            }
         }
     }
 }

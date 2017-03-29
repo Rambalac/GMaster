@@ -1,6 +1,5 @@
 ﻿namespace GMaster.Views.Commands
 {
-    using System.Diagnostics;
     using Windows.UI.Xaml.Controls;
 
     public class SelectCameraCommand
@@ -14,9 +13,7 @@
 
         public void Handler(object sender, ItemClickEventArgs args)
         {
-            var select = args.ClickedItem as ConnectedCamera;
-            Debug.Assert(select != null, "select != null");
-            model.View1.SelectedCamera = @select.Camera;
+            model.View1.SelectedCamera = args.ClickedItem as ConnectedCamera;
             model.IsMainMenuOpened = false;
         }
     }

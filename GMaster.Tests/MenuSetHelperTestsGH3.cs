@@ -11,7 +11,7 @@
 
     public class MenuSetHelperTestsGh3
     {
-        private AbstractMenuSetParser menuset;
+        private MenuSet menuset;
 
         public async Task Load(string filename)
         {
@@ -20,7 +20,7 @@
             {
                 var serializer = new XmlSerializer(typeof(MenuSetRuquestResult));
                 var result = (MenuSetRuquestResult)serializer.Deserialize(stream.AsStreamForRead());
-                menuset = AbstractMenuSetParser.TryParse(result.MenuSet, "en");
+                menuset = MenuSet.TryParseMenuSet(result.MenuSet, "en");
             }
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Camera
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,78 +6,11 @@ namespace GMaster.Camera
 
     public abstract class AbstractMenuSetParser
     {
-        public TitledList<CameraMenuItem> AutofocusModes { get; protected set; }
+        public HashCollection<Title> CurrentLanguage { get; set; }
 
-        public TitledList<CameraMenuItem> BurstModes { get; protected set; }
+        public HashCollection<Title> DefaultLanguage { get; set; }
 
-        public TitledList<CameraMenuItem> CreativeControls { get; protected set; }
-
-        public TitledList<CameraMenuItem> CustomMultiModes { get; protected set; }
-
-        public TitledList<CameraMenuItem> DbValues { get; protected set; }
-
-        public TitledList<CameraMenuItem> ExposureShifts { get; protected set; }
-
-        public TitledList<CameraMenuItem> IsoValues { get; protected set; }
-
-        public TitledList<CameraMenuItem> LiveviewQuality { get; protected set; }
-
-        public TitledList<CameraMenuItem> MeteringMode { get; protected set; }
-
-        public TitledList<CameraMenuItem> PeakingModes { get; protected set; }
-
-        public TitledList<CameraMenuItem> PhotoQuality { get; protected set; }
-
-        public TitledList<CameraMenuItem> PhotoSizes { get; protected set; }
-
-        public TitledList<CameraMenuItem> PhotoStyles { get; protected set; }
-
-        public TitledList<CameraMenuItem> PhotoAspects { get; protected set; }
-
-        public TitledList<CameraMenuItem> ShutterSpeeds { get; protected set; }
-
-        public TitledList<CameraMenuItem> VideoFormat { get; protected set; }
-
-        public TitledList<CameraMenuItem> VideoQuality { get; protected set; }
-
-        public TitledList<CameraMenuItem> WhiteBalances { get; protected set; }
-
-        public TitledList<CameraMenuItem> FlashModes { get; protected set; }
-
-        public TitledList<CameraMenuItem> AutobracketModes { get; protected set; }
-
-        public CameraMenuItem SingleShootMode { get; set; }
-
-        protected HashCollection<Title> CurrentLanguage { get; set; }
-
-        protected HashCollection<Title> DefaultLanguage { get; set; }
-
-        public static AbstractMenuSetParser TryParse(MenuSet resultMenuSet, string lang)
-        {
-            var parsers = new AbstractMenuSetParser[]
-            {
-                new MenuSetParserGh4(),
-                new MenuSetParserGh3()
-            };
-
-            var exceptions = new List<Exception>();
-            foreach (var p in parsers)
-            {
-                try
-                {
-                    if (p.InternalTryParse(resultMenuSet, lang))
-                    {
-                        return p;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exceptions.Add(ex);
-                }
-            }
-
-            throw new AggregateException("Could not parse MenuSet", exceptions);
-        }
+        public abstract MenuSet ParseMenuSet(RawMenuSet menuset, string lang);
 
         public string GetText(string id)
         {
@@ -95,8 +26,6 @@ namespace GMaster.Camera
 
             throw new KeyNotFoundException("Title not found: " + id);
         }
-
-        protected abstract bool InternalTryParse(MenuSet menuset, string lang);
 
         protected CameraMenuItem ToMenuItem(Item item)
         {

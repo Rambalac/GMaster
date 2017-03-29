@@ -2,7 +2,7 @@
 {
     using LumixResponces;
 
-    public class CameraMenuItem
+    public class CameraMenuItem : IIdItem
     {
         public CameraMenuItem(Item i, string text)
         {
@@ -11,6 +11,15 @@
             Command = i.CmdMode;
             CommandType = i.CmdType;
             Value = i.CmdValue;
+        }
+
+        public CameraMenuItem(string id, string text, string command, string commandtype, string value)
+        {
+            Id = id;
+            Text = text;
+            Command = command;
+            CommandType = commandtype;
+            Value = value;
         }
 
         public string Command { get; }
@@ -46,6 +55,11 @@
         public override int GetHashCode()
         {
             return Id?.GetHashCode() ?? 0;
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
 
         protected bool Equals(CameraMenuItem other)

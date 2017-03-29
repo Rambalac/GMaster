@@ -4,7 +4,8 @@
 
     public class LumixException : Exception
     {
-        public LumixException(string result) : base(result)
+        public LumixException(string result)
+            : base(result)
         {
         }
     }
