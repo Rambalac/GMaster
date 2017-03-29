@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMaster", "GMaster\GMaster.csproj", "{F361EA15-EF81-4B2D-9D9B-B32B4D174934}"
 EndProject
@@ -25,6 +25,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|Any CPU.Build.0 = Debug|x86
+		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|ARM.ActiveCfg = Debug|ARM
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|ARM.Build.0 = Debug|ARM
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -45,6 +47,7 @@ Global
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Release|x86.Build.0 = Release|x86
 		{F361EA15-EF81-4B2D-9D9B-B32B4D174934}.Release|x86.Deploy.0 = Release|x86
 		{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}.Debug|Any CPU.Build.0 = Debug|x86
 		{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}.Debug|ARM.ActiveCfg = Debug|ARM
 		{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}.Debug|ARM.Build.0 = Debug|ARM
 		{E47763B4-2DDD-445E-8F8E-A32AB1816DAE}.Debug|ARM.Deploy.0 = Debug|ARM

@@ -25,6 +25,7 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClientServer" />
     <DeviceCapability Name="proximity" />
     <DeviceCapability Name="wifiControl" />
   </Capabilities>
