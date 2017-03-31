@@ -1,9 +1,9 @@
-﻿namespace GMaster
-{
-    using System;
-    using System.Diagnostics;
-    using Microsoft.HockeyApp;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.HockeyApp;
 
+namespace GMaster
+{
     public static class Log
     {
         static Log()

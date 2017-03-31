@@ -1,7 +1,7 @@
-﻿namespace GMaster.Camera
-{
-    using LumixResponces;
+﻿using GMaster.Camera.LumixResponces;
 
+namespace GMaster.Camera
+{
     public class CameraMenuItem : IIdItem
     {
         public CameraMenuItem(Item i, string text)

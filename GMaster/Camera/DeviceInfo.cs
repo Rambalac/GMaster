@@ -1,7 +1,7 @@
+using Rssdp;
+
 namespace GMaster.Camera
 {
-    using Rssdp;
-
     public class DeviceInfo
     {
         internal DeviceInfo(SsdpRootDevice dev)
@@ -18,6 +18,6 @@ namespace GMaster.Camera
 
         public string FriendlyName { get; }
 
-        public object ModelName { get; }
+        public string ModelName { get; }
     }
 }

@@ -1,10 +1,10 @@
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
 namespace GMaster.Views
 {
-    using System;
-    using System.ComponentModel;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-
     public abstract class AbstractParameterModelCommand<TModel, TParameter> : ICommand
         where TModel : INotifyPropertyChanged
     {

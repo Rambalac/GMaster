@@ -1,21 +1,22 @@
-﻿namespace GMasterTests
-{
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Xml.Serialization;
-    using GMaster.Camera;
-    using GMaster.Camera.LumixResponces;
-    using Xunit;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Windows.ApplicationModel;
+using GMaster.Camera;
+using GMaster.Camera.LumixResponces;
+using Xunit;
 
+namespace GMasterTests
+{
     public class MenuSetHelperTestsGh3
     {
         private MenuSet menuset;
 
         public async Task Load(string filename)
         {
-            var file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(filename);
+            var file = await Package.Current.InstalledLocation.GetFileAsync(filename);
             using (var stream = await file.OpenSequentialReadAsync())
             {
                 var serializer = new XmlSerializer(typeof(MenuSetRuquestResult));

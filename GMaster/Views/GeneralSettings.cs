@@ -1,11 +1,11 @@
-﻿namespace GMaster.Views
-{
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using Camera.LumixResponces;
-    using Newtonsoft.Json;
-    using Windows.Storage;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Windows.Storage;
+using GMaster.Camera.LumixResponces;
+using Newtonsoft.Json;
 
+namespace GMaster.Views
+{
     public class GeneralSettings : SettingsContainer
     {
         public GeneralSettings()

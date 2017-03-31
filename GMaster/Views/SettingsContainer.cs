@@ -1,14 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using GMaster.Annotations;
+using GMaster.Camera.LumixResponces;
+using Newtonsoft.Json.Linq;
+
 namespace GMaster.Views
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using Annotations;
-    using Camera.LumixResponces;
-    using Newtonsoft.Json.Linq;
-
     public class SettingsContainer : INotifyPropertyChanged
     {
         public SettingsContainer()

@@ -1,8 +1,8 @@
+using System;
+using System.Threading.Tasks;
+
 namespace GMaster.Views.Commands
 {
-    using System;
-    using System.Threading.Tasks;
-
     public class CaptureCommand : AbstractModelCommand<CameraViewModel>
     {
         public CaptureCommand(CameraViewModel model)

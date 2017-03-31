@@ -115,11 +115,11 @@
             <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                 <StackPanel Width="100">
                     <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.ShutterSpeeds}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentShutter, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource VisibilityConverter}}"/>
-                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.CurrentShutter.Text}" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}"/>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.OfframeProcessor.Shutter.Text}" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel Width="100">
                     <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.Apertures}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentAperture, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource VisibilityConverter}}"/>
-                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.CurrentAperture.Text}" VerticalAlignment="Stretch" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource NotVisibilityConverter}}"/>
+                    <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.OfframeProcessor.Aperture.Text}" VerticalAlignment="Stretch" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource NotVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel Width="100">
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.IsoValues}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentIso, Mode=TwoWay}"/>

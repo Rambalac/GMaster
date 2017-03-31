@@ -1,12 +1,14 @@
-﻿namespace GMaster.Tests
-{
-    using System;
-    using Windows.ApplicationModel;
-    using Windows.ApplicationModel.Activation;
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Navigation;
+﻿using System;
+using System.Diagnostics;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using Microsoft.VisualStudio.TestPlatform.TestExecutor;
 
+namespace GMaster.Tests
+{
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -31,7 +33,7 @@
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
                 DebugSettings.EnableFrameRateCounter = true;
             }
@@ -57,12 +59,12 @@
                 Window.Current.Content = rootFrame;
             }
 
-            Microsoft.VisualStudio.TestPlatform.TestExecutor.UnitTestClient.CreateDefaultUI();
+            UnitTestClient.CreateDefaultUI();
 
             // Ensure the current window is active
             Window.Current.Activate();
 
-            Microsoft.VisualStudio.TestPlatform.TestExecutor.UnitTestClient.Run(e.Arguments);
+            UnitTestClient.Run(e.Arguments);
         }
 
         /// <summary>

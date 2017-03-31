@@ -1,1 +1,1 @@
-H:\Projects\C#\GMaster\GMaster\AppPackages\GMaster_1.2.0.0\GMaster_1.2.0.0_x86_x64_arm.appxbundle
+H:\Projects\C#\GMaster\GMaster\AppPackages\GMaster_1.3.0.0\GMaster_1.3.0.0_x86_x64_arm.appxbundle

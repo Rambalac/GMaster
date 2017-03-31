@@ -1,7 +1,7 @@
-﻿namespace GMaster.Camera.LumixResponces
-{
-    using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
+namespace GMaster.Camera.LumixResponces
+{
     [XmlRoot(ElementName = "menuset")]
     public class RawMenuSet
     {

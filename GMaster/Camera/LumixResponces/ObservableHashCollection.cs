@@ -1,11 +1,11 @@
-﻿namespace GMaster.Camera.LumixResponces
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using Annotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using GMaster.Annotations;
 
+namespace GMaster.Camera.LumixResponces
+{
     public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection
         where TItem : IIdItem
     {

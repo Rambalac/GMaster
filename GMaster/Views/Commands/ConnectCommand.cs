@@ -1,7 +1,7 @@
-﻿namespace GMaster.Views
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
+namespace GMaster.Views
+{
     public class ConnectCommand : AbstractModelCommand<MainPageModel>
     {
         public ConnectCommand(MainPageModel model)

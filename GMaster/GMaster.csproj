@@ -102,6 +102,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Camera\CameraMode.cs" />
+    <Compile Include="Camera\CameraOrientation.cs" />
+    <Compile Include="Camera\EnumValue.cs" />
+    <Compile Include="Camera\FocusDirection.cs" />
     <Compile Include="Camera\LumixResponces\BaseRequestResult.cs" />
     <Compile Include="Camera\LumixResponces\CameraState.cs" />
     <Compile Include="Camera\LumixResponces\IIdItem.cs" />
@@ -113,7 +116,7 @@
     <Compile Include="Camera\DeviceInfo.cs" />
     <Compile Include="Camera\LumixResponces\HashCollection.cs" />
     <Compile Include="Camera\CameraMenuItem.cs" />
-    <Compile Include="Camera\AbstractMenuSetParser.cs" />
+    <Compile Include="Camera\CameraParser.cs" />
     <Compile Include="Camera\LumixResponces\ObservableHashCollection.cs" />
     <Compile Include="Camera\GH3Parser.cs" />
     <Compile Include="Camera\GH4Parser.cs" />
@@ -123,10 +126,13 @@
     <Compile Include="Camera\LumixResponces\TitleList.cs" />
     <Compile Include="Camera\LumixResponces\YesNo.cs" />
     <Compile Include="Camera\MenuSet.cs" />
+    <Compile Include="Camera\OffframeProcessor.cs" />
     <Compile Include="Camera\RecState.cs" />
+    <Compile Include="Camera\TextBinValue.cs" />
     <Compile Include="Camera\TitledList.cs" />
     <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="GlobalSuppressions2.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Views\AbstractNotifyProperty.cs" />

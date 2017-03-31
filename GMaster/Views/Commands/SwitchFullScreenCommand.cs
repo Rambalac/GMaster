@@ -1,7 +1,7 @@
-﻿namespace GMaster.Views.Commands
-{
-    using Windows.UI.ViewManagement;
+﻿using Windows.UI.ViewManagement;
 
+namespace GMaster.Views.Commands
+{
     public class SwitchFullScreenCommand : AbstractSimpleCommand
     {
         protected override void InternalExecute()

@@ -1,7 +1,7 @@
-﻿namespace GMaster.Views
-{
-    using System;
+﻿using System;
 
+namespace GMaster.Views
+{
     public class NotifyProperty<TValue> : AbstractNotifyProperty
     {
         public NotifyProperty()

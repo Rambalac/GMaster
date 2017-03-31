@@ -1,19 +1,19 @@
-﻿namespace GMaster.Views
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Annotations;
-    using Camera;
-    using Commands;
-    using Windows.ApplicationModel;
-    using Windows.UI.Xaml;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.UI.Xaml;
+using GMaster.Annotations;
+using GMaster.Camera;
+using GMaster.Views.Commands;
 
+namespace GMaster.Views
+{
     public class MainPageModel : INotifyPropertyChanged
     {
         private readonly DispatcherTimer cameraRefreshTimer;

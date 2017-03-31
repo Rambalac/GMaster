@@ -1,10 +1,10 @@
+using System;
+using System.IO;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
+
 namespace GMaster.Views
 {
-    using System;
-    using System.IO;
-    using Windows.UI.Xaml.Data;
-    using Windows.UI.Xaml.Media.Imaging;
-
     public class ImageMemoryStreamConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

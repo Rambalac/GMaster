@@ -5,7 +5,7 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Width="440.846" Height="314.32" d:DataContext="{d:DesignInstance local:ConnectedCamera}">
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ConnectedCamera}">
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock FontSize="20">Connection</TextBlock>

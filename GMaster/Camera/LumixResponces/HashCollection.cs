@@ -1,8 +1,8 @@
-﻿namespace GMaster.Camera.LumixResponces
-{
-    using System.Collections;
-    using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
+namespace GMaster.Camera.LumixResponces
+{
     public class HashCollection<TItem> : ICollection<TItem>
         where TItem : IIdItem
     {

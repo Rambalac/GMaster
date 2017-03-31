@@ -1,16 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using GMaster.Annotations;
+using GMaster.Camera;
+using GMaster.Views.Commands;
 
 namespace GMaster.Views
 {
-    using System;
-    using System.ComponentModel;
-    using System.IO;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
-    using Annotations;
-    using Camera;
-    using Commands;
-
     public class CameraViewModel : INotifyPropertyChanged
     {
         private CameraMenuItem currentIso;
@@ -100,6 +98,7 @@ namespace GMaster.Views
                 {
                     selectedCamera.Camera.Disconnected -= SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged -= Camera_PropertyChanged;
+                    selectedCamera.Camera.OfframeProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
                 }
 
                 selectedCamera = value;
@@ -107,6 +106,7 @@ namespace GMaster.Views
                 {
                     selectedCamera.Camera.Disconnected += SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
+                    selectedCamera.Camera.OfframeProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
                 }
 
                 OnPropertyChanged();
@@ -114,6 +114,25 @@ namespace GMaster.Views
                 OnPropertyChanged(nameof(IsConnected));
                 OnPropertyChanged(nameof(CurrentIso));
                 OnPropertyChanged(nameof(LiveViewFrame));
+            }
+        }
+
+        private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(selectedCamera.Camera.OfframeProcessor.Shutter):
+                    currentShutter = selectedCamera.Camera.GetCurrentShutter() ?? currentShutter;
+                    OnPropertyChanged(nameof(CurrentShutter));
+                    break;
+                case nameof(selectedCamera.Camera.OfframeProcessor.Aperture):
+                    currentAperture = selectedCamera.Camera.GetCurrentAperture() ?? currentAperture;
+                    OnPropertyChanged(nameof(CurrentAperture));
+                    break;
+                case nameof(selectedCamera.Camera.OfframeProcessor.Iso):
+                    currentIso = selectedCamera.Camera.GetCurrentIso() ?? currentIso;
+                    OnPropertyChanged(nameof(CurrentIso));
+                    break;
             }
         }
 
@@ -154,34 +173,6 @@ namespace GMaster.Views
             {
                 case nameof(selectedCamera.Camera.LiveViewFrame):
                     OnPropertyChanged(nameof(LiveViewFrame));
-                    break;
-                case nameof(selectedCamera.Camera.CurrentShutter):
-                    currentShutter =
-                        MenuSet.ShutterSpeeds.FirstOrDefault(
-                            s => s.Value == selectedCamera.Camera.CurrentShutter.Bin + "/256") ?? currentShutter;
-                    OnPropertyChanged(nameof(CurrentShutter));
-                    break;
-                case nameof(selectedCamera.Camera.CurrentAperture):
-                    currentAperture =
-                        MenuSet.Apertures.FirstOrDefault(
-                            s => s.Value == selectedCamera.Camera.CurrentAperture.Bin + "/256") ?? currentAperture;
-                    OnPropertyChanged(nameof(CurrentAperture));
-                    break;
-                case nameof(selectedCamera.Camera.CurrentIso):
-                    if (selectedCamera.Camera.CurrentIso.Bin != -1)
-                    {
-                        currentIso =
-                            selectedCamera.Camera.MenuSet.IsoValues.FirstOrDefault(
-                                s => s.Value == selectedCamera.Camera.CurrentIso.Text) ?? currentIso;
-                    }
-                    else
-                    {
-                        currentIso =
-                            selectedCamera.Camera.MenuSet.IsoValues.FirstOrDefault(
-                                s => s.Id == "menu_item_id_sensitivity_auto") ?? currentIso;
-                    }
-
-                    OnPropertyChanged(nameof(CurrentIso));
                     break;
             }
         }
