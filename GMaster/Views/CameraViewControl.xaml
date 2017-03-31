@@ -89,7 +89,8 @@
             <TextBlock Foreground="White">NO CONNECTION</TextBlock>
         </Viewbox>
 
-        <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}}">
+        <Grid >
+            <!--Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}}"-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto"/>
