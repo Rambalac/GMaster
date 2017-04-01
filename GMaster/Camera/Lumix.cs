@@ -276,12 +276,13 @@
             }
         }
 
+
         public async Task<bool> SetFocusPoint(int x, int y)
         {
             try
             {
-                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2=on");
-                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2=off");
+                var onoff = "on"; // "off"
+                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2={onoff}");
                 return true;
             }
             catch (Exception e)

@@ -87,7 +87,7 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="DarkBlue" >
-        <Image Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" PointerPressed="Image_PointerPressed" PointerWheelChanged="UIElement_OnPointerWheelChanged"/>
+        <Image x:Name="LiveView" Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}"/>
         <Viewbox Visibility="{Binding IsDisconnected, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Foreground="White">NO CONNECTION</TextBlock>
         </Viewbox>
