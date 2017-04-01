@@ -8,6 +8,8 @@
     xmlns:commands="using:GMaster.Views.Commands"
     mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}">
     <Page.Resources>
+        <commands:FeedbackCommand x:Key="FeedbackCommand" />
+        <commands:AboutCommand x:Key="AboutCommand" />
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
         <commands:OpenSplitViewCommand x:Key="OpenSplitViewCommand"/>
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
@@ -52,6 +54,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -87,6 +90,35 @@
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" >
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel Margin="0,0,10,0" >
+                                <Button HorizontalAlignment="Center" Command="{StaticResource FeedbackCommand}" Padding="10">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE939;" HorizontalAlignment="Center" />
+                                </Button>
+                                <TextBlock Text="Feedback"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,10,0">
+                                <Button HorizontalAlignment="Center" Command="{StaticResource AboutCommand}"  Padding="10">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE11B;" HorizontalAlignment="Center"/>
+                                </Button>
+                                <TextBlock Text="Help" TextAlignment="Center" Margin="5"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Visibility="Collapsed">
+                            <Button HorizontalAlignment="Center" Padding="10">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE9BB;" HorizontalAlignment="Center"/>
+                                <Button.Flyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Big donation"/>
+                                        <MenuFlyoutItem Text="Medium donation"/>
+                                        <MenuFlyoutItem Text="Small donation"/>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
+                            <TextBlock Text="Donate" TextAlignment="Center" Margin="5"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>

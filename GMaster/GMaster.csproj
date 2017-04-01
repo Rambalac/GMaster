@@ -91,6 +91,12 @@
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="GMaster_StoreKey.pfx" />
@@ -105,6 +111,8 @@
     <Compile Include="Camera\CameraOrientation.cs" />
     <Compile Include="Camera\EnumValue.cs" />
     <Compile Include="Camera\FocusDirection.cs" />
+    <Compile Include="Camera\ICameraMenuItem.cs" />
+    <Compile Include="Camera\LensInfo.cs" />
     <Compile Include="Camera\LumixResponces\BaseRequestResult.cs" />
     <Compile Include="Camera\LumixResponces\CameraState.cs" />
     <Compile Include="Camera\LumixResponces\IIdItem.cs" />
@@ -140,6 +148,8 @@
     <Compile Include="Views\CameraSettingsPage.xaml.cs">
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Commands\AboutCommand.cs" />
+    <Compile Include="Views\Commands\FeedbackCommand.cs" />
     <Compile Include="Views\GeneralSettings.cs" />
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
@@ -171,6 +181,7 @@
     <Compile Include="Views\Commands\CameraDisconnectCommand.cs" />
     <Compile Include="Views\Commands\SelectCameraCommand.cs" />
     <Compile Include="Views\NotifyProperty.cs" />
+    <Compile Include="Views\RecStateConvertor.cs" />
     <Compile Include="Views\SettingsContainer.cs" />
     <Compile Include="Views\VisibilityConverter.cs" />
     <Compile Include="WiFiHelper.cs" />
@@ -258,7 +269,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="Microsoft.Services.Store.Engagement, Version=10.0">
+      <Name>Microsoft Engagement Framework</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
@@ -270,6 +288,10 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

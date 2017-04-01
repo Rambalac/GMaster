@@ -1,4 +1,6 @@
-﻿namespace GMaster.Camera
+﻿using System.Diagnostics;
+
+namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +19,7 @@
     using Windows.Web.Http.Filters;
     using Windows.Web.Http.Headers;
 
-    public class Lumix : INotifyPropertyChanged
+    public class Lumix : INotifyPropertyChanged, IDisposable
     {
         private static readonly HashSet<CameraMode> ApertureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.A, CameraMode.vM, CameraMode.vA };
         private static readonly HashSet<CameraMode> ShutterModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.vM, CameraMode.vS };
@@ -52,7 +54,7 @@
             camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("application/xml"));
         }
 
-        public delegate void DisconnectedDelegate(Lumix camera, bool stillAvailable);
+        public delegate void DisconnectedDelegate(Lumix sender, bool stillAvailable);
 
         public event DisconnectedDelegate Disconnected;
 
@@ -64,35 +66,60 @@
 
         public bool CanChangeShutter { get; private set; } = true;
 
+        public ICameraMenuItem CurrentAperture => CurrentApertures.FirstOrDefault(
+                s => s.IntValue == OfframeProcessor.Aperture.Bin);
+
+        public ICollection<CameraMenuItem256> CurrentApertures { get; private set; } = new List<CameraMenuItem256>();
+
+        public ICameraMenuItem CurrentIso => MenuSet.IsoValues.FirstOrDefault(
+                s => s.Value == OfframeProcessor.Iso.Text);
+
+        public ICameraMenuItem CurrentShutter => MenuSet.ShutterSpeeds.FirstOrDefault(
+                s => s.Value == OfframeProcessor.Shutter.Bin + "/256");
+
         public DeviceInfo Device { get; }
 
         public bool IsConnected { get; private set; }
 
         public bool IsLimited => MenuSet == null;
 
+        public LensInfo LensInfo { get; private set; }
+
         public Stream LiveViewFrame { get; private set; }
 
         public MenuSet MenuSet { get; private set; }
 
         public OffframeProcessor OfframeProcessor { get; private set; }
+
         public CameraParser Parser { get; private set; }
+
         public RecState RecState { get; private set; } = RecState.Unknown;
 
         public CameraState State { get; private set; }
 
         public string Udn => Device.Udn;
+
         public async Task Capture()
         {
             await Get<BaseRequestResult>("?mode=camcmd&value=capture");
             await Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
         }
 
-        public async Task ChangeFocus(FocusDirection focus)
+        public async Task<bool> ChangeFocus(FocusDirection focus)
         {
-            await Get<BaseRequestResult>("?mode=camctrl&type=focus&value=" + focus.GetString());
+            try
+            {
+                await Get<BaseRequestResult>("?mode=camctrl&type=focus&value=" + focus.GetString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
         }
 
-        public async Task Connect(int liveviewport, string lang)
+        public async Task<bool> Connect(int liveviewport, string lang)
         {
             try
             {
@@ -100,6 +127,7 @@
                 lastByte = 0;
 
                 await ReadMenuSet(lang);
+                await ReadLensInfo();
 
                 OfframeProcessor = new OffframeProcessor(Device.ModelName, Parser);
                 OfframeProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
@@ -111,11 +139,13 @@
 
                 IsConnected = true;
                 OnPropertyChanged(nameof(IsConnected));
+                return true;
             }
             catch (Exception e)
             {
                 Log.Error(e);
-                throw;
+                Debug.WriteLine(e);
+                return false;
             }
         }
 
@@ -145,6 +175,11 @@
             }
         }
 
+        public void Dispose()
+        {
+            stateUpdatingSem.Dispose();
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -158,24 +193,6 @@
             }
 
             return obj.GetType() == GetType() && Equals((Lumix)obj);
-        }
-
-        public CameraMenuItem GetCurrentAperture()
-        {
-            return MenuSet.Apertures.FirstOrDefault(
-                s => s.Value == OfframeProcessor.Aperture.Bin + "/256");
-        }
-
-        public CameraMenuItem GetCurrentIso()
-        {
-            return MenuSet.IsoValues.FirstOrDefault(
-                s => s.Value == OfframeProcessor.Iso.Text);
-        }
-
-        public CameraMenuItem GetCurrentShutter()
-        {
-            return MenuSet.ShutterSpeeds.FirstOrDefault(
-                s => s.Value == OfframeProcessor.Shutter.Bin + "/256");
         }
 
         public override int GetHashCode()
@@ -192,7 +209,103 @@
             }
         }
 
-        public void ProcessMessage(DataReader reader)
+        public async Task<bool> RecStart()
+        {
+            try
+            {
+                await Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
+                RecState = RecState.Unknown;
+                OnPropertyChanged(nameof(RecState));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> RecStop()
+        {
+            try
+            {
+                await Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
+                RecState = RecState.Unknown;
+                OnPropertyChanged(nameof(RecState));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> ResizeFocusPoint(int size)
+        {
+            try
+            {
+                if (size > 0)
+                {
+                    await Get<BaseRequestResult>($"?mode=camctrl&type=touchaf_chg_area&value=up");
+                }
+                else if (size < 0)
+                {
+                    await Get<BaseRequestResult>($"?mode=camctrl&type=touchaf_chg_area&value=down");
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task SendMenuItem(ICameraMenuItem value)
+        {
+            if (value != null)
+            {
+                await Get<BaseRequestResult>(new Dictionary<string, string>
+                {
+                    { "mode", value.Command },
+                    { "type", value.CommandType },
+                    { "value", value.Value }
+                });
+            }
+        }
+
+        public async Task<bool> SetFocusPoint(int x, int y)
+        {
+            try
+            {
+                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2=on");
+                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2=off");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> SwitchToRec()
+        {
+            try
+            {
+                await Get<BaseRequestResult>("?mode=camcmd&value=recmode");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        internal void ProcessMessage(DataReader reader)
         {
             lock (messageRecieving)
             {
@@ -205,54 +318,6 @@
                     }
                 }
             }
-        }
-
-        public async Task ReadCurMenu()
-        {
-            var allmenuString = await GetString("?mode=getinfo&type=curmenu");
-            var result = ReadResponse<MenuSetRuquestResult>(allmenuString);
-
-            try
-            {
-                //MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            }
-            catch (AggregateException ex)
-            {
-                Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
-            }
-
-            await Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
-            RecState = RecState.Unknown;
-            OnPropertyChanged(nameof(RecState));
-        }
-
-        public async Task RecStart()
-        {
-            await Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
-            RecState = RecState.Unknown;
-            OnPropertyChanged(nameof(RecState));
-        }
-
-        public async Task RecStop()
-        {
-            await Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
-            RecState = RecState.Unknown;
-            OnPropertyChanged(nameof(RecState));
-        }
-
-        public async Task SendMenuItem(CameraMenuItem value)
-        {
-            await Get<BaseRequestResult>(new Dictionary<string, string>
-            {
-                { "mode", value.Command },
-                { "type", value.CommandType },
-                { "value", value.Value }
-            });
-        }
-
-        public async Task SwitchToRec()
-        {
-            await Get<BaseRequestResult>("?mode=camcmd&value=recmode");
         }
 
         protected bool Equals(Lumix other)
@@ -345,14 +410,20 @@
                 return await response.Content.ReadAsStringAsync();
             }
         }
+
         private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(OfframeProcessor.CameraMode))
+            switch (e.PropertyName)
             {
-                CanChangeAperture = ApertureModes.Contains(OfframeProcessor.CameraMode);
-                CanChangeShutter = ShutterModes.Contains(OfframeProcessor.CameraMode);
-                OnPropertyChanged(nameof(CanChangeAperture));
-                OnPropertyChanged(nameof(CanChangeShutter));
+                case nameof(OfframeProcessor.CameraMode):
+                    CanChangeAperture = ApertureModes.Contains(OfframeProcessor.CameraMode);
+                    CanChangeShutter = ShutterModes.Contains(OfframeProcessor.CameraMode);
+                    OnPropertyChanged(nameof(CanChangeAperture));
+                    OnPropertyChanged(nameof(CanChangeShutter));
+                    break;
+                case nameof(OfframeProcessor.OpenedAperture):
+                    UpdateCurrentApertures();
+                    break;
             }
         }
 
@@ -384,6 +455,37 @@
             }
 
             lastByte = curByte;
+        }
+
+        private async Task ReadCurMenu()
+        {
+            var allmenuString = await GetString("?mode=getinfo&type=curmenu");
+            var result = ReadResponse<MenuSetRuquestResult>(allmenuString);
+
+            try
+            {
+                //MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            }
+            catch (AggregateException ex)
+            {
+                Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
+            }
+
+            await Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
+            RecState = RecState.Unknown;
+            OnPropertyChanged(nameof(RecState));
+        }
+        private async Task ReadLensInfo()
+        {
+            var raw = await GetString("?mode=getinfo&type=lens");
+            var newInfo = Parser.ParseLensInfo(raw);
+            if (!Equals(newInfo, LensInfo))
+            {
+                LensInfo = newInfo;
+                UpdateCurrentApertures();
+
+                OnPropertyChanged(nameof(CurrentApertures));
+            }
         }
 
         private async Task ReadMenuSet(string lang)
@@ -421,6 +523,34 @@
                 {
                     stateUpdatingSem.Release();
                 }
+            }
+        }
+
+        private async Task TryReadLensInfo()
+        {
+            try
+            {
+                await ReadLensInfo();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void UpdateCurrentApertures()
+        {
+            var open = OfframeProcessor?.OpenedAperture ?? LensInfo.OpenedAperture;
+
+            var newCurrentApertures = new List<CameraMenuItem256>(MenuSet.Apertures.Count);
+            var opentext = CameraParser.ApertureBinToText(open);
+            newCurrentApertures.Add(new CameraMenuItem256(open.ToString(), opentext, "setsetting", "shtrspeed", open));
+            newCurrentApertures.AddRange(MenuSet.Apertures.Where(a => a.IntValue >= open && a.Text != opentext && a.IntValue <= LensInfo.ClosedAperture));
+            if (newCurrentApertures.Count != CurrentApertures.Count ||
+                newCurrentApertures.First().Value != CurrentApertures.First().Value)
+            {
+                CurrentApertures = newCurrentApertures;
+                OnPropertyChanged(nameof(CurrentApertures));
             }
         }
 

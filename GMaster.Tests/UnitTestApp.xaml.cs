@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using Microsoft.VisualStudio.TestPlatform.TestExecutor;
-
-namespace GMaster.Tests
+﻿namespace GMaster.Tests
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.VisualStudio.TestPlatform.TestExecutor;
+    using Windows.ApplicationModel;
+    using Windows.ApplicationModel.Activation;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Navigation;
+
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>

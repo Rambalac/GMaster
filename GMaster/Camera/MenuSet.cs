@@ -2,50 +2,50 @@
 {
     public class MenuSet
     {
-        public TitledList<CameraMenuItem> AutofocusModes { get; set; }
+        public TitledList<CameraMenuItemText> AutofocusModes { get; set; }
 
-        public TitledList<CameraMenuItem> BurstModes { get; set; }
+        public TitledList<CameraMenuItemText> BurstModes { get; set; }
 
-        public TitledList<CameraMenuItem> CreativeControls { get; set; }
+        public TitledList<CameraMenuItemText> CreativeControls { get; set; }
 
-        public TitledList<CameraMenuItem> CustomMultiModes { get; set; }
+        public TitledList<CameraMenuItemText> CustomMultiModes { get; set; }
 
-        public TitledList<CameraMenuItem> DbValues { get; set; }
+        public TitledList<CameraMenuItemText> DbValues { get; set; }
 
-        public TitledList<CameraMenuItem> ExposureShifts { get; set; }
+        public TitledList<CameraMenuItemText> ExposureShifts { get; set; }
 
-        public TitledList<CameraMenuItem> IsoValues { get; set; }
+        public TitledList<CameraMenuItemText> IsoValues { get; set; }
 
-        public TitledList<CameraMenuItem> LiveviewQuality { get; set; }
+        public TitledList<CameraMenuItemText> LiveviewQuality { get; set; }
 
-        public TitledList<CameraMenuItem> MeteringMode { get; set; }
+        public TitledList<CameraMenuItemText> MeteringMode { get; set; }
 
-        public TitledList<CameraMenuItem> PeakingModes { get; set; }
+        public TitledList<CameraMenuItemText> PeakingModes { get; set; }
 
-        public TitledList<CameraMenuItem> PhotoQuality { get; set; }
+        public TitledList<CameraMenuItemText> PhotoQuality { get; set; }
 
-        public TitledList<CameraMenuItem> PhotoSizes { get; set; }
+        public TitledList<CameraMenuItemText> PhotoSizes { get; set; }
 
-        public TitledList<CameraMenuItem> PhotoStyles { get; set; }
+        public TitledList<CameraMenuItemText> PhotoStyles { get; set; }
 
-        public TitledList<CameraMenuItem> PhotoAspects { get; set; }
+        public TitledList<CameraMenuItemText> PhotoAspects { get; set; }
 
-        public TitledList<CameraMenuItem> Angles { get; set; }
+        public TitledList<CameraMenuItemText> Angles { get; set; }
 
-        public TitledList<CameraMenuItem> ShutterSpeeds { get; set; }
+        public TitledList<CameraMenuItemText> ShutterSpeeds { get; set; }
 
-        public TitledList<CameraMenuItem> Apertures { get; set; }
+        public TitledList<CameraMenuItem256> Apertures { get; set; }
 
-        public TitledList<CameraMenuItem> VideoFormat { get; set; }
+        public TitledList<CameraMenuItemText> VideoFormat { get; set; }
 
-        public TitledList<CameraMenuItem> VideoQuality { get; set; }
+        public TitledList<CameraMenuItemText> VideoQuality { get; set; }
 
-        public TitledList<CameraMenuItem> WhiteBalances { get; set; }
+        public TitledList<CameraMenuItemText> WhiteBalances { get; set; }
 
-        public TitledList<CameraMenuItem> FlashModes { get; set; }
+        public TitledList<CameraMenuItemText> FlashModes { get; set; }
 
-        public TitledList<CameraMenuItem> AutobracketModes { get; set; }
+        public TitledList<CameraMenuItemText> AutobracketModes { get; set; }
 
-        public CameraMenuItem SingleShootMode { get; set; }
+        public CameraMenuItemText SingleShootMode { get; set; }
     }
 }

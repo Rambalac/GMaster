@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using GMaster.Annotations;
 using GMaster.Camera;
 using GMaster.Views.Commands;
@@ -11,9 +12,9 @@ namespace GMaster.Views
 {
     public class CameraViewModel : INotifyPropertyChanged
     {
-        private CameraMenuItem currentIso;
-        private CameraMenuItem currentShutter;
-        private CameraMenuItem currentAperture;
+        private ICameraMenuItem currentIso;
+        private ICameraMenuItem currentShutter;
+        private ICameraMenuItem currentAperture;
         private ConnectedCamera selectedCamera;
 
         public CameraViewModel()
@@ -26,7 +27,7 @@ namespace GMaster.Views
 
         public CaptureCommand CaptureCommand { get; }
 
-        public CameraMenuItem CurrentIso
+        public ICameraMenuItem CurrentIso
         {
             get
             {
@@ -43,7 +44,7 @@ namespace GMaster.Views
             }
         }
 
-        public CameraMenuItem CurrentShutter
+        public ICameraMenuItem CurrentShutter
         {
             get
             {
@@ -60,7 +61,7 @@ namespace GMaster.Views
             }
         }
 
-        public CameraMenuItem CurrentAperture
+        public ICameraMenuItem CurrentAperture
         {
             get
             {
@@ -69,7 +70,9 @@ namespace GMaster.Views
 
             set
             {
-                AsyncMenuItemSetter(currentAperture, value, v =>
+                var newAper = value ?? currentAperture;
+
+                AsyncMenuItemSetter(currentAperture, newAper, v =>
                 {
                     currentAperture = v;
                     OnPropertyChanged(nameof(CurrentAperture));
@@ -77,7 +80,7 @@ namespace GMaster.Views
             }
         }
 
-        public bool IsConnected => selectedCamera != null;
+        public bool IsConnected => DesignMode.DesignModeEnabled || selectedCamera != null;
 
         public bool IsDisconnected => selectedCamera == null;
 
@@ -122,15 +125,15 @@ namespace GMaster.Views
             switch (e.PropertyName)
             {
                 case nameof(selectedCamera.Camera.OfframeProcessor.Shutter):
-                    currentShutter = selectedCamera.Camera.GetCurrentShutter() ?? currentShutter;
+                    currentShutter = selectedCamera.Camera.CurrentShutter ?? currentShutter;
                     OnPropertyChanged(nameof(CurrentShutter));
                     break;
                 case nameof(selectedCamera.Camera.OfframeProcessor.Aperture):
-                    currentAperture = selectedCamera.Camera.GetCurrentAperture() ?? currentAperture;
+                    currentAperture = selectedCamera.Camera.CurrentAperture ?? currentAperture;
                     OnPropertyChanged(nameof(CurrentAperture));
                     break;
                 case nameof(selectedCamera.Camera.OfframeProcessor.Iso):
-                    currentIso = selectedCamera.Camera.GetCurrentIso() ?? currentIso;
+                    currentIso = selectedCamera.Camera.CurrentIso ?? currentIso;
                     OnPropertyChanged(nameof(CurrentIso));
                     break;
             }
@@ -158,12 +161,18 @@ namespace GMaster.Views
             });
         }
 
-        private void AsyncMenuItemSetter(CameraMenuItem old, CameraMenuItem value, Action<CameraMenuItem> onResult)
+        private void AsyncMenuItemSetter(ICameraMenuItem old, ICameraMenuItem value, Action<ICameraMenuItem> onResult)
         {
             AsyncSetter(
                 old,
                 value,
-                async v => await selectedCamera.Camera.SendMenuItem(v),
+                async v =>
+                {
+                    if (selectedCamera != null)
+                    {
+                        await selectedCamera.Camera.SendMenuItem(v);
+                    }
+                },
                 onResult);
         }
 

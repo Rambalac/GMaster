@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.UI.Xaml;
-using GMaster.Annotations;
-using GMaster.Camera;
-using GMaster.Views.Commands;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
-    public class MainPageModel : INotifyPropertyChanged
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Annotations;
+    using Camera;
+    using Commands;
+    using Windows.ApplicationModel;
+    using Windows.UI.Xaml;
+
+    public class MainPageModel : INotifyPropertyChanged, IDisposable
     {
         private readonly DispatcherTimer cameraRefreshTimer;
         private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
@@ -192,9 +192,9 @@ namespace GMaster.Views
                         {
                             await ConnectCamera(dev);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            
+                            Log.Error(e);
                         }
                     }
                     else
@@ -220,6 +220,11 @@ namespace GMaster.Views
             }
 
             OnCameraDisconnected(lumix);
+        }
+
+        public void Dispose()
+        {
+            camerasearchSem.Dispose();
         }
     }
 }

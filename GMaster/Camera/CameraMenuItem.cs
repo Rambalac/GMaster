@@ -2,9 +2,68 @@
 
 namespace GMaster.Camera
 {
-    public class CameraMenuItem : IIdItem
+    public class CameraMenuItem256 : ICameraMenuItem
     {
-        public CameraMenuItem(Item i, string text)
+        public string Id { get; }
+
+        public string Command { get; }
+
+        public string CommandType { get; }
+
+        public string Text { get; }
+
+        public string Value => IntValue + "/256";
+
+        public int IntValue { get; }
+
+        public CameraMenuItem256(string id, string text, string command, string commandtype, int value)
+        {
+            Id = id;
+            Text = text;
+            Command = command;
+            CommandType = commandtype;
+            IntValue = value;
+        }
+
+        public override string ToString()
+        {
+            return Text;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((ICameraMenuItem)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Text?.GetHashCode() ?? 0;
+        }
+
+        protected bool Equals(ICameraMenuItem other)
+        {
+            return string.Equals(Text, other.Id);
+        }
+    }
+
+    public class CameraMenuItemText : ICameraMenuItem
+    {
+        public CameraMenuItemText(Item i, string text)
         {
             Id = i.Id;
             Text = text;
@@ -13,7 +72,7 @@ namespace GMaster.Camera
             Value = i.CmdValue;
         }
 
-        public CameraMenuItem(string id, string text, string command, string commandtype, string value)
+        public CameraMenuItemText(string id, string text, string command, string commandtype, string value)
         {
             Id = id;
             Text = text;
@@ -49,12 +108,12 @@ namespace GMaster.Camera
                 return false;
             }
 
-            return Equals((CameraMenuItem)obj);
+            return Equals((ICameraMenuItem)obj);
         }
 
         public override int GetHashCode()
         {
-            return Id?.GetHashCode() ?? 0;
+            return Text?.GetHashCode() ?? 0;
         }
 
         public override string ToString()
@@ -62,9 +121,9 @@ namespace GMaster.Camera
             return Text;
         }
 
-        protected bool Equals(CameraMenuItem other)
+        protected bool Equals(ICameraMenuItem other)
         {
-            return string.Equals(Id, other.Id);
+            return string.Equals(Text, other.Text);
         }
     }
 }

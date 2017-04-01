@@ -6,9 +6,11 @@
     xmlns:commands="using:GMaster.Views.Commands"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="using:System"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance local:CameraViewModel}">
     <UserControl.Resources>
+        <local:RecStateConvertor x:Key="RecStateConvertor"/>
         <Style x:Key="TransparentButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
@@ -84,13 +86,12 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="DarkBlue" >
-        <Image Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" />
+        <Image Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" PointerPressed="Image_PointerPressed" PointerWheelChanged="UIElement_OnPointerWheelChanged"/>
         <Viewbox Visibility="{Binding IsDisconnected, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Foreground="White">NO CONNECTION</TextBlock>
         </Viewbox>
 
-        <Grid >
-            <!--Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}}"-->
+        <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto"/>
@@ -108,10 +109,14 @@
             </Grid.RowDefinitions>
 
             <Button Grid.Column="3" Grid.Row="1" Command="{Binding RecCommand}" Style="{StaticResource TransparentButtonStyle}" >
-                <Image Stretch="Fill"  Source="/images/rec.png" Margin="10"/>
+                <Viewbox>
+                    <TextBlock Padding="5"  FontFamily="Segoe MDL2 Assets" Text="{Binding SelectedCamera.Camera.RecState, Converter={StaticResource RecStateConvertor}}"/>
+                </Viewbox>
             </Button>
             <Button Grid.Column="3" Grid.Row="3" Command="{Binding CaptureCommand}" Style="{StaticResource TransparentButtonStyle}" Margin="10,10,0,10">
-                <Image Stretch="Fill"  Source="/images/icon.png" />
+                <Viewbox>
+                    <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE722;"/>
+                </Viewbox>
             </Button>
             <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                 <StackPanel Width="100">
@@ -119,12 +124,15 @@
                     <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.OfframeProcessor.Shutter.Text}" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel Width="100">
-                    <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.Apertures}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentAperture, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource VisibilityConverter}}"/>
+                    <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.CurrentApertures}" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentAperture, Mode=TwoWay}" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource VisibilityConverter}}"/>
                     <TextBlock HorizontalAlignment="Stretch" Text="{Binding SelectedCamera.Camera.OfframeProcessor.Aperture.Text}" VerticalAlignment="Stretch" TextAlignment="Center" Visibility="{Binding SelectedCamera.Camera.CanChangeAperture, Converter={StaticResource NotVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel Width="100">
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.IsoValues}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentIso, Mode=TwoWay}"/>
+                    <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0" ItemsSource="{Binding SelectedCamera.Camera.MenuSet.IsoValues}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" SelectedItem="{Binding CurrentIso, Mode=TwoWay}"/>
                 </StackPanel>
+                <Border Width="300">
+                    <Slider Minimum="{Binding SelectedCamera.Camera.LensInfo.MinZoom, Mode=TwoWay}" Maximum="{Binding SelectedCamera.Camera.LensInfo.MaxZoom, Mode=TwoWay}" Value="{Binding SelectedCamera.Camera.OfframeProcessor.Zoom, Mode=TwoWay}" IsEnabled="False"/>
+                </Border>
             </StackPanel>
         </Grid>
     </Grid>

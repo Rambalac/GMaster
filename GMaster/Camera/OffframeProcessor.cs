@@ -28,6 +28,10 @@ namespace GMaster.Camera
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public int OpenedAperture { get; private set; }
+
+        public int ClosedAperture { get; private set; }
+
         public TextBinValue Aperture { get; private set; }
 
         public CameraMode CameraMode { get; private set; }
@@ -51,13 +55,14 @@ namespace GMaster.Camera
                     return;
                 }
 
+                Debug.WriteLine(string.Join(",", array.Select(a => a.ToString("X2"))));
+
                 var state = new ProcessState(array);
 
                 var newIso = GetFromShort(state.Main, 127, parser.IsoBinary);
                 if (!Equals(newIso, Iso))
                 {
                     Iso = newIso;
-                    Debug.WriteLine($"bin {Iso.Bin} text {Iso.Text}");
                     OnPropertyChanged(nameof(Iso));
                 }
 
@@ -66,6 +71,14 @@ namespace GMaster.Camera
                 {
                     Shutter = newShutter;
                     OnPropertyChanged(nameof(Shutter));
+                }
+
+                var newOpenedAperture = state.Main.ToShort(52);
+                if (newOpenedAperture != OpenedAperture)
+                {
+                    Debug.WriteLine($"Open {newOpenedAperture}");
+                    OpenedAperture = newOpenedAperture;
+                    OnPropertyChanged(nameof(OpenedAperture));
                 }
 
                 var newAperture = GetFromShort(state.Main, 56, parser.ApertureBinary);
@@ -145,9 +158,9 @@ namespace GMaster.Camera
 
         private TextBinValue GetFromShort(Slice slice, int index, IReadOnlyDictionary<int, string> dict)
         {
+            var bin = slice.ToShort(index);
             try
             {
-                var bin = slice.ToShort(index);
                 if (dict.TryGetValue(bin, out var val))
                 {
                     return new TextBinValue(val, bin);
@@ -159,7 +172,7 @@ namespace GMaster.Camera
             catch (KeyNotFoundException e)
             {
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
-                return new TextBinValue("!", -1);
+                return new TextBinValue("!", bin);
             }
         }
 

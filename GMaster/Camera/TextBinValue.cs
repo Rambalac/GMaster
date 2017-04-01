@@ -12,6 +12,16 @@ namespace GMaster.Camera
 
         public string Text { get; }
 
+        public static bool operator !=(TextBinValue a, TextBinValue b)
+        {
+            return !Equals(a, b);
+        }
+
+        public static bool operator ==(TextBinValue a, TextBinValue b)
+        {
+            return Equals(a, b);
+        }
+
         public bool Equals(TextBinValue other)
         {
             return string.Equals(Text, other.Text) && Bin == other.Bin;

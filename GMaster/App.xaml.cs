@@ -1,16 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using GMaster.Views;
-
-namespace GMaster
+﻿namespace GMaster
 {
+    using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+    using Views;
+    using Windows.ApplicationModel;
+    using Windows.ApplicationModel.Activation;
+    using Windows.UI.Core;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Navigation;
+
     public partial class App : Application
     {
         private static CoreDispatcher dispatcher;

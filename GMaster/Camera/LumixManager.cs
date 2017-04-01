@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace GMaster.Camera
 {
     using System;
@@ -48,9 +50,12 @@ namespace GMaster.Camera
 
         public async Task SearchCameras()
         {
-            foreach (var dev in deviceLocators)
+            if (deviceLocators != null)
             {
-                await dev.SearchAsync();
+                foreach (var dev in deviceLocators)
+                {
+                    await dev.SearchAsync();
+                }
             }
         }
 
@@ -145,12 +150,16 @@ namespace GMaster.Camera
                 var dev = new DeviceInfo(info);
                 OnDeviceDiscovered(dev);
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
                 // var status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
+                Debug.WriteLine(e);
+
+                //Ignore because GetDeviceInfo has problems
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e);
                 Log.Error(e);
             }
         }

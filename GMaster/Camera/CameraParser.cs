@@ -1,4 +1,6 @@
-﻿namespace GMaster.Camera
+﻿using System.Globalization;
+
+namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
@@ -9,19 +11,39 @@
     {
         public abstract IReadOnlyDictionary<int, string> IsoBinary { get; }
 
+        //public IReadOnlyDictionary<int, string> OpenedApertureBinary { get; } = new Dictionary<int, string>
+        //{
+        //    { 1024, "4" },
+        //    { 1042, "4.1" },
+        //    { 1060, "4.2" },
+        //    { 1077, "4.3" },
+        //    { 1094, "4.4" },
+        //    { 1110, "4.5" },
+        //    { 1111, "4.5" },
+        //    { 1143, "4.7" },
+        //    { 1189, "5" },
+        //    { 1195, "5" },
+        //    { 1232, "5.3" },
+        //    { 1259, "5.5" },
+        //    { 1273, "5.6" },
+        //    { 1280, "5.6" },
+        //    { 1286, "5.7" },
+        //    { 1298, "5.8" }
+        //};
+
         public IReadOnlyDictionary<int, string> ApertureBinary { get; } = new Dictionary<int, string>
         {
             { 392, "1.7" },
             { 427, "1.8" },
-            { 512, "2" },
+            { 512, "2.0" },
             { 598, "2.2" },
             { 683, "2.5" },
             { 768, "2.8" },
             { 854, "3.2" },
             { 938, "3.5" },
-            { 1024, "4" },
+            { 1024, "4.0" },
             { 1110, "4.5" },
-            { 1195, "5" },
+            { 1195, "5.0" },
             { 1280, "5.6" },
             { 1366, "6.3" },
             { 1451, "7.1" },
@@ -31,11 +53,20 @@
             { 1792, "11" },
             { 1878, "13" },
             { 1963, "14" },
-            { 2048, "16" }
+            { 2048, "16" },
+            { 2134, "18" },
+            { 2219, "20" },
+            { 2304, "22" },
         };
 
         public IReadOnlyDictionary<int, string> ShutterBinary { get; } = new Dictionary<int, string>
         {
+            { 3584, "16000" },
+            { 3499, "13000" },
+            { 3414, "10000" },
+            { 3328, "8000" },
+            { 3243, "6400" },
+            { 3158, "5000" },
             { 3072, "4000" },
             { 2987, "3200" },
             { 2902, "2500" },
@@ -98,16 +129,36 @@
 
         public HashCollection<Title> DefaultLanguage { get; set; }
 
+        public static string ApertureBinToText(int bin)
+        {
+            return Math.Pow(2, bin / 512.0).ToString("F1", CultureInfo.InvariantCulture);
+        }
+
         public virtual MenuSet ParseMenuSet(RawMenuSet menuset, string lang)
         {
             var result = new MenuSet
             {
-                ShutterSpeeds = new TitledList<CameraMenuItem>(ShutterBinary.Select(p => new CameraMenuItem(p.Key.ToString(), p.Value, "setsetting", "shtrspeed", p.Key + "/256")), "Shutter Speed"),
-                Apertures = new TitledList<CameraMenuItem>(ApertureBinary.Select(p => new CameraMenuItem(p.Key.ToString(), p.Value, "setsetting", "focal", p.Key + "/256")), "Aperture")
+                ShutterSpeeds = new TitledList<CameraMenuItemText>(ShutterBinary.Select(p => new CameraMenuItemText(p.Key.ToString(), p.Value, "setsetting", "shtrspeed", p.Key + "/256")), "Shutter Speed"),
+                Apertures = new TitledList<CameraMenuItem256>(ApertureBinary.Select(p => new CameraMenuItem256(p.Key.ToString(), p.Value, "setsetting", "focal", p.Key)), "Aperture")
             };
 
             InnerParseMenuSet(result, menuset, lang);
             return result;
+        }
+
+
+
+        public LensInfo ParseLensInfo(string raw)
+        {
+            //ok,2304/256,1024/256,3328/256,16384/256,0,on,175,45,on,128/1024,on
+
+            var values = raw.Split(',');
+            return new LensInfo
+            {
+                MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
+                MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
+                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0
+            };
         }
 
         public static CameraParser TryParseMenuSet(RawMenuSet resultMenuSet, string lang, out MenuSet menuset)
@@ -152,22 +203,22 @@
             throw new KeyNotFoundException("Title not found: " + id);
         }
 
-        protected CameraMenuItem ToMenuItem(Item item)
+        protected CameraMenuItemText ToMenuItem(Item item)
         {
-            return new CameraMenuItem(item, GetText(item.TitleId));
+            return new CameraMenuItemText(item, GetText(item.TitleId));
         }
 
-        protected TitledList<CameraMenuItem> ToMenuItems(Item menuitem)
+        protected TitledList<CameraMenuItemText> ToMenuItems(Item menuitem)
         {
             try
             {
                 return menuitem.Items
-                    .Select(i => new CameraMenuItem(i, GetText(i.TitleId)))
+                    .Select(i => new CameraMenuItemText(i, GetText(i.TitleId)))
                     .ToTitledList(GetText(menuitem.TitleId));
             }
             catch (KeyNotFoundException)
             {
-                return new TitledList<CameraMenuItem>();
+                return new TitledList<CameraMenuItemText>();
             }
         }
     }

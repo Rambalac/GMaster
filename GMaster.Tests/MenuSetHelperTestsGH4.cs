@@ -1,15 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Windows.ApplicationModel;
-using GMaster.Camera;
-using GMaster.Camera.LumixResponces;
-using Xunit;
-
-namespace GMasterTests
+﻿namespace GMasterTests
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+    using GMaster.Camera;
+    using GMaster.Camera.LumixResponces;
+    using Windows.ApplicationModel;
+    using Xunit;
+
     public class MenuSetHelperTestsGh4
     {
         private MenuSet menuset;
@@ -26,7 +26,7 @@ namespace GMasterTests
             {
                 var serializer = new XmlSerializer(typeof(MenuSetRuquestResult));
                 var result = (MenuSetRuquestResult)serializer.Deserialize(stream.AsStreamForRead());
-                menuset = MenuSet.TryParseMenuSet(result.MenuSet, "en");
+                CameraParser.TryParseMenuSet(result.MenuSet, "en", out menuset);
             }
         }
 
