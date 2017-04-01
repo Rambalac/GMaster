@@ -1,14 +1,14 @@
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-namespace GMaster.Views
+namespace GMaster.Tools
 {
-    public abstract class AbstractModelCommand<TModel> : ICommand
+    using System;
+    using System.ComponentModel;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+
+    public abstract class AbstractParameterModelCommand<TModel, TParameter> : ICommand
         where TModel : INotifyPropertyChanged
     {
-        protected AbstractModelCommand(TModel model)
+        protected AbstractParameterModelCommand(TModel model)
         {
             Model = model;
             Model.PropertyChanged += Model_PropertyChanged;
@@ -20,17 +20,17 @@ namespace GMaster.Views
 
         public bool CanExecute(object parameter)
         {
-            return InternalCanExecute();
+            return InternalCanExecute((TParameter)parameter);
         }
 
         public async void Execute(object parameter)
         {
-            await InternalExecute();
+            await InternalExecute((TParameter)parameter);
         }
 
-        protected abstract bool InternalCanExecute();
+        protected abstract bool InternalCanExecute(TParameter parameter);
 
-        protected abstract Task InternalExecute();
+        protected abstract Task InternalExecute(TParameter parameter);
 
         protected virtual void OnCanExecuteChanged()
         {

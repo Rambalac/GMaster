@@ -101,15 +101,22 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="GMaster_StoreKey.pfx" />
     <None Include="GMaster_TemporaryKey.pfx" />
+    <PRIResource Include="strings\ja\Resources.resw" />
+    <PRIResource Include="strings\ru\Resources.resw" />
     <None Include="project.json" />
+    <PRIResource Include="strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Camera\CameraMenuItem256.cs" />
     <Compile Include="Camera\CameraMode.cs" />
     <Compile Include="Camera\CameraOrientation.cs" />
-    <Compile Include="Camera\EnumValue.cs" />
+    <Compile Include="Donations.cs" />
+    <Compile Include="Tools\EnumToValue.cs" />
+    <Compile Include="Tools\EnumValue.cs" />
+    <Compile Include="Tools\EnumValueAttribute.cs" />
     <Compile Include="Camera\FocusDirection.cs" />
     <Compile Include="Camera\ICameraMenuItem.cs" />
     <Compile Include="Camera\LensInfo.cs" />
@@ -123,7 +130,7 @@
     <Compile Include="Camera\LumixResponces\MenuSetRuquestResult.cs" />
     <Compile Include="Camera\DeviceInfo.cs" />
     <Compile Include="Camera\LumixResponces\HashCollection.cs" />
-    <Compile Include="Camera\CameraMenuItem.cs" />
+    <Compile Include="Camera\CameraMenuItemText.cs" />
     <Compile Include="Camera\CameraParser.cs" />
     <Compile Include="Camera\LumixResponces\ObservableHashCollection.cs" />
     <Compile Include="Camera\GH3Parser.cs" />
@@ -140,7 +147,6 @@
     <Compile Include="Camera\TitledList.cs" />
     <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="GlobalSuppressions2.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Views\AbstractNotifyProperty.cs" />
@@ -149,15 +155,17 @@
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\AboutCommand.cs" />
+    <Compile Include="Views\Commands\DonateCommand.cs" />
     <Compile Include="Views\Commands\FeedbackCommand.cs" />
+    <Compile Include="Views\Converters\NotConverter.cs" />
     <Compile Include="Views\GeneralSettings.cs" />
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Commands\AbstractParameterModelCommand.cs" />
-    <Compile Include="Views\Commands\AbstractModelCommand.cs" />
-    <Compile Include="Views\Commands\AbstractSimpleCommand.cs" />
-    <Compile Include="Views\Commands\AbstractSimpleParameterCommand.cs" />
+    <Compile Include="Tools\AbstractParameterModelCommand.cs" />
+    <Compile Include="Tools\AbstractModelCommand.cs" />
+    <Compile Include="Tools\AbstractSimpleCommand.cs" />
+    <Compile Include="Tools\AbstractSimpleParameterCommand.cs" />
     <Compile Include="Views\Commands\CaptureCommand.cs" />
     <Compile Include="Views\Commands\ConnectCommand.cs" />
     <Compile Include="Camera\Lumix.cs" />
@@ -166,7 +174,7 @@
     <Compile Include="Views\Commands\OpenSplitViewCommand.cs" />
     <Compile Include="Views\ConnectedCamera.cs" />
     <Compile Include="Views\MainPageModel.cs" />
-    <Compile Include="Views\ImageMemoryStreamConverter.cs" />
+    <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -180,10 +188,11 @@
     <Compile Include="Views\Commands\SwitchFullScreenCommand.cs" />
     <Compile Include="Views\Commands\CameraDisconnectCommand.cs" />
     <Compile Include="Views\Commands\SelectCameraCommand.cs" />
-    <Compile Include="Views\NotifyProperty.cs" />
-    <Compile Include="Views\RecStateConvertor.cs" />
-    <Compile Include="Views\SettingsContainer.cs" />
-    <Compile Include="Views\VisibilityConverter.cs" />
+    <Compile Include="Tools\NotifyProperty.cs" />
+    <Compile Include="Views\Converters\NotVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\RecStateConvertor.cs" />
+    <Compile Include="Tools\SettingsContainer.cs" />
+    <Compile Include="Views\Converters\VisibilityConverter.cs" />
     <Compile Include="WiFiHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Camera
 {
+    using System;
+
     public class LumixException : Exception
     {
         public LumixException(string result)

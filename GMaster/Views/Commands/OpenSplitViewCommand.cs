@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
+    using System.Diagnostics;
+    using Tools;
+
     public class OpenSplitViewCommand : AbstractSimpleParameterCommand
     {
         public override void Execute(object parameter)

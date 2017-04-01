@@ -1,36 +1,13 @@
-﻿using System.Globalization;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using LumixResponces;
 
     public abstract class CameraParser
     {
-        public abstract IReadOnlyDictionary<int, string> IsoBinary { get; }
-
-        //public IReadOnlyDictionary<int, string> OpenedApertureBinary { get; } = new Dictionary<int, string>
-        //{
-        //    { 1024, "4" },
-        //    { 1042, "4.1" },
-        //    { 1060, "4.2" },
-        //    { 1077, "4.3" },
-        //    { 1094, "4.4" },
-        //    { 1110, "4.5" },
-        //    { 1111, "4.5" },
-        //    { 1143, "4.7" },
-        //    { 1189, "5" },
-        //    { 1195, "5" },
-        //    { 1232, "5.3" },
-        //    { 1259, "5.5" },
-        //    { 1273, "5.6" },
-        //    { 1280, "5.6" },
-        //    { 1286, "5.7" },
-        //    { 1298, "5.8" }
-        //};
-
         public IReadOnlyDictionary<int, string> ApertureBinary { get; } = new Dictionary<int, string>
         {
             { 392, "1.7" },
@@ -59,6 +36,31 @@ namespace GMaster.Camera
             { 2304, "22" },
         };
 
+        public HashCollection<Title> CurrentLanguage { get; set; }
+
+        public HashCollection<Title> DefaultLanguage { get; set; }
+
+        public abstract IReadOnlyDictionary<int, string> IsoBinary { get; }
+
+        // public IReadOnlyDictionary<int, string> OpenedApertureBinary { get; } = new Dictionary<int, string>
+        // {
+        //    { 1024, "4" },
+        //    { 1042, "4.1" },
+        //    { 1060, "4.2" },
+        //    { 1077, "4.3" },
+        //    { 1094, "4.4" },
+        //    { 1110, "4.5" },
+        //    { 1111, "4.5" },
+        //    { 1143, "4.7" },
+        //    { 1189, "5" },
+        //    { 1195, "5" },
+        //    { 1232, "5.3" },
+        //    { 1259, "5.5" },
+        //    { 1273, "5.6" },
+        //    { 1280, "5.6" },
+        //    { 1286, "5.7" },
+        //    { 1298, "5.8" }
+        // };
         public IReadOnlyDictionary<int, string> ShutterBinary { get; } = new Dictionary<int, string>
         {
             { 3584, "16000" },
@@ -125,40 +127,9 @@ namespace GMaster.Camera
             { 16384, "B" }
         };
 
-        public HashCollection<Title> CurrentLanguage { get; set; }
-
-        public HashCollection<Title> DefaultLanguage { get; set; }
-
         public static string ApertureBinToText(int bin)
         {
             return Math.Pow(2, bin / 512.0).ToString("F1", CultureInfo.InvariantCulture);
-        }
-
-        public virtual MenuSet ParseMenuSet(RawMenuSet menuset, string lang)
-        {
-            var result = new MenuSet
-            {
-                ShutterSpeeds = new TitledList<CameraMenuItemText>(ShutterBinary.Select(p => new CameraMenuItemText(p.Key.ToString(), p.Value, "setsetting", "shtrspeed", p.Key + "/256")), "Shutter Speed"),
-                Apertures = new TitledList<CameraMenuItem256>(ApertureBinary.Select(p => new CameraMenuItem256(p.Key.ToString(), p.Value, "setsetting", "focal", p.Key)), "Aperture")
-            };
-
-            InnerParseMenuSet(result, menuset, lang);
-            return result;
-        }
-
-
-
-        public LensInfo ParseLensInfo(string raw)
-        {
-            //ok,2304/256,1024/256,3328/256,16384/256,0,on,175,45,on,128/1024,on
-
-            var values = raw.Split(',');
-            return new LensInfo
-            {
-                MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
-                MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
-                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0
-            };
         }
 
         public static CameraParser TryParseMenuSet(RawMenuSet resultMenuSet, string lang, out MenuSet menuset)
@@ -186,8 +157,6 @@ namespace GMaster.Camera
             throw new AggregateException("Could not parse MenuSet", exceptions);
         }
 
-        protected abstract void InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang);
-
         public string GetText(string id)
         {
             if (CurrentLanguage != null && CurrentLanguage.TryGetValue(id, out var text))
@@ -202,6 +171,32 @@ namespace GMaster.Camera
 
             throw new KeyNotFoundException("Title not found: " + id);
         }
+
+        public LensInfo ParseLensInfo(string raw)
+        {
+            // ok,2304/256,1024/256,3328/256,16384/256,0,on,175,45,on,128/1024,on
+            var values = raw.Split(',');
+            return new LensInfo
+            {
+                MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
+                MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
+                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0
+            };
+        }
+
+        public virtual MenuSet ParseMenuSet(RawMenuSet menuset, string lang)
+        {
+            var result = new MenuSet
+            {
+                ShutterSpeeds = new TitledList<CameraMenuItemText>(ShutterBinary.Select(p => new CameraMenuItemText(p.Key.ToString(), p.Value, "setsetting", "shtrspeed", p.Key + "/256")), "Shutter Speed"),
+                Apertures = new TitledList<CameraMenuItem256>(ApertureBinary.Select(p => new CameraMenuItem256(p.Key.ToString(), p.Value, "setsetting", "focal", p.Key)), "Aperture")
+            };
+
+            InnerParseMenuSet(result, menuset, lang);
+            return result;
+        }
+
+        protected abstract void InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang);
 
         protected CameraMenuItemText ToMenuItem(Item item)
         {

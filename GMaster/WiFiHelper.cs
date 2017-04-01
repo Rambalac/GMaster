@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.Devices.WiFi;
-
-namespace GMaster
+﻿namespace GMaster
 {
+    using System;
+    using System.Threading.Tasks;
+    using Windows.Devices.WiFi;
+
     public class WiFiHelper
     {
         public void Start()

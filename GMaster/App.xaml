@@ -3,11 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GMaster.Views"
+    xmlns:converters="using:GMaster.Views.Converters"
     RequestedTheme="Light">
     <Application.Resources>
         <local:MainPageModel x:Key="MainModel"/>
-        <local:VisibilityConverter x:Key="VisibilityConverter" />
-        <local:NotVisibilityConverter x:Key="NotVisibilityConverter" />
-        <local:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
+        <converters:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
     </Application.Resources>
 </Application>

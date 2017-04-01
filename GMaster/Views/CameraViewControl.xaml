@@ -7,10 +7,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="using:System"
+    xmlns:converters="using:GMaster.Views.Converters"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance local:CameraViewModel}">
     <UserControl.Resources>
-        <local:RecStateConvertor x:Key="RecStateConvertor"/>
+        <converters:RecStateConvertor x:Key="RecStateConvertor"/>
         <Style x:Key="TransparentButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />

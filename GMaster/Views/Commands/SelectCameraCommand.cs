@@ -1,7 +1,7 @@
-﻿using Windows.UI.Xaml.Controls;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
+    using Windows.UI.Xaml.Controls;
+
     public class SelectCameraCommand
     {
         private readonly MainPageModel model;

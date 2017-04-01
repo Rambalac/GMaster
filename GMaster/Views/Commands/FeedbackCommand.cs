@@ -1,8 +1,9 @@
-﻿using System;
-using Windows.ApplicationModel;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
+    using System;
+    using Tools;
+    using Windows.ApplicationModel;
+
     public class FeedbackCommand : AbstractSimpleCommand
     {
         public override bool CanExecute(object parameter)

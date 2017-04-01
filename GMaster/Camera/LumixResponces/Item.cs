@@ -1,8 +1,8 @@
-﻿using System;
-using System.Xml.Serialization;
-
-namespace GMaster.Camera.LumixResponces
+﻿namespace GMaster.Camera.LumixResponces
 {
+    using System;
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "item")]
     public class Item : IIdItem
     {

@@ -1,27 +1,7 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Tools
 {
-    public static class EnumToValue
-    {
-        public static string GetString(this Enum field)
-        {
-            return EnumValueAttribute.GetString(field);
-        }
-    }
-
-    public static class EnumValue<T>
-    {
-        private static readonly ImmutableDictionary<object, T> Values = Enum.GetValues(typeof(T)).Cast<T>().ToImmutableDictionary(v => EnumValueAttribute.GetValue<object>(v));
-
-        public static T Parse(object value)
-        {
-            return Values[value];
-        }
-    }
+    using System;
+    using System.Reflection;
 
     [AttributeUsage(AttributeTargets.Field)]
     public class EnumValueAttribute : Attribute

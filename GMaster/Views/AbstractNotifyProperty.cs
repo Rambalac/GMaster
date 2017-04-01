@@ -1,9 +1,9 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GMaster.Annotations;
-
 namespace GMaster.Views
 {
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using Annotations;
+
     public abstract class AbstractNotifyProperty : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

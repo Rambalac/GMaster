@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
+    using System;
+    using Tools;
+
     public class AboutCommand : AbstractSimpleCommand
     {
         protected override async void InternalExecute()

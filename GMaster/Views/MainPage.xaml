@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:commands="using:GMaster.Views.Commands"
+    xmlns:converters="using:GMaster.Views.Converters"
     mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}">
     <Page.Resources>
         <commands:FeedbackCommand x:Key="FeedbackCommand" />
@@ -29,6 +30,7 @@
                 </Button>
             </Grid>
         </DataTemplate>
+        <converters:NotConverter x:Key="NotConverter" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -96,7 +98,7 @@
                                 <Button HorizontalAlignment="Center" Command="{StaticResource FeedbackCommand}" Padding="10">
                                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE939;" HorizontalAlignment="Center" />
                                 </Button>
-                                <TextBlock Text="Feedback"/>
+                                <TextBlock Text="Feedback" Margin="5"/>
                             </StackPanel>
                             <StackPanel Margin="0,0,10,0">
                                 <Button HorizontalAlignment="Center" Command="{StaticResource AboutCommand}"  Padding="10">
@@ -105,14 +107,17 @@
                                 <TextBlock Text="Help" TextAlignment="Center" Margin="5"/>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel HorizontalAlignment="Right" Visibility="Collapsed">
-                            <Button HorizontalAlignment="Center" Padding="10">
-                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE9BB;" HorizontalAlignment="Center"/>
+                        <StackPanel HorizontalAlignment="Right" Visibility="{Binding Donations.CanDonate, Converter={StaticResource VisibilityConverter}}">
+                            <Button HorizontalAlignment="Center" Padding="10" IsEnabled="{Binding Donations.InProgress, Converter= {StaticResource NotConverter}}">
+                                <Grid>
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE9BB;" HorizontalAlignment="Center"/>
+                                    <ProgressRing  IsActive="{Binding Donations.InProgress}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                </Grid>
                                 <Button.Flyout>
                                     <MenuFlyout>
-                                        <MenuFlyoutItem Text="Big donation"/>
-                                        <MenuFlyoutItem Text="Medium donation"/>
-                                        <MenuFlyoutItem Text="Small donation"/>
+                                        <MenuFlyoutItem Text="Big donation" Command="{Binding DonateCommand}" CommandParameter="9pbp09rvl2h9"/>
+                                        <MenuFlyoutItem Text="Medium donation" Command="{Binding DonateCommand}" CommandParameter="9njkhg9s7w4n"/>
+                                        <MenuFlyoutItem Text="Small donation" Command="{Binding DonateCommand}" CommandParameter="9mxr5h61gnwk"/>
                                     </MenuFlyout>
                                 </Button.Flyout>
                             </Button>

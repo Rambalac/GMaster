@@ -41,6 +41,7 @@
 
             ConnectCommand = new ConnectCommand(this);
             SelectCameraCommand = new SelectCameraCommand(this);
+            DonateCommand = new DonateCommand(this);
         }
 
         public event Action<Lumix> CameraDisconnected;
@@ -52,6 +53,10 @@
         public ConnectCommand ConnectCommand { get; }
 
         public ObservableCollection<ConnectedCamera> ConnectedCameras { get; } = new ObservableCollection<ConnectedCamera>();
+
+        public DonateCommand DonateCommand { get; }
+
+        public Donations Donations { get; } = new Donations();
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
@@ -123,6 +128,11 @@
             {
                 View1.SelectedCamera = connectedCamera;
             }
+        }
+
+        public void Dispose()
+        {
+            camerasearchSem.Dispose();
         }
 
         public async Task StartListening()
@@ -220,11 +230,6 @@
             }
 
             OnCameraDisconnected(lumix);
-        }
-
-        public void Dispose()
-        {
-            camerasearchSem.Dispose();
         }
     }
 }

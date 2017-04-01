@@ -1,8 +1,8 @@
-using System;
-using System.Windows.Input;
-
-namespace GMaster.Views.Commands
+namespace GMaster.Tools
 {
+    using System;
+    using System.Windows.Input;
+
     public abstract class AbstractSimpleParameterCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;

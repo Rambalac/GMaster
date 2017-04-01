@@ -1,7 +1,7 @@
-﻿using System.Xml.Serialization;
-
-namespace GMaster.Camera.LumixResponces
+﻿namespace GMaster.Camera.LumixResponces
 {
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "state")]
     public class CameraState
     {

@@ -1,5 +1,7 @@
 namespace GMaster.Camera
 {
+    using Tools;
+
     public enum FocusDirection
     {
         [EnumValue("wide-fast")]

@@ -1,15 +1,13 @@
-using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using GMaster.Camera;
-
-namespace GMaster.Views
+namespace GMaster.Views.Converters
 {
-    public class RecStateConvertor : IValueConverter
+    using System;
+    using Windows.UI.Xaml.Data;
+
+    public class NotConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (value as RecState? ?? RecState.Stopped) != RecState.Started ? "\uE20A" : "\uE25D";
+            return !(value as bool? ?? false);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -17,5 +15,4 @@ namespace GMaster.Views
             return value;
         }
     }
-
 }

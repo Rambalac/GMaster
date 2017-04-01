@@ -1,8 +1,9 @@
-using System.Diagnostics;
-using GMaster.Camera;
-
 namespace GMaster.Views.Commands
 {
+    using System.Diagnostics;
+    using Camera;
+    using Tools;
+
     public class CameraDisconnectCommand : AbstractSimpleParameterCommand
     {
         public override async void Execute(object parameter)

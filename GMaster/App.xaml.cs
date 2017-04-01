@@ -1,4 +1,6 @@
-﻿namespace GMaster
+﻿using Windows.ApplicationModel.Resources;
+
+namespace GMaster
 {
     using System;
     using System.Diagnostics;
@@ -13,6 +15,7 @@
 
     public partial class App : Application
     {
+        private static readonly ResourceLoader Strings = new ResourceLoader();
         private static CoreDispatcher dispatcher;
 
         /// <summary>
@@ -28,6 +31,8 @@
         }
 
         public MainPageModel MainModel { get; private set; }
+
+        public static string GetString(string id) => Strings.GetString(id);
 
         public static Task RunAsync(DispatchedHandler action)
         {

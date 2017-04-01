@@ -1,10 +1,9 @@
-using System.Diagnostics;
-
 namespace GMaster.Camera
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -155,7 +154,7 @@ namespace GMaster.Camera
                 // var status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
                 Debug.WriteLine(e);
 
-                //Ignore because GetDeviceInfo has problems
+                // Ignore because GetDeviceInfo has problems
             }
             catch (Exception e)
             {

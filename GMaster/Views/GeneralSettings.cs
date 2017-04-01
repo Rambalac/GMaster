@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using Camera.LumixResponces;
     using Newtonsoft.Json;
+    using Tools;
     using Windows.Storage;
 
     public class GeneralSettings : SettingsContainer

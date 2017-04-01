@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.HockeyApp;
-
-namespace GMaster
+﻿namespace GMaster
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.HockeyApp;
+
     public static class Log
     {
         static Log()
@@ -14,7 +14,10 @@ namespace GMaster
         [Conditional("DEBUG")]
         public static void Error(Exception eException)
         {
-            HockeyClient.Current.TrackException(eException);
+            if (eException != null)
+            {
+                HockeyClient.Current.TrackException(eException);
+            }
         }
 
         [Conditional("DEBUG")]

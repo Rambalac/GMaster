@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using GMaster.Camera;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
+    using System;
+    using System.Threading.Tasks;
+    using Camera;
+    using Tools;
+
     public class RecCommand : AbstractModelCommand<CameraViewModel>
     {
         public RecCommand(CameraViewModel model)

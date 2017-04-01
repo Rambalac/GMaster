@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GMaster.Annotations;
-using GMaster.Camera;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using Annotations;
+    using Camera;
+
     public class ConnectedCamera : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

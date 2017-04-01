@@ -1,12 +1,12 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using GMaster.Camera;
-
 namespace GMaster.Views
 {
+    using Camera;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
+
     public sealed partial class CameraViewControl : UserControl
     {
         public CameraViewControl()
@@ -14,11 +14,11 @@ namespace GMaster.Views
             InitializeComponent();
         }
 
-        CameraViewModel Model => DataContext as CameraViewModel;
+        private CameraViewModel Model => DataContext as CameraViewModel;
 
         private Lumix Lumix => Model?.SelectedCamera?.Camera;
 
-        private async void Image_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private async void Image_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             var element = (UIElement)sender;
             var point = e.GetCurrentPoint(element);

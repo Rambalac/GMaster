@@ -1,20 +1,21 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using GMaster.Annotations;
-using GMaster.Camera;
-using GMaster.Views.Commands;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+    using Annotations;
+    using Camera;
+    using Commands;
+    using Windows.ApplicationModel;
+
     public class CameraViewModel : INotifyPropertyChanged
     {
+        private ICameraMenuItem currentAperture;
         private ICameraMenuItem currentIso;
         private ICameraMenuItem currentShutter;
-        private ICameraMenuItem currentAperture;
         private ConnectedCamera selectedCamera;
 
         public CameraViewModel()
@@ -26,6 +27,25 @@ namespace GMaster.Views
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CaptureCommand CaptureCommand { get; }
+
+        public ICameraMenuItem CurrentAperture
+        {
+            get
+            {
+                return currentAperture;
+            }
+
+            set
+            {
+                var newAper = value ?? currentAperture;
+
+                AsyncMenuItemSetter(currentAperture, newAper, v =>
+                {
+                    currentAperture = v;
+                    OnPropertyChanged(nameof(CurrentAperture));
+                });
+            }
+        }
 
         public ICameraMenuItem CurrentIso
         {
@@ -57,25 +77,6 @@ namespace GMaster.Views
                 {
                     currentShutter = v;
                     OnPropertyChanged(nameof(CurrentShutter));
-                });
-            }
-        }
-
-        public ICameraMenuItem CurrentAperture
-        {
-            get
-            {
-                return currentAperture;
-            }
-
-            set
-            {
-                var newAper = value ?? currentAperture;
-
-                AsyncMenuItemSetter(currentAperture, newAper, v =>
-                {
-                    currentAperture = v;
-                    OnPropertyChanged(nameof(CurrentAperture));
                 });
             }
         }
@@ -120,25 +121,6 @@ namespace GMaster.Views
             }
         }
 
-        private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(selectedCamera.Camera.OfframeProcessor.Shutter):
-                    currentShutter = selectedCamera.Camera.CurrentShutter ?? currentShutter;
-                    OnPropertyChanged(nameof(CurrentShutter));
-                    break;
-                case nameof(selectedCamera.Camera.OfframeProcessor.Aperture):
-                    currentAperture = selectedCamera.Camera.CurrentAperture ?? currentAperture;
-                    OnPropertyChanged(nameof(CurrentAperture));
-                    break;
-                case nameof(selectedCamera.Camera.OfframeProcessor.Iso):
-                    currentIso = selectedCamera.Camera.CurrentIso ?? currentIso;
-                    OnPropertyChanged(nameof(CurrentIso));
-                    break;
-            }
-        }
-
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -156,6 +138,7 @@ namespace GMaster.Views
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     await App.RunAsync(() => result(oldvalue));
                 }
             });
@@ -182,6 +165,25 @@ namespace GMaster.Views
             {
                 case nameof(selectedCamera.Camera.LiveViewFrame):
                     OnPropertyChanged(nameof(LiveViewFrame));
+                    break;
+            }
+        }
+
+        private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(selectedCamera.Camera.OfframeProcessor.Shutter):
+                    currentShutter = selectedCamera.Camera.CurrentShutter ?? currentShutter;
+                    OnPropertyChanged(nameof(CurrentShutter));
+                    break;
+                case nameof(selectedCamera.Camera.OfframeProcessor.Aperture):
+                    currentAperture = selectedCamera.Camera.CurrentAperture ?? currentAperture;
+                    OnPropertyChanged(nameof(CurrentAperture));
+                    break;
+                case nameof(selectedCamera.Camera.OfframeProcessor.Iso):
+                    currentIso = selectedCamera.Camera.CurrentIso ?? currentIso;
+                    OnPropertyChanged(nameof(CurrentIso));
                     break;
             }
         }

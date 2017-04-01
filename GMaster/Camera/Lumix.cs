@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -13,6 +12,7 @@ namespace GMaster.Camera
     using System.Xml.Serialization;
     using Annotations;
     using LumixResponces;
+    using Tools;
     using Windows.Storage.Streams;
     using Windows.UI.Xaml;
     using Windows.Web.Http;
@@ -39,7 +39,7 @@ namespace GMaster.Camera
 
         private MemoryStream offframeBytes;
 
-        internal Lumix(DeviceInfo device)
+        public Lumix(DeviceInfo device)
         {
             Device = device;
             baseUri = new Uri($"http://{CameraHost}/cam.cgi");
@@ -464,7 +464,7 @@ namespace GMaster.Camera
 
             try
             {
-                //MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+                // MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             }
             catch (AggregateException ex)
             {
@@ -475,6 +475,7 @@ namespace GMaster.Camera
             RecState = RecState.Unknown;
             OnPropertyChanged(nameof(RecState));
         }
+
         private async Task ReadLensInfo()
         {
             var raw = await GetString("?mode=getinfo&type=lens");

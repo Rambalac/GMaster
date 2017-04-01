@@ -1,7 +1,7 @@
-using Rssdp;
-
 namespace GMaster.Camera
 {
+    using Rssdp;
+
     public class DeviceInfo
     {
         internal DeviceInfo(SsdpRootDevice dev)
