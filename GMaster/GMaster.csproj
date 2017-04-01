@@ -113,6 +113,8 @@
     <Compile Include="Camera\CameraMenuItem256.cs" />
     <Compile Include="Camera\CameraMode.cs" />
     <Compile Include="Camera\CameraOrientation.cs" />
+    <Compile Include="Camera\FocusPoint.cs" />
+    <Compile Include="Camera\Http.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="Tools\EnumToValue.cs" />
     <Compile Include="Tools\EnumValue.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="Views\Commands\DonateCommand.cs" />
     <Compile Include="Views\Commands\FeedbackCommand.cs" />
     <Compile Include="Views\Converters\NotConverter.cs" />
+    <Compile Include="Views\Converters\VisibilityNullConverter.cs" />
     <Compile Include="Views\GeneralSettings.cs" />
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>

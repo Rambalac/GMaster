@@ -87,7 +87,39 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="DarkBlue" >
-        <Image x:Name="LiveView" Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}"/>
+        <Image x:Name="LiveView" Source="{Binding LiveViewFrame, Converter={StaticResource ImageMemoryStreamConverter}}" SizeChanged="LiveView_OnSizeChanged"/>
+        <Path Stroke="Gold" StrokeThickness="5" x:Name="FocusPoint">
+            <Path.Data>
+                <PathGeometry x:Name="FocusPointGeometry" >
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="0,0.3">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0,0"/>
+                                <LineSegment Point="0.3,0"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="1,0.3">
+                            <PathFigure.Segments>
+                                <LineSegment Point="1,0"/>
+                                <LineSegment Point="0.7,0"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="0,0.7">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0,1"/>
+                                <LineSegment Point="0.3,1"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="1,0.7">
+                            <PathFigure.Segments>
+                                <LineSegment Point="1,1"/>
+                                <LineSegment Point="0.7,1"/>
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
         <Viewbox Visibility="{Binding IsDisconnected, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Foreground="White">NO CONNECTION</TextBlock>
         </Viewbox>
@@ -114,7 +146,7 @@
                     <TextBlock Padding="5"  FontFamily="Segoe MDL2 Assets" Text="{Binding SelectedCamera.Camera.RecState, Converter={StaticResource RecStateConvertor}}"/>
                 </Viewbox>
             </Button>
-            <Button Grid.Column="3" Grid.Row="3" Command="{Binding CaptureCommand}" Style="{StaticResource TransparentButtonStyle}" Margin="10,10,0,10">
+            <Button Grid.Column="3" Grid.Row="3" Command="{Binding CaptureCommand}" Style="{StaticResource TransparentButtonStyle}" Visibility="{Binding SelectedCamera.Camera.CanCapture, Converter={StaticResource VisibilityConverter}}" Margin="10,10,0,10">
                 <Viewbox>
                     <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE722;"/>
                 </Viewbox>

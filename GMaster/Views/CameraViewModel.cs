@@ -185,8 +185,14 @@
                     currentIso = selectedCamera.Camera.CurrentIso ?? currentIso;
                     OnPropertyChanged(nameof(CurrentIso));
                     break;
+                case nameof(selectedCamera.Camera.OfframeProcessor.FocusPoint):
+                    FocusPoint = selectedCamera.Camera.OfframeProcessor.FocusPoint;
+                    OnPropertyChanged(nameof(FocusPoint));
+                    break;
             }
         }
+
+        public FocusPoint FocusPoint { get; private set; }
 
         private void SelectedCamera_Disconnected(Lumix lumix, bool stillAvailable)
         {

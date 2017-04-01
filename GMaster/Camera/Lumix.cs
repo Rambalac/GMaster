@@ -9,24 +9,17 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml.Serialization;
     using Annotations;
     using LumixResponces;
     using Tools;
     using Windows.Storage.Streams;
     using Windows.UI.Xaml;
-    using Windows.Web.Http;
-    using Windows.Web.Http.Filters;
-    using Windows.Web.Http.Headers;
 
     public class Lumix : INotifyPropertyChanged, IDisposable
     {
         private static readonly HashSet<CameraMode> ApertureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.A, CameraMode.vM, CameraMode.vA };
+        private static readonly HashSet<CameraMode> CaptureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.A, CameraMode.P, CameraMode.Unknown, CameraMode.iA };
         private static readonly HashSet<CameraMode> ShutterModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.vM, CameraMode.vS };
-        private readonly Uri baseUri;
-
-        private readonly HttpClient camcgi;
-
         private readonly object messageRecieving = new object();
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -35,23 +28,20 @@
 
         private MemoryStream currentImageStream;
 
+        private Http http;
         private byte lastByte;
 
         private MemoryStream offframeBytes;
 
+        private bool useNewTouchAF = true;
+
         public Lumix(DeviceInfo device)
         {
             Device = device;
-            baseUri = new Uri($"http://{CameraHost}/cam.cgi");
+            var baseUri = new Uri($"http://{CameraHost}/cam.cgi");
             stateTimer.Tick += StateTimer_Tick;
 
-            var rootFilter = new HttpBaseProtocolFilter();
-            rootFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            rootFilter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-
-            camcgi = new HttpClient(rootFilter);
-            camcgi.DefaultRequestHeaders.Accept.Clear();
-            camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("application/xml"));
+            http = new Http(baseUri);
         }
 
         public delegate void DisconnectedDelegate(Lumix sender, bool stillAvailable);
@@ -61,6 +51,8 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string CameraHost => Device.Host;
+
+        public bool CanCapture { get; set; } = true;
 
         public bool CanChangeAperture { get; private set; } = true;
 
@@ -101,15 +93,15 @@
 
         public async Task Capture()
         {
-            await Get<BaseRequestResult>("?mode=camcmd&value=capture");
-            await Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
+            await http.Get<BaseRequestResult>("?mode=camcmd&value=capture");
+            await http.Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
         }
 
         public async Task<bool> ChangeFocus(FocusDirection focus)
         {
             try
             {
-                await Get<BaseRequestResult>("?mode=camctrl&type=focus&value=" + focus.GetString());
+                await http.Get<BaseRequestResult>("?mode=camctrl&type=focus&value=" + focus.GetString());
                 return true;
             }
             catch (Exception e)
@@ -135,7 +127,7 @@
                 await SwitchToRec();
                 await UpdateState();
                 stateTimer.Start();
-                await Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
+                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
 
                 IsConnected = true;
                 OnPropertyChanged(nameof(IsConnected));
@@ -157,7 +149,7 @@
                 stateTimer.Stop();
                 try
                 {
-                    await Get<BaseRequestResult>("?mode=stopstream");
+                    await http.Get<BaseRequestResult>("?mode=stopstream");
                     Disconnected?.Invoke(this, true);
                 }
                 catch (Exception)
@@ -213,7 +205,7 @@
         {
             try
             {
-                await Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
                 RecState = RecState.Unknown;
                 OnPropertyChanged(nameof(RecState));
                 return true;
@@ -229,7 +221,7 @@
         {
             try
             {
-                await Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
                 RecState = RecState.Unknown;
                 OnPropertyChanged(nameof(RecState));
                 return true;
@@ -247,11 +239,11 @@
             {
                 if (size > 0)
                 {
-                    await Get<BaseRequestResult>($"?mode=camctrl&type=touchaf_chg_area&value=up");
+                    await http.Get<BaseRequestResult>("?mode=camctrl&type=touchaf_chg_area&value=up");
                 }
                 else if (size < 0)
                 {
-                    await Get<BaseRequestResult>($"?mode=camctrl&type=touchaf_chg_area&value=down");
+                    await http.Get<BaseRequestResult>("?mode=camctrl&type=touchaf_chg_area&value=down");
                 }
 
                 return true;
@@ -267,7 +259,7 @@
         {
             if (value != null)
             {
-                await Get<BaseRequestResult>(new Dictionary<string, string>
+                await http.Get<BaseRequestResult>(new Dictionary<string, string>
                 {
                     { "mode", value.Command },
                     { "type", value.CommandType },
@@ -276,13 +268,28 @@
             }
         }
 
-
-        public async Task<bool> SetFocusPoint(int x, int y)
+        public async Task<bool> SetFocusPoint(double x, double y)
         {
             try
             {
-                var onoff = "on"; // "off"
-                await Get<BaseRequestResult>($"?mode=camctrl&type=touch&value={x}/{y}&value2={onoff}");
+                if (useNewTouchAF)
+                {
+                    try
+                    {
+                        var onoff = "on"; // "off"
+                        await http.Get<BaseRequestResult>(
+                            $"?mode=camctrl&type=touch&value={(int)(x * 1000)}/{(int)(y * 1000)}&value2={onoff}");
+                        return true;
+                    }
+                    catch (LumixException)
+                    {
+                        Debug.WriteLine("New TouchAF not supported");
+                        useNewTouchAF = false;
+                    }
+                }
+
+                await http.Get<BaseRequestResult>(
+                    $"?mode=camctrl&type=touchaf&value={(int)(x * 1000)}/{(int)(y * 1000)}");
                 return true;
             }
             catch (Exception e)
@@ -296,7 +303,7 @@
         {
             try
             {
-                await Get<BaseRequestResult>("?mode=camcmd&value=recmode");
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=recmode");
                 return true;
             }
             catch (Exception e)
@@ -338,80 +345,6 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private static async Task<TResponse> ReadResponse<TResponse>(HttpResponseMessage response)
-        {
-            using (var content = response.Content)
-            using (var str = await content.ReadAsInputStreamAsync())
-            {
-                var serializer = new XmlSerializer(typeof(TResponse));
-                return (TResponse)serializer.Deserialize(str.AsStreamForRead());
-            }
-        }
-
-        private static TResponse ReadResponse<TResponse>(string str)
-        {
-            var serializer = new XmlSerializer(typeof(TResponse));
-            return (TResponse)serializer.Deserialize(new StringReader(str));
-        }
-
-        private async Task<TResponse> Get<TResponse>(string path)
-            where TResponse : BaseRequestResult
-        {
-            var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new LumixException("Request failed: " + path);
-                }
-
-                var product = await ReadResponse<TResponse>(response);
-                if (product.Result != "ok")
-                {
-                    throw new LumixException(
-                        $"Not ok result\r\nRequest: {path}\r\n{await response.Content.ReadAsStringAsync()}");
-                }
-
-                return product;
-            }
-        }
-
-        private async Task<TResponse> Get<TResponse>(Dictionary<string, string> parameters)
-            where TResponse : BaseRequestResult
-        {
-            var uri = new Uri(baseUri, "?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)));
-            using (var response = await camcgi.GetAsync(uri))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new LumixException("Request failed: ");
-                }
-
-                var product = await ReadResponse<TResponse>(response);
-                if (product.Result != "ok")
-                {
-                    throw new LumixException(
-                        $"Not ok result\r\nRequest: \r\n{await response.Content.ReadAsStringAsync()}");
-                }
-
-                return product;
-            }
-        }
-
-        private async Task<string> GetString(string path)
-        {
-            var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new LumixException("Request failed: " + path);
-                }
-
-                return await response.Content.ReadAsStringAsync();
-            }
-        }
-
         private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -419,6 +352,8 @@
                 case nameof(OfframeProcessor.CameraMode):
                     CanChangeAperture = ApertureModes.Contains(OfframeProcessor.CameraMode);
                     CanChangeShutter = ShutterModes.Contains(OfframeProcessor.CameraMode);
+                    CanCapture = CaptureModes.Contains(OfframeProcessor.CameraMode);
+                    OnPropertyChanged(nameof(CanCapture));
                     OnPropertyChanged(nameof(CanChangeAperture));
                     OnPropertyChanged(nameof(CanChangeShutter));
                     break;
@@ -460,8 +395,8 @@
 
         private async Task ReadCurMenu()
         {
-            var allmenuString = await GetString("?mode=getinfo&type=curmenu");
-            var result = ReadResponse<MenuSetRuquestResult>(allmenuString);
+            var allmenuString = await http.GetString("?mode=getinfo&type=curmenu");
+            var result = Http.ReadResponse<MenuSetRuquestResult>(allmenuString);
 
             try
             {
@@ -472,14 +407,14 @@
                 Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
             }
 
-            await Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
+            await http.Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
             RecState = RecState.Unknown;
             OnPropertyChanged(nameof(RecState));
         }
 
         private async Task ReadLensInfo()
         {
-            var raw = await GetString("?mode=getinfo&type=lens");
+            var raw = await http.GetString("?mode=getinfo&type=lens");
             var newInfo = Parser.ParseLensInfo(raw);
             if (!Equals(newInfo, LensInfo))
             {
@@ -492,8 +427,8 @@
 
         private async Task ReadMenuSet(string lang)
         {
-            var allmenuString = await GetString("?mode=getinfo&type=allmenu");
-            var result = ReadResponse<MenuSetRuquestResult>(allmenuString);
+            var allmenuString = await http.GetString("?mode=getinfo&type=allmenu");
+            var result = Http.ReadResponse<MenuSetRuquestResult>(allmenuString);
 
             try
             {
@@ -558,7 +493,7 @@
 
         private async Task<CameraState> UpdateState()
         {
-            var newState = await Get<CameraStateRequestResult>("?mode=getstate");
+            var newState = await http.Get<CameraStateRequestResult>("?mode=getstate");
             if (State != null && newState.State.Equals(State))
             {
                 return State;

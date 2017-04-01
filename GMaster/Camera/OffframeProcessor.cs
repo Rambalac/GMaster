@@ -28,17 +28,19 @@ namespace GMaster.Camera
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int OpenedAperture { get; private set; }
-
-        public int ClosedAperture { get; private set; }
-
         public TextBinValue Aperture { get; private set; }
 
         public CameraMode CameraMode { get; private set; }
 
+        public int ClosedAperture { get; private set; }
+
+        public FocusPoint FocusPoint { get; private set; }
+
         public TextBinValue Iso { get; private set; }
 
         public bool OffframeBytesSupported { get; private set; } = true;
+
+        public int OpenedAperture { get; private set; }
 
         public CameraOrientation Orientation { get; private set; }
 
@@ -108,6 +110,14 @@ namespace GMaster.Camera
                     Zoom = newZoom;
                     OnPropertyChanged(nameof(Zoom));
                 }
+
+                var newFocusPoint = GetPointZoom(state.Original);
+                if (!Equals(newFocusPoint, FocusPoint))
+                {
+                    FocusPoint = newFocusPoint;
+                    OnPropertyChanged(nameof(FocusPoint));
+                }
+
             }
             catch (Exception e)
             {
@@ -174,6 +184,23 @@ namespace GMaster.Camera
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
                 return new TextBinValue("!", bin);
             }
+        }
+
+        private FocusPoint GetPointZoom(Slice slice)
+        {
+            var t = slice[45];
+            if (t == 0x41 || t == 0x01)
+            {
+                return new FocusPoint
+                {
+                    X1 = slice.ToShort(48) / 1000.0,
+                    Y1 = slice.ToShort(50) / 1000.0,
+                    X2 = slice.ToShort(52) / 1000.0,
+                    Y2 = slice.ToShort(54) / 1000.0
+                };
+            }
+
+            return null;
         }
 
         private class ProcessState
