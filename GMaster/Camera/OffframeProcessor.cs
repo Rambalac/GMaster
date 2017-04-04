@@ -2,29 +2,28 @@ namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
+    using LumixData;
+    using Tools;
 
-    public class OffframeProcessor : INotifyPropertyChanged
+    public class OffFrameProcessor : INotifyPropertyChanged
     {
-        private static readonly IReadOnlyDictionary<int, CameraMode> IntToCameraMode = BuildEnumDict<CameraMode>();
-
-        private static readonly IReadOnlyDictionary<int, CameraOrientation> IntToOrient = BuildEnumDict<CameraOrientation>();
-
         private readonly string deviceName;
 
         private readonly CameraParser parser;
 
-        public OffframeProcessor(string deviceName, CameraParser parser)
+        public OffFrameProcessor(string deviceName, CameraParser parser)
         {
             this.parser = parser;
             this.deviceName = deviceName;
         }
+
+        public event Action LensUpdated;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,7 +31,9 @@ namespace GMaster.Camera
 
         public CameraMode CameraMode { get; private set; }
 
-        public int ClosedAperture { get; private set; }
+        public int ExposureShift { get; private set; }
+
+        public FocusMode FocusMode { get; private set; }
 
         public FocusPoint FocusPoint { get; private set; }
 
@@ -78,7 +79,6 @@ namespace GMaster.Camera
                 var newOpenedAperture = state.Main.ToShort(52);
                 if (newOpenedAperture != OpenedAperture)
                 {
-                    Debug.WriteLine($"Open {newOpenedAperture}");
                     OpenedAperture = newOpenedAperture;
                     OnPropertyChanged(nameof(OpenedAperture));
                 }
@@ -90,14 +90,14 @@ namespace GMaster.Camera
                     OnPropertyChanged(nameof(Aperture));
                 }
 
-                var newMode = IntToCameraMode.TryGetValue(state.Main[92], out var mode) ? mode : CameraMode.Unknown;
+                var newMode = state.Main[92].ToEnum(CameraMode.Unknown);
                 if (newMode != CameraMode)
                 {
                     CameraMode = newMode;
                     OnPropertyChanged(nameof(CameraMode));
                 }
 
-                IntToOrient.TryGetValue(state.Original[92], out var newOrient);
+                var newOrient = state.Original[42].ToEnum<CameraOrientation>(CameraOrientation.Undefined);
                 if (newOrient != Orientation)
                 {
                     Orientation = newOrient;
@@ -107,8 +107,20 @@ namespace GMaster.Camera
                 var newZoom = (int)state.Main.ToShort(85);
                 if (newZoom != Zoom)
                 {
+                    if (Zoom == 0 || newZoom == 0)
+                    {
+                        App.RunAsync(() => LensUpdated?.Invoke());
+                    }
+
                     Zoom = newZoom;
                     OnPropertyChanged(nameof(Zoom));
+                }
+
+                var newExposureShift = (int)state.Main.ToShort(128);
+                if (newExposureShift != ExposureShift)
+                {
+                    ExposureShift = newExposureShift;
+                    OnPropertyChanged(nameof(ExposureShift));
                 }
 
                 var newFocusPoint = GetPointZoom(state.Original);
@@ -118,6 +130,12 @@ namespace GMaster.Camera
                     OnPropertyChanged(nameof(FocusPoint));
                 }
 
+                var newFocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
+                if (newFocusMode != FocusMode)
+                {
+                    FocusMode = newFocusMode;
+                    OnPropertyChanged(nameof(FocusMode));
+                }
             }
             catch (Exception e)
             {
@@ -128,16 +146,14 @@ namespace GMaster.Camera
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            App.RunAsync(() =>
+            try
             {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            });
-        }
-
-        private static IReadOnlyDictionary<int, T> BuildEnumDict<T>()
-            where T : struct, IConvertible
-        {
-            return Enum.GetValues(typeof(T)).Cast<T>().ToImmutableDictionary(m => m.ToInt32(null));
+                App.RunAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         private static string FindClosest(IReadOnlyDictionary<int, string> dict, int value)
@@ -196,7 +212,8 @@ namespace GMaster.Camera
                     X1 = slice.ToShort(48) / 1000.0,
                     Y1 = slice.ToShort(50) / 1000.0,
                     X2 = slice.ToShort(52) / 1000.0,
-                    Y2 = slice.ToShort(54) / 1000.0
+                    Y2 = slice.ToShort(54) / 1000.0,
+                    Fixed = t == 0x41
                 };
             }
 

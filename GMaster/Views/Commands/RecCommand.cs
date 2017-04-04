@@ -34,8 +34,9 @@
                     await lumix.Camera.RecStop();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e);
             }
         }
     }

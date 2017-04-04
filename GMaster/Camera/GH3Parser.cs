@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using LumixResponces;
+    using LumixData;
 
     public class GH3Parser : CameraParser
     {
@@ -35,7 +35,7 @@
             { -1, "auto" }
         };
 
-        protected override void InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
+        protected override bool InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
         {
             DefaultLanguage = menuset.TitleList.Languages.Single(l => l.Default == YesNo.Yes).Titles;
             CurrentLanguage = menuset.TitleList.Languages.TryGetValue(lang, out var cur) ? cur.Titles : null;
@@ -69,6 +69,7 @@
             result.CustomMultiModes = null;
             result.DbValues = null;
             result.PeakingModes = null;
+            return true;
         }
     }
 }

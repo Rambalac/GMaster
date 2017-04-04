@@ -10,7 +10,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
-    using LumixResponces;
+    using LumixData;
     using Tools;
     using Windows.Storage.Streams;
     using Windows.UI.Xaml;
@@ -58,16 +58,20 @@
 
         public bool CanChangeShutter { get; private set; } = true;
 
+        public bool CanManualFocus { get; set; }
+
         public ICameraMenuItem CurrentAperture => CurrentApertures.FirstOrDefault(
-                s => s.IntValue == OfframeProcessor.Aperture.Bin);
+                s => s.IntValue == OffFrameProcessor.Aperture.Bin);
 
         public ICollection<CameraMenuItem256> CurrentApertures { get; private set; } = new List<CameraMenuItem256>();
 
+        public int CurrentFocus { get; private set; }
+
         public ICameraMenuItem CurrentIso => MenuSet.IsoValues.FirstOrDefault(
-                s => s.Value == OfframeProcessor.Iso.Text);
+                s => s.Value == OffFrameProcessor.Iso.Text);
 
         public ICameraMenuItem CurrentShutter => MenuSet.ShutterSpeeds.FirstOrDefault(
-                s => s.Value == OfframeProcessor.Shutter.Bin + "/256");
+                s => s.Value == OffFrameProcessor.Shutter.Bin + "/256");
 
         public DeviceInfo Device { get; }
 
@@ -79,9 +83,11 @@
 
         public Stream LiveViewFrame { get; private set; }
 
+        public int MaximumFocus { get; private set; }
+
         public MenuSet MenuSet { get; private set; }
 
-        public OffframeProcessor OfframeProcessor { get; private set; }
+        public OffFrameProcessor OffFrameProcessor { get; private set; }
 
         public CameraParser Parser { get; private set; }
 
@@ -97,11 +103,45 @@
             await http.Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
         }
 
-        public async Task<bool> ChangeFocus(FocusDirection focus)
+        public async Task<bool> ChangeFocus(ChangeDirection dir)
         {
             try
             {
-                await http.Get<BaseRequestResult>("?mode=camctrl&type=focus&value=" + focus.GetString());
+                var focus = await http.GetString("?mode=camctrl&type=focus&value=" + dir.GetString());
+                Debug.WriteLine($"Focusing {dir} {focus}");
+
+                var fp = Parser.ParseFocus(focus);
+                if (fp == null)
+                {
+                    return false;
+                }
+
+                if (fp.Maximum != MaximumFocus)
+                {
+                    MaximumFocus = fp.Maximum;
+                    OnPropertyChanged(nameof(MaximumFocus));
+                }
+
+                if (fp.Value != CurrentFocus)
+                {
+                    CurrentFocus = fp.Value;
+                    OnPropertyChanged(nameof(CurrentFocus));
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> ChangeZoom(ChangeDirection focus)
+        {
+            try
+            {
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=" + focus.GetString());
                 return true;
             }
             catch (Exception e)
@@ -118,11 +158,16 @@
                 currentImageStream = null;
                 lastByte = 0;
 
-                await ReadMenuSet(lang);
+                if (!await ReadMenuSet(lang))
+                {
+                    return false;
+                }
+
                 await ReadLensInfo();
 
-                OfframeProcessor = new OffframeProcessor(Device.ModelName, Parser);
-                OfframeProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
+                OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser);
+                OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
+                OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
                 await SwitchToRec();
                 await UpdateState();
@@ -185,6 +230,20 @@
             }
 
             return obj.GetType() == GetType() && Equals((Lumix)obj);
+        }
+
+        public async Task<FocusMode> GetFocusMode()
+        {
+            try
+            {
+                var result = await http.Get<FocusModeRequestResult>("?mode=getsetting&type=focusmode");
+                return result.Value.FocusMode;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return FocusMode.Unknown;
+            }
         }
 
         public override int GetHashCode()
@@ -281,10 +340,17 @@
                             $"?mode=camctrl&type=touch&value={(int)(x * 1000)}/{(int)(y * 1000)}&value2={onoff}");
                         return true;
                     }
-                    catch (LumixException)
+                    catch (LumixException ex)
                     {
-                        Debug.WriteLine("New TouchAF not supported");
-                        useNewTouchAF = false;
+                        if (ex.Error == LumixError.ErrorParam)
+                        {
+                            Debug.WriteLine("New TouchAF not supported");
+                            useNewTouchAF = false;
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
 
@@ -345,22 +411,31 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case nameof(OfframeProcessor.CameraMode):
-                    CanChangeAperture = ApertureModes.Contains(OfframeProcessor.CameraMode);
-                    CanChangeShutter = ShutterModes.Contains(OfframeProcessor.CameraMode);
-                    CanCapture = CaptureModes.Contains(OfframeProcessor.CameraMode);
+                case nameof(OffFrameProcessor.FocusMode):
+                    CanManualFocus = OffFrameProcessor.FocusMode == FocusMode.Manual;
+                    OnPropertyChanged(nameof(CanManualFocus));
+                    break;
+                case nameof(OffFrameProcessor.CameraMode):
+                    CanChangeAperture = ApertureModes.Contains(OffFrameProcessor.CameraMode);
+                    CanChangeShutter = ShutterModes.Contains(OffFrameProcessor.CameraMode);
+                    CanCapture = CaptureModes.Contains(OffFrameProcessor.CameraMode);
                     OnPropertyChanged(nameof(CanCapture));
                     OnPropertyChanged(nameof(CanChangeAperture));
                     OnPropertyChanged(nameof(CanChangeShutter));
                     break;
-                case nameof(OfframeProcessor.OpenedAperture):
+                case nameof(OffFrameProcessor.OpenedAperture):
                     UpdateCurrentApertures();
                     break;
             }
+        }
+
+        private async void OfframeProcessor_LensUpdated()
+        {
+            await TryReadLensInfo();
         }
 
         private void ProcessByte(byte curByte)
@@ -373,7 +448,7 @@
             {
                 if (curByte == 0xd8)
                 {
-                    OfframeProcessor.Process(offframeBytes);
+                    OffFrameProcessor.Process(offframeBytes);
                     offframeBytes = null;
                     currentImageStream = new MemoryStream(32768);
                     currentImageStream.WriteByte(0xff);
@@ -421,23 +496,32 @@
                 LensInfo = newInfo;
                 UpdateCurrentApertures();
 
+                OnPropertyChanged(nameof(LensInfo));
                 OnPropertyChanged(nameof(CurrentApertures));
             }
         }
 
-        private async Task ReadMenuSet(string lang)
+        private async Task<bool> ReadMenuSet(string lang)
         {
             var allmenuString = await http.GetString("?mode=getinfo&type=allmenu");
             var result = Http.ReadResponse<MenuSetRuquestResult>(allmenuString);
+
+            if (result.MenuSet == null)
+            {
+                return false;
+            }
 
             try
             {
                 Parser = CameraParser.TryParseMenuSet(result.MenuSet, lang, out var menuset);
                 MenuSet = menuset;
+                OnPropertyChanged(nameof(MenuSet));
+                return true;
             }
             catch (AggregateException ex)
             {
                 Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
+                return false;
             }
         }
 
@@ -477,7 +561,7 @@
 
         private void UpdateCurrentApertures()
         {
-            var open = OfframeProcessor?.OpenedAperture ?? LensInfo.OpenedAperture;
+            var open = OffFrameProcessor?.OpenedAperture ?? LensInfo.OpenedAperture;
 
             var newCurrentApertures = new List<CameraMenuItem256>(MenuSet.Apertures.Count);
             var opentext = CameraParser.ApertureBinToText(open);

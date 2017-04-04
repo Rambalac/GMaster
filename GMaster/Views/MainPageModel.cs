@@ -94,6 +94,15 @@
 
         public CameraViewModel View1 { get; } = new CameraViewModel();
 
+        public string Version
+        {
+            get
+            {
+                var ver = Package.Current.Id.Version;
+                return $"v{ver.Major}.{ver.Minor}.{ver.Build}";
+            }
+        }
+
         public void AddConnectableDevice(DeviceInfo device)
         {
             ConnectableDevices.Add(device);

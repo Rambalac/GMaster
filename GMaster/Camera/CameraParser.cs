@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
-    using LumixResponces;
+    using LumixData;
+    using Tools;
 
     public abstract class CameraParser
     {
@@ -145,7 +147,13 @@
             {
                 try
                 {
-                    menuset = p.ParseMenuSet(resultMenuSet, lang);
+                    var ms = p.ParseMenuSet(resultMenuSet, lang);
+                    if (ms == null)
+                    {
+                        continue;
+                    }
+
+                    menuset = ms;
                     return p;
                 }
                 catch (Exception ex)
@@ -174,14 +182,33 @@
 
         public LensInfo ParseLensInfo(string raw)
         {
-            // ok,2304/256,1024/256,3328/256,16384/256,0,on,175,45,on,128/1024,on
+            Debug.WriteLine(raw);
             var values = raw.Split(',');
             return new LensInfo
             {
                 MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
                 MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
-                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0
+                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0,
+                ClosedAperture = int.TryParse(values[1].Replace("/256", string.Empty), out var res4) ? res4 : int.MaxValue,
+                HasPowerZoom = values[6] == "on"
             };
+        }
+
+        public FocusPosition ParseFocus(string focus)
+        {
+            var values = focus.Split(',');
+            if (values.Length != 3)
+            {
+                throw new Exception("Strange focus values: " + focus);
+            }
+
+            if (values[0] != "ok" || !int.TryParse(values[2], out var max) || !int.TryParse(values[1], out var val))
+            {
+                Debug.WriteLine("Cannont parse focus: " + focus);
+                return null;
+            }
+
+            return new FocusPosition { Value = max - val, Maximum = max };
         }
 
         public virtual MenuSet ParseMenuSet(RawMenuSet menuset, string lang)
@@ -192,11 +219,10 @@
                 Apertures = new TitledList<CameraMenuItem256>(ApertureBinary.Select(p => new CameraMenuItem256(p.Key.ToString(), p.Value, "setsetting", "focal", p.Key)), "Aperture")
             };
 
-            InnerParseMenuSet(result, menuset, lang);
-            return result;
+            return InnerParseMenuSet(result, menuset, lang) ? result : null;
         }
 
-        protected abstract void InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang);
+        protected abstract bool InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang);
 
         protected CameraMenuItemText ToMenuItem(Item item)
         {

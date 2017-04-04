@@ -1,6 +1,7 @@
 ﻿namespace GMaster.Views
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
@@ -25,6 +26,8 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
 
         public CaptureCommand CaptureCommand { get; }
 
@@ -81,9 +84,11 @@
             }
         }
 
-        public bool IsConnected => DesignMode.DesignModeEnabled || selectedCamera != null;
+        public FocusPoint FocusPoint { get; private set; }
 
-        public bool IsDisconnected => selectedCamera == null;
+        public bool HasPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
+
+        public bool IsConnected => DesignMode.DesignModeEnabled || selectedCamera != null;
 
         public Stream LiveViewFrame => SelectedCamera?.Camera?.LiveViewFrame;
 
@@ -102,7 +107,7 @@
                 {
                     selectedCamera.Camera.Disconnected -= SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged -= Camera_PropertyChanged;
-                    selectedCamera.Camera.OfframeProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
+                    selectedCamera.Camera.OffFrameProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
                 }
 
                 selectedCamera = value;
@@ -110,16 +115,31 @@
                 {
                     selectedCamera.Camera.Disconnected += SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
-                    selectedCamera.Camera.OfframeProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
+                    selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
                 }
 
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsDisconnected));
-                OnPropertyChanged(nameof(IsConnected));
+                OnPropertyChanged(nameof(CanChangeAperture));
+                OnPropertyChanged(nameof(CanChangeShutter));
+                OnPropertyChanged(nameof(HasPowerZoom));
+                OnPropertyChanged(nameof(CanManualFocus));
+                OnPropertyChanged(nameof(ShutterSpeeds));
+                OnPropertyChanged(nameof(CurrentApertures));
+                OnPropertyChanged(nameof(CurrentAperture));
+                OnPropertyChanged(nameof(CurrentShutter));
                 OnPropertyChanged(nameof(CurrentIso));
                 OnPropertyChanged(nameof(LiveViewFrame));
+                OnPropertyChanged(nameof(IsConnected));
             }
         }
+
+        public bool CanChangeAperture => SelectedCamera.Camera.CanChangeAperture;
+
+        public bool CanChangeShutter => SelectedCamera.Camera.CanChangeShutter;
+
+        public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera.Camera.MenuSet.ShutterSpeeds;
+
+        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera.Camera.CurrentApertures;
 
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -163,36 +183,53 @@
         {
             switch (e.PropertyName)
             {
-                case nameof(selectedCamera.Camera.LiveViewFrame):
+                case nameof(Lumix.LiveViewFrame):
                     OnPropertyChanged(nameof(LiveViewFrame));
+                    break;
+                case nameof(Lumix.CanManualFocus):
+                    OnPropertyChanged(nameof(CanManualFocus));
+                    break;
+                case nameof(Lumix.CurrentApertures):
+                    OnPropertyChanged(nameof(CurrentApertures));
+                    break;
+                case nameof(Lumix.CanChangeShutter):
+                    OnPropertyChanged(nameof(CanChangeShutter));
+                    break;
+                case nameof(Lumix.CanChangeAperture):
+                    OnPropertyChanged(nameof(CanChangeAperture));
+                    break;
+                case nameof(Lumix.MenuSet):
+                    OnPropertyChanged(nameof(ShutterSpeeds));
+                    break;
+                case nameof(Lumix.LensInfo):
+                    OnPropertyChanged(nameof(HasPowerZoom));
                     break;
             }
         }
 
         private void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            var camera = selectedCamera.Camera;
             switch (e.PropertyName)
             {
-                case nameof(selectedCamera.Camera.OfframeProcessor.Shutter):
-                    currentShutter = selectedCamera.Camera.CurrentShutter ?? currentShutter;
+                case nameof(OffFrameProcessor.Shutter):
+                    currentShutter = camera.CurrentShutter ?? currentShutter;
                     OnPropertyChanged(nameof(CurrentShutter));
                     break;
-                case nameof(selectedCamera.Camera.OfframeProcessor.Aperture):
-                    currentAperture = selectedCamera.Camera.CurrentAperture ?? currentAperture;
+                case nameof(OffFrameProcessor.Aperture):
+                    currentAperture = camera.CurrentAperture ?? currentAperture;
                     OnPropertyChanged(nameof(CurrentAperture));
                     break;
-                case nameof(selectedCamera.Camera.OfframeProcessor.Iso):
-                    currentIso = selectedCamera.Camera.CurrentIso ?? currentIso;
+                case nameof(OffFrameProcessor.Iso):
+                    currentIso = camera.CurrentIso ?? currentIso;
                     OnPropertyChanged(nameof(CurrentIso));
                     break;
-                case nameof(selectedCamera.Camera.OfframeProcessor.FocusPoint):
-                    FocusPoint = selectedCamera.Camera.OfframeProcessor.FocusPoint;
+                case nameof(OffFrameProcessor.FocusPoint):
+                    FocusPoint = camera.OffFrameProcessor.FocusPoint;
                     OnPropertyChanged(nameof(FocusPoint));
                     break;
             }
         }
-
-        public FocusPoint FocusPoint { get; private set; }
 
         private void SelectedCamera_Disconnected(Lumix lumix, bool stillAvailable)
         {

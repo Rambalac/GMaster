@@ -1,6 +1,6 @@
 ﻿namespace GMaster.Camera
 {
-    using LumixResponces;
+    using LumixData;
 
     public class CameraMenuItemText : ICameraMenuItem
     {

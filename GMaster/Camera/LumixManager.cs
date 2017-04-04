@@ -18,6 +18,7 @@ namespace GMaster.Camera
     {
         private const int LiveViewPort = 49152;
 
+        private readonly HashSet<string> foundDevices = new HashSet<string>();
         private readonly string lang;
         private readonly ConcurrentDictionary<string, Lumix> listeners = new ConcurrentDictionary<string, Lumix>();
         private List<SsdpDeviceLocator> deviceLocators;
@@ -40,7 +41,7 @@ namespace GMaster.Camera
                 throw new Exception("Should not be more than one listener for address");
             }
 
-            result.Disconnected += Result_Disconnected;
+            result.Disconnected += Camera_Disconnected;
 
             await result.Connect(LiveViewPort, lang);
 
@@ -80,6 +81,11 @@ namespace GMaster.Camera
                 {
                     liveviewUdp.Dispose();
                 }
+            }
+
+            lock (foundDevices)
+            {
+                foundDevices.Clear();
             }
 
             deviceLocators = new List<SsdpDeviceLocator>();
@@ -126,11 +132,37 @@ namespace GMaster.Camera
             DeviceDiscovered?.Invoke(obj);
         }
 
+        private void Camera_Disconnected(Lumix obj, bool stillAvailabe)
+        {
+            if (!stillAvailabe)
+            {
+                lock (foundDevices)
+                {
+                    foundDevices.Clear();
+                }
+            }
+
+            if (!listeners.TryRemove(obj.CameraHost, out _))
+            {
+                throw new Exception("Listener is not connected");
+            }
+        }
+
         private async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
         {
             try
             {
-                if (!arg.IsNewlyDiscovered)
+                lock (foundDevices)
+                {
+                    if (foundDevices.Contains(arg.DiscoveredDevice.Usn))
+                    {
+                        return;
+                    }
+
+                    foundDevices.Add(arg.DiscoveredDevice.Usn);
+                }
+
+                if (!arg.DiscoveredDevice.ResponseHeaders.TryGetValues("SERVER", out var values) || !values.Any(s => s.Contains("Panasonic")))
                 {
                     return;
                 }
@@ -194,14 +226,6 @@ namespace GMaster.Camera
         {
             StopListening();
             await StartListening();
-        }
-
-        private void Result_Disconnected(Lumix obj, bool stillAvailabe)
-        {
-            if (!listeners.TryRemove(obj.CameraHost, out _))
-            {
-                throw new Exception("Listener is not connected");
-            }
         }
     }
 }

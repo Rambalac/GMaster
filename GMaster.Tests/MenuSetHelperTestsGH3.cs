@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using System.Xml.Serialization;
     using GMaster.Camera;
-    using GMaster.Camera.LumixResponces;
+    using GMaster.Camera.LumixData;
     using Windows.ApplicationModel;
     using Xunit;
 

@@ -10,6 +10,8 @@ namespace GMaster.Camera
 
         public double Y2 { get; set; }
 
+        public bool Fixed { get; set; }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -38,13 +40,14 @@ namespace GMaster.Camera
                 hashCode = (hashCode * 397) ^ X2.GetHashCode();
                 hashCode = (hashCode * 397) ^ Y1.GetHashCode();
                 hashCode = (hashCode * 397) ^ Y2.GetHashCode();
+                hashCode = (hashCode * 397) ^ Fixed.GetHashCode();
                 return hashCode;
             }
         }
 
         protected bool Equals(FocusPoint other)
         {
-            return X1 == other.X1 && X2 == other.X2 && Y1 == other.Y1 && Y2 == other.Y2;
+            return X1 == other.X1 && X2 == other.X2 && Y1 == other.Y1 && Y2 == other.Y2 && Fixed == other.Fixed;
         }
     }
 }

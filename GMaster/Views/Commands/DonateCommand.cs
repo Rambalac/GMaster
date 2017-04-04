@@ -1,10 +1,10 @@
-using System;
-using Windows.UI.Popups;
-
 namespace GMaster.Views.Commands
 {
+    using System;
     using System.Threading.Tasks;
     using Tools;
+    using Windows.Services.Store;
+    using Windows.UI.Popups;
 
     public class DonateCommand : AbstractParameterModelCommand<MainPageModel, string>
     {
@@ -17,9 +17,17 @@ namespace GMaster.Views.Commands
 
         protected override async Task InternalExecute(string parameter)
         {
-            var messageid = await Model.Donations.PurchaseAddOn(parameter) ? "Donate_Thankyou" : "Donate_Error";
-            var dialog = new MessageDialog(App.GetString(messageid));
-            await dialog.ShowAsync();
+            switch (await Model.Donations.PurchaseAddOn(parameter))
+            {
+                case StorePurchaseStatus.Succeeded:
+                    await new MessageDialog(App.GetString("Donate_Thankyou")).ShowAsync();
+                    return;
+                case StorePurchaseStatus.NotPurchased:
+                    return;
+                default:
+                    await new MessageDialog(App.GetString("Donate_Error")).ShowAsync();
+                    return;
+            }
         }
     }
 }

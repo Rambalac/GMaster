@@ -54,7 +54,7 @@
             }
         }
 
-        public async Task<bool> PurchaseAddOn(string storeId)
+        public async Task<StorePurchaseStatus> PurchaseAddOn(string storeId)
         {
             if (context == null)
             {
@@ -76,7 +76,9 @@
 
                         case StorePurchaseStatus.Succeeded:
                             await Consume(storeId);
-                            return true;
+                            return StorePurchaseStatus.Succeeded;
+                        case StorePurchaseStatus.NotPurchased:
+                            return StorePurchaseStatus.NotPurchased;
 
                         default:
                             Debug.WriteLine(result.ExtendedError);
@@ -88,7 +90,7 @@
 
                 CanDonate = false;
 
-                return false;
+                return StorePurchaseStatus.ServerError;
             }
             finally
             {

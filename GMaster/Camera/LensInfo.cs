@@ -10,6 +10,8 @@ namespace GMaster.Camera
 
         public int OpenedAperture { get; set; }
 
+        public bool HasPowerZoom { get; set; }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -34,17 +36,18 @@ namespace GMaster.Camera
         {
             unchecked
             {
-                var hashCode = MinZoom;
+                var hashCode = ClosedAperture;
                 hashCode = (hashCode * 397) ^ MaxZoom;
+                hashCode = (hashCode * 397) ^ MinZoom;
                 hashCode = (hashCode * 397) ^ OpenedAperture;
-                hashCode = (hashCode * 397) ^ ClosedAperture;
+                hashCode = (hashCode * 397) ^ HasPowerZoom.GetHashCode();
                 return hashCode;
             }
         }
 
         protected bool Equals(LensInfo other)
         {
-            return MinZoom == other.MinZoom && MaxZoom == other.MaxZoom && OpenedAperture == other.OpenedAperture && ClosedAperture == other.ClosedAperture;
+            return ClosedAperture == other.ClosedAperture && MaxZoom == other.MaxZoom && MinZoom == other.MinZoom && OpenedAperture == other.OpenedAperture && HasPowerZoom == other.HasPowerZoom;
         }
     }
 }

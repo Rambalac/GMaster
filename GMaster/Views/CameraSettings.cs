@@ -1,9 +1,8 @@
 namespace GMaster.Views
 {
-    using Camera.LumixResponces;
     using Tools;
 
-    public class CameraSettings : SettingsContainer, IIdItem
+    public class CameraSettings : SettingsContainer, IStringIdItem
     {
         public CameraSettings(string id)
         {

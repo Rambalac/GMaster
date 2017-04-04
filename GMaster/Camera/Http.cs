@@ -6,7 +6,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using LumixResponces;
+    using LumixData;
+    using Tools;
     using Windows.Web.Http;
     using Windows.Web.Http.Filters;
     using Windows.Web.Http.Headers;
@@ -18,7 +19,7 @@
 
         public Http(Uri baseUrl)
         {
-            this.baseUri = baseUrl;
+            baseUri = baseUrl;
 
             var rootFilter = new HttpBaseProtocolFilter();
             rootFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
@@ -50,6 +51,7 @@
                 if (product.Result != "ok")
                 {
                     throw new LumixException(
+                        ValueToEnum<LumixError>.Parse(product.Result, LumixError.Unknown),
                         $"Not ok result\r\nRequest: {path}\r\n{product.Result}");
                 }
 

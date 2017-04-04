@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using LumixResponces;
+    using LumixData;
 
     public class GH4Parser : CameraParser
     {
@@ -36,9 +36,14 @@
             { 8707, "25600" }
         };
 
-        protected override void InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
+        protected override bool InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
         {
-            var photosettings = menuset.Photosettings.Items;
+            var photosettings = menuset?.Photosettings?.Items;
+            if (photosettings == null)
+            {
+                return false;
+            }
+
             var qmenu = menuset.Qmenu2.Items;
             DefaultLanguage = menuset.TitleList.Languages.Single(l => l.Default == YesNo.Yes).Titles;
             CurrentLanguage = menuset.TitleList.Languages.TryGetValue(lang, out var cur) ? cur.Titles : null;
@@ -65,6 +70,8 @@
             result.WhiteBalances = ToMenuItems(qmenu["menu_item_id_whitebalance"]);
             result.BurstModes = ToMenuItems(qmenu["menu_item_id_burst"]);
             result.PeakingModes = ToMenuItems(qmenu["menu_item_id_peaking"]);
+
+            return true;
         }
     }
 }
