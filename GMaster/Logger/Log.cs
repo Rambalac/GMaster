@@ -1,4 +1,4 @@
-﻿namespace GMaster
+﻿namespace GMaster.Logger
 {
     using System;
     using System.Diagnostics;
@@ -11,12 +11,12 @@
             HockeyClient.Current.Configure("7d7a7144b068445db1eb29135444562a");
         }
 
-        [Conditional("DEBUG")]
-        public static void Error(Exception eException)
+        public static void Error(Exception exception)
         {
-            if (eException != null)
+            if (exception != null)
             {
-                HockeyClient.Current.TrackException(eException);
+                System.Diagnostics.Debug.WriteLine(exception);
+                HockeyClient.Current.TrackException(exception);
             }
         }
 
@@ -31,8 +31,10 @@
             HockeyClient.Current.TrackTrace(str, SeverityLevel.Warning);
         }
 
-        public static void Debug(Exception socketException)
+        [Conditional("DEBUG")]
+        public static void Debug(Exception exception)
         {
+            System.Diagnostics.Debug.WriteLine(exception);
         }
     }
 }

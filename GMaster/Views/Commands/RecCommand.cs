@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Camera;
+    using Logger;
     using Tools;
 
     public class RecCommand : AbstractModelCommand<CameraViewModel>

@@ -10,6 +10,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
+    using Logger;
     using LumixData;
     using Tools;
     using Windows.UI.Xaml;

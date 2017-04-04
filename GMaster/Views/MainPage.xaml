@@ -12,7 +12,6 @@
         <commands:FeedbackCommand x:Key="FeedbackCommand" />
         <commands:AboutCommand x:Key="AboutCommand" />
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
-        <commands:OpenSplitViewCommand x:Key="OpenSplitViewCommand" />
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
         <DataTemplate x:Key="CameraItemTemplate" x:DataType="local:ConnectedCamera">
             <Grid HorizontalAlignment="Stretch">
@@ -38,7 +37,7 @@
             <SymbolIcon Symbol="FullScreen" />
         </Button>
 
-        <SplitView x:Name="MainMenu" DisplayMode="Overlay" PaneClosing="MainMenu_OnPaneClosing" IsPaneOpen="{x:Bind Model.IsMainMenuOpened, Mode=TwoWay}" Grid.Row="0">
+        <SplitView x:Name="MainMenu" DisplayMode="Overlay" Grid.Row="0">
             <SplitView.Pane>
                 <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10,10,10,10">
                     <Grid.RowDefinitions>
@@ -78,7 +77,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ListView Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" HorizontalContentAlignment="Stretch"  ItemClick="{x:Bind Model.SelectCameraCommand.Handler}" IsItemClickEnabled="True">
+                    <ListView Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" HorizontalContentAlignment="Stretch"  ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -120,9 +119,9 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MenuFrame" />
+                <Frame x:Name="MenuFrame" Padding="10,50,10,10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed"/>
             </SplitView.Content>
         </SplitView>
-        <Button Content="&#xE700;" Command="{StaticResource OpenSplitViewCommand}" CommandParameter="{x:Bind Model}" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" Click="MenuButton_OnClick"/>
     </Grid>
 </Page>

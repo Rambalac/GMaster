@@ -18,11 +18,6 @@ namespace GMaster.Views
 
         private MainPageModel Model => DataContext as MainPageModel;
 
-        private void MainMenu_OnPaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
-        {
-            MenuFrame.Content = null;
-        }
-
         private void CameraSettings_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is ConnectedCamera camera)
@@ -33,17 +28,56 @@ namespace GMaster.Views
 
         private void OpenFrame(Type type, object model)
         {
-            MainMenu.DisplayMode = SplitViewDisplayMode.Inline;
             MenuFrame.Navigate(type);
             if (MenuFrame.Content is FrameworkElement frameworkElement)
             {
                 frameworkElement.DataContext = model;
+            }
+
+            MenuFrame.Visibility = Visibility.Visible;
+            if (ActualWidth < 640)
+            {
+                MainMenu.DisplayMode = SplitViewDisplayMode.Overlay;
+                MainMenu.IsPaneOpen = false;
+            }
+            else
+            {
+                MainMenu.DisplayMode = SplitViewDisplayMode.Inline;
             }
         }
 
         private void GeneralSettings_Click(object sender, RoutedEventArgs e)
         {
             OpenFrame(typeof(GeneralSettingsPage), Model);
+        }
+
+        private void MenuButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MenuFrame.Content == null && !MainMenu.IsPaneOpen)
+            {
+                MainMenu.DisplayMode = SplitViewDisplayMode.Overlay;
+                MainMenu.IsPaneOpen = true;
+            }
+            else
+            {
+                if (MenuFrame.Content == null)
+                {
+                    MainMenu.IsPaneOpen = false;
+                }
+                else
+                {
+                    MenuFrame.Content = null;
+                    MenuFrame.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            Model.View1.SelectedCamera = (ConnectedCamera)e.ClickedItem;
+            MainMenu.IsPaneOpen = false;
+            MenuFrame.Content = null;
+            MenuFrame.Visibility = Visibility.Collapsed;
         }
     }
 }

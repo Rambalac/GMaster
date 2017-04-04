@@ -8,6 +8,7 @@ namespace GMaster.Camera
     using System.Net.Http;
     using System.Threading.Tasks;
     using Annotations;
+    using Logger;
     using Rssdp;
     using Rssdp.Infrastructure;
     using Windows.Networking;

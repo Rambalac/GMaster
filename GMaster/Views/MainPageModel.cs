@@ -1,6 +1,7 @@
 ﻿namespace GMaster.Views
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Globalization;
@@ -11,7 +12,9 @@
     using Annotations;
     using Camera;
     using Commands;
+    using Logger;
     using Windows.ApplicationModel;
+    using Windows.Storage;
     using Windows.UI.Xaml;
 
     public class MainPageModel : INotifyPropertyChanged, IDisposable
@@ -32,14 +35,24 @@
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
             Task.Run(CameraRefresh);
+            Task.Run(LoadLuts);
 
             wifidirect = new WiFiHelper();
             wifidirect.Start();
 
             ConnectCommand = new ConnectCommand(this);
-            SelectCameraCommand = new SelectCameraCommand(this);
             DonateCommand = new DonateCommand(this);
+            AddLutCommand = new AddLutCommand(this);
         }
+
+        public async Task LoadLuts()
+        {
+            var lutFolder = await App.GetLutsFolder();
+            InstalledLuts = new ObservableCollection<StorageFile>(await lutFolder.GetFilesAsync());
+            OnPropertyChanged(nameof(InstalledLuts));
+        }
+
+        public ObservableCollection<StorageFile> InstalledLuts { get; private set; }
 
         public event Action<Lumix> CameraDisconnected;
 
@@ -57,20 +70,7 @@
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
-        public bool IsMainMenuOpened
-        {
-            get => leftPanelOpened;
-
-            set
-            {
-                leftPanelOpened = value;
-                OnPropertyChanged();
-            }
-        }
-
         public LumixManager LumixManager { get; }
-
-        public SelectCameraCommand SelectCameraCommand { get; }
 
         public DeviceInfo SelectedDevice
         {
@@ -93,6 +93,8 @@
                 return $"v{ver.Major}.{ver.Minor}.{ver.Build}";
             }
         }
+
+        public AddLutCommand AddLutCommand { get; private set; }
 
         public void AddConnectableDevice(DeviceInfo device)
         {

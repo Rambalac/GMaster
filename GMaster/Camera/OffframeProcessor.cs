@@ -6,6 +6,7 @@ namespace GMaster.Camera
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
+    using Logger;
     using LumixData;
     using Tools;
 

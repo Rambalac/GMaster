@@ -6,6 +6,7 @@
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
+    using Logger;
     using Windows.Services.Store;
 
     public class Donations : INotifyPropertyChanged

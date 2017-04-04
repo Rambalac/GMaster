@@ -4,10 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:storage="using:Windows.Storage"
+    xmlns:commands="using:GMaster.Views.Commands"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
-
-    <StackPanel Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding GeneralSettings}" Padding="20">
+    <StackPanel Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock x:Uid="ConnectionHeader" FontSize="20">Connection</TextBlock>
-        <ToggleSwitch OffContent="Autoconnect is Diabled for all new cameras" OnContent="Autoconnect is Enabled for all new cameras" IsOn="{Binding Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0" />
+        <ToggleSwitch OffContent="Autoconnect is Diabled for all new cameras" OnContent="Autoconnect is Enabled for all new cameras" IsOn="{Binding GeneralSettings.Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0" />
+
+        <TextBlock x:Uid="InstalledLuts" FontSize="20">Installed LUTs</TextBlock>
+        <Button Command="{Binding AddLutCommand}">
+            <SymbolIcon Symbol="Add" />
+        </Button>
+        <ListBox ItemsSource="{Binding InstalledLuts}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="storage:StorageFile">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding DisplayName}"/>
+                        <Button >
+                            <SymbolIcon Symbol="Delete" />
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </StackPanel>
 </Page>

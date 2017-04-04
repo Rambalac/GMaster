@@ -3,10 +3,12 @@
     using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Logger;
     using Views;
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
     using Windows.ApplicationModel.Resources;
+    using Windows.Storage;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -32,6 +34,8 @@
         public MainPageModel MainModel { get; private set; }
 
         public static string GetString(string id) => Strings.GetString(id);
+
+        private static readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
 
         public static Task RunAsync(DispatchedHandler action)
         {
@@ -133,6 +137,11 @@
             var deferral = e.SuspendingOperation.GetDeferral();
             MainModel.StopListening();
             deferral.Complete();
+        }
+
+        public static async Task<StorageFolder> GetLutsFolder()
+        {
+            return await LocalFolder.CreateFolderAsync("Luts", CreationCollisionOption.OpenIfExists);
         }
     }
 }

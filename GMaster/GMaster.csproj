@@ -143,7 +143,7 @@
     <Compile Include="Camera\TitledList.cs" />
     <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Log.cs" />
+    <Compile Include="Logger\Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Views\Adjuster.xaml.cs">
       <DependentUpon>Adjuster.xaml</DependentUpon>
@@ -153,6 +153,7 @@
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\AboutCommand.cs" />
+    <Compile Include="Views\Commands\AddLutCommand.cs" />
     <Compile Include="Views\Commands\DonateCommand.cs" />
     <Compile Include="Views\Commands\FeedbackCommand.cs" />
     <Compile Include="Views\Commands\ZoomCommand.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Camera\Lumix.cs" />
     <Compile Include="Camera\LumixException.cs" />
     <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
-    <Compile Include="Views\Commands\OpenSplitViewCommand.cs" />
     <Compile Include="Views\ConnectedCamera.cs" />
     <Compile Include="Views\MainPageModel.cs" />
     <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
@@ -183,7 +183,6 @@
     <Compile Include="Views\Commands\RecCommand.cs" />
     <Compile Include="Views\Commands\SwitchFullScreenCommand.cs" />
     <Compile Include="Views\Commands\CameraDisconnectCommand.cs" />
-    <Compile Include="Views\Commands\SelectCameraCommand.cs" />
     <Compile Include="Views\Converters\NotVisibilityConverter.cs" />
     <Compile Include="Views\Converters\RecStateConvertor.cs" />
     <Compile Include="Views\Converters\VisibilityConverter.cs" />
@@ -296,9 +295,7 @@
       <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
