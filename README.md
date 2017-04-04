@@ -21,7 +21,7 @@ App is free and has no ad. You can install it from [MS Store](https://www.micros
 * GH3
 
 ### Other
-App may work with other Panasonic Lumix cameras, but I have no way to tested it.
+App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 * GX85 - As some people reported App cannot connect.
 
