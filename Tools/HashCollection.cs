@@ -24,13 +24,7 @@
 
         public bool IsReadOnly => false;
 
-        public TItem this[string index]
-        {
-            get
-            {
-                return dictionary.TryGetValue(index, out var value) ? value : throw new KeyNotFoundException("Key not found: " + index);
-            }
-        }
+        public TItem this[string index] => dictionary.TryGetValue(index, out var value) ? value : throw new KeyNotFoundException("Key not found: " + index);
 
         public virtual void Add(TItem item)
         {

@@ -1,6 +1,5 @@
 namespace GMaster.Views.Commands
 {
-    using System;
     using System.Threading.Tasks;
     using Tools;
 
@@ -21,13 +20,7 @@ namespace GMaster.Views.Commands
                 return;
             }
 
-            try
-            {
-                await lumix.Camera.Capture();
-            }
-            catch (Exception)
-            {
-            }
+            await lumix.Camera.Capture();
         }
     }
 }

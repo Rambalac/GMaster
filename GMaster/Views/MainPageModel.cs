@@ -62,10 +62,7 @@
 
         public bool IsMainMenuOpened
         {
-            get
-            {
-                return leftPanelOpened;
-            }
+            get => leftPanelOpened;
 
             set
             {
@@ -80,10 +77,7 @@
 
         public DeviceInfo SelectedDevice
         {
-            get
-            {
-                return selectedDevice;
-            }
+            get => selectedDevice;
 
             set
             {

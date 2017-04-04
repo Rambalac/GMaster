@@ -20,6 +20,7 @@
         private static readonly HashSet<CameraMode> ApertureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.A, CameraMode.vM, CameraMode.vA };
         private static readonly HashSet<CameraMode> CaptureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.A, CameraMode.P, CameraMode.Unknown, CameraMode.iA };
         private static readonly HashSet<CameraMode> ShutterModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.vM, CameraMode.vS };
+        private readonly Http http;
         private readonly object messageRecieving = new object();
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -27,8 +28,6 @@
         private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
 
         private MemoryStream currentImageStream;
-
-        private Http http;
         private byte lastByte;
 
         private MemoryStream offframeBytes;
@@ -97,10 +96,19 @@
 
         public string Udn => Device.Udn;
 
-        public async Task Capture()
+        public async Task<bool> Capture()
         {
-            await http.Get<BaseRequestResult>("?mode=camcmd&value=capture");
-            await http.Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
+            try
+            {
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=capture");
+                await http.Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
         }
 
         public async Task<bool> ChangeFocus(ChangeDirection dir)

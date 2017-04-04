@@ -54,7 +54,10 @@
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
-            await MainModel.StartListening();
+            if (MainModel != null)
+            {
+                await MainModel.StartListening();
+            }
 
 #if DEBUG
             if (Debugger.IsAttached)

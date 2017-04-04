@@ -33,10 +33,7 @@
 
         public ICameraMenuItem CurrentAperture
         {
-            get
-            {
-                return currentAperture;
-            }
+            get => currentAperture;
 
             set
             {
@@ -52,10 +49,7 @@
 
         public ICameraMenuItem CurrentIso
         {
-            get
-            {
-                return currentIso;
-            }
+            get => currentIso;
 
             set
             {
@@ -69,10 +63,7 @@
 
         public ICameraMenuItem CurrentShutter
         {
-            get
-            {
-                return currentShutter;
-            }
+            get => currentShutter;
 
             set
             {
@@ -96,10 +87,7 @@
 
         public ConnectedCamera SelectedCamera
         {
-            get
-            {
-                return selectedCamera;
-            }
+            get => selectedCamera;
 
             set
             {

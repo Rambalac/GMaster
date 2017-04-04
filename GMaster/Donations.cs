@@ -18,10 +18,7 @@
 
         public bool CanDonate
         {
-            get
-            {
-                return canDonate;
-            }
+            get => canDonate;
 
             set
             {
@@ -37,10 +34,7 @@
 
         public bool InProgress
         {
-            get
-            {
-                return inProgress;
-            }
+            get => inProgress;
 
             set
             {

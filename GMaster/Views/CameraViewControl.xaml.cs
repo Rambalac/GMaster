@@ -19,6 +19,7 @@ namespace GMaster.Views
 
         private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(100);
 
+        private double lastExpansion;
         private DateTime lastSkipable;
 
         public CameraViewControl()
@@ -54,7 +55,38 @@ namespace GMaster.Views
             }
         }
 
-        private double lastExpansion;
+        private async void FocusTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleFast);
+            }
+        }
+
+        private async void FocusTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleNormal);
+            }
+        }
+
+        private async void FocusWideFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideFast);
+            }
+        }
+
+        private async void FocusWideNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideNormal);
+            }
+        }
+
         private async void ImageGestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             if (Lumix != null && Math.Abs(args.Cumulative.Expansion) < 0.001)
@@ -208,6 +240,22 @@ namespace GMaster.Views
             }
         }
 
+        private async void ZoomTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleFast);
+            }
+        }
+
+        private async void ZoomTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (Model?.SelectedCamera?.Camera != null)
+            {
+                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleNormal);
+            }
+        }
+
         private async void ZoomWideFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
         {
             if (Model?.SelectedCamera?.Camera != null)
@@ -221,54 +269,6 @@ namespace GMaster.Views
             if (Model?.SelectedCamera?.Camera != null)
             {
                 await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.WideNormal);
-            }
-        }
-
-        private async void ZoomTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleNormal);
-            }
-        }
-
-        private async void ZoomTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleFast);
-            }
-        }
-
-        private async void FocusWideFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideFast);
-            }
-        }
-
-        private async void FocusWideNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideNormal);
-            }
-        }
-
-        private async void FocusTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleNormal);
-            }
-        }
-
-        private async void FocusTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleFast);
             }
         }
     }
