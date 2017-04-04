@@ -185,17 +185,6 @@
                     <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                         <StackPanel Width="100">
                             <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
-                                      ItemsSource="{Binding ShutterSpeeds}"
-                                      HorizontalContentAlignment="Center"
-                                      SelectedItem="{Binding CurrentShutter, Mode=TwoWay}"
-                                      Visibility="{Binding CanChangeShutter, Converter={StaticResource VisibilityConverter}}" />
-                            <TextBlock HorizontalAlignment="Stretch"
-                                       Text="{Binding SelectedCamera.Camera.OffFrameProcessor.Shutter.Text}"
-                                       TextAlignment="Center"
-                                       Visibility="{Binding CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}" />
-                        </StackPanel>
-                        <StackPanel Width="100">
-                            <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
                                       ItemsSource="{Binding CurrentApertures}"
                                       HorizontalContentAlignment="Center"
                                       SelectedItem="{Binding CurrentAperture, Mode=TwoWay}"
@@ -207,7 +196,18 @@
                         </StackPanel>
                         <StackPanel Width="100">
                             <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
-                                      ItemsSource="{Binding SelectedCamera.Camera.MenuSet.IsoValues}"
+                                      ItemsSource="{Binding ShutterSpeeds}"
+                                      HorizontalContentAlignment="Center"
+                                      SelectedItem="{Binding CurrentShutter, Mode=TwoWay}"
+                                      Visibility="{Binding CanChangeShutter, Converter={StaticResource VisibilityConverter}}" />
+                            <TextBlock HorizontalAlignment="Stretch"
+                                       Text="{Binding SelectedCamera.Camera.OffFrameProcessor.Shutter.Text}"
+                                       TextAlignment="Center"
+                                       Visibility="{Binding CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}" />
+                        </StackPanel>
+                        <StackPanel Width="100">
+                            <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
+                                      ItemsSource="{Binding IsoValues}"
                                       VerticalAlignment="Stretch" HorizontalContentAlignment="Center"
                                       SelectedItem="{Binding CurrentIso, Mode=TwoWay}" />
                         </StackPanel>

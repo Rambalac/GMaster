@@ -125,6 +125,7 @@
                 OnPropertyChanged(nameof(CanManualFocus));
                 OnPropertyChanged(nameof(ShutterSpeeds));
                 OnPropertyChanged(nameof(CurrentApertures));
+                OnPropertyChanged(nameof(IsoValues));
                 OnPropertyChanged(nameof(CurrentAperture));
                 OnPropertyChanged(nameof(CurrentShutter));
                 OnPropertyChanged(nameof(CurrentIso));
@@ -133,13 +134,15 @@
             }
         }
 
-        public bool CanChangeAperture => SelectedCamera.Camera.CanChangeAperture;
+        public bool CanChangeAperture => SelectedCamera?.Camera?.CanChangeAperture ?? true;
 
-        public bool CanChangeShutter => SelectedCamera.Camera.CanChangeShutter;
+        public bool CanChangeShutter => SelectedCamera?.Camera?.CanChangeShutter ?? true;
 
-        public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera.Camera.MenuSet.ShutterSpeeds;
+        public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera?.Camera?.MenuSet?.ShutterSpeeds;
 
-        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera.Camera.CurrentApertures;
+        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera?.Camera?.CurrentApertures;
+
+        public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
 
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -200,6 +203,7 @@
                     break;
                 case nameof(Lumix.MenuSet):
                     OnPropertyChanged(nameof(ShutterSpeeds));
+                    OnPropertyChanged(nameof(IsoValues));
                     break;
                 case nameof(Lumix.LensInfo):
                     OnPropertyChanged(nameof(HasPowerZoom));
