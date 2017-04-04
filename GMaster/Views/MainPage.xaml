@@ -12,7 +12,7 @@
         <commands:FeedbackCommand x:Key="FeedbackCommand" />
         <commands:AboutCommand x:Key="AboutCommand" />
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
-        <commands:OpenSplitViewCommand x:Key="OpenSplitViewCommand"/>
+        <commands:OpenSplitViewCommand x:Key="OpenSplitViewCommand" />
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
         <DataTemplate x:Key="CameraItemTemplate" x:DataType="local:ConnectedCamera">
             <Grid HorizontalAlignment="Stretch">
@@ -22,11 +22,11 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Click="CameraSettings_Click">
-                    <SymbolIcon Symbol="Setting"/>
+                    <SymbolIcon Symbol="Setting" />
                 </Button>
-                <TextBlock Grid.Column="1" Text="{x:Bind Name}" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,5,0"/>
+                <TextBlock Grid.Column="1" Text="{x:Bind Name}" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,5,0" />
                 <Button Grid.Column="2" Command="{StaticResource CameraDisconnectCommand}" CommandParameter="{x:Bind Camera}">
-                    <SymbolIcon Symbol="Delete"/>
+                    <SymbolIcon Symbol="Delete" />
                 </Button>
             </Grid>
         </DataTemplate>
@@ -55,21 +55,21 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
-                    
+                    <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2" />
+
                     <Button Grid.Column="0" Grid.Row="1" Background="Transparent" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Margin="0,0,0,10" Click="GeneralSettings_Click">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Setting"/>
+                            <SymbolIcon Symbol="Setting" />
                             <TextBlock Text="General settings" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
 
-                    <Rectangle Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Height="4" Fill="White"/>
+                    <Rectangle Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Height="4" Fill="White" />
 
                     <Button Content="Connect" Grid.Row="3" Grid.Column="1" Margin="0,10,0,10"
-                        Command="{Binding ConnectCommand}"  />
+                        Command="{Binding ConnectCommand}" />
                     <ComboBox Grid.Row="3" Grid.Column="0" Margin="0,10,10,10" HorizontalAlignment="Stretch"
-                          ItemsSource="{Binding ConnectableDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" >
+                          ItemsSource="{Binding ConnectableDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Border>
@@ -78,51 +78,51 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ListView Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" HorizontalContentAlignment="Stretch"  ItemClick="{x:Bind Model.SelectCameraCommand.Handler}" IsItemClickEnabled="True" >
+                    <ListView Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" HorizontalContentAlignment="Stretch"  ItemClick="{x:Bind Model.SelectCameraCommand.Handler}" IsItemClickEnabled="True">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
-                    <Grid Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" >
-                        <StackPanel Orientation="Horizontal" >
-                            <StackPanel Margin="0,0,10,0" >
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Margin="0,0,10,0">
                                 <Button HorizontalAlignment="Center" Command="{StaticResource FeedbackCommand}" Padding="10">
                                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE939;" HorizontalAlignment="Center" />
                                 </Button>
-                                <TextBlock Text="Feedback" Margin="5"/>
+                                <TextBlock Text="Feedback" Margin="5" />
                             </StackPanel>
                             <StackPanel Margin="0,0,10,0">
                                 <Button HorizontalAlignment="Center" Command="{StaticResource AboutCommand}"  Padding="10">
-                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE11B;" HorizontalAlignment="Center"/>
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE11B;" HorizontalAlignment="Center" />
                                 </Button>
-                                <TextBlock Text="Help" TextAlignment="Center" Margin="5"/>
+                                <TextBlock Text="Help" TextAlignment="Center" Margin="5" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right" Visibility="{Binding Donations.CanDonate, Converter={StaticResource VisibilityConverter}}">
                             <Button HorizontalAlignment="Center" Padding="10" IsEnabled="{Binding Donations.InProgress, Converter= {StaticResource NotConverter}}">
                                 <Grid>
-                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE9BB;" HorizontalAlignment="Center"/>
-                                    <ProgressRing  IsActive="{Binding Donations.InProgress}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xE9BB;" HorizontalAlignment="Center" />
+                                    <ProgressRing  IsActive="{Binding Donations.InProgress}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                                 </Grid>
                                 <Button.Flyout>
                                     <MenuFlyout>
-                                        <MenuFlyoutItem Text="Big donation" Command="{Binding DonateCommand}" CommandParameter="9pbp09rvl2h9"/>
-                                        <MenuFlyoutItem Text="Medium donation" Command="{Binding DonateCommand}" CommandParameter="9njkhg9s7w4n"/>
-                                        <MenuFlyoutItem Text="Small donation" Command="{Binding DonateCommand}" CommandParameter="9mxr5h61gnwk"/>
+                                        <MenuFlyoutItem Text="Big donation" Command="{Binding DonateCommand}" CommandParameter="9pbp09rvl2h9" />
+                                        <MenuFlyoutItem Text="Medium donation" Command="{Binding DonateCommand}" CommandParameter="9njkhg9s7w4n" />
+                                        <MenuFlyoutItem Text="Small donation" Command="{Binding DonateCommand}" CommandParameter="9mxr5h61gnwk" />
                                     </MenuFlyout>
                                 </Button.Flyout>
                             </Button>
-                            <TextBlock Text="Donate" TextAlignment="Center" Margin="5"/>
+                            <TextBlock Text="Donate" TextAlignment="Center" Margin="5" />
                         </StackPanel>
                     </Grid>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MenuFrame"/>
+                <Frame x:Name="MenuFrame" />
             </SplitView.Content>
         </SplitView>
-        <Button Content="&#xE700;" Command="{StaticResource OpenSplitViewCommand}" CommandParameter="{x:Bind Model}" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="&#xE700;" Command="{StaticResource OpenSplitViewCommand}" CommandParameter="{x:Bind Model}" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Grid>
 </Page>

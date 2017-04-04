@@ -5,10 +5,10 @@
     <mainmenu>
       <menu>
         <item id="menu_item_id_connection_settings" title_id="title_connection_settings" func_type="sp_embeded_connection_settings" ></item>
-        <item id="menu_item_id_liveview_settings" title_id="title_liveview_settings" func_type="submenu" >
+        <item id="menu_item_id_liveview_settings" title_id="title_liveview_settings" func_type="submenu">
           <menu>
             <item id="menu_item_id_self_shot" title_id="title_self_shot" func_type="sp_embeded_self_shot" ></item>
-            <item id="menu_item_id_liveview_quality" title_id="title_liveview_quality" func_type="select" >
+            <item id="menu_item_id_liveview_quality" title_id="title_liveview_quality" func_type="select">
               <group>
                 <item id="menu_item_id_liveviewsize_vga" title_id="title_liveviewsize_vga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="vga" ></item>
                 <item id="menu_item_id_liveviewsize_qvga" title_id="title_liveviewsize_qvga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="qvga" ></item>
@@ -17,7 +17,7 @@
           </menu>
         </item>
         <item id="menu_item_id_playview_settings" title_id="title_playview_settings" func_type="sp_embeded_playview_settings" ></item>
-        <item id="menu_item_id_appset" title_id="title_appset" func_type="submenu" >
+        <item id="menu_item_id_appset" title_id="title_appset" func_type="submenu">
           <menu>
             <item id="menu_item_id_netname" title_id="title_netname" func_type="sp_embeded_netname" ></item>
           </menu>
@@ -28,7 +28,7 @@
     </mainmenu>
     <photosettings>
       <menu>
-        <item id="menu_item_id_crtv_ctrl" title_id="title_crtv_ctrl" func_type="sp_embeded_crtv_ctrl" >
+        <item id="menu_item_id_crtv_ctrl" title_id="title_crtv_ctrl" func_type="sp_embeded_crtv_ctrl">
           <group>
             <item id="menu_item_id_crtv_ctrl_pop" title_id="title_crtv_ctrl_pop" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="pop" ></item>
             <item id="menu_item_id_crtv_ctrl_retro" title_id="title_crtv_ctrl_retro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="retro" ></item>
@@ -54,7 +54,7 @@
             <item id="menu_item_id_crtv_ctrl_sunshine" title_id="title_crtv_ctrl_sunshine" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="sunshine" ></item>
           </group>
         </item>
-        <item id="menu_item_id_ph_sty" title_id="title_ph_sty" func_type="sp_embeded_ph_sty3" >
+        <item id="menu_item_id_ph_sty" title_id="title_ph_sty" func_type="sp_embeded_ph_sty3">
           <group>
             <item id="menu_item_id_ph_sty_standard" title_id="title_ph_sty_standard" cmd_mode="setsetting" cmd_type="colormode" cmd_value="standard" cmd_value2="__value__" ></item>
             <item id="menu_item_id_ph_sty_vivid" title_id="title_ph_sty_vivid" cmd_mode="setsetting" cmd_type="colormode" cmd_value="vivid" cmd_value2="__value__" ></item>
@@ -69,9 +69,9 @@
           </group>
         </item>
         <item id="menu_item_id_4kphoto_video" title_id="title_4kphoto_video" func_type="on_off" cmd_mode="setsetting" cmd_type="4k_photo_video" cmd_value="__value__" ></item>
-        <item id="menu_item_id_4kphoto_set_video" title_id="title_4kphoto_set_video" func_type="submenu" >
+        <item id="menu_item_id_4kphoto_set_video" title_id="title_4kphoto_set_video" func_type="submenu">
           <menu>
-            <item id="menu_item_id_4kphoto_aspect" title_id="title_4kphoto_aspect" func_type="select" >
+            <item id="menu_item_id_4kphoto_aspect" title_id="title_4kphoto_aspect" func_type="select">
               <group>
                 <item id="menu_item_id_4kphoto_aspect_4:3" title_id="title_4kphoto_aspect_4:3" cmd_mode="setsetting" cmd_type="4k_photo_aspect" cmd_value="4:3" ></item>
                 <item id="menu_item_id_4kphoto_aspect_3:2" title_id="title_4kphoto_aspect_3:2" cmd_mode="setsetting" cmd_type="4k_photo_aspect" cmd_value="3:2" ></item>
@@ -82,7 +82,7 @@
             <item id="menu_item_id_4kphoto_looprec" title_id="title_4kphoto_looprec" func_type="on_off" cmd_mode="setsetting" cmd_type="video_loop_rec" cmd_value="__value__" ></item>
           </menu>
         </item>
-        <item id="menu_item_id_asprat" title_id="title_asprat" func_type="select" >
+        <item id="menu_item_id_asprat" title_id="title_asprat" func_type="select">
           <group>
             <item id="menu_item_id_asprat_4:3" title_id="title_asprat_4:3" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="4:3" ></item>
             <item id="menu_item_id_asprat_3:2" title_id="title_asprat_3:2" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="3:2" ></item>
@@ -90,7 +90,7 @@
             <item id="menu_item_id_asprat_1:1" title_id="title_asprat_1:1" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="1:1" ></item>
           </group>
         </item>
-        <item id="menu_item_id_pctsiz" title_id="title_pctsiz" func_type="select" >
+        <item id="menu_item_id_pctsiz" title_id="title_pctsiz" func_type="select">
           <group>
             <item id="menu_item_id_pctsiz_16m" title_id="title_pctsiz_16mL" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="16m" ></item>
             <item id="menu_item_id_pctsiz_14m" title_id="title_pctsiz_14mL" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="14m" ></item>
@@ -111,7 +111,7 @@
             <item id="menu_item_id_pctsiz_ex2m" title_id="title_pctsiz_ex2m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m" ></item>
           </group>
         </item>
-        <item id="menu_item_id_quality" title_id="title_quality" func_type="select" >
+        <item id="menu_item_id_quality" title_id="title_quality" func_type="select">
           <group>
             <item id="menu_item_id_quality_fine" title_id="title_quality_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="fine" ></item>
             <item id="menu_item_id_quality_standard" title_id="title_quality_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="standard" ></item>
@@ -122,16 +122,16 @@
             <item id="menu_item_id_quality_mpo_standard" title_id="title_quality_mpo_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="mpo_standard" ></item>
           </group>
         </item>
-        <item id="menu_item_id_lightmet" title_id="title_lightmet" func_type="select" >
+        <item id="menu_item_id_lightmet" title_id="title_lightmet" func_type="select">
           <group>
             <item id="menu_item_id_lightmet_multi" title_id="title_lightmet_multi" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="multi" ></item>
             <item id="menu_item_id_lightmet_center" title_id="title_lightmet_center" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="center" ></item>
             <item id="menu_item_id_lightmet_spot" title_id="title_lightmet_spot" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="spot" ></item>
           </group>
         </item>
-        <item id="menu_item_id_4kphoto_burst" title_id="title_4kphoto_burst" func_type="submenu" >
+        <item id="menu_item_id_4kphoto_burst" title_id="title_4kphoto_burst" func_type="submenu">
           <menu>
-            <item id="menu_item_id_4kphoto_burst_mode" title_id="title_4kphoto_burst_mode" func_type="select" >
+            <item id="menu_item_id_4kphoto_burst_mode" title_id="title_4kphoto_burst_mode" func_type="select">
               <group>
                 <item id="menu_item_id_4kphoto_burst_mode_burst" title_id="title_4kphoto_burst_mode_burst" cmd_mode="setsetting" cmd_type="4k_photo" cmd_value="burst" ></item>
                 <item id="menu_item_id_4kphoto_burst_mode_start_stop" title_id="title_4kphoto_burst_mode_start_stop" cmd_mode="setsetting" cmd_type="4k_photo" cmd_value="start_stop" ></item>
@@ -143,13 +143,13 @@
           </menu>
         </item>
         <item id="menu_item_id_focus_select" title_id="title_focus_select" func_type="on_off" cmd_mode="setsetting" cmd_type="focusselect" cmd_value="__value__" ></item>
-        <item id="menu_item_id_focus_action" title_id="title_focus_action" func_type="select" >
+        <item id="menu_item_id_focus_action" title_id="title_focus_action" func_type="select">
           <group>
             <item id="menu_item_id_focus_action_mode1" title_id="title_focus_action_mode1" cmd_mode="setsetting" cmd_type="focusaction" cmd_value="mode1" ></item>
             <item id="menu_item_id_focus_action_mode2" title_id="title_focus_action_mode2" cmd_mode="setsetting" cmd_type="focusaction" cmd_value="mode2" ></item>
           </group>
         </item>
-        <item id="menu_item_id_flash" title_id="title_flash" func_type="select" >
+        <item id="menu_item_id_flash" title_id="title_flash" func_type="select">
           <group>
             <item id="menu_item_id_flash_iauto" title_id="title_flash_iauto" cmd_mode="setsetting" cmd_type="flash" cmd_value="iauto" ></item>
             <item id="menu_item_id_flash_forcedflashon" title_id="title_flash_forcedflashon" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashon" ></item>
@@ -159,7 +159,7 @@
             <item id="menu_item_id_flash_forcedflashoff" title_id="title_flash_forcedflashoff" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashoff" ></item>
           </group>
         </item>
-        <item id="menu_item_id_videoformat" title_id="title_videoformat" func_type="select" >
+        <item id="menu_item_id_videoformat" title_id="title_videoformat" func_type="select">
           <group>
             <item id="menu_item_id_videoformat_avchd" title_id="title_videoformat_avchd" cmd_mode="setsetting" cmd_type="videoformat" cmd_value="avchd" ></item>
             <item id="menu_item_id_videoformat_mp4" title_id="title_videoformat_mp4" cmd_mode="setsetting" cmd_type="videoformat" cmd_value="mp4" ></item>
@@ -167,7 +167,7 @@
             <item id="menu_item_id_videoformat_mov" title_id="title_videoformat_mov" cmd_mode="setsetting" cmd_type="videoformat" cmd_value="mov" ></item>
           </group>
         </item>
-        <item id="menu_item_id_v_quality" title_id="title_v_quality" func_type="select" >
+        <item id="menu_item_id_v_quality" title_id="title_v_quality" func_type="select">
           <group>
             <item id="menu_item_id_v_quality_mov_c24p_100mbps_c4k" title_id="title_v_quality_mov_c24p_100mbps_c4k" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_c24p_100mbps_c4k" ></item>
             <item id="menu_item_id_v_quality_mov_30p_100mbps_4k" title_id="title_v_quality_mov_30p_100mbps_4k" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_30p_100mbps_4k" ></item>
@@ -258,7 +258,7 @@
         <item id="menu_item_id_program_shift" title_id="title_program_shift" func_type="sp_embeded_program_shift" ></item>
         <item id="menu_item_id_f" title_id="title_f" func_type="sp_embeded_f" ></item>
         <item id="menu_item_id_ss" title_id="title_ss" func_type="sp_embeded_ss" ></item>
-        <item id="menu_item_id_f_and_ss_angle" title_id="title_f_and_ss_angle" func_type="sp_embeded_f_and_ss_angle" >
+        <item id="menu_item_id_f_and_ss_angle" title_id="title_f_and_ss_angle" func_type="sp_embeded_f_and_ss_angle">
           <group>
             <item id="menu_item_id_f_and_ss_angle_11" title_id="title_f_and_ss_angle_11" cmd_mode="setsetting" cmd_type="shtrspeed_angle" cmd_value="11" ></item>
             <item id="menu_item_id_f_and_ss_angle_15" title_id="title_f_and_ss_angle_15" cmd_mode="setsetting" cmd_type="shtrspeed_angle" cmd_value="15" ></item>
@@ -284,7 +284,7 @@
             <item id="menu_item_id_f_and_ss_angle_360" title_id="title_f_and_ss_angle_360" cmd_mode="setsetting" cmd_type="shtrspeed_angle" cmd_value="360" ></item>
           </group>
         </item>
-        <item id="menu_item_id_ss_angle" title_id="title_ss_angle" func_type="sp_embeded_ss_angle" >
+        <item id="menu_item_id_ss_angle" title_id="title_ss_angle" func_type="sp_embeded_ss_angle">
           <group>
             <item id="menu_item_id_ss_angle_11" title_id="title_ss_angle_11" cmd_mode="setsetting" cmd_type="shtrspeed_angle" cmd_value="11" ></item>
             <item id="menu_item_id_ss_angle_15" title_id="title_ss_angle_15" cmd_mode="setsetting" cmd_type="shtrspeed_angle" cmd_value="15" ></item>
@@ -314,7 +314,7 @@
         <item id="menu_item_id_ss_sync" title_id="title_ss_sync" func_type="sp_embeded_ss_sync" ></item>
         <item id="menu_item_id_f_and_ss_angle_sync" title_id="title_f_and_ss_angle_sync" func_type="sp_embeded_f_and_ss_angle_sync" ></item>
         <item id="menu_item_id_ss_angle_sync" title_id="title_ss_angle_sync" func_type="sp_embeded_ss_angle_sync" ></item>
-        <item id="menu_item_id_exposure2" title_id="title_exposure2" func_type="sp_embeded_exposure2" >
+        <item id="menu_item_id_exposure2" title_id="title_exposure2" func_type="sp_embeded_exposure2">
           <group>
             <item id="menu_item_id_exposure_m5" title_id="title_exposure_m5" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5" ></item>
             <item id="menu_item_id_exposure_m14_3" title_id="title_exposure_m14_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-14/3" ></item>
@@ -349,12 +349,12 @@
             <item id="menu_item_id_exposure_p15_3" title_id="title_exposure_p15_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5" ></item>
           </group>
         </item>
-        <item id="menu_item_id_afmode" title_id="title_afmode" func_type="sp_embeded_afmode" >
+        <item id="menu_item_id_afmode" title_id="title_afmode" func_type="sp_embeded_afmode">
           <group>
             <item id="menu_item_id_afmode_facedetection" title_id="title_afmode_facedetection" cmd_mode="setsetting" cmd_type="afmode" cmd_value="facedetection" ></item>
             <item id="menu_item_id_afmode_aftracking" title_id="title_afmode_aftracking" cmd_mode="setsetting" cmd_type="afmode" cmd_value="aftracking" ></item>
             <item id="menu_item_id_afmode_49area" title_id="title_afmode_49area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="49area" ></item>
-            <item id="menu_item_id_afmode_custom_multi" title_id="title_afmode_custom_multi" func_type="select" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" >
+            <item id="menu_item_id_afmode_custom_multi" title_id="title_afmode_custom_multi" func_type="select" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi">
               <group>
                 <item id="menu_item_id_afmode_custom_multi_vertical" title_id="title_afmode_custom_multi_vertical" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="vertical" ></item>
                 <item id="menu_item_id_afmode_custom_multi_horizontal" title_id="title_afmode_custom_multi_horizontal" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="horizontal" ></item>
@@ -368,7 +368,7 @@
             <item id="menu_item_id_afmode_pinpoint" title_id="title_afmode_pinpoint" cmd_mode="setsetting" cmd_type="afmode" cmd_value="pinpoint" ></item>
           </group>
         </item>
-        <item id="menu_item_id_sensitivity" title_id="title_sensitivity" func_type="sp_embeded_sensitivity" >
+        <item id="menu_item_id_sensitivity" title_id="title_sensitivity" func_type="sp_embeded_sensitivity">
           <group>
             <item id="menu_item_id_sensitivity_auto" title_id="title_sensitivity_auto" cmd_mode="setsetting" cmd_type="iso" cmd_value="auto" ></item>
             <item id="menu_item_id_sensitivity_i_iso" title_id="title_sensitivity_i_iso" cmd_mode="setsetting" cmd_type="iso" cmd_value="i_iso" ></item>
@@ -399,7 +399,7 @@
             <item id="menu_item_id_sensitivity_25600" title_id="title_sensitivity_25600" cmd_mode="setsetting" cmd_type="iso" cmd_value="25600" ></item>
           </group>
         </item>
-        <item id="menu_item_id_sensitivity_db" title_id="title_sensitivity_db" func_type="sp_embeded_sensitivity_db" >
+        <item id="menu_item_id_sensitivity_db" title_id="title_sensitivity_db" func_type="sp_embeded_sensitivity_db">
           <group>
             <item id="menu_item_id_sensitivity_db_auto" title_id="title_sensitivity_db_auto" cmd_mode="setsetting" cmd_type="sensitivity_db" cmd_value="auto" ></item>
             <item id="menu_item_id_sensitivity_db_m30" title_id="title_sensitivity_db_m30" cmd_mode="setsetting" cmd_type="sensitivity_db" cmd_value="-30" ></item>
@@ -425,7 +425,7 @@
             <item id="menu_item_id_sensitivity_db_30" title_id="title_sensitivity_db_30" cmd_mode="setsetting" cmd_type="sensitivity_db" cmd_value="30" ></item>
           </group>
         </item>
-        <item id="menu_item_id_whitebalance" title_id="title_whitebalance" func_type="sp_embeded_whitebalance" >
+        <item id="menu_item_id_whitebalance" title_id="title_whitebalance" func_type="sp_embeded_whitebalance">
           <group>
             <item id="menu_item_id_whitebalance_auto" title_id="title_whitebalance_auto" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="auto" ></item>
             <item id="menu_item_id_whitebalance_daylight" title_id="title_whitebalance_daylight" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="daylight" ></item>
@@ -441,7 +441,7 @@
           </group>
         </item>
         <item id="menu_item_id_1shoot" title_id="title_1shoot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="normal" ></item>
-        <item id="menu_item_id_burst" title_id="title_burst" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" >
+        <item id="menu_item_id_burst" title_id="title_burst" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst">
           <group>
             <item id="menu_item_id_burst_sh" title_id="title_burst_sh" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="sh" ></item>
             <item id="menu_item_id_burst_h" title_id="title_burst_h" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="h" ></item>
@@ -449,7 +449,7 @@
             <item id="menu_item_id_burst_l" title_id="title_burst_l" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="l" ></item>
           </group>
         </item>
-        <item id="menu_item_id_autobracket" title_id="title_autobracket" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" >
+        <item id="menu_item_id_autobracket" title_id="title_autobracket" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket">
           <group>
             <item id="menu_item_id_autobracket_3shot_1/3ev" title_id="title_autobracket_3shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1/3ev" ></item>
             <item id="menu_item_id_autobracket_3shot_2/3ev" title_id="title_autobracket_3shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_2/3ev" ></item>
@@ -462,20 +462,20 @@
             <item id="menu_item_id_autobracket_7shot_1ev" title_id="title_autobracket_7shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1ev" ></item>
           </group>
         </item>
-        <item id="menu_item_id_selftimer" title_id="title_selftimer" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" >
+        <item id="menu_item_id_selftimer" title_id="title_selftimer" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer">
           <group>
             <item id="menu_item_id_selftimer_10sec" title_id="title_selftimer_10sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec" ></item>
             <item id="menu_item_id_selftimer_10sec3shot" title_id="title_selftimer_10sec3shot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec3shot" ></item>
             <item id="menu_item_id_selftimer_2sec" title_id="title_selftimer_2sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="2sec" ></item>
           </group>
         </item>
-        <item id="menu_item_id_stopmotion_interval" title_id="title_stopmotion_interval" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="stopmotion_interval" >
+        <item id="menu_item_id_stopmotion_interval" title_id="title_stopmotion_interval" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="stopmotion_interval">
           <group>
             <item id="menu_item_id_stopmotion_interval_interval" title_id="title_stopmotion_interval_interval" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="stopmotion_interval" cmd_value2="interval" ></item>
             <item id="menu_item_id_stopmotion_interval_stop_motion" title_id="title_stopmotion_interval_stop_motion" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="stopmotion_interval" cmd_value2="stop_motion" ></item>
           </group>
         </item>
-        <item id="menu_item_id_peaking" title_id="title_peaking" func_type="sp_embeded_peaking" >
+        <item id="menu_item_id_peaking" title_id="title_peaking" func_type="sp_embeded_peaking">
           <group>
             <item id="menu_item_id_peaking_off" title_id="title_peaking_off" cmd_mode="setsetting" cmd_type="peaking" cmd_value="off" ></item>
             <item id="menu_item_id_peaking_low" title_id="title_peaking_low" cmd_mode="setsetting" cmd_type="peaking" cmd_value="low" ></item>
@@ -485,7 +485,7 @@
       </menu>
     </qmenu2>
     <titlelist model="GH4" version="1.0" date="20160307">
-      <language code="en" default="yes" >
+      <language code="en" default="yes">
         <title id="title_connection_settings">Set connect. dest.</title>
         <title id="title_liveview_settings">Live Control Settings</title>
         <title id="title_self_shot">Self shot mode</title>
@@ -867,7 +867,7 @@
         <title id="title_peaking_low">Low</title>
         <title id="title_peaking_high">High</title>
       </language>
-      <language code="ja" >
+      <language code="ja">
         <title id="title_connection_settings">接続先設定</title>
         <title id="title_liveview_settings">リモートビュー設定</title>
         <title id="title_self_shot">自分撮りモード</title>
@@ -1006,7 +1006,7 @@
         <title id="title_peaking_low">低</title>
         <title id="title_peaking_high">高</title>
       </language>
-      <language code="de" >
+      <language code="de">
         <title id="title_connection_settings">Verbindungsz. einst.</title>
         <title id="title_liveview_settings">Live-Steuer.-Einst.</title>
         <title id="title_self_shot">Selbstaufnahme-Modus</title>
@@ -1118,7 +1118,7 @@
         <title id="title_peaking_low">Niedrig</title>
         <title id="title_peaking_high">Hoch</title>
       </language>
-      <language code="fr" >
+      <language code="fr">
         <title id="title_connection_settings">Régl destin. connex.</title>
         <title id="title_liveview_settings">Rég. commande dynam.</title>
         <title id="title_self_shot">Mode Autoportrait</title>
@@ -1233,7 +1233,7 @@
         <title id="title_peaking_low">Bas</title>
         <title id="title_peaking_high">Élevé</title>
       </language>
-      <language code="fr-CA" >
+      <language code="fr-CA">
         <title id="title_connection_settings">Param. dest. conn.</title>
         <title id="title_liveview_settings">Param. commande dist.</title>
         <title id="title_self_shot">Mode autoportrait</title>
@@ -1352,7 +1352,7 @@
         <title id="title_peaking_low">Bas</title>
         <title id="title_peaking_high">Élevé</title>
       </language>
-      <language code="it" >
+      <language code="it">
         <title id="title_connection_settings">Imposta desti. conn.</title>
         <title id="title_liveview_settings">Impos. Contr. “live”</title>
         <title id="title_self_shot">Modalità autoscatto</title>
@@ -1465,7 +1465,7 @@
         <title id="title_peaking_low">Bassa</title>
         <title id="title_peaking_high">Alta</title>
       </language>
-      <language code="es" >
+      <language code="es">
         <title id="title_connection_settings">Ajustar dest. conex.</title>
         <title id="title_liveview_settings">Ajustes control vivo</title>
         <title id="title_self_shot">Modo de disparo automático</title>
@@ -1587,7 +1587,7 @@
         <title id="title_peaking_low">Bajo</title>
         <title id="title_peaking_high">Alto</title>
       </language>
-      <language code="zh-TW" >
+      <language code="zh-TW">
         <title id="title_connection_settings">連接目的地設定</title>
         <title id="title_liveview_settings">即時控制設定</title>
         <title id="title_self_shot">自拍模式</title>
@@ -1717,7 +1717,7 @@
         <title id="title_peaking_low">低</title>
         <title id="title_peaking_high">高</title>
       </language>
-      <language code="zh-CN" >
+      <language code="zh-CN">
         <title id="title_connection_settings">连接目的地设置</title>
         <title id="title_liveview_settings">实时控制设置</title>
         <title id="title_self_shot">自拍模式</title>
@@ -1847,7 +1847,7 @@
         <title id="title_peaking_low">弱</title>
         <title id="title_peaking_high">强</title>
       </language>
-      <language code="nl" >
+      <language code="nl">
         <title id="title_connection_settings">Verbind.best. inst.</title>
         <title id="title_liveview_settings">Inst. livebesturing</title>
         <title id="title_self_shot">Zelfopnamemodus</title>
@@ -1966,7 +1966,7 @@
         <title id="title_peaking_low">Laag</title>
         <title id="title_peaking_high">Hoog</title>
       </language>
-      <language code="pt-BR" >
+      <language code="pt-BR">
         <title id="title_connection_settings">Conf. dest. conexão</title>
         <title id="title_liveview_settings">Conf. Contr. ao Vivo</title>
         <title id="title_self_shot">Modo autoretrato</title>
@@ -2090,7 +2090,7 @@
         <title id="title_peaking_low">Baixa</title>
         <title id="title_peaking_high">Alta</title>
       </language>
-      <language code="ru" >
+      <language code="ru">
         <title id="title_connection_settings">Настройка назн.соед.</title>
         <title id="title_liveview_settings">Настр.жив.контроля</title>
         <title id="title_self_shot">Режим автосъемки</title>
@@ -2217,7 +2217,7 @@
         <title id="title_peaking_low">Низк.</title>
         <title id="title_peaking_high">Высок.</title>
       </language>
-      <language code="ko" >
+      <language code="ko">
         <title id="title_connection_settings">연결 대상 설정</title>
         <title id="title_liveview_settings">라이브 컨트롤 설정</title>
         <title id="title_self_shot">셀프 촬영 모드</title>

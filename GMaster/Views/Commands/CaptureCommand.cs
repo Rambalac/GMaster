@@ -10,7 +10,7 @@ namespace GMaster.Views.Commands
         {
         }
 
-        protected override bool InternalCanExecute() => Model.SelectedCamera != null;
+        protected override bool InternalCanExecute() => Model?.SelectedCamera?.Camera != null;
 
         protected override async Task InternalExecute()
         {

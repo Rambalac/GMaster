@@ -408,10 +408,8 @@
 
         <item id="menu_item_id_tou" title_id="title_tou" func_type="sp_embeded_tou">
         </item>
-
       </menu>
     </mainmenu>
-
 
     <qmenu>
       <menu>
@@ -645,10 +643,8 @@
             </item>
           </group>
         </item>
-
       </menu>
     </qmenu>
-
 
     <drivemode>
       <menu>
@@ -718,7 +714,6 @@
             </item>
           </group>
         </item>
-
       </menu>
     </drivemode>
 
@@ -2270,9 +2265,6 @@
         <title id="title_selftimer_10sec3shot">10초/3매</title>
         <title id="title_selftimer_2sec">2초</title>
       </language>
-
     </titlelist>
-
   </menuset>
-
 </camrply>

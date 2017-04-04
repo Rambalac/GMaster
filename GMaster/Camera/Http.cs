@@ -12,10 +12,10 @@
     using Windows.Web.Http.Filters;
     using Windows.Web.Http.Headers;
 
-    public class Http
+    public class Http : IDisposable
     {
-        private readonly HttpClient camcgi;
         private readonly Uri baseUri;
+        private readonly HttpClient camcgi;
 
         public Http(Uri baseUrl)
         {
@@ -39,8 +39,13 @@
             return (TResponse)serializer.Deserialize(new StringReader(str));
         }
 
+        public void Dispose()
+        {
+            camcgi.Dispose();
+        }
+
         public async Task<TResponse> Get<TResponse>(string path)
-            where TResponse : BaseRequestResult
+                    where TResponse : BaseRequestResult
         {
             var uri = new Uri(baseUri, path);
             using (var response = await camcgi.GetAsync(uri))

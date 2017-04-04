@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GMaster.Views"
     xmlns:converters="using:GMaster.Views.Converters">
@@ -102,5 +102,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

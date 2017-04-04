@@ -3,47 +3,125 @@
 namespace GMaster.Views
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Runtime.InteropServices.WindowsRuntime;
-    using Windows.Foundation;
-    using Windows.Foundation.Collections;
+    using Camera.LumixData;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Controls.Primitives;
-    using Windows.UI.Xaml.Data;
-    using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Media;
-    using Windows.UI.Xaml.Navigation;
 
     public sealed partial class Adjuster : UserControl
     {
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
+            "Maximum", typeof(int), typeof(Adjuster), new PropertyMetadata(default(int), MaximumChanged));
+
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
+            "Minimum", typeof(int), typeof(Adjuster), new PropertyMetadata(default(int), MinimumChanged));
+
+        public static readonly DependencyProperty RepeatIntervalProperty = DependencyProperty.Register(
+            "RepeatInterval", typeof(int), typeof(Adjuster), new PropertyMetadata(default(int), RepeatIntervalChanged));
+
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+                    "Value", typeof(int), typeof(Adjuster), new PropertyMetadata(default(int), ValueChanged));
+
         public Adjuster()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        public event Action<int> RepeatClick;
+        public event Action<ChangeDirection> PressedReleased;
 
-        private void TeleFast_Pressed(object sender, RoutedEventArgs e)
+        public event Action<ChangeDirection> RepeatClick;
+
+        public int Maximum
         {
-            RepeatClick?.Invoke(+2);
+            get => (int)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
         }
 
-        private void TeleNormal_Pressed(object sender, RoutedEventArgs e)
+        public int Minimum
         {
-            RepeatClick?.Invoke(+1);
+            get => (int)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
         }
 
-        private void WideNormal_Pressed(object sender, RoutedEventArgs e)
+        public int RepeatInterval
         {
-            RepeatClick?.Invoke(-1);
+            get => (int)GetValue(RepeatIntervalProperty);
+            set => SetValue(RepeatIntervalProperty, value);
         }
 
-        private void WideFast_Pressed(object sender, RoutedEventArgs e)
+        public int Value
         {
-            RepeatClick?.Invoke(-2);
+            get => (int)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
+        }
+
+        private static void MaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Adjuster)d).Slider.Maximum = (int)e.NewValue;
+        }
+
+        private static void MinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Adjuster)d).Slider.Minimum = (int)e.NewValue;
+        }
+
+        private static void RepeatIntervalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var t = (Adjuster)d;
+            var value = (int)e.NewValue;
+            t.But1.RepeatInterval = value;
+            t.But2.RepeatInterval = value;
+            t.But3.RepeatInterval = value;
+            t.But4.RepeatInterval = value;
+        }
+
+        private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Adjuster)d).Slider.Value = (int)e.NewValue;
+        }
+
+        private void OnReleased(object sender, RoutedEventArgs e)
+        {
+            PressedReleased?.Invoke(ChangeDirection.ZoomStop);
+        }
+
+        private void TeleFast_OnPressed(object sender, RoutedEventArgs e)
+        {
+            PressedReleased?.Invoke(ChangeDirection.TeleFast);
+        }
+
+        private void TeleFast_Repeat(object sender, RoutedEventArgs e)
+        {
+            RepeatClick?.Invoke(ChangeDirection.TeleFast);
+        }
+
+        private void TeleNormal_OnPressed(object sender, RoutedEventArgs e)
+        {
+            PressedReleased?.Invoke(ChangeDirection.TeleNormal);
+        }
+
+        private void TeleNormal_Repeat(object sender, RoutedEventArgs e)
+        {
+            RepeatClick?.Invoke(ChangeDirection.TeleNormal);
+        }
+
+        private void WideFast_OnPressed(object sender, RoutedEventArgs e)
+        {
+            PressedReleased?.Invoke(ChangeDirection.WideFast);
+        }
+
+        private void WideFast_Repeat(object sender, RoutedEventArgs e)
+        {
+            RepeatClick?.Invoke(ChangeDirection.WideFast);
+        }
+
+        private void WideNormal_OnPressed(object sender, RoutedEventArgs e)
+        {
+            PressedReleased?.Invoke(ChangeDirection.WideNormal);
+        }
+
+        private void WideNormal_Repeat(object sender, RoutedEventArgs e)
+        {
+            RepeatClick?.Invoke(ChangeDirection.WideNormal);
         }
     }
 }

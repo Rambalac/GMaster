@@ -180,20 +180,6 @@
             throw new KeyNotFoundException("Title not found: " + id);
         }
 
-        public LensInfo ParseLensInfo(string raw)
-        {
-            Debug.WriteLine(raw);
-            var values = raw.Split(',');
-            return new LensInfo
-            {
-                MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
-                MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
-                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0,
-                ClosedAperture = int.TryParse(values[1].Replace("/256", string.Empty), out var res4) ? res4 : int.MaxValue,
-                HasPowerZoom = values[6] == "on"
-            };
-        }
-
         public FocusPosition ParseFocus(string focus)
         {
             var values = focus.Split(',');
@@ -209,6 +195,20 @@
             }
 
             return new FocusPosition { Value = max - val, Maximum = max };
+        }
+
+        public LensInfo ParseLensInfo(string raw)
+        {
+            Debug.WriteLine(raw);
+            var values = raw.Split(',');
+            return new LensInfo
+            {
+                MaxZoom = int.TryParse(values[7], out var res1) ? res1 : 0,
+                MinZoom = int.TryParse(values[8], out var res2) ? res2 : 0,
+                OpenedAperture = int.TryParse(values[2].Replace("/256", string.Empty), out var res3) ? res3 : 0,
+                ClosedAperture = int.TryParse(values[1].Replace("/256", string.Empty), out var res4) ? res4 : int.MaxValue,
+                HasPowerZoom = values[6] == "on"
+            };
         }
 
         public virtual MenuSet ParseMenuSet(RawMenuSet menuset, string lang)

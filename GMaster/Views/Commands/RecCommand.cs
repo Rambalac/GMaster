@@ -13,7 +13,7 @@
         }
 
         protected override bool InternalCanExecute()
-            => Model.SelectedCamera != null && Model.SelectedCamera.Camera.RecState != RecState.Unknown;
+            => Model?.SelectedCamera?.Camera != null && Model.SelectedCamera.Camera.RecState != RecState.Unknown;
 
         protected override async Task InternalExecute()
         {

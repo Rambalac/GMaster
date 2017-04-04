@@ -71,6 +71,7 @@
                         case StorePurchaseStatus.Succeeded:
                             await Consume(storeId);
                             return StorePurchaseStatus.Succeeded;
+
                         case StorePurchaseStatus.NotPurchased:
                             return StorePurchaseStatus.NotPurchased;
 

@@ -61,11 +61,6 @@ namespace GMaster.Camera
 
         public async Task StartListening()
         {
-            foreach (var listener in listeners.Values)
-            {
-                listener.ManagerRestarted();
-            }
-
             liveviewUdpSockets = new List<DatagramSocket>();
             foreach (var profile in NetworkInformation.GetHostNames())
             {
@@ -213,7 +208,9 @@ namespace GMaster.Camera
 
                 using (var reader = args.GetDataReader())
                 {
-                    camera.ProcessMessage(reader);
+                    var buf = new byte[reader.UnconsumedBufferLength];
+                    reader.ReadBytes(buf);
+                    camera.ProcessMessage(buf);
                 }
             }
             catch (Exception e)

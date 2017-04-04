@@ -4,13 +4,11 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.IO;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
     using Commands;
-    using Windows.ApplicationModel;
 
     public class CameraViewModel : INotifyPropertyChanged
     {
@@ -79,9 +77,7 @@
 
         public bool HasPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
 
-        public bool IsConnected => DesignMode.DesignModeEnabled || selectedCamera != null;
-
-        public Stream LiveViewFrame => SelectedCamera?.Camera?.LiveViewFrame;
+        public bool IsConnected => selectedCamera != null;
 
         public RecCommand RecCommand { get; }
 
@@ -117,7 +113,6 @@
                 OnPropertyChanged(nameof(CurrentAperture));
                 OnPropertyChanged(nameof(CurrentShutter));
                 OnPropertyChanged(nameof(CurrentIso));
-                OnPropertyChanged(nameof(LiveViewFrame));
                 OnPropertyChanged(nameof(IsConnected));
             }
         }
@@ -174,25 +169,27 @@
         {
             switch (e.PropertyName)
             {
-                case nameof(Lumix.LiveViewFrame):
-                    OnPropertyChanged(nameof(LiveViewFrame));
-                    break;
                 case nameof(Lumix.CanManualFocus):
                     OnPropertyChanged(nameof(CanManualFocus));
                     break;
+
                 case nameof(Lumix.CurrentApertures):
                     OnPropertyChanged(nameof(CurrentApertures));
                     break;
+
                 case nameof(Lumix.CanChangeShutter):
                     OnPropertyChanged(nameof(CanChangeShutter));
                     break;
+
                 case nameof(Lumix.CanChangeAperture):
                     OnPropertyChanged(nameof(CanChangeAperture));
                     break;
+
                 case nameof(Lumix.MenuSet):
                     OnPropertyChanged(nameof(ShutterSpeeds));
                     OnPropertyChanged(nameof(IsoValues));
                     break;
+
                 case nameof(Lumix.LensInfo):
                     OnPropertyChanged(nameof(HasPowerZoom));
                     break;
@@ -208,14 +205,17 @@
                     currentShutter = camera.CurrentShutter ?? currentShutter;
                     OnPropertyChanged(nameof(CurrentShutter));
                     break;
+
                 case nameof(OffFrameProcessor.Aperture):
                     currentAperture = camera.CurrentAperture ?? currentAperture;
                     OnPropertyChanged(nameof(CurrentAperture));
                     break;
+
                 case nameof(OffFrameProcessor.Iso):
                     currentIso = camera.CurrentIso ?? currentIso;
                     OnPropertyChanged(nameof(CurrentIso));
                     break;
+
                 case nameof(OffFrameProcessor.FocusPoint):
                     FocusPoint = camera.OffFrameProcessor.FocusPoint;
                     OnPropertyChanged(nameof(FocusPoint));

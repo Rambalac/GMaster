@@ -7,527 +7,522 @@
 
     <mainmenu>
       <menu>
-        <item id="menu_item_id_connection_settings" title_id="title_connection_settings" func_type="sp_embeded_connection_settings" >
+        <item id="menu_item_id_connection_settings" title_id="title_connection_settings" func_type="sp_embeded_connection_settings">
         </item>
 
-        <item id="menu_item_id_photo_settings" title_id="title_photo_settings" func_type="submenu" >
+        <item id="menu_item_id_photo_settings" title_id="title_photo_settings" func_type="submenu">
           <menu>
-            <item id="menu_item_id_crtv_ctrl" title_id="title_crtv_ctrl" func_type="sp_embeded_crtv_ctrl" >
+            <item id="menu_item_id_crtv_ctrl" title_id="title_crtv_ctrl" func_type="sp_embeded_crtv_ctrl">
               <group>
-                <item id="menu_item_id_crtv_ctrl_pop" title_id="title_crtv_ctrl_pop" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="pop" >
+                <item id="menu_item_id_crtv_ctrl_pop" title_id="title_crtv_ctrl_pop" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="pop">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_retro" title_id="title_crtv_ctrl_retro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="retro" >
+                <item id="menu_item_id_crtv_ctrl_retro" title_id="title_crtv_ctrl_retro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="retro">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_high_key" title_id="title_crtv_ctrl_high_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_key" >
+                <item id="menu_item_id_crtv_ctrl_high_key" title_id="title_crtv_ctrl_high_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_key">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_low_key" title_id="title_crtv_ctrl_low_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="low_key" >
+                <item id="menu_item_id_crtv_ctrl_low_key" title_id="title_crtv_ctrl_low_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="low_key">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_sepia" title_id="title_crtv_ctrl_sepia" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="sepia" >
+                <item id="menu_item_id_crtv_ctrl_sepia" title_id="title_crtv_ctrl_sepia" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="sepia">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_dynamic_monochro" title_id="title_crtv_ctrl_dynamic_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="dynamic_monochro" >
+                <item id="menu_item_id_crtv_ctrl_dynamic_monochro" title_id="title_crtv_ctrl_dynamic_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="dynamic_monochro">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_impressive_art" title_id="title_crtv_ctrl_impressive_art" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="impressive_art" >
+                <item id="menu_item_id_crtv_ctrl_impressive_art" title_id="title_crtv_ctrl_impressive_art" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="impressive_art">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_high_dynamic" title_id="title_crtv_ctrl_high_dynamic" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_dynamic" >
+                <item id="menu_item_id_crtv_ctrl_high_dynamic" title_id="title_crtv_ctrl_high_dynamic" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_dynamic">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_cross_proc" title_id="title_crtv_ctrl_cross_proc" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_proc" >
+                <item id="menu_item_id_crtv_ctrl_cross_proc" title_id="title_crtv_ctrl_cross_proc" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_proc">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_toy_photo" title_id="title_crtv_ctrl_toy_photo" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="toy_photo" >
+                <item id="menu_item_id_crtv_ctrl_toy_photo" title_id="title_crtv_ctrl_toy_photo" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="toy_photo">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_diorama" title_id="title_crtv_ctrl_diorama" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="diorama" >
+                <item id="menu_item_id_crtv_ctrl_diorama" title_id="title_crtv_ctrl_diorama" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="diorama">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_soft_focus" title_id="title_crtv_ctrl_soft_focus" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="soft_focus" >
+                <item id="menu_item_id_crtv_ctrl_soft_focus" title_id="title_crtv_ctrl_soft_focus" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="soft_focus">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_cross_filter" title_id="title_crtv_ctrl_cross_filter" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_filter" >
+                <item id="menu_item_id_crtv_ctrl_cross_filter" title_id="title_crtv_ctrl_cross_filter" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_filter">
                 </item>
-                <item id="menu_item_id_crtv_ctrl_one_point_color" title_id="title_crtv_ctrl_one_point_color" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="one_point_color" >
+                <item id="menu_item_id_crtv_ctrl_one_point_color" title_id="title_crtv_ctrl_one_point_color" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="one_point_color">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_scn_gid" title_id="title_scn_gid" func_type="select" >
+            <item id="menu_item_id_scn_gid" title_id="title_scn_gid" func_type="select">
               <group>
-                <item id="menu_item_id_scn_gid_portrait" title_id="title_scn_gid_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="portrait" >
+                <item id="menu_item_id_scn_gid_portrait" title_id="title_scn_gid_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="portrait">
                 </item>
-                <item id="menu_item_id_scn_gid_clear_skin" title_id="title_scn_gid_clear_skin" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="clear_skin" >
+                <item id="menu_item_id_scn_gid_clear_skin" title_id="title_scn_gid_clear_skin" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="clear_skin">
                 </item>
-                <item id="menu_item_id_scn_gid_backlight_portrait" title_id="title_scn_gid_backlight_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_portrait" >
+                <item id="menu_item_id_scn_gid_backlight_portrait" title_id="title_scn_gid_backlight_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_portrait">
                 </item>
-                <item id="menu_item_id_scn_gid_backlight_strobe" title_id="title_scn_gid_backlight_strobe" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_strobe" >
+                <item id="menu_item_id_scn_gid_backlight_strobe" title_id="title_scn_gid_backlight_strobe" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_strobe">
                 </item>
-                <item id="menu_item_id_scn_gid_warm_portrait" title_id="title_scn_gid_warm_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_portrait" >
+                <item id="menu_item_id_scn_gid_warm_portrait" title_id="title_scn_gid_warm_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_portrait">
                 </item>
-                <item id="menu_item_id_scn_gid_kids" title_id="title_scn_gid_kids" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="kids" >
+                <item id="menu_item_id_scn_gid_kids" title_id="title_scn_gid_kids" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="kids">
                 </item>
-                <item id="menu_item_id_scn_gid_landscape" title_id="title_scn_gid_landscape" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="landscape" >
+                <item id="menu_item_id_scn_gid_landscape" title_id="title_scn_gid_landscape" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="landscape">
                 </item>
-                <item id="menu_item_id_scn_gid_blue_sky" title_id="title_scn_gid_blue_sky" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="blue_sky" >
+                <item id="menu_item_id_scn_gid_blue_sky" title_id="title_scn_gid_blue_sky" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="blue_sky">
                 </item>
-                <item id="menu_item_id_scn_gid_magic_hour" title_id="title_scn_gid_magic_hour" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="magic_hour" >
+                <item id="menu_item_id_scn_gid_magic_hour" title_id="title_scn_gid_magic_hour" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="magic_hour">
                 </item>
-                <item id="menu_item_id_scn_gid_sunset" title_id="title_scn_gid_sunset" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sunset" >
+                <item id="menu_item_id_scn_gid_sunset" title_id="title_scn_gid_sunset" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sunset">
                 </item>
-                <item id="menu_item_id_scn_gid_shimmering_water" title_id="title_scn_gid_shimmering_water" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="shimmering_water" >
+                <item id="menu_item_id_scn_gid_shimmering_water" title_id="title_scn_gid_shimmering_water" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="shimmering_water">
                 </item>
-                <item id="menu_item_id_scn_gid_night" title_id="title_scn_gid_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night" >
+                <item id="menu_item_id_scn_gid_night" title_id="title_scn_gid_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night">
                 </item>
-                <item id="menu_item_id_scn_gid_cool_night" title_id="title_scn_gid_cool_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cool_night" >
+                <item id="menu_item_id_scn_gid_cool_night" title_id="title_scn_gid_cool_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cool_night">
                 </item>
-                <item id="menu_item_id_scn_gid_warm_night" title_id="title_scn_gid_warm_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_night" >
+                <item id="menu_item_id_scn_gid_warm_night" title_id="title_scn_gid_warm_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_night">
                 </item>
-                <item id="menu_item_id_scn_gid_longexpo_night" title_id="title_scn_gid_longexpo_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="longexpo_night" >
+                <item id="menu_item_id_scn_gid_longexpo_night" title_id="title_scn_gid_longexpo_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="longexpo_night">
                 </item>
-                <item id="menu_item_id_scn_gid_illumination" title_id="title_scn_gid_illumination" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="illumination" >
+                <item id="menu_item_id_scn_gid_illumination" title_id="title_scn_gid_illumination" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="illumination">
                 </item>
-                <item id="menu_item_id_scn_gid_night_portrait" title_id="title_scn_gid_night_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night_portrait" >
+                <item id="menu_item_id_scn_gid_night_portrait" title_id="title_scn_gid_night_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night_portrait">
                 </item>
-                <item id="menu_item_id_scn_gid_flower" title_id="title_scn_gid_flower" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="flower" >
+                <item id="menu_item_id_scn_gid_flower" title_id="title_scn_gid_flower" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="flower">
                 </item>
-                <item id="menu_item_id_scn_gid_cooking" title_id="title_scn_gid_cooking" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cooking" >
+                <item id="menu_item_id_scn_gid_cooking" title_id="title_scn_gid_cooking" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cooking">
                 </item>
-                <item id="menu_item_id_scn_gid_sweets" title_id="title_scn_gid_sweets" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sweets" >
+                <item id="menu_item_id_scn_gid_sweets" title_id="title_scn_gid_sweets" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sweets">
                 </item>
-                <item id="menu_item_id_scn_gid_pet" title_id="title_scn_gid_pet" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="pet" >
+                <item id="menu_item_id_scn_gid_pet" title_id="title_scn_gid_pet" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="pet">
                 </item>
-                <item id="menu_item_id_scn_gid_sports" title_id="title_scn_gid_sports" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sports" >
+                <item id="menu_item_id_scn_gid_sports" title_id="title_scn_gid_sports" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sports">
                 </item>
-                <item id="menu_item_id_scn_gid_monochrome" title_id="title_scn_gid_monochrome" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="monochrome" >
+                <item id="menu_item_id_scn_gid_monochrome" title_id="title_scn_gid_monochrome" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="monochrome">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_afmode" title_id="title_afmode" func_type="select" >
+            <item id="menu_item_id_afmode" title_id="title_afmode" func_type="select">
               <group>
-                <item id="menu_item_id_afmode_facedetection" title_id="title_afmode_facedetection" cmd_mode="setsetting" cmd_type="afmode" cmd_value="facedetection" >
+                <item id="menu_item_id_afmode_facedetection" title_id="title_afmode_facedetection" cmd_mode="setsetting" cmd_type="afmode" cmd_value="facedetection">
                 </item>
-                <item id="menu_item_id_afmode_aftracking" title_id="title_afmode_aftracking" cmd_mode="setsetting" cmd_type="afmode" cmd_value="aftracking" >
+                <item id="menu_item_id_afmode_aftracking" title_id="title_afmode_aftracking" cmd_mode="setsetting" cmd_type="afmode" cmd_value="aftracking">
                 </item>
-                <item id="menu_item_id_afmode_23area" title_id="title_afmode_23area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="23area" >
+                <item id="menu_item_id_afmode_23area" title_id="title_afmode_23area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="23area">
                 </item>
-                <item id="menu_item_id_afmode_1area" title_id="title_afmode_1area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="1area" >
+                <item id="menu_item_id_afmode_1area" title_id="title_afmode_1area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="1area">
                 </item>
-                <item id="menu_item_id_afmode_pinpoint" title_id="title_afmode_pinpoint" cmd_mode="setsetting" cmd_type="afmode" cmd_value="pinpoint" >
+                <item id="menu_item_id_afmode_pinpoint" title_id="title_afmode_pinpoint" cmd_mode="setsetting" cmd_type="afmode" cmd_value="pinpoint">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_ph_sty" title_id="title_ph_sty" func_type="sp_embeded_ph_sty" >
+            <item id="menu_item_id_ph_sty" title_id="title_ph_sty" func_type="sp_embeded_ph_sty">
               <group>
-                <item id="menu_item_id_ph_sty_standard" title_id="title_ph_sty_standard" cmd_mode="setsetting" cmd_type="colormode" cmd_value="standard" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_standard" title_id="title_ph_sty_standard" cmd_mode="setsetting" cmd_type="colormode" cmd_value="standard" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_vivid" title_id="title_ph_sty_vivid" cmd_mode="setsetting" cmd_type="colormode" cmd_value="vivid" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_vivid" title_id="title_ph_sty_vivid" cmd_mode="setsetting" cmd_type="colormode" cmd_value="vivid" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_natural" title_id="title_ph_sty_natural" cmd_mode="setsetting" cmd_type="colormode" cmd_value="natural" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_natural" title_id="title_ph_sty_natural" cmd_mode="setsetting" cmd_type="colormode" cmd_value="natural" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_bw" title_id="title_ph_sty_bw" cmd_mode="setsetting" cmd_type="colormode" cmd_value="bw" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_bw" title_id="title_ph_sty_bw" cmd_mode="setsetting" cmd_type="colormode" cmd_value="bw" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_scenery" title_id="title_ph_sty_scenery" cmd_mode="setsetting" cmd_type="colormode" cmd_value="scenery" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_scenery" title_id="title_ph_sty_scenery" cmd_mode="setsetting" cmd_type="colormode" cmd_value="scenery" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_portrait" title_id="title_ph_sty_portrait" cmd_mode="setsetting" cmd_type="colormode" cmd_value="portrait" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_portrait" title_id="title_ph_sty_portrait" cmd_mode="setsetting" cmd_type="colormode" cmd_value="portrait" cmd_value2="__value__">
                 </item>
-                <item id="menu_item_id_ph_sty_custom" title_id="title_ph_sty_custom" cmd_mode="setsetting" cmd_type="colormode" cmd_value="custom" cmd_value2="__value__" >
+                <item id="menu_item_id_ph_sty_custom" title_id="title_ph_sty_custom" cmd_mode="setsetting" cmd_type="colormode" cmd_value="custom" cmd_value2="__value__">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_flash" title_id="title_flash" func_type="select" >
+            <item id="menu_item_id_flash" title_id="title_flash" func_type="select">
               <group>
-                <item id="menu_item_id_flash_iauto" title_id="title_flash_iauto" cmd_mode="setsetting" cmd_type="flash" cmd_value="iauto" >
+                <item id="menu_item_id_flash_iauto" title_id="title_flash_iauto" cmd_mode="setsetting" cmd_type="flash" cmd_value="iauto">
                 </item>
-                <item id="menu_item_id_flash_forcedflashon" title_id="title_flash_forcedflashon" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashon" >
+                <item id="menu_item_id_flash_forcedflashon" title_id="title_flash_forcedflashon" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashon">
                 </item>
-                <item id="menu_item_id_flash_forced_on_redeye" title_id="title_flash_forced_on_redeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="forced_on_redeye" >
+                <item id="menu_item_id_flash_forced_on_redeye" title_id="title_flash_forced_on_redeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="forced_on_redeye">
                 </item>
-                <item id="menu_item_id_flash_slowsync" title_id="title_flash_slowsync" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsync" >
+                <item id="menu_item_id_flash_slowsync" title_id="title_flash_slowsync" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsync">
                 </item>
-                <item id="menu_item_id_flash_slowsyncredeye" title_id="title_flash_slowsyncredeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsyncredeye" >
+                <item id="menu_item_id_flash_slowsyncredeye" title_id="title_flash_slowsyncredeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsyncredeye">
                 </item>
-                <item id="menu_item_id_flash_forcedflashoff" title_id="title_flash_forcedflashoff" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashoff" >
+                <item id="menu_item_id_flash_forcedflashoff" title_id="title_flash_forcedflashoff" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashoff">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_asprat" title_id="title_asprat" func_type="select" >
+            <item id="menu_item_id_asprat" title_id="title_asprat" func_type="select">
               <group>
-                <item id="menu_item_id_asprat_4:3" title_id="title_asprat_4:3" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="4:3" >
+                <item id="menu_item_id_asprat_4:3" title_id="title_asprat_4:3" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="4:3">
                 </item>
-                <item id="menu_item_id_asprat_3:2" title_id="title_asprat_3:2" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="3:2" >
+                <item id="menu_item_id_asprat_3:2" title_id="title_asprat_3:2" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="3:2">
                 </item>
-                <item id="menu_item_id_asprat_16:9" title_id="title_asprat_16:9" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="16:9" >
+                <item id="menu_item_id_asprat_16:9" title_id="title_asprat_16:9" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="16:9">
                 </item>
-                <item id="menu_item_id_asprat_1:1" title_id="title_asprat_1:1" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="1:1" >
+                <item id="menu_item_id_asprat_1:1" title_id="title_asprat_1:1" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="1:1">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_pctsiz" title_id="title_pctsiz" func_type="select" >
+            <item id="menu_item_id_pctsiz" title_id="title_pctsiz" func_type="select">
               <group>
-                <item id="menu_item_id_pctsiz_16m" title_id="title_pctsiz_16m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="16m" >
+                <item id="menu_item_id_pctsiz_16m" title_id="title_pctsiz_16m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="16m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex16m" title_id="title_pctsiz_ex16m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="16m" >
+                <item id="menu_item_id_pctsiz_ex16m" title_id="title_pctsiz_ex16m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="16m">
                 </item>
-                <item id="menu_item_id_pctsiz_14m" title_id="title_pctsiz_14m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="14m" >
+                <item id="menu_item_id_pctsiz_14m" title_id="title_pctsiz_14m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="14m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex14m" title_id="title_pctsiz_ex14m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="14m" >
+                <item id="menu_item_id_pctsiz_ex14m" title_id="title_pctsiz_ex14m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="14m">
                 </item>
-                <item id="menu_item_id_pctsiz_12m" title_id="title_pctsiz_12m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="12m" >
+                <item id="menu_item_id_pctsiz_12m" title_id="title_pctsiz_12m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="12m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex12m" title_id="title_pctsiz_ex12m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="12m" >
+                <item id="menu_item_id_pctsiz_ex12m" title_id="title_pctsiz_ex12m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="12m">
                 </item>
-                <item id="menu_item_id_pctsiz_8m" title_id="title_pctsiz_8m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m" >
+                <item id="menu_item_id_pctsiz_8m" title_id="title_pctsiz_8m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex8m" title_id="title_pctsiz_ex8m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m" >
+                <item id="menu_item_id_pctsiz_ex8m" title_id="title_pctsiz_ex8m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m">
                 </item>
-                <item id="menu_item_id_pctsiz_7m" title_id="title_pctsiz_7m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m" >
+                <item id="menu_item_id_pctsiz_7m" title_id="title_pctsiz_7m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex7m" title_id="title_pctsiz_ex7m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m" >
+                <item id="menu_item_id_pctsiz_ex7m" title_id="title_pctsiz_ex7m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m">
                 </item>
-                <item id="menu_item_id_pctsiz_6m" title_id="title_pctsiz_6m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m" >
+                <item id="menu_item_id_pctsiz_6m" title_id="title_pctsiz_6m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex6m" title_id="title_pctsiz_ex6m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m" >
+                <item id="menu_item_id_pctsiz_ex6m" title_id="title_pctsiz_ex6m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m">
                 </item>
-                <item id="menu_item_id_pctsiz_4m" title_id="title_pctsiz_4m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="4m" >
+                <item id="menu_item_id_pctsiz_4m" title_id="title_pctsiz_4m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="4m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex4m" title_id="title_pctsiz_ex4m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="4m" >
+                <item id="menu_item_id_pctsiz_ex4m" title_id="title_pctsiz_ex4m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="4m">
                 </item>
-                <item id="menu_item_id_pctsiz_3.5m" title_id="title_pctsiz_3.5m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m" >
+                <item id="menu_item_id_pctsiz_3.5m" title_id="title_pctsiz_3.5m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex3.5m" title_id="title_pctsiz_ex3.5m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m" >
+                <item id="menu_item_id_pctsiz_ex3.5m" title_id="title_pctsiz_ex3.5m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m">
                 </item>
-                <item id="menu_item_id_pctsiz_3m" title_id="title_pctsiz_3m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m" >
+                <item id="menu_item_id_pctsiz_3m" title_id="title_pctsiz_3m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex3m" title_id="title_pctsiz_ex3m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m" >
+                <item id="menu_item_id_pctsiz_ex3m" title_id="title_pctsiz_ex3m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m">
                 </item>
-                <item id="menu_item_id_pctsiz_2m" title_id="title_pctsiz_2m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m" >
+                <item id="menu_item_id_pctsiz_2m" title_id="title_pctsiz_2m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m">
                 </item>
-                <item id="menu_item_id_pctsiz_ex2m" title_id="title_pctsiz_ex2m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m" >
+                <item id="menu_item_id_pctsiz_ex2m" title_id="title_pctsiz_ex2m" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_quality" title_id="title_quality" func_type="select" >
+            <item id="menu_item_id_quality" title_id="title_quality" func_type="select">
               <group>
-                <item id="menu_item_id_quality_fine" title_id="title_quality_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="fine" >
+                <item id="menu_item_id_quality_fine" title_id="title_quality_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="fine">
                 </item>
-                <item id="menu_item_id_quality_standard" title_id="title_quality_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="standard" >
+                <item id="menu_item_id_quality_standard" title_id="title_quality_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="standard">
                 </item>
-                <item id="menu_item_id_quality_raw_fine" title_id="title_quality_raw_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_fine" >
+                <item id="menu_item_id_quality_raw_fine" title_id="title_quality_raw_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_fine">
                 </item>
-                <item id="menu_item_id_quality_raw_standard" title_id="title_quality_raw_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_standard" >
+                <item id="menu_item_id_quality_raw_standard" title_id="title_quality_raw_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_standard">
                 </item>
-                <item id="menu_item_id_quality_raw" title_id="title_quality_raw" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw" >
+                <item id="menu_item_id_quality_raw" title_id="title_quality_raw" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw">
                 </item>
-                <item id="menu_item_id_quality_mpo_fine" title_id="title_quality_mpo_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="mpo_fine" >
+                <item id="menu_item_id_quality_mpo_fine" title_id="title_quality_mpo_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="mpo_fine">
                 </item>
-                <item id="menu_item_id_quality_mpo_standard" title_id="title_quality_mpo_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="mpo_standard" >
+                <item id="menu_item_id_quality_mpo_standard" title_id="title_quality_mpo_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="mpo_standard">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_lightmet" title_id="title_lightmet" func_type="select" >
+            <item id="menu_item_id_lightmet" title_id="title_lightmet" func_type="select">
               <group>
-                <item id="menu_item_id_quality_multi" title_id="title_quality_multi" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="multi" >
+                <item id="menu_item_id_quality_multi" title_id="title_quality_multi" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="multi">
                 </item>
-                <item id="menu_item_id_quality_center" title_id="title_quality_center" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="center" >
+                <item id="menu_item_id_quality_center" title_id="title_quality_center" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="center">
                 </item>
-                <item id="menu_item_id_quality_spot" title_id="title_quality_spot" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="spot" >
+                <item id="menu_item_id_quality_spot" title_id="title_quality_spot" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="spot">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_v_quality" title_id="title_v_quality" func_type="select" >
+            <item id="menu_item_id_v_quality" title_id="title_v_quality" func_type="select">
               <group>
-                <item id="menu_item_id_quality_avchd_60p_28mbps" title_id="title_quality_avchd_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60p_28mbps" >
+                <item id="menu_item_id_quality_avchd_60p_28mbps" title_id="title_quality_avchd_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60p_28mbps">
                 </item>
-                <item id="menu_item_id_quality_avchd_60i_17mbps" title_id="title_quality_avchd_60i_17mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60i_17mbps" >
+                <item id="menu_item_id_quality_avchd_60i_17mbps" title_id="title_quality_avchd_60i_17mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60i_17mbps">
                 </item>
-                <item id="menu_item_id_quality_avchd_30p_24mbps" title_id="title_quality_avchd_30p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_30p_24mbps" >
+                <item id="menu_item_id_quality_avchd_30p_24mbps" title_id="title_quality_avchd_30p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_30p_24mbps">
                 </item>
-                <item id="menu_item_id_quality_avchd_24p_24mbps" title_id="title_quality_avchd_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_24p_24mbps" >
+                <item id="menu_item_id_quality_avchd_24p_24mbps" title_id="title_quality_avchd_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_24p_24mbps">
                 </item>
-                <item id="menu_item_id_quality_mp4_60p_28mbps" title_id="title_quality_mp4_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_60p_28mbps" >
+                <item id="menu_item_id_quality_mp4_60p_28mbps" title_id="title_quality_mp4_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_60p_28mbps">
                 </item>
-                <item id="menu_item_id_quality_mp4_30p_20mbps" title_id="title_quality_mp4_30p_20mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_20mbps" >
+                <item id="menu_item_id_quality_mp4_30p_20mbps" title_id="title_quality_mp4_30p_20mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_20mbps">
                 </item>
-                <item id="menu_item_id_quality_mp4_24p_24mbps" title_id="title_quality_mp4_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_24p_24mbps" >
+                <item id="menu_item_id_quality_mp4_24p_24mbps" title_id="title_quality_mp4_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_24p_24mbps">
                 </item>
-                <item id="menu_item_id_quality_mp4_30p_10mbps" title_id="title_quality_mp4_30p_10mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_10mbps" >
+                <item id="menu_item_id_quality_mp4_30p_10mbps" title_id="title_quality_mp4_30p_10mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_10mbps">
                 </item>
-                <item id="menu_item_id_quality_mp4_30p_4mbps" title_id="title_quality_mp4_30p_4mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_4mbps" >
+                <item id="menu_item_id_quality_mp4_30p_4mbps" title_id="title_quality_mp4_30p_4mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_4mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_60p_50mbps" title_id="title_quality_mov_60p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_60p_50mbps" >
+                <item id="menu_item_id_quality_mov_60p_50mbps" title_id="title_quality_mov_60p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_60p_50mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_30p_72mbps" title_id="title_quality_mov_30p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_30p_72mbps" >
+                <item id="menu_item_id_quality_mov_30p_72mbps" title_id="title_quality_mov_30p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_30p_72mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_30p_50mbps" title_id="title_quality_mov_30p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_30p_50mbps" >
+                <item id="menu_item_id_quality_mov_30p_50mbps" title_id="title_quality_mov_30p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_30p_50mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_24p_72mbps" title_id="title_quality_mov_24p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_72mbps" >
+                <item id="menu_item_id_quality_mov_24p_72mbps" title_id="title_quality_mov_24p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_72mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_24p_50mbps" title_id="title_quality_mov_24p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_50mbps" >
+                <item id="menu_item_id_quality_mov_24p_50mbps" title_id="title_quality_mov_24p_50mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_50mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_24p_24mbps" title_id="title_quality_mov_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_24mbps" >
+                <item id="menu_item_id_quality_mov_24p_24mbps" title_id="title_quality_mov_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_24p_24mbps">
                 </item>
-                <item id="menu_item_id_quality_mov_60p_72mbps" title_id="title_quality_mov_60p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_60p_72mbps" >
+                <item id="menu_item_id_quality_mov_60p_72mbps" title_id="title_quality_mov_60p_72mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mov_60p_72mbps">
                 </item>
               </group>
             </item>
-            <item id="menu_item_id_vrect" title_id="title_vrect" func_type="sp_embeded_vrect" min_val="2" max_val="__infinite__" step_val="1" cmd_mode="setsetting" cmd_type="videorectime" cmd_value="__value__" >
+            <item id="menu_item_id_vrect" title_id="title_vrect" func_type="sp_embeded_vrect" min_val="2" max_val="__infinite__" step_val="1" cmd_mode="setsetting" cmd_type="videorectime" cmd_value="__value__">
             </item>
           </menu>
         </item>
 
-        <item id="menu_item_id_liveview_settings" title_id="title_liveview_settings" func_type="submenu" >
+        <item id="menu_item_id_liveview_settings" title_id="title_liveview_settings" func_type="submenu">
           <menu>
-            <item id="menu_item_id_self_shot" title_id="title_self_shot" func_type="sp_embeded_self_shot" >
+            <item id="menu_item_id_self_shot" title_id="title_self_shot" func_type="sp_embeded_self_shot">
             </item>
-            <item id="menu_item_id_liveview_quality" title_id="title_liveview_quality" func_type="select" >
+            <item id="menu_item_id_liveview_quality" title_id="title_liveview_quality" func_type="select">
               <group>
-                <item id="menu_item_id_liveviewsize_vga" title_id="title_liveviewsize_vga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="vga" >
+                <item id="menu_item_id_liveviewsize_vga" title_id="title_liveviewsize_vga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="vga">
                 </item>
-                <item id="menu_item_id_liveviewsize_qvga" title_id="title_liveviewsize_qvga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="qvga" >
+                <item id="menu_item_id_liveviewsize_qvga" title_id="title_liveviewsize_qvga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="qvga">
                 </item>
               </group>
             </item>
           </menu>
         </item>
 
-        <item id="menu_item_id_playview_settings" title_id="title_playview_settings" func_type="sp_embeded_playview_settings" >
+        <item id="menu_item_id_playview_settings" title_id="title_playview_settings" func_type="sp_embeded_playview_settings">
         </item>
 
-        <item id="menu_item_id_appset" title_id="title_appset" func_type="submenu" >
+        <item id="menu_item_id_appset" title_id="title_appset" func_type="submenu">
           <menu>
-            <item id="menu_item_id_netname" title_id="title_netname" func_type="sp_embeded_netname" >
+            <item id="menu_item_id_netname" title_id="title_netname" func_type="sp_embeded_netname">
             </item>
           </menu>
         </item>
 
-        <item id="menu_item_id_help" title_id="title_help" func_type="sp_embeded_help" >
+        <item id="menu_item_id_help" title_id="title_help" func_type="sp_embeded_help">
         </item>
 
-        <item id="menu_item_id_tou" title_id="title_tou" func_type="sp_embeded_tou" >
+        <item id="menu_item_id_tou" title_id="title_tou" func_type="sp_embeded_tou">
         </item>
-
       </menu>
     </mainmenu>
 
-
     <qmenu>
       <menu>
-        <item id="menu_item_id_f_and_ss" title_id="title_f_and_ss" func_type="sp_embeded_f_and_ss" >
+        <item id="menu_item_id_f_and_ss" title_id="title_f_and_ss" func_type="sp_embeded_f_and_ss">
         </item>
 
-        <item id="menu_item_id_aperture" title_id="title_aperture" func_type="sp_embeded_aperture" >
+        <item id="menu_item_id_aperture" title_id="title_aperture" func_type="sp_embeded_aperture">
         </item>
 
-        <item id="menu_item_id_shutter_speed" title_id="title_shutter_speed" func_type="sp_embeded_shutter_speed" >
+        <item id="menu_item_id_shutter_speed" title_id="title_shutter_speed" func_type="sp_embeded_shutter_speed">
         </item>
 
-        <item id="menu_item_id_program_shift" title_id="title_program_shift" func_type="sp_embeded_program_shift" >
+        <item id="menu_item_id_program_shift" title_id="title_program_shift" func_type="sp_embeded_program_shift">
         </item>
 
-        <item id="menu_item_id_exposure2" title_id="title_exposure2" func_type="sp_embeded_exposure2" >
+        <item id="menu_item_id_exposure2" title_id="title_exposure2" func_type="sp_embeded_exposure2">
           <group>
-            <item id="menu_item_id_exposure_m5" title_id="title_exposure_m5" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5" >
+            <item id="menu_item_id_exposure_m5" title_id="title_exposure_m5" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5">
             </item>
-            <item id="menu_item_id_exposure_m14_3" title_id="title_exposure_m14_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-14/3" >
+            <item id="menu_item_id_exposure_m14_3" title_id="title_exposure_m14_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-14/3">
             </item>
-            <item id="menu_item_id_exposure_m13_3" title_id="title_exposure_m13_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-13/3" >
+            <item id="menu_item_id_exposure_m13_3" title_id="title_exposure_m13_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-13/3">
             </item>
-            <item id="menu_item_id_exposure_m4" title_id="title_exposure_m4" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-4" >
+            <item id="menu_item_id_exposure_m4" title_id="title_exposure_m4" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-4">
             </item>
-            <item id="menu_item_id_exposure_m11_3" title_id="title_exposure_m11_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-11/3" >
+            <item id="menu_item_id_exposure_m11_3" title_id="title_exposure_m11_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-11/3">
             </item>
-            <item id="menu_item_id_exposure_m10_3" title_id="title_exposure_m10_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-10/3" >
+            <item id="menu_item_id_exposure_m10_3" title_id="title_exposure_m10_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-10/3">
             </item>
-            <item id="menu_item_id_exposure_m3" title_id="title_exposure_m3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-3" >
+            <item id="menu_item_id_exposure_m3" title_id="title_exposure_m3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-3">
             </item>
-            <item id="menu_item_id_exposure_m8_3" title_id="title_exposure_m8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-8/3" >
+            <item id="menu_item_id_exposure_m8_3" title_id="title_exposure_m8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-8/3">
             </item>
-            <item id="menu_item_id_exposure_m7_3" title_id="title_exposure_m7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-7/3" >
+            <item id="menu_item_id_exposure_m7_3" title_id="title_exposure_m7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-7/3">
             </item>
-            <item id="menu_item_id_exposure_m2" title_id="title_exposure_m2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2" >
+            <item id="menu_item_id_exposure_m2" title_id="title_exposure_m2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2">
             </item>
-            <item id="menu_item_id_exposure_m5_3" title_id="title_exposure_m5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5/3" >
+            <item id="menu_item_id_exposure_m5_3" title_id="title_exposure_m5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5/3">
             </item>
-            <item id="menu_item_id_exposure_m4_3" title_id="title_exposure_m4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-4/3" >
+            <item id="menu_item_id_exposure_m4_3" title_id="title_exposure_m4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-4/3">
             </item>
-            <item id="menu_item_id_exposure_m1" title_id="title_exposure_m1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1" >
+            <item id="menu_item_id_exposure_m1" title_id="title_exposure_m1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1">
             </item>
-            <item id="menu_item_id_exposure_m2_3" title_id="title_exposure_m2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2/3" >
+            <item id="menu_item_id_exposure_m2_3" title_id="title_exposure_m2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2/3">
             </item>
-            <item id="menu_item_id_exposure_m1_3" title_id="title_exposure_m1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1/3" >
+            <item id="menu_item_id_exposure_m1_3" title_id="title_exposure_m1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1/3">
             </item>
-            <item id="menu_item_id_exposure_0" title_id="title_exposure_0" cmd_mode="setsetting" cmd_type="exposure" cmd_value="0" >
+            <item id="menu_item_id_exposure_0" title_id="title_exposure_0" cmd_mode="setsetting" cmd_type="exposure" cmd_value="0">
             </item>
-            <item id="menu_item_id_exposure_p1_3" title_id="title_exposure_p1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1/3" >
+            <item id="menu_item_id_exposure_p1_3" title_id="title_exposure_p1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1/3">
             </item>
-            <item id="menu_item_id_exposure_p2_3" title_id="title_exposure_p2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2/3" >
+            <item id="menu_item_id_exposure_p2_3" title_id="title_exposure_p2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2/3">
             </item>
-            <item id="menu_item_id_exposure_p1" title_id="title_exposure_p1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1" >
+            <item id="menu_item_id_exposure_p1" title_id="title_exposure_p1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1">
             </item>
-            <item id="menu_item_id_exposure_p4_3" title_id="title_exposure_p4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="4/3" >
+            <item id="menu_item_id_exposure_p4_3" title_id="title_exposure_p4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="4/3">
             </item>
-            <item id="menu_item_id_exposure_p5_3" title_id="title_exposure_p5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5/3" >
+            <item id="menu_item_id_exposure_p5_3" title_id="title_exposure_p5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5/3">
             </item>
-            <item id="menu_item_id_exposure_p2" title_id="title_exposure_p2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2" >
+            <item id="menu_item_id_exposure_p2" title_id="title_exposure_p2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2">
             </item>
-            <item id="menu_item_id_exposure_p7_3" title_id="title_exposure_p7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="7/3" >
+            <item id="menu_item_id_exposure_p7_3" title_id="title_exposure_p7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="7/3">
             </item>
-            <item id="menu_item_id_exposure_p8_3" title_id="title_exposure_p8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="8/3" >
+            <item id="menu_item_id_exposure_p8_3" title_id="title_exposure_p8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="8/3">
             </item>
-            <item id="menu_item_id_exposure_p3" title_id="title_exposure_p3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="3" >
+            <item id="menu_item_id_exposure_p3" title_id="title_exposure_p3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="3">
             </item>
-            <item id="menu_item_id_exposure_p10_3" title_id="title_exposure_p10_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="10/3" >
+            <item id="menu_item_id_exposure_p10_3" title_id="title_exposure_p10_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="10/3">
             </item>
-            <item id="menu_item_id_exposure_p11_3" title_id="title_exposure_p11_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="11/3" >
+            <item id="menu_item_id_exposure_p11_3" title_id="title_exposure_p11_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="11/3">
             </item>
-            <item id="menu_item_id_exposure_p12_3" title_id="title_exposure_p12_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="4" >
+            <item id="menu_item_id_exposure_p12_3" title_id="title_exposure_p12_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="4">
             </item>
-            <item id="menu_item_id_exposure_p13_3" title_id="title_exposure_p13_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="13/3" >
+            <item id="menu_item_id_exposure_p13_3" title_id="title_exposure_p13_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="13/3">
             </item>
-            <item id="menu_item_id_exposure_p14_3" title_id="title_exposure_p14_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="14/3" >
+            <item id="menu_item_id_exposure_p14_3" title_id="title_exposure_p14_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="14/3">
             </item>
-            <item id="menu_item_id_exposure_p15_3" title_id="title_exposure_p15_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5" >
+            <item id="menu_item_id_exposure_p15_3" title_id="title_exposure_p15_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5">
             </item>
           </group>
         </item>
 
-        <item id="menu_item_id_sensitivity" title_id="title_sensitivity" func_type="sp_embeded_sensitivity" >
+        <item id="menu_item_id_sensitivity" title_id="title_sensitivity" func_type="sp_embeded_sensitivity">
           <group>
-            <item id="menu_item_id_sensitivity_auto" title_id="title_sensitivity_auto" cmd_mode="setsetting" cmd_type="iso" cmd_value="auto" >
+            <item id="menu_item_id_sensitivity_auto" title_id="title_sensitivity_auto" cmd_mode="setsetting" cmd_type="iso" cmd_value="auto">
             </item>
-            <item id="menu_item_id_sensitivity_i_iso" title_id="title_sensitivity_i_iso" cmd_mode="setsetting" cmd_type="iso" cmd_value="i_iso" >
+            <item id="menu_item_id_sensitivity_i_iso" title_id="title_sensitivity_i_iso" cmd_mode="setsetting" cmd_type="iso" cmd_value="i_iso">
             </item>
-            <item id="menu_item_id_sensitivity_125" title_id="title_sensitivity_125" cmd_mode="setsetting" cmd_type="iso" cmd_value="125" >
+            <item id="menu_item_id_sensitivity_125" title_id="title_sensitivity_125" cmd_mode="setsetting" cmd_type="iso" cmd_value="125">
             </item>
-            <item id="menu_item_id_sensitivity_160" title_id="title_sensitivity_160" cmd_mode="setsetting" cmd_type="iso" cmd_value="160" >
+            <item id="menu_item_id_sensitivity_160" title_id="title_sensitivity_160" cmd_mode="setsetting" cmd_type="iso" cmd_value="160">
             </item>
-            <item id="menu_item_id_sensitivity_200" title_id="title_sensitivity_200" cmd_mode="setsetting" cmd_type="iso" cmd_value="200" >
+            <item id="menu_item_id_sensitivity_200" title_id="title_sensitivity_200" cmd_mode="setsetting" cmd_type="iso" cmd_value="200">
             </item>
-            <item id="menu_item_id_sensitivity_250" title_id="title_sensitivity_250" cmd_mode="setsetting" cmd_type="iso" cmd_value="250" >
+            <item id="menu_item_id_sensitivity_250" title_id="title_sensitivity_250" cmd_mode="setsetting" cmd_type="iso" cmd_value="250">
             </item>
-            <item id="menu_item_id_sensitivity_320" title_id="title_sensitivity_320" cmd_mode="setsetting" cmd_type="iso" cmd_value="320" >
+            <item id="menu_item_id_sensitivity_320" title_id="title_sensitivity_320" cmd_mode="setsetting" cmd_type="iso" cmd_value="320">
             </item>
-            <item id="menu_item_id_sensitivity_400" title_id="title_sensitivity_400" cmd_mode="setsetting" cmd_type="iso" cmd_value="400" >
+            <item id="menu_item_id_sensitivity_400" title_id="title_sensitivity_400" cmd_mode="setsetting" cmd_type="iso" cmd_value="400">
             </item>
-            <item id="menu_item_id_sensitivity_500" title_id="title_sensitivity_500" cmd_mode="setsetting" cmd_type="iso" cmd_value="500" >
+            <item id="menu_item_id_sensitivity_500" title_id="title_sensitivity_500" cmd_mode="setsetting" cmd_type="iso" cmd_value="500">
             </item>
-            <item id="menu_item_id_sensitivity_640" title_id="title_sensitivity_640" cmd_mode="setsetting" cmd_type="iso" cmd_value="640" >
+            <item id="menu_item_id_sensitivity_640" title_id="title_sensitivity_640" cmd_mode="setsetting" cmd_type="iso" cmd_value="640">
             </item>
-            <item id="menu_item_id_sensitivity_800" title_id="title_sensitivity_800" cmd_mode="setsetting" cmd_type="iso" cmd_value="800" >
+            <item id="menu_item_id_sensitivity_800" title_id="title_sensitivity_800" cmd_mode="setsetting" cmd_type="iso" cmd_value="800">
             </item>
-            <item id="menu_item_id_sensitivity_1000" title_id="title_sensitivity_1000" cmd_mode="setsetting" cmd_type="iso" cmd_value="1000" >
+            <item id="menu_item_id_sensitivity_1000" title_id="title_sensitivity_1000" cmd_mode="setsetting" cmd_type="iso" cmd_value="1000">
             </item>
-            <item id="menu_item_id_sensitivity_1250" title_id="title_sensitivity_1250" cmd_mode="setsetting" cmd_type="iso" cmd_value="1250" >
+            <item id="menu_item_id_sensitivity_1250" title_id="title_sensitivity_1250" cmd_mode="setsetting" cmd_type="iso" cmd_value="1250">
             </item>
-            <item id="menu_item_id_sensitivity_1600" title_id="title_sensitivity_1600" cmd_mode="setsetting" cmd_type="iso" cmd_value="1600" >
+            <item id="menu_item_id_sensitivity_1600" title_id="title_sensitivity_1600" cmd_mode="setsetting" cmd_type="iso" cmd_value="1600">
             </item>
-            <item id="menu_item_id_sensitivity_2000" title_id="title_sensitivity_2000" cmd_mode="setsetting" cmd_type="iso" cmd_value="2000" >
+            <item id="menu_item_id_sensitivity_2000" title_id="title_sensitivity_2000" cmd_mode="setsetting" cmd_type="iso" cmd_value="2000">
             </item>
-            <item id="menu_item_id_sensitivity_2500" title_id="title_sensitivity_2500" cmd_mode="setsetting" cmd_type="iso" cmd_value="2500" >
+            <item id="menu_item_id_sensitivity_2500" title_id="title_sensitivity_2500" cmd_mode="setsetting" cmd_type="iso" cmd_value="2500">
             </item>
-            <item id="menu_item_id_sensitivity_3200" title_id="title_sensitivity_3200" cmd_mode="setsetting" cmd_type="iso" cmd_value="3200" >
+            <item id="menu_item_id_sensitivity_3200" title_id="title_sensitivity_3200" cmd_mode="setsetting" cmd_type="iso" cmd_value="3200">
             </item>
-            <item id="menu_item_id_sensitivity_4000" title_id="title_sensitivity_4000" cmd_mode="setsetting" cmd_type="iso" cmd_value="4000" >
+            <item id="menu_item_id_sensitivity_4000" title_id="title_sensitivity_4000" cmd_mode="setsetting" cmd_type="iso" cmd_value="4000">
             </item>
-            <item id="menu_item_id_sensitivity_5000" title_id="title_sensitivity_5000" cmd_mode="setsetting" cmd_type="iso" cmd_value="5000" >
+            <item id="menu_item_id_sensitivity_5000" title_id="title_sensitivity_5000" cmd_mode="setsetting" cmd_type="iso" cmd_value="5000">
             </item>
-            <item id="menu_item_id_sensitivity_6400" title_id="title_sensitivity_6400" cmd_mode="setsetting" cmd_type="iso" cmd_value="6400" >
+            <item id="menu_item_id_sensitivity_6400" title_id="title_sensitivity_6400" cmd_mode="setsetting" cmd_type="iso" cmd_value="6400">
             </item>
-            <item id="menu_item_id_sensitivity_8000" title_id="title_sensitivity_8000" cmd_mode="setsetting" cmd_type="iso" cmd_value="8000" >
+            <item id="menu_item_id_sensitivity_8000" title_id="title_sensitivity_8000" cmd_mode="setsetting" cmd_type="iso" cmd_value="8000">
             </item>
-            <item id="menu_item_id_sensitivity_10000" title_id="title_sensitivity_10000" cmd_mode="setsetting" cmd_type="iso" cmd_value="10000" >
+            <item id="menu_item_id_sensitivity_10000" title_id="title_sensitivity_10000" cmd_mode="setsetting" cmd_type="iso" cmd_value="10000">
             </item>
-            <item id="menu_item_id_sensitivity_12800" title_id="title_sensitivity_12800" cmd_mode="setsetting" cmd_type="iso" cmd_value="12800" >
+            <item id="menu_item_id_sensitivity_12800" title_id="title_sensitivity_12800" cmd_mode="setsetting" cmd_type="iso" cmd_value="12800">
             </item>
-            <item id="menu_item_id_sensitivity_16000" title_id="title_sensitivity_16000" cmd_mode="setsetting" cmd_type="iso" cmd_value="16000" >
+            <item id="menu_item_id_sensitivity_16000" title_id="title_sensitivity_16000" cmd_mode="setsetting" cmd_type="iso" cmd_value="16000">
             </item>
-            <item id="menu_item_id_sensitivity_20000" title_id="title_sensitivity_20000" cmd_mode="setsetting" cmd_type="iso" cmd_value="20000" >
+            <item id="menu_item_id_sensitivity_20000" title_id="title_sensitivity_20000" cmd_mode="setsetting" cmd_type="iso" cmd_value="20000">
             </item>
-            <item id="menu_item_id_sensitivity_25600" title_id="title_sensitivity_25600" cmd_mode="setsetting" cmd_type="iso" cmd_value="25600" >
+            <item id="menu_item_id_sensitivity_25600" title_id="title_sensitivity_25600" cmd_mode="setsetting" cmd_type="iso" cmd_value="25600">
             </item>
           </group>
         </item>
 
-        <item id="menu_item_id_whitebalance" title_id="title_whitebalance" func_type="sp_embeded_whitebalance" >
+        <item id="menu_item_id_whitebalance" title_id="title_whitebalance" func_type="sp_embeded_whitebalance">
           <group>
-            <item id="menu_item_id_whitebalance_auto" title_id="title_whitebalance_auto" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="auto" >
+            <item id="menu_item_id_whitebalance_auto" title_id="title_whitebalance_auto" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="auto">
             </item>
-            <item id="menu_item_id_whitebalance_daylight" title_id="title_whitebalance_daylight" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="daylight" >
+            <item id="menu_item_id_whitebalance_daylight" title_id="title_whitebalance_daylight" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="daylight">
             </item>
-            <item id="menu_item_id_whitebalance_cloudy" title_id="title_whitebalance_cloudy" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="cloudy" >
+            <item id="menu_item_id_whitebalance_cloudy" title_id="title_whitebalance_cloudy" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="cloudy">
             </item>
-            <item id="menu_item_id_whitebalance_shade" title_id="title_whitebalance_shade" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="shade" >
+            <item id="menu_item_id_whitebalance_shade" title_id="title_whitebalance_shade" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="shade">
             </item>
-            <item id="menu_item_id_whitebalance_halogen" title_id="title_whitebalance_halogen" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="halogen" >
+            <item id="menu_item_id_whitebalance_halogen" title_id="title_whitebalance_halogen" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="halogen">
             </item>
-            <item id="menu_item_id_whitebalance_flash" title_id="title_whitebalance_flash" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="flash" >
+            <item id="menu_item_id_whitebalance_flash" title_id="title_whitebalance_flash" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="flash">
             </item>
-            <item id="menu_item_id_whitebalance_white_set1" title_id="title_whitebalance_white_set1" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set1" >
+            <item id="menu_item_id_whitebalance_white_set1" title_id="title_whitebalance_white_set1" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set1">
             </item>
-            <item id="menu_item_id_whitebalance_white_set2" title_id="title_whitebalance_white_set2" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set2" >
+            <item id="menu_item_id_whitebalance_white_set2" title_id="title_whitebalance_white_set2" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set2">
             </item>
-            <item id="menu_item_id_whitebalance_white_set3" title_id="title_whitebalance_white_set3" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set3" >
+            <item id="menu_item_id_whitebalance_white_set3" title_id="title_whitebalance_white_set3" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set3">
             </item>
-            <item id="menu_item_id_whitebalance_white_set4" title_id="title_whitebalance_white_set4" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set4" >
+            <item id="menu_item_id_whitebalance_white_set4" title_id="title_whitebalance_white_set4" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set4">
             </item>
-            <item id="menu_item_id_whitebalance_color_temp" title_id="title_whitebalance_color_temp" func_type="range" min_val="2500" max_val="10000" step_val="100" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="color_temp" cmd_value2="__value__" >
+            <item id="menu_item_id_whitebalance_color_temp" title_id="title_whitebalance_color_temp" func_type="range" min_val="2500" max_val="10000" step_val="100" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="color_temp" cmd_value2="__value__">
             </item>
           </group>
         </item>
-
       </menu>
     </qmenu>
 
-
     <drivemode>
       <menu>
-        <item id="menu_item_id_1shoot" title_id="title_1shoot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="normal" >
+        <item id="menu_item_id_1shoot" title_id="title_1shoot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="normal">
         </item>
 
-        <item id="menu_item_id_burst" title_id="title_burst" func_type="select" >
+        <item id="menu_item_id_burst" title_id="title_burst" func_type="select">
           <group>
-            <item id="menu_item_id_burst_sh" title_id="title_burst_sh" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="sh" >
+            <item id="menu_item_id_burst_sh" title_id="title_burst_sh" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="sh">
             </item>
-            <item id="menu_item_id_burst_h" title_id="title_burst_h" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="h" >
+            <item id="menu_item_id_burst_h" title_id="title_burst_h" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="h">
             </item>
-            <item id="menu_item_id_burst_m" title_id="title_burst_m" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="m" >
+            <item id="menu_item_id_burst_m" title_id="title_burst_m" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="m">
             </item>
-            <item id="menu_item_id_burst_l" title_id="title_burst_l" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="l" >
+            <item id="menu_item_id_burst_l" title_id="title_burst_l" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="l">
             </item>
           </group>
         </item>
 
-        <item id="menu_item_id_autobracket" title_id="title_autobracket" func_type="select" >
+        <item id="menu_item_id_autobracket" title_id="title_autobracket" func_type="select">
           <group>
-            <item id="menu_item_id_autobracket_3shot_1/3ev" title_id="title_autobracket_3shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1/3ev" >
+            <item id="menu_item_id_autobracket_3shot_1/3ev" title_id="title_autobracket_3shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1/3ev">
             </item>
-            <item id="menu_item_id_autobracket_3shot_2/3ev" title_id="title_autobracket_3shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_2/3ev" >
+            <item id="menu_item_id_autobracket_3shot_2/3ev" title_id="title_autobracket_3shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_2/3ev">
             </item>
-            <item id="menu_item_id_autobracket_3shot_1ev" title_id="title_autobracket_3shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1ev" >
+            <item id="menu_item_id_autobracket_3shot_1ev" title_id="title_autobracket_3shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1ev">
             </item>
-            <item id="menu_item_id_autobracket_5shot_1/3ev" title_id="title_autobracket_5shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1/3ev" >
+            <item id="menu_item_id_autobracket_5shot_1/3ev" title_id="title_autobracket_5shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1/3ev">
             </item>
-            <item id="menu_item_id_autobracket_5shot_2/3ev" title_id="title_autobracket_5shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_2/3ev" >
+            <item id="menu_item_id_autobracket_5shot_2/3ev" title_id="title_autobracket_5shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_2/3ev">
             </item>
-            <item id="menu_item_id_autobracket_5shot_1ev" title_id="title_autobracket_5shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1ev" >
+            <item id="menu_item_id_autobracket_5shot_1ev" title_id="title_autobracket_5shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1ev">
             </item>
-            <item id="menu_item_id_autobracket_7shot_1/3ev" title_id="title_autobracket_7shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1/3ev" >
+            <item id="menu_item_id_autobracket_7shot_1/3ev" title_id="title_autobracket_7shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1/3ev">
             </item>
-            <item id="menu_item_id_autobracket_7shot_2/3ev" title_id="title_autobracket_7shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_2/3ev" >
+            <item id="menu_item_id_autobracket_7shot_2/3ev" title_id="title_autobracket_7shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_2/3ev">
             </item>
-            <item id="menu_item_id_autobracket_7shot_1ev" title_id="title_autobracket_7shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1ev" >
+            <item id="menu_item_id_autobracket_7shot_1ev" title_id="title_autobracket_7shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1ev">
             </item>
           </group>
         </item>
 
-        <item id="menu_item_id_selftimer" title_id="title_selftimer" func_type="select" >
+        <item id="menu_item_id_selftimer" title_id="title_selftimer" func_type="select">
           <group>
-            <item id="menu_item_id_selftimer_10sec" title_id="title_selftimer_10sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec" >
+            <item id="menu_item_id_selftimer_10sec" title_id="title_selftimer_10sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec">
             </item>
-            <item id="menu_item_id_selftimer_10sec3shot" title_id="title_selftimer_10sec3shot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec3shot" >
+            <item id="menu_item_id_selftimer_10sec3shot" title_id="title_selftimer_10sec3shot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec3shot">
             </item>
-            <item id="menu_item_id_selftimer_2sec" title_id="title_selftimer_2sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="2sec" >
+            <item id="menu_item_id_selftimer_2sec" title_id="title_selftimer_2sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="2sec">
             </item>
           </group>
         </item>
-
       </menu>
     </drivemode>
 
     <titlelist model="GH3" version="1.0" date="20130218">
-      <language code="en" default="yes" >
+      <language code="en" default="yes">
         <title id="title_connection_settings">Set connect. dest.</title>
         <title id="title_photo_settings">Recording Settings</title>
         <title id="title_crtv_ctrl">Creative Control</title>
@@ -753,7 +748,7 @@
         <title id="title_selftimer_2sec">2sec.</title>
       </language>
 
-      <language code="ja" >
+      <language code="ja">
         <title id="title_connection_settings">接続先設定</title>
         <title id="title_photo_settings">撮影設定</title>
         <title id="title_crtv_ctrl">クリエイティブコントロール</title>
@@ -876,7 +871,7 @@
         <title id="title_selftimer_2sec">2秒</title>
       </language>
 
-      <language code="de" >
+      <language code="de">
         <title id="title_connection_settings">Verbindungsz. einst.</title>
         <title id="title_photo_settings">Aufnahme-Einstell.</title>
         <title id="title_crtv_ctrl">Kreativmodus</title>
@@ -980,7 +975,7 @@
         <title id="title_selftimer_2sec">2 s</title>
       </language>
 
-      <language code="fr" >
+      <language code="fr">
         <title id="title_connection_settings">Régl destin. connex.</title>
         <title id="title_photo_settings">Réglages d’enregist.</title>
         <title id="title_crtv_ctrl">Commande créative</title>
@@ -1084,7 +1079,7 @@
         <title id="title_selftimer_2sec">2 s</title>
       </language>
 
-      <language code="fr-CA" >
+      <language code="fr-CA">
         <title id="title_connection_settings">Param. dest. conn.</title>
         <title id="title_photo_settings">Param. d&apos;enregistrement</title>
         <title id="title_crtv_ctrl">Commande créative</title>
@@ -1189,7 +1184,7 @@
         <title id="title_selftimer_2sec">2 s</title>
       </language>
 
-      <language code="it" >
+      <language code="it">
         <title id="title_connection_settings">Imposta desti. conn.</title>
         <title id="title_photo_settings">Impostaz. registraz.</title>
         <title id="title_crtv_ctrl">Controllo creativo</title>
@@ -1295,7 +1290,7 @@
         <title id="title_selftimer_2sec">2 sec.</title>
       </language>
 
-      <language code="es" >
+      <language code="es">
         <title id="title_connection_settings">Ajustar dest. conex.</title>
         <title id="title_photo_settings">Ajustes de grabación</title>
         <title id="title_crtv_ctrl">Control creativo</title>
@@ -1403,7 +1398,7 @@
         <title id="title_selftimer_2sec">2 s.</title>
       </language>
 
-      <language code="zh-TW" >
+      <language code="zh-TW">
         <title id="title_connection_settings">連接目的地設定</title>
         <title id="title_photo_settings">拍攝設定</title>
         <title id="title_crtv_ctrl">創意控制</title>
@@ -1517,7 +1512,7 @@
         <title id="title_selftimer_2sec">2秒鐘</title>
       </language>
 
-      <language code="zh-CN" >
+      <language code="zh-CN">
         <title id="title_connection_settings">连接目的地设置</title>
         <title id="title_photo_settings">记录设置</title>
         <title id="title_crtv_ctrl">创意控制</title>
@@ -1631,7 +1626,7 @@
         <title id="title_selftimer_2sec">2秒钟</title>
       </language>
 
-      <language code="nl" >
+      <language code="nl">
         <title id="title_connection_settings">Verbind.best. inst.</title>
         <title id="title_photo_settings">Opname-instellingen</title>
         <title id="title_crtv_ctrl">Creatieve opties</title>
@@ -1740,7 +1735,7 @@
         <title id="title_selftimer_2sec">2 sec.</title>
       </language>
 
-      <language code="pt-BR" >
+      <language code="pt-BR">
         <title id="title_connection_settings">Conf. dest. conexão</title>
         <title id="title_photo_settings">Config. gravação</title>
         <title id="title_crtv_ctrl">Controle criativo</title>
@@ -1848,7 +1843,7 @@
         <title id="title_selftimer_2sec">2 segundos</title>
       </language>
 
-      <language code="ru" >
+      <language code="ru">
         <title id="title_connection_settings">Настройка назн.соед.</title>
         <title id="title_photo_settings">Настройки записи</title>
         <title id="title_crtv_ctrl">Творческий контроль</title>
@@ -1961,7 +1956,7 @@
         <title id="title_selftimer_2sec">2 сек</title>
       </language>
 
-      <language code="ko" >
+      <language code="ko">
         <title id="title_connection_settings">연결 대상 설정</title>
         <title id="title_photo_settings">촬영 설정</title>
         <title id="title_crtv_ctrl">크리에이티브 콘트롤</title>
@@ -2074,9 +2069,6 @@
         <title id="title_selftimer_10sec3shot">10초/3매</title>
         <title id="title_selftimer_2sec">2초</title>
       </language>
-
     </titlelist>
-
   </menuset>
-
 </camrply>

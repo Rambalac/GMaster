@@ -5,6 +5,7 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="using:Tools"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -17,33 +18,31 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <RepeatButton Grid.Column="0" FontSize="20" Padding="-2" Click="WideFast_Pressed"
-                      Delay="200" Interval="100" VerticalAlignment="Stretch" >
+        <tools:PressButton  x:Name="But1" Grid.Column="0" FontSize="20" Padding="-2" Repeat="WideFast_Repeat"
+                           RepeatInterval="200" VerticalAlignment="Stretch" Pressed="WideFast_OnPressed" Released="OnReleased">
             <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xEB9E;"
                        VerticalAlignment="Center" />
-        </RepeatButton>
-        <RepeatButton Grid.Column="1" Padding="0" Click="WideNormal_Pressed"
-                      VerticalAlignment="Stretch" Delay="200" Interval="200">
+        </tools:PressButton>
+        <tools:PressButton  x:Name="But2" Grid.Column="1" Padding="0" Repeat="WideNormal_Repeat"
+                      VerticalAlignment="Stretch" RepeatInterval="200" Pressed="WideNormal_OnPressed" Released="OnReleased">
             <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xEDB5;"
                        VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                 <TextBlock.RenderTransform>
                     <ScaleTransform ScaleX="-1" />
                 </TextBlock.RenderTransform>
             </TextBlock>
-        </RepeatButton>
-        <Slider Margin="5,0,5,0" Padding="0,-5,0,-10" Grid.Column="2" Minimum="0"
-                Maximum="{Binding SelectedCamera.Camera.MaximumFocus, Mode=TwoWay}"
-                Value="{Binding SelectedCamera.Camera.CurrentFocus, Mode=TwoWay}"
+        </tools:PressButton>
+        <Slider x:Name="Slider" Margin="5,0,5,0" Padding="0,-5,0,-10" Grid.Column="2"
                 IsEnabled="False" VerticalAlignment="Center" />
-        <RepeatButton Grid.Column="3" Padding="0" Click="TeleNormal_Pressed"
-                      VerticalAlignment="Stretch" Delay="200" Interval="200">
+        <tools:PressButton x:Name="But3" Grid.Column="3" Padding="0" Repeat="TeleNormal_Repeat"
+                      VerticalAlignment="Stretch" RepeatInterval="200" Pressed="TeleNormal_OnPressed" Released="OnReleased">
             <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xEDB5;"
                        VerticalAlignment="Center" />
-        </RepeatButton>
-        <RepeatButton Grid.Column="4" FontSize="20" Padding="-2" Click="TeleFast_Pressed"
-                      Delay="200" Interval="200" VerticalAlignment="Stretch" >
+        </tools:PressButton>
+        <tools:PressButton x:Name="But4" Grid.Column="4" FontSize="20" Padding="-2" Repeat="TeleFast_Repeat"
+                      RepeatInterval="200" VerticalAlignment="Stretch" Pressed="TeleFast_OnPressed" Released="OnReleased">
             <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xEB9D;"
                        VerticalAlignment="Center" />
-        </RepeatButton>
+        </tools:PressButton>
     </Grid>
 </UserControl>

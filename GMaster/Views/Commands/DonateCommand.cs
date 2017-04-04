@@ -22,8 +22,10 @@ namespace GMaster.Views.Commands
                 case StorePurchaseStatus.Succeeded:
                     await new MessageDialog(App.GetString("Donate_Thankyou")).ShowAsync();
                     return;
+
                 case StorePurchaseStatus.NotPurchased:
                     return;
+
                 default:
                     await new MessageDialog(App.GetString("Donate_Error")).ShowAsync();
                     return;

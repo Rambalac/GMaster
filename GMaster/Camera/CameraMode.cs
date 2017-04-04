@@ -1,5 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 #pragma warning disable SA1300 // Element must begin with upper-case letter
+
 namespace GMaster.Camera
 {
     public enum CameraMode
@@ -16,4 +17,5 @@ namespace GMaster.Camera
         Unknown = 0
     }
 }
+
 #pragma warning restore SA1300 // Element must begin with upper-case letter

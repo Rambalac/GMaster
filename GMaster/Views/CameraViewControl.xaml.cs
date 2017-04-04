@@ -3,24 +3,32 @@
 namespace GMaster.Views
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
     using System.Threading.Tasks;
     using Camera;
     using Camera.LumixData;
+    using Microsoft.Graphics.Canvas;
+    using Microsoft.Graphics.Canvas.UI.Xaml;
+    using Windows.Foundation;
     using Windows.UI.Input;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
-    using Windows.UI.Xaml.Media.Imaging;
 
-    public sealed partial class CameraViewControl : UserControl
+    public sealed partial class CameraViewControl : UserControl, IDisposable
     {
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly GestureRecognizer imageGestureRecognizer;
 
         private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(100);
 
+        private Lumix lastCamera;
         private double lastExpansion;
+        private CanvasBitmap lastLiveViewBitmap;
         private DateTime lastSkipable;
+
+        private CanvasBitmap liveViewBitmap;
 
         public CameraViewControl()
         {
@@ -47,6 +55,18 @@ namespace GMaster.Views
 
         private CameraViewModel Model => DataContext as CameraViewModel;
 
+        public void Dispose()
+        {
+            lastLiveViewBitmap?.Dispose();
+        }
+
+        private async void Camera_LiveViewUpdated(Stream stream)
+        {
+            stream.Position = 0;
+            liveViewBitmap = await CanvasBitmap.LoadAsync(LiveView, stream.AsRandomAccessStream());
+            LiveView.Invalidate();
+        }
+
         private void CameraViewControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (args.NewValue != null)
@@ -55,35 +75,12 @@ namespace GMaster.Views
             }
         }
 
-        private async void FocusTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
+        private async void FocusAdjuster_OnRepeatClick(ChangeDirection obj)
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleFast);
-            }
-        }
-
-        private async void FocusTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.TeleNormal);
-            }
-        }
-
-        private async void FocusWideFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideFast);
-            }
-        }
-
-        private async void FocusWideNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeFocus(ChangeDirection.WideNormal);
+                Debug.WriteLine(obj);
+                await Model.SelectedCamera.Camera.ChangeFocus(obj);
             }
         }
 
@@ -126,6 +123,37 @@ namespace GMaster.Views
             await MoveFocusPoint(args.Position.X, args.Position.Y);
         }
 
+        private void LiveView_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            var bitmap = liveViewBitmap;
+            if (!ReferenceEquals(lastLiveViewBitmap, bitmap))
+            {
+                lastLiveViewBitmap?.Dispose();
+            }
+
+            lastLiveViewBitmap = bitmap;
+            if (bitmap == null)
+            {
+                return;
+            }
+
+            var iW = bitmap.SizeInPixels.Width;
+            var iH = bitmap.SizeInPixels.Height;
+
+            var wW = LiveView.ActualWidth;
+            var wH = LiveView.ActualHeight;
+
+            var scaleX = wW / iW;
+            var scaleY = wH / iH;
+
+            var scale = Math.Min(scaleX, scaleY);
+
+            var rH = iH * scale;
+            var rW = iW * scale;
+
+            args.DrawingSession.DrawImage(bitmap, new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH), new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.Linear);
+        }
+
         private void LiveView_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             RecalulateFocusPoint();
@@ -135,6 +163,26 @@ namespace GMaster.Views
         {
             switch (e.PropertyName)
             {
+                case nameof(CameraViewModel.SelectedCamera):
+
+                    var newcamera = Model?.SelectedCamera?.Camera;
+                    if (!ReferenceEquals(newcamera, lastCamera))
+                    {
+                        if (lastCamera != null)
+                        {
+                            lastCamera.LiveViewUpdated -= Camera_LiveViewUpdated;
+                        }
+
+                        lastCamera = newcamera;
+
+                        if (lastCamera != null)
+                        {
+                            lastCamera.LiveViewUpdated += Camera_LiveViewUpdated;
+                        }
+                    }
+
+                    break;
+
                 case nameof(CameraViewModel.FocusPoint):
                     RecalulateFocusPoint();
                     break;
@@ -183,7 +231,8 @@ namespace GMaster.Views
                     top = (tH - iH) / 2;
                 }
 
-                if (LiveView?.Source is BitmapSource bitmap)
+                var bitmap = liveViewBitmap;
+                if (bitmap != null)
                 {
                     var fp = Model.FocusPoint;
 
@@ -192,14 +241,16 @@ namespace GMaster.Views
                     {
                         var shiftX = 0f;
                         var shiftY = 0f;
-                        switch (bitmap.PixelWidth * 10 / bitmap.PixelHeight)
+                        switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
                         {
                             case 17:
                                 shiftY = 0.125f;
                                 break;
+
                             case 15:
                                 shiftY = 0.058f;
                                 break;
+
                             case 10:
                                 shiftX = 0.125f;
                                 break;
@@ -230,43 +281,12 @@ namespace GMaster.Views
             }
         }
 
-        private async void ZoomReleased(object sender, RoutedEventArgs routedEventArgs)
+        private async void ZoomAdjuster_OnPressedReleased(ChangeDirection obj)
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.ZoomStop);
-            }
-        }
-
-        private async void ZoomTeleFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleFast);
-            }
-        }
-
-        private async void ZoomTeleNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.TeleNormal);
-            }
-        }
-
-        private async void ZoomWideFast_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.WideFast);
-            }
-        }
-
-        private async void ZoomWideNormal_Pressed(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (Model?.SelectedCamera?.Camera != null)
-            {
-                await Model.SelectedCamera.Camera.ChangeZoom(ChangeDirection.WideNormal);
+                Debug.WriteLine(obj);
+                await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
         }
     }

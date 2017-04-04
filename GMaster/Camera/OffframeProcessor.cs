@@ -3,8 +3,6 @@ namespace GMaster.Camera
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
@@ -49,19 +47,25 @@ namespace GMaster.Camera
 
         public int Zoom { get; private set; }
 
-        public void Process(MemoryStream offframeBytes)
+        public int Process(byte[] offframeBytes)
         {
             try
             {
-                if (!OffframeBytesSupported || offframeBytes == null || offframeBytes.Length < 130 || !offframeBytes.TryGetBuffer(out var array))
+                if (offframeBytes.Length < 31)
                 {
-                    return;
+                    return -1;
                 }
 
-                Debug.WriteLine(string.Join(",", array.Select(a => a.ToString("X2"))));
+                var state = new ProcessState(offframeBytes);
 
-                var state = new ProcessState(array);
+                var imageStart = state.Original.ToShort(30) + 32;
 
+                if (!OffframeBytesSupported || offframeBytes.Length - imageStart < 130)
+                {
+                    return imageStart;
+                }
+
+                // Debug.WriteLine(string.Join(",", array.Select(a => a.ToString("X2"))));
                 var newIso = GetFromShort(state.Main, 127, parser.IsoBinary);
                 if (!Equals(newIso, Iso))
                 {
@@ -136,10 +140,13 @@ namespace GMaster.Camera
                     FocusMode = newFocusMode;
                     OnPropertyChanged(nameof(FocusMode));
                 }
+
+                return imageStart;
             }
             catch (Exception e)
             {
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
+                return -1;
             }
         }
 
@@ -222,7 +229,7 @@ namespace GMaster.Camera
 
         private class ProcessState
         {
-            public ProcessState(ArraySegment<byte> array)
+            public ProcessState(byte[] array)
             {
                 Original = new Slice(array);
 
@@ -236,16 +243,16 @@ namespace GMaster.Camera
 
         private class Slice
         {
-            private readonly ArraySegment<byte> array;
+            private readonly byte[] array;
             private readonly int offset;
 
-            public Slice(ArraySegment<byte> array, int offset = 0)
+            public Slice(byte[] array, int offset = 0)
             {
                 this.array = array;
-                this.offset = offset + array.Offset;
+                this.offset = offset;
             }
 
-            public byte this[int index] => array.Array[offset + index];
+            public byte this[int index] => array[offset + index];
 
             public short ToShort(int i)
             {

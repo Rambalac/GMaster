@@ -6,6 +6,7 @@ namespace GMaster.Camera
     {
         [EnumValue("err_param")]
         ErrorParam,
+
         Unknown
     }
 }

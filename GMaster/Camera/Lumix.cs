@@ -12,7 +12,6 @@
     using Annotations;
     using LumixData;
     using Tools;
-    using Windows.Storage.Streams;
     using Windows.UI.Xaml;
 
     public class Lumix : INotifyPropertyChanged, IDisposable
@@ -21,16 +20,10 @@
         private static readonly HashSet<CameraMode> CaptureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.A, CameraMode.P, CameraMode.Unknown, CameraMode.iA };
         private static readonly HashSet<CameraMode> ShutterModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.vM, CameraMode.vS };
         private readonly Http http;
-        private readonly object messageRecieving = new object();
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
 
         private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
-
-        private MemoryStream currentImageStream;
-        private byte lastByte;
-
-        private MemoryStream offframeBytes;
 
         private bool useNewTouchAF = true;
 
@@ -46,6 +39,8 @@
         public delegate void DisconnectedDelegate(Lumix sender, bool stillAvailable);
 
         public event DisconnectedDelegate Disconnected;
+
+        public event Action<Stream> LiveViewUpdated;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -79,8 +74,6 @@
         public bool IsLimited => MenuSet == null;
 
         public LensInfo LensInfo { get; private set; }
-
-        public Stream LiveViewFrame { get; private set; }
 
         public int MaximumFocus { get; private set; }
 
@@ -163,9 +156,6 @@
         {
             try
             {
-                currentImageStream = null;
-                lastByte = 0;
-
                 if (!await ReadMenuSet(lang))
                 {
                     return false;
@@ -178,10 +168,10 @@
                 await FakeImageApp();
 
                 await SwitchToRec();
-                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
                 await UpdateState();
                 stateTimer.Start();
                 await ReadLensInfo();
+                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
 
                 IsConnected = true;
                 OnPropertyChanged(nameof(IsConnected));
@@ -224,6 +214,7 @@
         public void Dispose()
         {
             stateUpdatingSem.Dispose();
+            http.Dispose();
         }
 
         public override bool Equals(object obj)
@@ -258,15 +249,6 @@
         public override int GetHashCode()
         {
             return Udn?.GetHashCode() ?? 0;
-        }
-
-        public void ManagerRestarted()
-        {
-            lock (messageRecieving)
-            {
-                currentImageStream = null;
-                lastByte = 0;
-            }
         }
 
         public async Task<bool> RecStart()
@@ -388,18 +370,18 @@
             }
         }
 
-        internal void ProcessMessage(DataReader reader)
+        internal void ProcessMessage(byte[] buf)
         {
-            lock (messageRecieving)
+            var imageStart = OffFrameProcessor.Process(buf);
+            if (imageStart < 0)
             {
-                using (reader)
-                {
-                    while (reader.UnconsumedBufferLength > 0)
-                    {
-                        var curByte = reader.ReadByte();
-                        ProcessByte(curByte);
-                    }
-                }
+                return;
+            }
+
+            if (buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 &&
+                buf[buf.Length - 2] == 0xff && buf[buf.Length - 1] == 0xd9)
+            {
+                LiveViewUpdated?.Invoke(new MemoryStream(buf, imageStart, buf.Length - imageStart, false));
             }
         }
 
@@ -436,6 +418,7 @@
                     CanManualFocus = OffFrameProcessor.FocusMode == FocusMode.Manual;
                     OnPropertyChanged(nameof(CanManualFocus));
                     break;
+
                 case nameof(OffFrameProcessor.CameraMode):
                     CanChangeAperture = ApertureModes.Contains(OffFrameProcessor.CameraMode);
                     CanChangeShutter = ShutterModes.Contains(OffFrameProcessor.CameraMode);
@@ -444,6 +427,7 @@
                     OnPropertyChanged(nameof(CanChangeAperture));
                     OnPropertyChanged(nameof(CanChangeShutter));
                     break;
+
                 case nameof(OffFrameProcessor.OpenedAperture):
                     UpdateCurrentApertures();
                     break;
@@ -453,36 +437,6 @@
         private async void OfframeProcessor_LensUpdated()
         {
             await TryReadLensInfo();
-        }
-
-        private void ProcessByte(byte curByte)
-        {
-            currentImageStream?.WriteByte(curByte);
-
-            offframeBytes?.WriteByte(curByte);
-
-            if (lastByte == 0xff)
-            {
-                if (curByte == 0xd8)
-                {
-                    OffFrameProcessor.Process(offframeBytes);
-                    offframeBytes = null;
-                    currentImageStream = new MemoryStream(32768);
-                    currentImageStream.WriteByte(0xff);
-                    currentImageStream.WriteByte(0xd8);
-                }
-                else if (currentImageStream != null && curByte == 0xd9)
-                {
-                    LiveViewFrame = currentImageStream;
-                    App.RunAsync(() => OnPropertyChanged(nameof(LiveViewFrame)));
-
-                    currentImageStream = null;
-
-                    offframeBytes = new MemoryStream();
-                }
-            }
-
-            lastByte = curByte;
         }
 
         private async Task ReadCurMenu()

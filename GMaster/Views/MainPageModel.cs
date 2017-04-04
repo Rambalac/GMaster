@@ -26,18 +26,15 @@
         {
             LumixManager = new LumixManager(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
 
-            if (!DesignMode.DesignModeEnabled)
-            {
-                LumixManager.DeviceDiscovered += Lumix_DeviceDiscovered;
+            LumixManager.DeviceDiscovered += Lumix_DeviceDiscovered;
 
-                cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
-                cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
-                cameraRefreshTimer.Start();
-                Task.Run(CameraRefresh);
+            cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
+            cameraRefreshTimer.Start();
+            Task.Run(CameraRefresh);
 
-                wifidirect = new WiFiHelper();
-                wifidirect.Start();
-            }
+            wifidirect = new WiFiHelper();
+            wifidirect.Start();
 
             ConnectCommand = new ConnectCommand(this);
             SelectCameraCommand = new SelectCameraCommand(this);

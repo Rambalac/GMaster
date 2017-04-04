@@ -6,7 +6,7 @@
     xmlns:converters="using:GMaster.Views.Converters"
     RequestedTheme="Light">
     <Application.Resources>
-        <local:MainPageModel x:Key="MainModel"/>
+        <local:MainPageModel x:Key="MainModel" />
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
         <converters:VisibilityNullConverter x:Key="VisibilityNullConverter" />
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />

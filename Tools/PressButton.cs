@@ -13,6 +13,7 @@
 
         private readonly DispatcherTimer repeatTimer = new DispatcherTimer();
 
+        private uint pointerid;
         private int pressedKeys;
 
         public PressButton()
@@ -70,6 +71,8 @@
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
+                pointerid = e.Pointer.PointerId;
+                CapturePointer(e.Pointer);
                 CheckStart();
                 Pressed?.Invoke(this, new RoutedEventArgs());
             }
@@ -77,8 +80,9 @@
 
         private void PressPointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            if (e.Pointer.PointerId == pointerid)
             {
+                ReleasePointerCapture(e.Pointer);
                 CheckStop();
                 Released?.Invoke(this, new RoutedEventArgs());
             }
