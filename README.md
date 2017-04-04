@@ -8,7 +8,7 @@ And if something is wrong or not enough I can fix it much much faster than Panas
 App is available in [MS Store](https://www.microsoft.com/store/apps/9NC2W8KC526F)
 
 ## News
-* It can take from 12 hours to several days from pushing to MS Store til update appears for all users .
+※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users .
 
 #### 2017-04-04
 Pushed version 1.5.0 to MS Store
