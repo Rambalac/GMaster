@@ -160,75 +160,73 @@ namespace GMaster.Views
                 return;
             }
 
-            if (!(LiveView.Parent is FrameworkElement parent))
+            if (LiveView.Parent is FrameworkElement parent)
             {
-                return;
-            }
+                var tW = parent.ActualWidth;
+                var tH = parent.ActualHeight;
 
-            var tW = parent.ActualWidth;
-            var tH = parent.ActualHeight;
+                var iW = LiveView.RenderSize.Width;
+                var iH = LiveView.RenderSize.Height;
 
-            var iW = LiveView.RenderSize.Width;
-            var iH = LiveView.RenderSize.Height;
+                double left;
+                double top;
 
-            double left;
-            double top;
-
-            // equal
-            if (Math.Abs(tH - iH) < 0.1f)
-            {
-                left = (tW - iW) / 2;
-                top = 0;
-            }
-            else
-            {
-                left = 0;
-                top = (tH - iH) / 2;
-            }
-
-            if (LiveView?.Source is BitmapSource bitmap)
-            {
-                var fp = Model.FocusPoint;
-
-                double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-                if (!fp.Fixed)
+                // equal
+                if (Math.Abs(tH - iH) < 0.1f)
                 {
-                    var shiftX = 0f;
-                    var shiftY = 0f;
-                    switch (bitmap.PixelWidth * 10 / bitmap.PixelHeight)
-                    {
-                        case 17:
-                            shiftY = 0.125f;
-                            break;
-                        case 15:
-                            shiftY = 0.058f;
-                            break;
-                        case 10:
-                            shiftX = 0.125f;
-                            break;
-                    }
-
-                    x1 = (x1 - shiftX) / (1 - (2 * shiftX));
-                    x2 = (x2 - shiftX) / (1 - (2 * shiftX));
-                    y1 = (y1 - shiftY) / (1 - (2 * shiftY));
-                    y2 = (y2 - shiftY) / (1 - (2 * shiftY));
+                    left = (tW - iW) / 2;
+                    top = 0;
+                }
+                else
+                {
+                    left = 0;
+                    top = (tH - iH) / 2;
                 }
 
-                x1 = x1 * iW;
-                x2 = x2 * iW;
-                y1 = y1 * iH;
-                y2 = y2 * iH;
-
-                FocusPoint.Margin = new Thickness(left + x1, top + y1, left + iW - x2, top + iH - y2);
-                var t = FocusPoint.StrokeThickness;
-                FocusPointGeometry.Transform = new CompositeTransform
+                if (LiveView?.Source is BitmapSource bitmap)
                 {
-                    ScaleX = x2 - x1 - t,
-                    ScaleY = y2 - y1 - t,
-                    TranslateX = t / 2,
-                    TranslateY = t / 2
-                };
-                FocusPoint.Visibility = Visibility.Visible;
+                    var fp = Model.FocusPoint;
+
+                    double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
+                    if (!fp.Fixed)
+                    {
+                        var shiftX = 0f;
+                        var shiftY = 0f;
+                        switch (bitmap.PixelWidth * 10 / bitmap.PixelHeight)
+                        {
+                            case 17:
+                                shiftY = 0.125f;
+                                break;
+                            case 15:
+                                shiftY = 0.058f;
+                                break;
+                            case 10:
+                                shiftX = 0.125f;
+                                break;
+                        }
+
+                        x1 = (x1 - shiftX) / (1 - (2 * shiftX));
+                        x2 = (x2 - shiftX) / (1 - (2 * shiftX));
+                        y1 = (y1 - shiftY) / (1 - (2 * shiftY));
+                        y2 = (y2 - shiftY) / (1 - (2 * shiftY));
+                    }
+
+                    x1 = x1 * iW;
+                    x2 = x2 * iW;
+                    y1 = y1 * iH;
+                    y2 = y2 * iH;
+
+                    FocusPoint.Margin = new Thickness(left + x1, top + y1, left + iW - x2, top + iH - y2);
+                    var t = FocusPoint.StrokeThickness;
+                    FocusPointGeometry.Transform = new CompositeTransform
+                    {
+                        ScaleX = x2 - x1 - t,
+                        ScaleY = y2 - y1 - t,
+                        TranslateX = t / 2,
+                        TranslateY = t / 2
+                    };
+                    FocusPoint.Visibility = Visibility.Visible;
+                }
             }
         }
 

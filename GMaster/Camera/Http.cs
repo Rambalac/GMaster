@@ -28,6 +28,9 @@
             camcgi = new HttpClient(rootFilter);
             camcgi.DefaultRequestHeaders.Accept.Clear();
             camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("application/xml"));
+            camcgi.DefaultRequestHeaders.Accept.Add(new HttpMediaTypeWithQualityHeaderValue("text/xml"));
+            camcgi.DefaultRequestHeaders.UserAgent.Clear();
+            camcgi.DefaultRequestHeaders.UserAgent.ParseAdd("Apache-HttpClient");
         }
 
         public static TResponse ReadResponse<TResponse>(string str)

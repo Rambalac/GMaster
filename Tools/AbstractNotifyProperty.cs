@@ -6,6 +6,7 @@ namespace Tools
 
     public abstract class AbstractNotifyProperty : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected object InnerValue { get; set; }
 
@@ -24,8 +25,6 @@ namespace Tools
             InnerValue = val;
             OnPropertyChanged();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

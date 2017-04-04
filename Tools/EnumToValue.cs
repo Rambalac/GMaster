@@ -64,7 +64,6 @@
 
             foreach (var en in Enum.GetValues(typeof(T)))
             {
-
                 var exceptions = typeof(T).GetField(en.ToString()).GetCustomAttributes<EnumExceptionAttribute>();
                 if (exceptions != null)
                 {

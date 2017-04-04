@@ -115,8 +115,9 @@
     <Compile Include="EnumExceptionAttribute.cs" />
     <Compile Include="EnumToValue.cs" />
     <Compile Include="EnumValueAttribute.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HashCollection.cs" />
-    <Compile Include="IIdItem.cs" />
+    <Compile Include="IStringIdItem.cs" />
     <Compile Include="IObservableHashCollection.cs" />
     <Compile Include="NotifyProperty.cs" />
     <Compile Include="ObservableHashCollection.cs" />

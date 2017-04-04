@@ -58,7 +58,7 @@
             InProgress = true;
             try
             {
-                int errorTries = 3;
+                var errorTries = 3;
                 do
                 {
                     var result = await context.RequestPurchaseAsync(storeId);

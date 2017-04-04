@@ -145,6 +145,9 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
+    <Compile Include="Views\Adjuster.xaml.cs">
+      <DependentUpon>Adjuster.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CameraSettings.cs" />
     <Compile Include="Views\CameraSettingsPage.xaml.cs">
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
@@ -199,10 +202,11 @@
     <Content Include="Assets\PackageLogo.scale-150.png" />
     <Content Include="Assets\PackageLogo.scale-200.png" />
     <Content Include="Assets\PackageLogo.scale-400.png" />
-    <Content Include="Assets\Screenshots\App tile.png" />
-    <Content Include="Assets\Screenshots\Mobile screenshot 1.png" />
-    <Content Include="Assets\Screenshots\PC screenshot 1.png" />
-    <Content Include="Assets\Screenshots\PC screenshot 2.png" />
+    <Content Include="Assets\Screenshots\AppTile.png" />
+    <Content Include="Assets\Screenshots\Mobile-1.png" />
+    <Content Include="Assets\Screenshots\PC-1.png" />
+    <Content Include="Assets\Screenshots\PC-2.jpg" />
+    <Content Include="Assets\Screenshots\PC-2.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
@@ -252,9 +256,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\Adjuster.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CameraSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CameraViewControlResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\GeneralSettingsPage.xaml">
       <SubType>Designer</SubType>

@@ -18,6 +18,7 @@ namespace GMaster.Views.Converters
             stream.Position = 0;
             var bitmap = new BitmapImage();
             bitmap.SetSource(stream.AsRandomAccessStream());
+
             return bitmap;
         }
 

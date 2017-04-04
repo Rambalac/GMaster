@@ -6,7 +6,8 @@
     "Newtonsoft.Json": "10.0.2",
     "Rssdp": "3.0.1",
     "StyleCop.Analyzers": "1.0.0",
-    "System.ValueTuple": "4.3.0"
+    "System.ValueTuple": "4.3.0",
+    "Win2D.uwp": "1.20.0"
   },
   "frameworks": {
     "uap10.0": {}

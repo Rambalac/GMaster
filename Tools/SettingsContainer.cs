@@ -1,5 +1,3 @@
-using Newtonsoft.Json.Linq;
-
 namespace Tools
 {
     using System;
@@ -8,6 +6,7 @@ namespace Tools
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using Annotations;
+    using Newtonsoft.Json.Linq;
 
     public class SettingsContainer : INotifyPropertyChanged
     {

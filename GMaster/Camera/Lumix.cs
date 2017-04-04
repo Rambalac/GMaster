@@ -171,16 +171,17 @@
                     return false;
                 }
 
-                await ReadLensInfo();
-
                 OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser);
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
+                await FakeImageApp();
+
                 await SwitchToRec();
+                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
                 await UpdateState();
                 stateTimer.Start();
-                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
+                await ReadLensInfo();
 
                 IsConnected = true;
                 OnPropertyChanged(nameof(IsConnected));
@@ -419,6 +420,14 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private async Task FakeImageApp()
+        {
+            if (!await TryGet("?mode=accctrl&type=req_acc&value=4D454930-0100-1000-8001-020E0001FF87&value2=SM-G9350"))
+            {
+                await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
+            }
+        }
+
         private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -552,6 +561,19 @@
                 {
                     stateUpdatingSem.Release();
                 }
+            }
+        }
+
+        private async Task<bool> TryGet(string url)
+        {
+            try
+            {
+                await http.Get<BaseRequestResult>(url);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

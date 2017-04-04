@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Xunit;
-
-namespace Tools.Tests
+﻿namespace Tools.Tests
 {
-    enum TestEnum
+    using System.Collections.Generic;
+    using Xunit;
+
+    internal enum TestEnum
     {
         A = 1,
 

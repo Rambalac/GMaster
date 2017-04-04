@@ -33,7 +33,7 @@
         <converters:NotConverter x:Key="NotConverter" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <local:CameraViewControl DataContext="{Binding View1}" Grid.ColumnSpan="3"/>
+        <local:CameraViewControl DataContext="{Binding View1}" Grid.ColumnSpan="3" />
         <Button Grid.Row="0" Command="{StaticResource SwitchFullScreenCommand}" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Top">
             <SymbolIcon Symbol="FullScreen" />
         </Button>

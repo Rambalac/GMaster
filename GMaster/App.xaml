@@ -10,6 +10,5 @@
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
         <converters:VisibilityNullConverter x:Key="VisibilityNullConverter" />
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
-        <converters:ImageMemoryStreamConverter x:Key="ImageMemoryStreamConverter" />
     </Application.Resources>
 </Application>
