@@ -131,7 +131,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string FormatParameterName { get; private set; }
+        public string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     /// <summary>
@@ -240,7 +240,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string ParameterName { get; private set; }
+        public string ParameterName { get; }
     }
 
     /// <summary>
@@ -314,9 +314,9 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Contract { get; private set; }
+        public string Contract { get; }
 
-        public bool ForceFullStates { get; private set; }
+        public bool ForceFullStates { get; }
     }
 
     /// <summary>
@@ -342,7 +342,7 @@ namespace GMaster.Annotations
             Required = required;
         }
 
-        public bool Required { get; private set; }
+        public bool Required { get; }
     }
 
     /// <summary>
@@ -395,7 +395,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public Type BaseType { get; private set; }
+        public Type BaseType { get; }
     }
 
     /// <summary>
@@ -426,9 +426,9 @@ namespace GMaster.Annotations
             TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
 
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     /// <summary>
@@ -521,7 +521,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string Comment { get; private set; }
+        public string Comment { get; }
     }
 
     /// <summary>
@@ -568,7 +568,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string Justification { get; private set; }
+        public string Justification { get; }
     }
 
     /// <summary>
@@ -613,7 +613,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string BasePath { get; private set; }
+        public string BasePath { get; }
     }
 
     /// <summary>
@@ -710,7 +710,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -722,7 +722,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -734,7 +734,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -746,7 +746,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -758,7 +758,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -770,7 +770,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     /// <summary>
@@ -792,7 +792,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -813,7 +813,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -835,7 +835,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -965,7 +965,7 @@ namespace GMaster.Annotations
         }
 
         [CanBeNull]
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
@@ -977,7 +977,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     /// <summary>
@@ -1002,7 +1002,7 @@ namespace GMaster.Annotations
             CollectionAccessType = collectionAccessType;
         }
 
-        public CollectionAccessType CollectionAccessType { get; private set; }
+        public CollectionAccessType CollectionAccessType { get; }
     }
 
     [Flags]
@@ -1044,7 +1044,7 @@ namespace GMaster.Annotations
             ConditionType = conditionType;
         }
 
-        public AssertionConditionType ConditionType { get; private set; }
+        public AssertionConditionType ConditionType { get; }
     }
 
     /// <summary>
@@ -1147,10 +1147,10 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string TagName { get; private set; }
+        public string TagName { get; }
 
         [NotNull]
-        public Type ControlType { get; private set; }
+        public Type ControlType { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -1177,7 +1177,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Attribute { get; private set; }
+        public string Attribute { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -1188,7 +1188,7 @@ namespace GMaster.Annotations
             CreateConstructorReferences = createConstructorReferences;
         }
 
-        public bool CreateConstructorReferences { get; private set; }
+        public bool CreateConstructorReferences { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1200,7 +1200,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1213,10 +1213,10 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Type { get; private set; }
+        public string Type { get; }
 
         [NotNull]
-        public string FieldName { get; private set; }
+        public string FieldName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1228,7 +1228,7 @@ namespace GMaster.Annotations
         }
 
         [NotNull]
-        public string Directive { get; private set; }
+        public string Directive { get; }
     }
 
     [AttributeUsage(AttributeTargets.Method)]

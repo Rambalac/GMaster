@@ -11,15 +11,9 @@
 
         public TValue Value
         {
-            get
-            {
-                return (TValue)InnerValue;
-            }
+            get => (TValue)InnerValue;
 
-            set
-            {
-                SetValue(value);
-            }
+            set => SetValue(value);
         }
 
         public static implicit operator NotifyProperty<TValue>(TValue val)

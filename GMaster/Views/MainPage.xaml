@@ -34,7 +34,7 @@
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <local:CameraViewControl DataContext="{Binding View1}" Grid.ColumnSpan="3"/>
-        <Button Grid.Row="0" Grid.Column="2"  Command="{StaticResource SwitchFullScreenCommand}" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <Button Grid.Row="0" Command="{StaticResource SwitchFullScreenCommand}" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Top">
             <SymbolIcon Symbol="FullScreen" />
         </Button>
 
@@ -57,7 +57,7 @@
 
                     <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
                     
-                    <Button Grid.ColumnSpan="1" Grid.Row="1" Background="Transparent" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Margin="0,0,0,10" Click="GeneralSettings_Click">
+                    <Button Grid.Column="0" Grid.Row="1" Background="Transparent" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Margin="0,0,0,10" Click="GeneralSettings_Click">
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="Setting"/>
                             <TextBlock Text="General settings" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center" />

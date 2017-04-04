@@ -39,7 +39,7 @@ namespace GMaster.Camera
 
         public TextBinValue Iso { get; private set; }
 
-        public bool OffframeBytesSupported { get; private set; } = true;
+        public bool OffframeBytesSupported { get; } = true;
 
         public int OpenedAperture { get; private set; }
 
@@ -97,7 +97,7 @@ namespace GMaster.Camera
                     OnPropertyChanged(nameof(CameraMode));
                 }
 
-                var newOrient = state.Original[42].ToEnum<CameraOrientation>(CameraOrientation.Undefined);
+                var newOrient = state.Original[42].ToEnum(CameraOrientation.Undefined);
                 if (newOrient != Orientation)
                 {
                     Orientation = newOrient;
