@@ -70,8 +70,9 @@ namespace GMaster.Views
                 lastExpansion += args.Delta.Expansion;
                 if (Math.Abs(lastExpansion) > 32)
                 {
-                    await Lumix.ResizeFocusPoint(Math.Sign(lastExpansion));
+                    var sig = Math.Sign(lastExpansion);
                     lastExpansion = 0;
+                    await Lumix.ResizeFocusPoint(sig);
                 }
 
                 if (Math.Abs(args.Delta.Expansion) < 0.001)
