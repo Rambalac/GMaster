@@ -54,9 +54,10 @@ namespace GMaster.Views
             }
         }
 
+        private double lastExpansion;
         private async void ImageGestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
-            if (Lumix != null)
+            if (Lumix != null && Math.Abs(args.Cumulative.Expansion) < 0.001)
             {
                 await MoveFocusPoint(args.Position.X, args.Position.Y);
             }
@@ -64,19 +65,24 @@ namespace GMaster.Views
 
         private async void ImageGestureRecognizer_ManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
         {
-            var now = DateTime.UtcNow;
-            if (now - lastSkipable < skipableInterval)
-            {
-                return;
-            }
-
-            lastSkipable = now;
-
             if (Lumix != null)
             {
-                await Lumix.ResizeFocusPoint(Math.Sign(args.Delta.Expansion));
-                if (Math.Abs(args.Delta.Expansion) > 0.001)
+                lastExpansion += args.Delta.Expansion;
+                if (Math.Abs(lastExpansion) > 32)
                 {
+                    await Lumix.ResizeFocusPoint(Math.Sign(lastExpansion));
+                    lastExpansion = 0;
+                }
+
+                if (Math.Abs(args.Delta.Expansion) < 0.001)
+                {
+                    var now = DateTime.UtcNow;
+                    if (now - lastSkipable < skipableInterval)
+                    {
+                        return;
+                    }
+
+                    lastSkipable = now;
                     await MoveFocusPoint(args.Position.X, args.Position.Y);
                 }
             }
