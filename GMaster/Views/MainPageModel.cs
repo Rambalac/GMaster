@@ -1,4 +1,7 @@
-﻿namespace GMaster.Views
+﻿using System.IO;
+using Tools;
+
+namespace GMaster.Views
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +37,7 @@
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
             Task.Run(CameraRefresh);
-            Task.Run(LoadLuts);
+            Task.Run(LoadLutsNames);
 
             wifidirect = new WiFiHelper();
             wifidirect.Start();
@@ -131,7 +134,7 @@
             camerasearchSem.Dispose();
         }
 
-        public async Task LoadLuts()
+        public async Task LoadLutsNames()
         {
             var lutFolder = await App.GetLutsFolder();
             InstalledLuts = new ObservableCollection<StorageFile>(await lutFolder.GetFilesAsync());
@@ -234,6 +237,21 @@
             }
 
             OnCameraDisconnected(lumix);
+        }
+
+        public async Task<Lut> LoadLut(string lutName)
+        {
+            var lutFile = InstalledLuts.SingleOrDefault(l => l.DisplayName == lutName);
+            if (lutFile == null)
+            {
+                return null;
+            }
+
+            var parser = new CubeLutParser();
+            using (var stream = await lutFile.OpenReadAsync())
+            {
+                return await parser.Parse(stream.AsStreamForRead());
+            }
         }
     }
 }

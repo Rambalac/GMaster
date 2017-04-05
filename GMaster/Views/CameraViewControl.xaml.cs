@@ -1,5 +1,9 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
+using System.Linq;
+using Windows.Graphics.Effects;
+using Microsoft.Graphics.Canvas.Effects;
+
 namespace GMaster.Views
 {
     using System;
@@ -155,7 +159,14 @@ namespace GMaster.Views
             var rW = iW * scale;
 
             imageRect = new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH);
-            args.DrawingSession.DrawImage(bitmap, imageRect, new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.NearestNeighbor);
+
+            ICanvasImage content = bitmap;
+            if (lutEffect != null)
+            {
+                content = lutEffect.GenerateEffect(content);
+            }
+
+            args.DrawingSession.DrawImage(content, imageRect, new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.NearestNeighbor);
 
             var sizeHash = (int)((iW * 397) ^ iH);
             sizeHash = (sizeHash * 397) ^ wW.GetHashCode();
@@ -168,11 +179,15 @@ namespace GMaster.Views
             }
         }
 
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case nameof(CameraViewModel.SelectedCamera):
+                    if (Model?.SelectedCamera != null)
+                    {
+                        await CameraSet();
+                    }
 
                     var newcamera = Model?.SelectedCamera?.Camera;
                     if (!ReferenceEquals(newcamera, lastCamera))
@@ -196,6 +211,34 @@ namespace GMaster.Views
                     RecalulateFocusPoint();
                     break;
             }
+        }
+
+        private async Task CameraSet()
+        {
+            var lutName = Model.SelectedCamera.Settings.LutName;
+            var lut = await Model.SelectedCamera.Model.LoadLut(lutName);
+
+            if (lut.BlueNum > 0)
+            {
+                Set3DLut(lut);
+            }
+            else
+            {
+                Set1DLut(lut);
+            }
+        }
+
+        private ILutEffectGenerator lutEffect;
+
+        private void Set3DLut(Lut lut)
+        {
+            lutEffect = new Lut1DEffectGenerator(lut, LiveView);
+            LiveView.Invalidate();
+        }
+
+        private void Set1DLut(Lut lut)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task MoveFocusPoint(double x, double y)
@@ -224,30 +267,30 @@ namespace GMaster.Views
                     var fp = Model.FocusPoint;
 
                     double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-                    if (!fp.Fixed)
-                    {
-                        var shiftX = 0f;
-                        var shiftY = 0f;
-                        switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
-                        {
-                            case 17:
-                                shiftY = 0.125f;
-                                break;
+                    //if (!fp.Fixed)
+                    //{
+                    //    var shiftX = 0f;
+                    //    var shiftY = 0f;
+                    //    switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
+                    //    {
+                    //        case 17:
+                    //            shiftY = 0.125f;
+                    //            break;
 
-                            case 15:
-                                shiftY = 0.058f;
-                                break;
+                    //        case 15:
+                    //            shiftY = 0.058f;
+                    //            break;
 
-                            case 10:
-                                shiftX = 0.125f;
-                                break;
-                        }
+                    //        case 10:
+                    //            shiftX = 0.125f;
+                    //            break;
+                    //    }
 
-                        x1 = (x1 - shiftX) / (1 - (2 * shiftX));
-                        x2 = (x2 - shiftX) / (1 - (2 * shiftX));
-                        y1 = (y1 - shiftY) / (1 - (2 * shiftY));
-                        y2 = (y2 - shiftY) / (1 - (2 * shiftY));
-                    }
+                    //    x1 = (x1 - shiftX) / (1 - (2 * shiftX));
+                    //    x2 = (x2 - shiftX) / (1 - (2 * shiftX));
+                    //    y1 = (y1 - shiftY) / (1 - (2 * shiftY));
+                    //    y2 = (y2 - shiftY) / (1 - (2 * shiftY));
+                    //}
 
                     x1 = x1 * imageRect.Width;
                     x2 = x2 * imageRect.Width;
@@ -278,6 +321,26 @@ namespace GMaster.Views
                 Debug.WriteLine(obj);
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
+        }
+    }
+
+    public interface ILutEffectGenerator
+    {
+        ICanvasEffect GenerateEffect(IGraphicsEffectSource source);
+    }
+
+    public class Lut1DEffectGenerator : ILutEffectGenerator
+    {
+        private EffectTransferTable3D table;
+
+        public Lut1DEffectGenerator(Lut lut, ICanvasResourceCreator LiveView)
+        {
+            table = EffectTransferTable3D.CreateFromColors(LiveView, lut.Colors.ToArray(), lut.BlueNum, lut.GreenNum, lut.RedNum);
+        }
+
+        public ICanvasEffect GenerateEffect(IGraphicsEffectSource source)
+        {
+            return new TableTransfer3DEffect { Table = table, Source = source };
         }
     }
 }

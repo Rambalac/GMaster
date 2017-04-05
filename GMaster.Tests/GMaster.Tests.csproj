@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="capabilities.xml" />
     <Content Include="Properties\UnitTestApp.rd.xml" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
     <Content Include="Images\SplashScreen.scale-200.png" />

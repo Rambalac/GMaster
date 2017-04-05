@@ -8,7 +8,7 @@
 
     public class CubeLutParser
     {
-        private async Task<Lut> Parse(Stream stream)
+        public async Task<Lut> Parse(Stream stream)
         {
             using (var reader = new StreamReader(stream))
             {

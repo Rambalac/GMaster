@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding ="UTF-8"?>
+<camrply>
+  <result>ok</result>
+  <comm_proto_ver>1.3</comm_proto_ver>
+  <productinfo>
+    <modelname>GH4</modelname>
+  </productinfo>
+  <camcmdlist>
+    <camcmd>tele-normal</camcmd>
+    <camcmd>tele-fast</camcmd>
+    <camcmd>wide-normal</camcmd>
+    <camcmd>wide-fast</camcmd>
+    <camcmd>4kphoto_marking</camcmd>
+  </camcmdlist>
+  <camspeclist>
+    <camspec>touch_command_auto</camspec>
+    <camspec>oneshot_af_enable</camspec>
+    <camspec>setting_play_sort_mode_enable</camspec>
+    <camspec>af_size_change_pinch</camspec>
+    <camspec>menu_notify_enable</camspec>
+  </camspeclist>
+  <asst_disp>
+    <disp_mag min="300" max="1000"></disp_mag>
+    <pinp_mag min="300" max="600"></pinp_mag>
+  </asst_disp>
+  <stopmotiontset model="GH4" version="1.0" date="20160207">
+    <stopmotionlist>
+      <videoquality name="4K/30p" value="mp4_30p_100mbps_4k">
+        <framerate name="30fps" value="30"></framerate>
+        <framerate name="15fps" value="15"></framerate>
+        <framerate name="10fps" value="10"></framerate>
+        <framerate name="7.5fps" value="7.5"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="3fps" value="3"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+      <videoquality name="4K/24p" value="mp4_24p_100mbps_4k">
+        <framerate name="24fps" value="24"></framerate>
+        <framerate name="12fps" value="12"></framerate>
+        <framerate name="8fps" value="8"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="4.8fps" value="4.8"></framerate>
+        <framerate name="2.4fps" value="2.4"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+      <videoquality name="FHD/60p" value="mp4_60p_28mbps">
+        <framerate name="60fps" value="60"></framerate>
+        <framerate name="30fps" value="30"></framerate>
+        <framerate name="15fps" value="15"></framerate>
+        <framerate name="10fps" value="10"></framerate>
+        <framerate name="7.5fps" value="7.5"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="3fps" value="3"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+      <videoquality name="FHD/30p" value="mp4_30p_20mbps">
+        <framerate name="30fps" value="30"></framerate>
+        <framerate name="15fps" value="15"></framerate>
+        <framerate name="10fps" value="10"></framerate>
+        <framerate name="7.5fps" value="7.5"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="3fps" value="3"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+      <videoquality name="HD/30p" value="mp4_30p_10mbps">
+        <framerate name="30fps" value="30"></framerate>
+        <framerate name="15fps" value="15"></framerate>
+        <framerate name="10fps" value="10"></framerate>
+        <framerate name="7.5fps" value="7.5"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="3fps" value="3"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+      <videoquality name="VGA/30p" value="mp4_30p_4mbps">
+        <framerate name="30fps" value="30"></framerate>
+        <framerate name="15fps" value="15"></framerate>
+        <framerate name="10fps" value="10"></framerate>
+        <framerate name="7.5fps" value="7.5"></framerate>
+        <framerate name="6fps" value="6"></framerate>
+        <framerate name="3fps" value="3"></framerate>
+        <framerate name="1fps" value="1"></framerate>
+      </videoquality>
+    </stopmotionlist>
+  </stopmotiontset>
+  <contents_action_info model="GH4" version="1.0" date="20160128">
+    <container>
+      <action type="delete" enable="no" />
+    </container>
+    <item>
+      <content mime_type="image/jpeg" panasonic_com_pn="CAM_ORG" >
+        <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
+        <action type="copy_to_sp" enable="yes" />
+        <action type="upload" enable="yes" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO_JPG" >
+        <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
+        <action type="copy_to_sp" enable="yes" />
+        <action type="upload" enable="yes" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO" >
+        <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW_JPG" >
+        <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
+        <action type="copy_to_sp" enable="yes" />
+        <action type="upload" enable="yes" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW" >
+        <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_FOCUS_SELECT_MP4" >
+        <action type="playback" enable="no" player="-" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_4096x2160_24P_LPCM,CAM_AVC_MP4_HP_2160_30P_AAC,CAM_AVC_MP4_HP_2160_25P_AAC,CAM_AVC_MP4_HP_2160_24P_AAC,CAM_AVC_MP4_HP_2336_30P_AAC,CAM_AVC_MP4_HP_2336_25P_AAC,CAM_AVC_MP4_HP_2336_24P_AAC,CAM_AVC_MP4_HP_2496_30P_AAC,CAM_AVC_MP4_HP_2496_25P_AAC,CAM_AVC_MP4_HP_2496_24P_AAC,CAM_AVC_MP4_HP_2880_30P_AAC,CAM_AVC_MP4_HP_2880_25P_AAC,CAM_AVC_MP4_HP_2880_24P_AAC,CAM_AVC_MP4_HP_2160_30P_LPCM,CAM_AVC_MP4_HP_2160_25P_LPCM,CAM_AVC_MP4_HP_2160_24P_LPCM,CAM_AVC_MP4_HP_1080_60P_LPCM,CAM_AVC_MP4_HP_1080_50P_LPCM,CAM_AVC_MP4_HP_1080_30P_LPCM,CAM_AVC_MP4_HP_1080_25P_LPCM,CAM_AVC_MP4_HP_1080_24P_LPCM" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_1080_60P_AAC,CAM_AVC_MP4_HP_1080_50P_AAC,CAM_AVC_MP4_HP_1080_30P_AAC,CAM_AVC_MP4_HP_1080_25P_AAC" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="yes" />
+        <action type="upload" enable="yes" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="video/mp4" panasonic_com_pn="CAM_AVC_MP4_HP_720_30P_AAC,CAM_AVC_MP4_HP_720_25P_AAC,CAM_AVC_MP4_BL_1080_30P_AAC,CAM_AVC_MP4_BL_1080_25P_AAC,CAM_AVC_MP4_BL_720_30P_AAC,CAM_AVC_MP4_BL_720_25P_AAC,CAM_AVC_MP4_BL_480_30P_AAC,CAM_AVC_MP4_BL_480_25P_AAC" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="yes" />
+        <action type="upload" enable="yes" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_TS_HP_1080_60P_AC3,CAM_AVC_TS_HP_1080_50P_AC3" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="video/vnd.dlna.mpeg-tts" panasonic_com_pn="CAM_AVC_TS_HP_1080_60I_AC3,CAM_AVC_TS_HP_1080_50I_AC3,CAM_AVC_TS_HP_1080_30P_AC3,CAM_AVC_TS_HP_1080_25P_AC3,CAM_AVC_TS_HP_1080_24P_AC3,CAM_AVC_TS_HP_720_60P_AC3,CAM_AVC_TS_HP_720_50P_AC3,CAM_AVC_TS_HP_720_30P_AAC,CAM_AVC_TS_HP_720_25P_AAC" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MOV_HP_4096x2160_24P_LPCM,CAM_AVC_MOV_HP_2160_30P_LPCM,CAM_AVC_MOV_HP_2160_25P_LPCM,CAM_AVC_MOV_HP_2160_24P_LPCM,CAM_AVC_MOV_HP_1080_60P_LPCM,CAM_AVC_MOV_HP_1080_50P_LPCM,CAM_AVC_MOV_HP_1080_30P_LPCM,CAM_AVC_MOV_HP_1080_25P_LPCM,CAM_AVC_MOV_HP_1080_24P_LPCM,CAM_AVC_MOV_HP_720_60P_LPCM,CAM_AVC_MOV_HP_720_50P_LPCM" >
+        <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
+        <action type="copy_to_sp" enable="no" />
+        <action type="upload" enable="no" />
+        <action type="3box" enable="no" />
+        <action type="delete" enable="yes" />
+      </content>
+    </item>
+  </contents_action_info>
+</camrply>
