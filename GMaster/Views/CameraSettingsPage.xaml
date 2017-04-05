@@ -10,6 +10,9 @@
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock FontSize="20">Connection</TextBlock>
         <ToggleSwitch OffContent="Autoconnect Disabled" OnContent="Autoconnect Enabled" IsOn="{Binding Settings.Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0" />
+
+        <ComboBox ItemsSource="{Binding Model.LutNamesList, Mode=TwoWay}" SelectedItem="{Binding Settings.LutName.Value, Mode=TwoWay}"/>
+
         <Button Content="Forget Camera" Click="ForgerButton_OnClick" Visibility="{Binding IsForgetButtonVisible, Converter={StaticResource VisibilityConverter}}" />
         <Button Content="Remember Camera" Click="RememberButton_OnClick" Visibility="{Binding IsRememberButtonVisible, Converter={StaticResource VisibilityConverter}}" />
     </StackPanel>

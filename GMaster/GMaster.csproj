@@ -117,6 +117,7 @@
     <Compile Include="Camera\LumixData\FocusModeRequestResult.cs" />
     <Compile Include="Camera\LumixError.cs" />
     <Compile Include="Camera\OffFrameProcessor.cs" />
+    <Compile Include="CubeLutParser.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="Camera\LumixData\ChangeDirection.cs" />
     <Compile Include="Camera\ICameraMenuItem.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
+    <Compile Include="Lut.cs" />
     <Compile Include="Views\Adjuster.xaml.cs">
       <DependentUpon>Adjuster.xaml</DependentUpon>
     </Compile>

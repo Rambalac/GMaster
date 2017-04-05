@@ -6,13 +6,13 @@ namespace GMaster.Camera
     {
         internal DeviceInfo(SsdpRootDevice dev)
         {
-            Udn = dev.Udn;
+            Uuid = dev.Uuid;
             Host = dev.Location.Host;
             FriendlyName = dev.FriendlyName;
             ModelName = dev.ModelName;
         }
 
-        public string Udn { get; }
+        public string Uuid { get; }
 
         public string Host { get; }
 

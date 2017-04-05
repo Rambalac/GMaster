@@ -26,9 +26,12 @@ namespace GMaster.Views
         private Lumix lastCamera;
         private double lastExpansion;
         private CanvasBitmap lastLiveViewBitmap;
+        private uint lastSize;
+        private int lastSizeHash;
         private DateTime lastSkipable;
 
         private CanvasBitmap liveViewBitmap;
+        private Rect imageRect;
 
         public CameraViewControl()
         {
@@ -151,12 +154,18 @@ namespace GMaster.Views
             var rH = iH * scale;
             var rW = iW * scale;
 
-            args.DrawingSession.DrawImage(bitmap, new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH), new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.Linear);
-        }
+            imageRect = new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH);
+            args.DrawingSession.DrawImage(bitmap, imageRect, new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.NearestNeighbor);
 
-        private void LiveView_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            RecalulateFocusPoint();
+            var sizeHash = (int)((iW * 397) ^ iH);
+            sizeHash = (sizeHash * 397) ^ wW.GetHashCode();
+            sizeHash = (sizeHash * 397) ^ wH.GetHashCode();
+
+            if (sizeHash != lastSizeHash)
+            {
+                lastSizeHash = sizeHash;
+                RecalulateFocusPoint();
+            }
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -191,10 +200,9 @@ namespace GMaster.Views
 
         private async Task MoveFocusPoint(double x, double y)
         {
-            var ix = x / LiveView.RenderSize.Width;
-            var iy = y / LiveView.RenderSize.Height;
-
-            if (Lumix != null)
+            var ix = (x - imageRect.X) / imageRect.Width;
+            var iy = (y - imageRect.Y) / imageRect.Height;
+            if (x >= 0 && y >= 0 && x <= 1 && y <= 1 && Lumix != null)
             {
                 await Lumix.SetFocusPoint(ix, iy);
             }
@@ -210,27 +218,6 @@ namespace GMaster.Views
 
             if (LiveView.Parent is FrameworkElement parent)
             {
-                var tW = parent.ActualWidth;
-                var tH = parent.ActualHeight;
-
-                var iW = LiveView.RenderSize.Width;
-                var iH = LiveView.RenderSize.Height;
-
-                double left;
-                double top;
-
-                // equal
-                if (Math.Abs(tH - iH) < 0.1f)
-                {
-                    left = (tW - iW) / 2;
-                    top = 0;
-                }
-                else
-                {
-                    left = 0;
-                    top = (tH - iH) / 2;
-                }
-
                 var bitmap = liveViewBitmap;
                 if (bitmap != null)
                 {
@@ -262,12 +249,15 @@ namespace GMaster.Views
                         y2 = (y2 - shiftY) / (1 - (2 * shiftY));
                     }
 
-                    x1 = x1 * iW;
-                    x2 = x2 * iW;
-                    y1 = y1 * iH;
-                    y2 = y2 * iH;
+                    x1 = x1 * imageRect.Width;
+                    x2 = x2 * imageRect.Width;
+                    y1 = y1 * imageRect.Height;
+                    y2 = y2 * imageRect.Height;
 
-                    FocusPoint.Margin = new Thickness(left + x1, top + y1, left + iW - x2, top + iH - y2);
+                    var iW = LiveView.ActualWidth;
+                    var iH = LiveView.ActualHeight;
+
+                    FocusPoint.Margin = new Thickness(imageRect.X + x1, imageRect.Y + y1, iW - imageRect.X - x2, iH - imageRect.Y - y2);
                     var t = FocusPoint.StrokeThickness;
                     FocusPointGeometry.Transform = new CompositeTransform
                     {

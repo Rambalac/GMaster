@@ -17,7 +17,7 @@
         </Viewbox>
 
         <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}, Mode=TwoWay}">
-            <xaml:CanvasControl x:Name="LiveView" SizeChanged="LiveView_OnSizeChanged"  Draw="LiveView_OnDraw"/>
+            <xaml:CanvasControl x:Name="LiveView" Draw="LiveView_OnDraw"/>
             <Path Stroke="Gold" StrokeThickness="5" x:Name="FocusPoint">
                 <Path.Data>
                     <PathGeometry x:Name="FocusPointGeometry">

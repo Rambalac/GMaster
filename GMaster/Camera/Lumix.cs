@@ -88,7 +88,7 @@
 
         public CameraState State { get; private set; }
 
-        public string Udn => Device.Udn;
+        public string Udn => Device.Uuid;
 
         public async Task<bool> Capture()
         {
@@ -166,7 +166,7 @@
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
-                await FakeImageApp();
+               // await FakeImageApp();
 
                 await SwitchToRec();
                 await UpdateState();
@@ -405,10 +405,8 @@
 
         private async Task FakeImageApp()
         {
-            if (!await TryGet("?mode=accctrl&type=req_acc&value=4D454930-0100-1000-8001-020E0001FF87&value2=SM-G9350"))
-            {
-                await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
-            }
+            await TryGet($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
+            await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
         }
 
         private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -22,7 +22,6 @@
         private readonly DispatcherTimer cameraRefreshTimer;
         private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
         private readonly WiFiHelper wifidirect;
-        private bool leftPanelOpened;
         private DeviceInfo selectedDevice;
 
         public MainPageModel()
@@ -45,18 +44,11 @@
             AddLutCommand = new AddLutCommand(this);
         }
 
-        public async Task LoadLuts()
-        {
-            var lutFolder = await App.GetLutsFolder();
-            InstalledLuts = new ObservableCollection<StorageFile>(await lutFolder.GetFilesAsync());
-            OnPropertyChanged(nameof(InstalledLuts));
-        }
-
-        public ObservableCollection<StorageFile> InstalledLuts { get; private set; }
-
         public event Action<Lumix> CameraDisconnected;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public AddLutCommand AddLutCommand { get; }
 
         public ObservableCollection<DeviceInfo> ConnectableDevices { get; } = new ObservableCollection<DeviceInfo>();
 
@@ -70,7 +62,11 @@
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
+        public ObservableCollection<StorageFile> InstalledLuts { get; private set; }
+
         public LumixManager LumixManager { get; }
+
+        public IEnumerable<string> LutNamesList => new[] { "<None>" }.Concat(InstalledLuts.Select(f => f.DisplayName));
 
         public DeviceInfo SelectedDevice
         {
@@ -83,8 +79,6 @@
             }
         }
 
-        public CameraViewModel View1 { get; } = new CameraViewModel();
-
         public string Version
         {
             get
@@ -94,7 +88,7 @@
             }
         }
 
-        public AddLutCommand AddLutCommand { get; private set; }
+        public CameraViewModel View1 { get; } = new CameraViewModel();
 
         public void AddConnectableDevice(DeviceInfo device)
         {
@@ -135,6 +129,14 @@
         public void Dispose()
         {
             camerasearchSem.Dispose();
+        }
+
+        public async Task LoadLuts()
+        {
+            var lutFolder = await App.GetLutsFolder();
+            InstalledLuts = new ObservableCollection<StorageFile>(await lutFolder.GetFilesAsync());
+            OnPropertyChanged(nameof(InstalledLuts));
+            OnPropertyChanged(nameof(LutNamesList));
         }
 
         public async Task StartListening()
@@ -192,7 +194,7 @@
                 {
                     var camerafound = false;
                     var cameraauto = false;
-                    if (GeneralSettings.Cameras.TryGetValue(dev.Udn, out var settings))
+                    if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
                     {
                         cameraauto = settings.Autoconnect;
                         camerafound = true;
