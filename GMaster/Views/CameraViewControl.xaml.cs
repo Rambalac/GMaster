@@ -224,30 +224,30 @@ namespace GMaster.Views
                     var fp = Model.FocusPoint;
 
                     double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-                    if (!fp.Fixed)
-                    {
-                        var shiftX = 0f;
-                        var shiftY = 0f;
-                        switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
-                        {
-                            case 17:
-                                shiftY = 0.125f;
-                                break;
+                    //if (!fp.Fixed)
+                    //{
+                    //    var shiftX = 0f;
+                    //    var shiftY = 0f;
+                    //    switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
+                    //    {
+                    //        case 17:
+                    //            shiftY = 0.125f;
+                    //            break;
 
-                            case 15:
-                                shiftY = 0.058f;
-                                break;
+                    //        case 15:
+                    //            shiftY = 0.058f;
+                    //            break;
 
-                            case 10:
-                                shiftX = 0.125f;
-                                break;
-                        }
+                    //        case 10:
+                    //            shiftX = 0.125f;
+                    //            break;
+                    //    }
 
-                        x1 = (x1 - shiftX) / (1 - (2 * shiftX));
-                        x2 = (x2 - shiftX) / (1 - (2 * shiftX));
-                        y1 = (y1 - shiftY) / (1 - (2 * shiftY));
-                        y2 = (y2 - shiftY) / (1 - (2 * shiftY));
-                    }
+                    //    x1 = (x1 - shiftX) / (1 - (2 * shiftX));
+                    //    x2 = (x2 - shiftX) / (1 - (2 * shiftX));
+                    //    y1 = (y1 - shiftY) / (1 - (2 * shiftY));
+                    //    y2 = (y2 - shiftY) / (1 - (2 * shiftY));
+                    //}
 
                     x1 = x1 * imageRect.Width;
                     x2 = x2 * imageRect.Width;
