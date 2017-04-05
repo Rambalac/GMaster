@@ -194,8 +194,8 @@ namespace GMaster.Camera
 
         private static FocusPoint GetPointZoom(Slice slice)
         {
-            var t = slice[45];
-            if (t == 0x41 || t == 0x01)
+            var t = slice[47];
+            if (t > 0)
             {
                 return new FocusPoint
                 {
