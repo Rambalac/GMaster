@@ -70,7 +70,7 @@ namespace GMaster.Views
         private async void Camera_LiveViewUpdated(Stream stream)
         {
             stream.Position = 0;
-            liveViewBitmap = await CanvasBitmap.LoadAsync(LiveView, stream.AsRandomAccessStream());
+            bitmap = await CanvasBitmap.LoadAsync(LiveView, stream.AsRandomAccessStream());
             LiveView.Invalidate();
         }
 
@@ -163,7 +163,6 @@ namespace GMaster.Views
             ICanvasImage content = bitmap;
             if (lutEffect != null)
             {
-                content = lutEffect.GenerateEffect(content);
             }
 
             args.DrawingSession.DrawImage(content, imageRect, new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.NearestNeighbor);
@@ -217,6 +216,10 @@ namespace GMaster.Views
         {
             var lutName = Model.SelectedCamera.Settings.LutName;
             var lut = await Model.SelectedCamera.Model.LoadLut(lutName);
+            if (lut == null)
+            {
+                return;
+            }
 
             if (lut.BlueNum > 0)
             {
