@@ -98,9 +98,9 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="GMaster_StoreKey.pfx" />
     <None Include="GMaster_TemporaryKey.pfx" />
-    <PRIResource Include="strings\ja\Resources.resw" />
-    <PRIResource Include="strings\ru\Resources.resw" />
     <None Include="project.json" />
+    <PRIResource Include="strings\ru\Resources.resw" />
+    <PRIResource Include="strings\ja\Resources.resw" />
     <PRIResource Include="strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
