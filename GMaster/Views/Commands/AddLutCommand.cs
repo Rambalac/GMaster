@@ -4,16 +4,10 @@ namespace GMaster.Views.Commands
     using System.Threading.Tasks;
     using Logger;
     using Tools;
-    using Windows.Storage;
     using Windows.Storage.Pickers;
 
     public class AddLutCommand : AbstractModelCommand<MainPageModel>
     {
-        public AddLutCommand(MainPageModel model)
-            : base(model)
-        {
-        }
-
         protected override bool InternalCanExecute() => true;
 
         protected override async Task InternalExecute()
@@ -22,16 +16,22 @@ namespace GMaster.Views.Commands
             {
                 var picker = new FileOpenPicker { SuggestedStartLocation = PickerLocationId.Downloads };
                 picker.FileTypeFilter.Add(".cube");
-                picker.FileTypeFilter.Add(".3dl");
 
-                var file = await picker.PickSingleFileAsync();
-                if (file != null)
+                // picker.FileTypeFilter.Add(".3dl");
+                var files = await picker.PickMultipleFilesAsync();
+                if (files != null)
                 {
-                    var folder = await App.GetLutsFolder();
-                    var newFile = await folder.CreateFileAsync(file.Name, CreationCollisionOption.ReplaceExisting);
-                    await file.CopyAndReplaceAsync(newFile);
+                    foreach (var file in files)
+                    {
+                        var lutinfo = new LutInfo
+                        {
+                            Title = file.DisplayName,
+                            Id = Guid.NewGuid().ToString()
+                        };
+                        await lutinfo.SaveToFile(await App.GetLutsFolder(), file);
 
-                    Model.InstalledLuts.Add(newFile);
+                        Model.InstalledLuts.Add(lutinfo);
+                    }
                 }
             }
             catch (Exception ex)

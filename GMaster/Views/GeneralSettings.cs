@@ -1,11 +1,7 @@
 ﻿namespace GMaster.Views
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
     using Newtonsoft.Json;
     using Tools;
     using Windows.Storage;

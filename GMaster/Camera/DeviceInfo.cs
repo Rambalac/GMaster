@@ -9,15 +9,15 @@ namespace GMaster.Camera
             Uuid = dev.Uuid;
             Host = dev.Location.Host;
             FriendlyName = dev.FriendlyName;
-            ModelName = dev.ModelName;
+            ModelName = dev.ModelNumber;
         }
-
-        public string Uuid { get; }
-
-        public string Host { get; }
 
         public string FriendlyName { get; }
 
+        public string Host { get; }
+
         public string ModelName { get; }
+
+        public string Uuid { get; }
     }
 }

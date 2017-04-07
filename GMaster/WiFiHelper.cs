@@ -6,13 +6,13 @@
 
     public class WiFiHelper
     {
-        public void Start()
-        {
-        }
-
         public async Task<bool> CheckPermission()
         {
             return await WiFiAdapter.RequestAccessAsync() == WiFiAccessStatus.Allowed;
+        }
+
+        public void Start()
+        {
         }
 
         public void Stop()

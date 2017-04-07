@@ -1,10 +1,9 @@
-using System.Diagnostics;
-
 namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
@@ -192,24 +191,6 @@ namespace GMaster.Camera
             return (val2 - value > value - val1) ? dict[val1] : dict[val2];
         }
 
-        private static FocusPoint GetPointZoom(Slice slice)
-        {
-            var t = slice[47];
-            if (t > 0)
-            {
-                return new FocusPoint
-                {
-                    X1 = slice.ToShort(48) / 1000.0,
-                    Y1 = slice.ToShort(50) / 1000.0,
-                    X2 = slice.ToShort(52) / 1000.0,
-                    Y2 = slice.ToShort(54) / 1000.0,
-                    Fixed = t == 0x41
-                };
-            }
-
-            return null;
-        }
-
         private TextBinValue GetFromShort(Slice slice, int index, IReadOnlyDictionary<int, string> dict)
         {
             var bin = slice.ToShort(index);
@@ -228,6 +209,24 @@ namespace GMaster.Camera
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
                 return new TextBinValue("!", bin);
             }
+        }
+
+        private FocusPoint GetPointZoom(Slice slice)
+        {
+            var t = slice[47];
+            if (t > 0)
+            {
+                return new FocusPoint
+                {
+                    X1 = slice.ToShort(48) / 1000.0,
+                    Y1 = slice.ToShort(50) / 1000.0,
+                    X2 = slice.ToShort(52) / 1000.0,
+                    Y2 = slice.ToShort(54) / 1000.0,
+                    Fixed = parser != null && parser is GH4Parser
+                };
+            }
+
+            return null;
         }
 
         private class ProcessState

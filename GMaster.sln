@@ -16,6 +16,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.Tests", "Tools.Tests\Tools.Tests.csproj", "{D9E969D8-E655-4E21-8A2F-FBA250F30D48}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{F8E1DE7E-3CD1-4C89-AB4D-3882915F480B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "screenshorts", "screenshorts", "{CB9043E9-F8BF-4EDA-97D6-29DC07325629}"
+	ProjectSection(SolutionItems) = preProject
+		images\screenshorts\Mobile-1.png = images\screenshorts\Mobile-1.png
+		images\screenshorts\Mobile-2.png = images\screenshorts\Mobile-2.png
+		images\screenshorts\PC-1.png = images\screenshorts\PC-1.png
+		images\screenshorts\PC-2.jpg = images\screenshorts\PC-2.jpg
+		images\screenshorts\PC-2.png = images\screenshorts\PC-2.png
+		images\screenshorts\PC-3.png = images\screenshorts\PC-3.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "icons", "icons", "{FFFED850-AC01-47EA-88F8-4394FB4ED7D4}"
+	ProjectSection(SolutionItems) = preProject
+		images\icons\AppTile.png = images\icons\AppTile.png
+		images\icons\camera_frame.png = images\icons\camera_frame.png
+		images\icons\icon.png = images\icons\icon.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,5 +129,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8E1DE7E-3CD1-4C89-AB4D-3882915F480B} = {F62F18F9-E4C4-4A8F-B6A2-13454D945AC7}
+		{CB9043E9-F8BF-4EDA-97D6-29DC07325629} = {F8E1DE7E-3CD1-4C89-AB4D-3882915F480B}
+		{FFFED850-AC01-47EA-88F8-4394FB4ED7D4} = {F8E1DE7E-3CD1-4C89-AB4D-3882915F480B}
 	EndGlobalSection
 EndGlobal

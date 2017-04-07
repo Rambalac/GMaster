@@ -9,12 +9,16 @@ namespace GMaster.Views
             Id = id;
         }
 
-        public NotifyProperty<bool> Autoconnect { get; } = true;
+        public NotifyProperty<string> Aspect { get; } = "1";
 
-        public NotifyProperty<string> LutName { get; } = string.Empty;
+        public NotifyProperty<bool> Autoconnect { get; } = true;
 
         public GeneralSettings GeneralSettings { get; set; }
 
         public string Id { get; }
+
+        public NotifyProperty<bool> IsAspectAnamorphingVideoOnly { get; } = true;
+
+        public NotifyProperty<string> LutId { get; } = string.Empty;
     }
 }

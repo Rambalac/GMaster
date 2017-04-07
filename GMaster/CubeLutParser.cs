@@ -1,19 +1,21 @@
 ﻿namespace GMaster
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
     using Windows.UI;
 
-    public class CubeLutParser
+    public class CubeLutParser : ILutParser
     {
         public async Task<Lut> Parse(Stream stream)
         {
             using (var reader = new StreamReader(stream))
             {
-                var colors = new List<Color>();
-                var n3D = 0;
+                Color[] colors = null;
+                var n3d = 0;
+                var r = 0;
+                var g = 0;
+                var b = 0;
                 while (true)
                 {
                     var line = await reader.ReadLineAsync();
@@ -35,20 +37,41 @@
 
                     if (values[0] == "LUT_3D_SIZE")
                     {
-                        n3D = int.Parse(values[1]);
+                        n3d = int.Parse(values[1]);
+                        colors = new Color[n3d * n3d * n3d];
                         continue;
                     }
 
-                    if (values.Length == 3
-                        && float.TryParse(values[0], out var r)
-                        && float.TryParse(values[0], out var g)
-                        && float.TryParse(values[0], out var b))
+                    if (values.Length == 3 && colors != null
+                        && float.TryParse(values[0], out var rC)
+                        && float.TryParse(values[1], out var gC)
+                        && float.TryParse(values[2], out var bC))
                     {
-                        colors.Add(Color.FromArgb(255, (byte)(255 * r), (byte)(255 * g), (byte)(255 * b)));
+                        var col = Color.FromArgb(255, (byte)(255 * rC), (byte)(255 * gC), (byte)(255 * bC));
+
+                        if (n3d > 0)
+                        {
+                            colors[(r * n3d * n3d) + (g * n3d) + b] = col;
+                            r++;
+                            if (r == n3d)
+                            {
+                                g++;
+                                r = 0;
+                                if (g == n3d)
+                                {
+                                    b++;
+                                    g = 0;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            colors[r++] = col;
+                        }
                     }
                 }
 
-                return new Lut { Colors = colors, BlueNum = n3D, GreenNum = n3D, RedNum = n3D };
+                return new Lut { Colors = colors, BlueNum = n3d, GreenNum = n3d, RedNum = n3d };
             }
         }
     }

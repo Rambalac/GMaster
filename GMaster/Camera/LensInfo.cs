@@ -4,13 +4,13 @@ namespace GMaster.Camera
     {
         public int ClosedAperture { get; set; } = int.MaxValue;
 
+        public bool HasPowerZoom { get; set; }
+
         public int MaxZoom { get; set; }
 
         public int MinZoom { get; set; }
 
         public int OpenedAperture { get; set; }
-
-        public bool HasPowerZoom { get; set; }
 
         public override bool Equals(object obj)
         {

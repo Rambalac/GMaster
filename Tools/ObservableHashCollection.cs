@@ -1,35 +1,62 @@
 ﻿namespace Tools
 {
-    using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
-    using Annotations;
 
-    public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection
+    public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection, IEnumerable<TItem>, IEnumerable
         where TItem : IStringIdItem
     {
-        public event Action<ObservableHashCollection<TItem>, TItem> ItemAdded;
+        public ObservableHashCollection(IEnumerable<TItem> items)
+        {
+            foreach (var item in items)
+            {
+                base.Add(item);
+            }
+        }
 
-        public event Action<ObservableHashCollection<TItem>, TItem> ItemRemoved;
+        public ObservableHashCollection()
+        {
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public override void Add(TItem item)
         {
             base.Add(item);
-            ItemAdded?.Invoke(this, item);
             if (item is INotifyPropertyChanged npc)
             {
-                npc.PropertyChanged += Settings_PropertyChanged;
+                npc.PropertyChanged += Item_PropertyChanged;
             }
 
-            OnPropertyChanged(null);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+            OnPropertyChanged();
         }
 
-        public void Add(string pairKey, IStringIdItem pairValue)
+        public void Add(string pairKey, IStringIdItem item)
         {
-            Add((TItem)pairValue);
+            Add((TItem)item);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+            OnPropertyChanged();
+        }
+
+        public void AddRange(IEnumerable<TItem> items)
+        {
+            foreach (var item in items)
+            {
+                base.Add(item);
+                if (item is INotifyPropertyChanged npc)
+                {
+                    npc.PropertyChanged += Item_PropertyChanged;
+                }
+            }
+
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
+            OnPropertyChanged();
         }
 
         public override void Clear()
@@ -38,14 +65,14 @@
             base.Clear();
             foreach (var item in all)
             {
-                ItemRemoved?.Invoke(this, item);
                 if (item is INotifyPropertyChanged npc)
                 {
-                    npc.PropertyChanged -= Settings_PropertyChanged;
+                    npc.PropertyChanged -= Item_PropertyChanged;
                 }
             }
 
-            OnPropertyChanged(null);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, all));
+            OnPropertyChanged();
         }
 
         public IEnumerable<IStringIdItem> GetAll()
@@ -55,31 +82,32 @@
 
         public override bool Remove(TItem item)
         {
-            if (TryGetValue(item.Id, out var value))
+            if (TryGetValue(item.Id, out _))
             {
                 base.Remove(item);
-                ItemRemoved?.Invoke(this, value);
                 if (item is INotifyPropertyChanged npc)
                 {
-                    npc.PropertyChanged -= Settings_PropertyChanged;
+                    npc.PropertyChanged -= Item_PropertyChanged;
                 }
 
-                OnPropertyChanged(null);
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+                OnPropertyChanged();
                 return true;
             }
 
             return false;
         }
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender));
+            OnPropertyChanged();
         }
 
-        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged()
         {
-            OnPropertyChanged(null);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Count"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
         }
     }
 }

@@ -6,6 +6,7 @@ namespace GMaster.Views
     using Camera.LumixData;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
 
     public sealed partial class Adjuster : UserControl
     {
@@ -79,47 +80,47 @@ namespace GMaster.Views
             ((Adjuster)d).Slider.Value = (int)e.NewValue;
         }
 
-        private void OnReleased(object sender, RoutedEventArgs e)
+        private void OnReleased(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
             PressedReleased?.Invoke(ChangeDirection.ZoomStop);
         }
 
-        private void TeleFast_OnPressed(object sender, RoutedEventArgs e)
+        private void TeleFast_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
             PressedReleased?.Invoke(ChangeDirection.TeleFast);
         }
 
-        private void TeleFast_Repeat(object sender, RoutedEventArgs e)
+        private void TeleFast_Repeat(object sender, EventArgs e)
         {
             RepeatClick?.Invoke(ChangeDirection.TeleFast);
         }
 
-        private void TeleNormal_OnPressed(object sender, RoutedEventArgs e)
+        private void TeleNormal_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
             PressedReleased?.Invoke(ChangeDirection.TeleNormal);
         }
 
-        private void TeleNormal_Repeat(object sender, RoutedEventArgs e)
+        private void TeleNormal_Repeat(object sender, EventArgs eventArgs)
         {
             RepeatClick?.Invoke(ChangeDirection.TeleNormal);
         }
 
-        private void WideFast_OnPressed(object sender, RoutedEventArgs e)
+        private void WideFast_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
             PressedReleased?.Invoke(ChangeDirection.WideFast);
         }
 
-        private void WideFast_Repeat(object sender, RoutedEventArgs e)
+        private void WideFast_Repeat(object sender, EventArgs e)
         {
             RepeatClick?.Invoke(ChangeDirection.WideFast);
         }
 
-        private void WideNormal_OnPressed(object sender, RoutedEventArgs e)
+        private void WideNormal_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
             PressedReleased?.Invoke(ChangeDirection.WideNormal);
         }
 
-        private void WideNormal_Repeat(object sender, RoutedEventArgs e)
+        private void WideNormal_Repeat(object sender, EventArgs e)
         {
             RepeatClick?.Invoke(ChangeDirection.WideNormal);
         }

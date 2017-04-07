@@ -1,16 +1,16 @@
 namespace GMaster.Views.Commands
 {
     using System.Diagnostics;
+    using System.Threading.Tasks;
     using Camera;
     using Tools;
 
-    public class CameraDisconnectCommand : AbstractSimpleParameterCommand
+    public class CameraDisconnectCommand : AbstractSimpleParameterCommand<Lumix>
     {
-        public override async void Execute(object parameter)
+        public override async Task InternalExecute(Lumix parameter)
         {
-            var lumix = parameter as Lumix;
-            Debug.Assert(lumix != null, "lumix != null");
-            await lumix.Disconnect();
+            Debug.Assert(parameter != null, "lumix != null");
+            await parameter.Disconnect();
         }
     }
 }

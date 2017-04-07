@@ -57,6 +57,11 @@
             return ToEnum((int)i, defaultValue);
         }
 
+        public static T ToValue<T>(this Enum field)
+        {
+            return EnumValueAttribute.GetValue<T>(field);
+        }
+
         private static IReadOnlyDictionary<int, object> BuildEnumDict<T>()
                     where T : struct, IConvertible
         {

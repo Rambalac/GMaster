@@ -5,18 +5,10 @@ namespace Tools
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    public abstract class AbstractParameterModelCommand<TModel, TParameter> : ICommand
+    public abstract class AbstractParameterModelCommand<TModel, TParameter> : AbstractModelUser<TModel>, ICommand
         where TModel : INotifyPropertyChanged
     {
-        protected AbstractParameterModelCommand(TModel model)
-        {
-            Model = model;
-            Model.PropertyChanged += Model_PropertyChanged;
-        }
-
         public event EventHandler CanExecuteChanged;
-
-        protected TModel Model { get; }
 
         public bool CanExecute(object parameter)
         {
@@ -32,14 +24,23 @@ namespace Tools
 
         protected abstract Task InternalExecute(TParameter parameter);
 
-        protected virtual void OnCanExecuteChanged()
+        protected override void ModelChanged(object eOldValue, object eNewValue)
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            if (eOldValue != null)
+            {
+                ((TModel)eOldValue).PropertyChanged -= AbstractModelCommand_PropertyChanged;
+            }
+
+            if (eNewValue != null)
+            {
+                ((TModel)eNewValue).PropertyChanged += AbstractModelCommand_PropertyChanged;
+            }
         }
 
-        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void AbstractModelCommand_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OnCanExecuteChanged();
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

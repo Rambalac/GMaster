@@ -28,7 +28,7 @@
 
         public override void SetValue(object val)
         {
-            if (!(val is TValue))
+            if (val != null && !(val is TValue))
             {
                 throw new InvalidCastException($"Cannot cast {val.GetType()} into {typeof(TValue)}");
             }

@@ -5,11 +5,6 @@ namespace GMaster.Views.Commands
 
     public class CaptureCommand : AbstractModelCommand<CameraViewModel>
     {
-        public CaptureCommand(CameraViewModel model)
-            : base(model)
-        {
-        }
-
         protected override bool InternalCanExecute() => Model?.SelectedCamera?.Camera != null;
 
         protected override async Task InternalExecute()

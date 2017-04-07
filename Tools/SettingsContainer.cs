@@ -2,6 +2,7 @@ namespace Tools
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -14,12 +15,17 @@ namespace Tools
         {
             foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType) ||
-                    typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
+                if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
                 {
                     var propvalue = GetOrCreate<INotifyPropertyChanged>(prop);
 
                     propvalue.PropertyChanged += (sender, args) => OnPropertyChanged(prop.Name);
+                }
+                else if (typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
+                {
+                    var propvalue = GetOrCreate<INotifyCollectionChanged>(prop);
+
+                    propvalue.CollectionChanged += (sender, args) => OnPropertyChanged(prop.Name);
                 }
             }
         }

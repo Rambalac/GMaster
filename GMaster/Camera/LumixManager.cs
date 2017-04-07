@@ -63,7 +63,8 @@ namespace GMaster.Camera
         public async Task StartListening()
         {
             liveviewUdpSockets = new List<DatagramSocket>();
-            foreach (var profile in NetworkInformation.GetHostNames())
+            var confirmedHosts = new List<HostName>();
+            foreach (var profile in NetworkInformation.GetHostNames().Where(h => h.Type == HostNameType.Ipv4 || h.Type == HostNameType.Ipv6))
             {
                 var liveviewUdp = new DatagramSocket();
                 try
@@ -72,6 +73,7 @@ namespace GMaster.Camera
 
                     await liveviewUdp.BindEndpointAsync(profile, LiveViewPort.ToString());
                     liveviewUdpSockets.Add(liveviewUdp);
+                    confirmedHosts.Add(profile);
                 }
                 catch (Exception)
                 {
@@ -86,10 +88,10 @@ namespace GMaster.Camera
 
             deviceLocators = new List<SsdpDeviceLocator>();
 
-            foreach (var host in GetLocalAddresses())
+            foreach (var host in confirmedHosts)
             {
                 var deviceLocator =
-                    new SsdpDeviceLocator(new SsdpCommunicationsServer(new SocketFactory(host)))
+                    new SsdpDeviceLocator(new SsdpCommunicationsServer(new SocketFactory(host.CanonicalName)))
                     {
                         NotificationFilter = "urn:schemas-upnp-org:device:MediaServer:1"
                     };
@@ -186,16 +188,8 @@ namespace GMaster.Camera
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
                 Log.Error(e);
             }
-        }
-
-        private IEnumerable<string> GetLocalAddresses()
-        {
-            return NetworkInformation.GetHostNames()
-                .Where(hn => (hn.Type == HostNameType.Ipv4 || hn.Type == HostNameType.Ipv6))
-                .Select(h => h.CanonicalName);
         }
 
         private void LiveviewUdp_MessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)

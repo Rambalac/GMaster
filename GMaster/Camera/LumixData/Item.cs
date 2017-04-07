@@ -22,32 +22,6 @@
         [XmlAttribute(AttributeName = "func_type")]
         public string FuncType { get; set; }
 
-        [XmlAttribute(AttributeName = "id")]
-        public string Id { get; set; }
-
-        [XmlArray("menu")]
-        [XmlArrayItem("item")]
-        public HashCollection<Item> MenuItems
-        {
-            get
-            {
-                return Items;
-            }
-
-            set
-            {
-                if (value != null && value.Count > 0)
-                {
-                    if (Items != null && Items.Count > 0)
-                    {
-                        throw new Exception("Items is aready assigned");
-                    }
-
-                    Items = value;
-                }
-            }
-        }
-
         [XmlArray("group")]
         [XmlArrayItem("item")]
         public HashCollection<Item> GroupItems
@@ -71,7 +45,33 @@
             }
         }
 
+        [XmlAttribute(AttributeName = "id")]
+        public string Id { get; set; }
+
         public HashCollection<Item> Items { get; set; }
+
+        [XmlArray("menu")]
+        [XmlArrayItem("item")]
+        public HashCollection<Item> MenuItems
+        {
+            get
+            {
+                return Items;
+            }
+
+            set
+            {
+                if (value != null && value.Count > 0)
+                {
+                    if (Items != null && Items.Count > 0)
+                    {
+                        throw new Exception("Items is aready assigned");
+                    }
+
+                    Items = value;
+                }
+            }
+        }
 
         [XmlAttribute(AttributeName = "title_id")]
         public string TitleId { get; set; }

@@ -17,9 +17,6 @@
 
     public class Lumix : INotifyPropertyChanged, IDisposable
     {
-        private static readonly HashSet<CameraMode> ApertureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.A, CameraMode.vM, CameraMode.vA };
-        private static readonly HashSet<CameraMode> CaptureModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.A, CameraMode.P, CameraMode.Unknown, CameraMode.iA };
-        private static readonly HashSet<CameraMode> ShutterModes = new HashSet<CameraMode> { CameraMode.M, CameraMode.S, CameraMode.vM, CameraMode.vS };
         private readonly Http http;
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -73,6 +70,8 @@
         public bool IsConnected { get; private set; }
 
         public bool IsLimited => MenuSet == null;
+
+        public bool IsVideoMode { get; private set; }
 
         public LensInfo LensInfo { get; private set; }
 
@@ -166,8 +165,7 @@
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
-               // await FakeImageApp();
-
+                // await FakeImageApp();
                 await SwitchToRec();
                 await UpdateState();
                 stateTimer.Start();
@@ -181,7 +179,6 @@
             catch (Exception e)
             {
                 Log.Error(e);
-                Debug.WriteLine(e);
                 return false;
             }
         }
@@ -419,9 +416,10 @@
                     break;
 
                 case nameof(OffFrameProcessor.CameraMode):
-                    CanChangeAperture = ApertureModes.Contains(OffFrameProcessor.CameraMode);
-                    CanChangeShutter = ShutterModes.Contains(OffFrameProcessor.CameraMode);
-                    CanCapture = CaptureModes.Contains(OffFrameProcessor.CameraMode);
+                    CanChangeAperture = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Aperture);
+                    CanChangeShutter = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Shutter);
+                    CanCapture = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Photo);
+                    IsVideoMode = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Video);
                     OnPropertyChanged(nameof(CanCapture));
                     OnPropertyChanged(nameof(CanChangeAperture));
                     OnPropertyChanged(nameof(CanChangeShutter));

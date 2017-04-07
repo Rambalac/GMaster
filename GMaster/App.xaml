@@ -10,5 +10,6 @@
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
         <converters:VisibilityNullConverter x:Key="VisibilityNullConverter" />
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
+        <converters:NotConverter x:Key="NotConverter" />
     </Application.Resources>
 </Application>

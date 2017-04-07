@@ -8,7 +8,6 @@
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
-    using Commands;
 
     public class CameraViewModel : INotifyPropertyChanged
     {
@@ -17,17 +16,13 @@
         private ICameraMenuItem currentShutter;
         private ConnectedCamera selectedCamera;
 
-        public CameraViewModel()
-        {
-            RecCommand = new RecCommand(this);
-            CaptureCommand = new CaptureCommand(this);
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
+        public bool CanChangeAperture => SelectedCamera?.Camera?.CanChangeAperture ?? true;
 
-        public CaptureCommand CaptureCommand { get; }
+        public bool CanChangeShutter => SelectedCamera?.Camera?.CanChangeShutter ?? true;
+
+        public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
 
         public ICameraMenuItem CurrentAperture
         {
@@ -44,6 +39,8 @@
                 });
             }
         }
+
+        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera?.Camera?.CurrentApertures;
 
         public ICameraMenuItem CurrentIso
         {
@@ -79,7 +76,9 @@
 
         public bool IsConnected => selectedCamera != null;
 
-        public RecCommand RecCommand { get; }
+        public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
+
+        public RecState? RecState => SelectedCamera?.Camera?.RecState;
 
         public ConnectedCamera SelectedCamera
         {
@@ -117,15 +116,7 @@
             }
         }
 
-        public bool CanChangeAperture => SelectedCamera?.Camera?.CanChangeAperture ?? true;
-
-        public bool CanChangeShutter => SelectedCamera?.Camera?.CanChangeShutter ?? true;
-
         public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera?.Camera?.MenuSet?.ShutterSpeeds;
-
-        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera?.Camera?.CurrentApertures;
-
-        public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
 
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -188,6 +179,10 @@
                 case nameof(Lumix.MenuSet):
                     OnPropertyChanged(nameof(ShutterSpeeds));
                     OnPropertyChanged(nameof(IsoValues));
+                    break;
+
+                case nameof(Lumix.RecState):
+                    OnPropertyChanged(nameof(RecState));
                     break;
 
                 case nameof(Lumix.LensInfo):

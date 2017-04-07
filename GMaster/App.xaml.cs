@@ -16,6 +16,7 @@
 
     public partial class App : Application
     {
+        private static readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
         private static readonly ResourceLoader Strings = new ResourceLoader();
         private static CoreDispatcher dispatcher;
 
@@ -33,9 +34,12 @@
 
         public MainPageModel MainModel { get; private set; }
 
-        public static string GetString(string id) => Strings.GetString(id);
+        public static async Task<StorageFolder> GetLutsFolder()
+        {
+            return await LocalFolder.CreateFolderAsync("Luts", CreationCollisionOption.OpenIfExists);
+        }
 
-        private static readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
+        public static string GetString(string id) => Strings.GetString(id);
 
         public static Task RunAsync(DispatchedHandler action)
         {
@@ -137,11 +141,6 @@
             var deferral = e.SuspendingOperation.GetDeferral();
             MainModel.StopListening();
             deferral.Complete();
-        }
-
-        public static async Task<StorageFolder> GetLutsFolder()
-        {
-            return await LocalFolder.CreateFolderAsync("Luts", CreationCollisionOption.OpenIfExists);
         }
     }
 }

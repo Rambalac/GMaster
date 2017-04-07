@@ -1,10 +1,6 @@
-﻿using System.IO;
-using Tools;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Globalization;
@@ -14,16 +10,15 @@ namespace GMaster.Views
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
-    using Commands;
     using Logger;
     using Windows.ApplicationModel;
-    using Windows.Storage;
     using Windows.UI.Xaml;
 
     public class MainPageModel : INotifyPropertyChanged, IDisposable
     {
         private readonly DispatcherTimer cameraRefreshTimer;
         private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
+
         private readonly WiFiHelper wifidirect;
         private DeviceInfo selectedDevice;
 
@@ -36,40 +31,30 @@ namespace GMaster.Views
             cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
-            Task.Run(CameraRefresh);
-            Task.Run(LoadLutsNames);
+            Task.Run(LoadLutsInfo);
 
             wifidirect = new WiFiHelper();
             wifidirect.Start();
 
-            ConnectCommand = new ConnectCommand(this);
-            DonateCommand = new DonateCommand(this);
-            AddLutCommand = new AddLutCommand(this);
+            ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
         }
 
         public event Action<Lumix> CameraDisconnected;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AddLutCommand AddLutCommand { get; }
-
         public ObservableCollection<DeviceInfo> ConnectableDevices { get; } = new ObservableCollection<DeviceInfo>();
 
-        public ConnectCommand ConnectCommand { get; }
-
-        public ObservableCollection<ConnectedCamera> ConnectedCameras { get; } = new ObservableCollection<ConnectedCamera>();
-
-        public DonateCommand DonateCommand { get; }
+        public ObservableCollection<ConnectedCamera> ConnectedCameras { get; } =
+            new ObservableCollection<ConnectedCamera>();
 
         public Donations Donations { get; } = new Donations();
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
-        public ObservableCollection<StorageFile> InstalledLuts { get; private set; }
+        public ObservableCollection<LutInfo> InstalledLuts { get; } = new ObservableCollection<LutInfo>();
 
         public LumixManager LumixManager { get; }
-
-        public IEnumerable<string> LutNamesList => new[] { "<None>" }.Concat(InstalledLuts.Select(f => f.DisplayName));
 
         public DeviceInfo SelectedDevice
         {
@@ -112,7 +97,16 @@ namespace GMaster.Views
 
             settings.GeneralSettings = GeneralSettings;
 
-            var connectedCamera = new ConnectedCamera { Camera = lumix, Model = this, Settings = settings };
+            var connectedCamera = new ConnectedCamera
+            {
+                Camera = lumix,
+                Model = this,
+                Settings = settings,
+                SelectedLut = InstalledLuts.SingleOrDefault(l => l?.Id == settings.LutId),
+                SelectedAspect = settings.Aspect,
+                IsAspectAnamorphingVideoOnly = settings.IsAspectAnamorphingVideoOnly
+            };
+
             ConnectedCameras.Add(connectedCamera);
             lumix.Disconnected += Lumix_Disconnected;
             return connectedCamera;
@@ -134,17 +128,20 @@ namespace GMaster.Views
             camerasearchSem.Dispose();
         }
 
-        public async Task LoadLutsNames()
+        public async Task LoadLutsInfo()
         {
             var lutFolder = await App.GetLutsFolder();
-            InstalledLuts = new ObservableCollection<StorageFile>(await lutFolder.GetFilesAsync());
-            OnPropertyChanged(nameof(InstalledLuts));
-            OnPropertyChanged(nameof(LutNamesList));
+
+            foreach (var file in (await lutFolder.GetFilesAsync()).Where(f => f.FileType == ".info"))
+            {
+                InstalledLuts.Add(await LutInfo.LoadfromFile(file));
+            }
         }
 
         public async Task StartListening()
         {
             await LumixManager.StartListening();
+            var task = Task.Run(CameraRefresh);
         }
 
         public void StopListening()
@@ -187,6 +184,11 @@ namespace GMaster.Views
         private async void CameraRefreshTimer_Tick(object sender, object e)
         {
             await CameraRefresh();
+        }
+
+        private void ConnectableDevices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(ConnectableDevices));
         }
 
         private async void Lumix_DeviceDiscovered(DeviceInfo dev)
@@ -237,21 +239,6 @@ namespace GMaster.Views
             }
 
             OnCameraDisconnected(lumix);
-        }
-
-        public async Task<Lut> LoadLut(string lutName)
-        {
-            var lutFile = InstalledLuts.SingleOrDefault(l => l.DisplayName == lutName);
-            if (lutFile == null)
-            {
-                return null;
-            }
-
-            var parser = new CubeLutParser();
-            using (var stream = await lutFile.OpenReadAsync())
-            {
-                return await parser.Parse(stream.AsStreamForRead());
-            }
         }
     }
 }

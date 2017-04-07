@@ -87,84 +87,84 @@
       <action type="delete" enable="no" />
     </container>
     <item>
-      <content mime_type="image/jpeg" panasonic_com_pn="CAM_ORG" >
+      <content mime_type="image/jpeg" panasonic_com_pn="CAM_ORG">
         <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
         <action type="copy_to_sp" enable="yes" />
         <action type="upload" enable="yes" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO_JPG" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO_JPG">
         <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
         <action type="copy_to_sp" enable="yes" />
         <action type="upload" enable="yes" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_MPO">
         <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW_JPG" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW_JPG">
         <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
         <action type="copy_to_sp" enable="yes" />
         <action type="upload" enable="yes" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_RAW">
         <action type="playback" enable="yes" panasonic_com_pn="CAM_LRGTN" player="standard" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_FOCUS_SELECT_MP4" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_FOCUS_SELECT_MP4">
         <action type="playback" enable="no" player="-" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_4096x2160_24P_LPCM,CAM_AVC_MP4_HP_2160_30P_AAC,CAM_AVC_MP4_HP_2160_25P_AAC,CAM_AVC_MP4_HP_2160_24P_AAC,CAM_AVC_MP4_HP_2336_30P_AAC,CAM_AVC_MP4_HP_2336_25P_AAC,CAM_AVC_MP4_HP_2336_24P_AAC,CAM_AVC_MP4_HP_2496_30P_AAC,CAM_AVC_MP4_HP_2496_25P_AAC,CAM_AVC_MP4_HP_2496_24P_AAC,CAM_AVC_MP4_HP_2880_30P_AAC,CAM_AVC_MP4_HP_2880_25P_AAC,CAM_AVC_MP4_HP_2880_24P_AAC,CAM_AVC_MP4_HP_2160_30P_LPCM,CAM_AVC_MP4_HP_2160_25P_LPCM,CAM_AVC_MP4_HP_2160_24P_LPCM,CAM_AVC_MP4_HP_1080_60P_LPCM,CAM_AVC_MP4_HP_1080_50P_LPCM,CAM_AVC_MP4_HP_1080_30P_LPCM,CAM_AVC_MP4_HP_1080_25P_LPCM,CAM_AVC_MP4_HP_1080_24P_LPCM" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_4096x2160_24P_LPCM,CAM_AVC_MP4_HP_2160_30P_AAC,CAM_AVC_MP4_HP_2160_25P_AAC,CAM_AVC_MP4_HP_2160_24P_AAC,CAM_AVC_MP4_HP_2336_30P_AAC,CAM_AVC_MP4_HP_2336_25P_AAC,CAM_AVC_MP4_HP_2336_24P_AAC,CAM_AVC_MP4_HP_2496_30P_AAC,CAM_AVC_MP4_HP_2496_25P_AAC,CAM_AVC_MP4_HP_2496_24P_AAC,CAM_AVC_MP4_HP_2880_30P_AAC,CAM_AVC_MP4_HP_2880_25P_AAC,CAM_AVC_MP4_HP_2880_24P_AAC,CAM_AVC_MP4_HP_2160_30P_LPCM,CAM_AVC_MP4_HP_2160_25P_LPCM,CAM_AVC_MP4_HP_2160_24P_LPCM,CAM_AVC_MP4_HP_1080_60P_LPCM,CAM_AVC_MP4_HP_1080_50P_LPCM,CAM_AVC_MP4_HP_1080_30P_LPCM,CAM_AVC_MP4_HP_1080_25P_LPCM,CAM_AVC_MP4_HP_1080_24P_LPCM">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_1080_60P_AAC,CAM_AVC_MP4_HP_1080_50P_AAC,CAM_AVC_MP4_HP_1080_30P_AAC,CAM_AVC_MP4_HP_1080_25P_AAC" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MP4_HP_1080_60P_AAC,CAM_AVC_MP4_HP_1080_50P_AAC,CAM_AVC_MP4_HP_1080_30P_AAC,CAM_AVC_MP4_HP_1080_25P_AAC">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="yes" />
         <action type="upload" enable="yes" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="video/mp4" panasonic_com_pn="CAM_AVC_MP4_HP_720_30P_AAC,CAM_AVC_MP4_HP_720_25P_AAC,CAM_AVC_MP4_BL_1080_30P_AAC,CAM_AVC_MP4_BL_1080_25P_AAC,CAM_AVC_MP4_BL_720_30P_AAC,CAM_AVC_MP4_BL_720_25P_AAC,CAM_AVC_MP4_BL_480_30P_AAC,CAM_AVC_MP4_BL_480_25P_AAC" >
+      <content mime_type="video/mp4" panasonic_com_pn="CAM_AVC_MP4_HP_720_30P_AAC,CAM_AVC_MP4_HP_720_25P_AAC,CAM_AVC_MP4_BL_1080_30P_AAC,CAM_AVC_MP4_BL_1080_25P_AAC,CAM_AVC_MP4_BL_720_30P_AAC,CAM_AVC_MP4_BL_720_25P_AAC,CAM_AVC_MP4_BL_480_30P_AAC,CAM_AVC_MP4_BL_480_25P_AAC">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="yes" />
         <action type="upload" enable="yes" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_TS_HP_1080_60P_AC3,CAM_AVC_TS_HP_1080_50P_AC3" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_TS_HP_1080_60P_AC3,CAM_AVC_TS_HP_1080_50P_AC3">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="video/vnd.dlna.mpeg-tts" panasonic_com_pn="CAM_AVC_TS_HP_1080_60I_AC3,CAM_AVC_TS_HP_1080_50I_AC3,CAM_AVC_TS_HP_1080_30P_AC3,CAM_AVC_TS_HP_1080_25P_AC3,CAM_AVC_TS_HP_1080_24P_AC3,CAM_AVC_TS_HP_720_60P_AC3,CAM_AVC_TS_HP_720_50P_AC3,CAM_AVC_TS_HP_720_30P_AAC,CAM_AVC_TS_HP_720_25P_AAC" >
+      <content mime_type="video/vnd.dlna.mpeg-tts" panasonic_com_pn="CAM_AVC_TS_HP_1080_60I_AC3,CAM_AVC_TS_HP_1080_50I_AC3,CAM_AVC_TS_HP_1080_30P_AC3,CAM_AVC_TS_HP_1080_25P_AC3,CAM_AVC_TS_HP_1080_24P_AC3,CAM_AVC_TS_HP_720_60P_AC3,CAM_AVC_TS_HP_720_50P_AC3,CAM_AVC_TS_HP_720_30P_AAC,CAM_AVC_TS_HP_720_25P_AAC">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />
         <action type="3box" enable="no" />
         <action type="delete" enable="yes" />
       </content>
-      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MOV_HP_4096x2160_24P_LPCM,CAM_AVC_MOV_HP_2160_30P_LPCM,CAM_AVC_MOV_HP_2160_25P_LPCM,CAM_AVC_MOV_HP_2160_24P_LPCM,CAM_AVC_MOV_HP_1080_60P_LPCM,CAM_AVC_MOV_HP_1080_50P_LPCM,CAM_AVC_MOV_HP_1080_30P_LPCM,CAM_AVC_MOV_HP_1080_25P_LPCM,CAM_AVC_MOV_HP_1080_24P_LPCM,CAM_AVC_MOV_HP_720_60P_LPCM,CAM_AVC_MOV_HP_720_50P_LPCM" >
+      <content mime_type="application/octet-stream" panasonic_com_pn="CAM_AVC_MOV_HP_4096x2160_24P_LPCM,CAM_AVC_MOV_HP_2160_30P_LPCM,CAM_AVC_MOV_HP_2160_25P_LPCM,CAM_AVC_MOV_HP_2160_24P_LPCM,CAM_AVC_MOV_HP_1080_60P_LPCM,CAM_AVC_MOV_HP_1080_50P_LPCM,CAM_AVC_MOV_HP_1080_30P_LPCM,CAM_AVC_MOV_HP_1080_25P_LPCM,CAM_AVC_MOV_HP_1080_24P_LPCM,CAM_AVC_MOV_HP_720_60P_LPCM,CAM_AVC_MOV_HP_720_50P_LPCM">
         <action type="playback" enable="yes" player="liveview_av_mix" player_func="type1" />
         <action type="copy_to_sp" enable="no" />
         <action type="upload" enable="no" />

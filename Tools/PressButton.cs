@@ -24,11 +24,11 @@
             repeatTimer.Tick += RepeatTimer_Tick;
         }
 
-        public event RoutedEventHandler Pressed;
+        public event PointerEventHandler Pressed;
 
-        public event RoutedEventHandler Released;
+        public event PointerEventHandler Released;
 
-        public event RoutedEventHandler Repeat;
+        public event EventHandler Repeat;
 
         public int RepeatInterval
         {
@@ -74,7 +74,7 @@
                 pointerid = e.Pointer.PointerId;
                 CapturePointer(e.Pointer);
                 CheckStart();
-                Pressed?.Invoke(this, new RoutedEventArgs());
+                Pressed?.Invoke(this, e);
             }
         }
 
@@ -84,7 +84,7 @@
             {
                 ReleasePointerCapture(e.Pointer);
                 CheckStop();
-                Released?.Invoke(this, new RoutedEventArgs());
+                Released?.Invoke(this, e);
             }
         }
 

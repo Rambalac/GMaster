@@ -144,9 +144,17 @@
     <Compile Include="Camera\TitledList.cs" />
     <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ILutParser.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Lut.cs" />
+    <Compile Include="Views\Commands\DeleteLutCommand.cs" />
+    <Compile Include="Views\ILutEffectGenerator.cs" />
+    <Compile Include="Views\Lut1DEffectGenerator.cs" />
+    <Compile Include="Views\Lut3DEffectGenerator.cs" />
+    <Compile Include="Views\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Adjuster.xaml.cs">
       <DependentUpon>Adjuster.xaml</DependentUpon>
     </Compile>
@@ -161,6 +169,7 @@
     <Compile Include="Views\Commands\ZoomCommand.cs" />
     <Compile Include="Views\Converters\NotConverter.cs" />
     <Compile Include="Views\Converters\VisibilityNullConverter.cs" />
+    <Compile Include="Views\FrameRenderer.cs" />
     <Compile Include="Views\GeneralSettings.cs" />
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
@@ -171,6 +180,7 @@
     <Compile Include="Camera\LumixException.cs" />
     <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
     <Compile Include="Views\ConnectedCamera.cs" />
+    <Compile Include="Views\LutInfo.cs" />
     <Compile Include="Views\MainPageModel.cs" />
     <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
@@ -197,17 +207,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
-    <None Include="Assets\icon.png" />
     <Content Include="Assets\PackageLogo.scale-100.png" />
     <Content Include="Assets\PackageLogo.scale-125.png" />
     <Content Include="Assets\PackageLogo.scale-150.png" />
     <Content Include="Assets\PackageLogo.scale-200.png" />
     <Content Include="Assets\PackageLogo.scale-400.png" />
-    <Content Include="Assets\Screenshots\AppTile.png" />
-    <Content Include="Assets\Screenshots\Mobile-1.png" />
-    <Content Include="Assets\Screenshots\PC-1.png" />
-    <Content Include="Assets\Screenshots\PC-2.jpg" />
-    <Content Include="Assets\Screenshots\PC-2.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
@@ -257,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\MainMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Adjuster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

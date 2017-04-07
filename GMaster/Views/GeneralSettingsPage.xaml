@@ -4,26 +4,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:storage="using:Windows.Storage"
+    xmlns:views="using:GMaster.Views"
     xmlns:commands="using:GMaster.Views.Commands"
+    d:DesignWidth="600"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
+    <Page.Resources>
+        <commands:AddLutCommand x:Key="AddLutCommand" Model="{Binding}" />
+        <commands:DeleteLutCommand x:Key="DeleteLutCommand" Model="{Binding}" />
+    </Page.Resources>
     <StackPanel Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock x:Uid="ConnectionHeader" FontSize="20">Connection</TextBlock>
         <ToggleSwitch OffContent="Autoconnect is Diabled for all new cameras" OnContent="Autoconnect is Enabled for all new cameras" IsOn="{Binding GeneralSettings.Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0" />
-
-        <TextBlock x:Uid="InstalledLuts" FontSize="20">Installed LUTs</TextBlock>
-        <Button Command="{Binding AddLutCommand}">
-            <SymbolIcon Symbol="Add" />
-        </Button>
-        <ListBox ItemsSource="{Binding InstalledLuts}">
+        <RelativePanel>
+            <TextBlock RelativePanel.LeftOf=""  x:Uid="InstalledLuts" FontSize="20">Installed LUTs</TextBlock>
+            <Button RelativePanel.AlignRightWithPanel="True" Command="{StaticResource AddLutCommand}">
+                <SymbolIcon Symbol="Add" />
+            </Button>
+        </RelativePanel>
+        <ListBox  ItemsSource="{Binding InstalledLuts, Mode=TwoWay}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="storage:StorageFile">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding DisplayName}"/>
-                        <Button >
+                <DataTemplate x:DataType="views:LutInfo">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
+                        <Button  Grid.Column="1" Command="{StaticResource DeleteLutCommand}" CommandParameter="{Binding}">
                             <SymbolIcon Symbol="Delete" />
                         </Button>
-                    </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

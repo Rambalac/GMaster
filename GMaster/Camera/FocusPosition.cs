@@ -2,8 +2,8 @@
 {
     public class FocusPosition
     {
-        public int Value { get; set; }
-
         public int Maximum { get; set; }
+
+        public int Value { get; set; }
     }
 }

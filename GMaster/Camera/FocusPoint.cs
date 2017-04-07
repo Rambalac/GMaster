@@ -2,6 +2,8 @@ namespace GMaster.Camera
 {
     public class FocusPoint
     {
+        public bool Fixed { get; set; }
+
         public double X1 { get; set; }
 
         public double X2 { get; set; }
@@ -9,8 +11,6 @@ namespace GMaster.Camera
         public double Y1 { get; set; }
 
         public double Y2 { get; set; }
-
-        public bool Fixed { get; set; }
 
         public override bool Equals(object obj)
         {

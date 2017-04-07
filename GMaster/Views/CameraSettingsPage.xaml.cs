@@ -19,12 +19,12 @@ namespace GMaster.Views
 
         private void ForgerButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Model.Remove(Model.Settings);
+            Model.Remove();
         }
 
         private void RememberButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Model.Add(Model.Settings);
+            Model.Add();
         }
     }
 }

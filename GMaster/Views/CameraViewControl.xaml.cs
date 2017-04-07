@@ -1,18 +1,14 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-using System.Linq;
-using Windows.Graphics.Effects;
-using Microsoft.Graphics.Canvas.Effects;
-
 namespace GMaster.Views
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
     using Camera;
     using Camera.LumixData;
-    using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Windows.Foundation;
     using Windows.UI.Input;
@@ -22,20 +18,27 @@ namespace GMaster.Views
 
     public sealed partial class CameraViewControl : UserControl, IDisposable
     {
+        private static readonly Dictionary<int, Point> FocusPointShifts = new Dictionary<int, Point>
+        {
+            { 13, new Point(0, 0) },
+            { 17, new Point(0, 0.125f) },
+            { 15, new Point(0, 0.058f) },
+            { 10, new Point(0.125f, 0) }
+        };
+
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly GestureRecognizer imageGestureRecognizer;
 
         private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(100);
 
+        private double aspect = 1;
+        private Point focusPointShift;
+        private FrameRenderer frame;
+        private bool is43;
         private Lumix lastCamera;
         private double lastExpansion;
-        private CanvasBitmap lastLiveViewBitmap;
-        private uint lastSize;
-        private int lastSizeHash;
+        private ConnectedCamera lastSelectedCamera;
         private DateTime lastSkipable;
-
-        private CanvasBitmap liveViewBitmap;
-        private Rect imageRect;
 
         public CameraViewControl()
         {
@@ -56,6 +59,8 @@ namespace GMaster.Views
                   args.KeyModifiers.HasFlag(Windows.System.VirtualKeyModifiers.Shift),
                   true);
             DataContextChanged += CameraViewControl_DataContextChanged;
+            frame = new FrameRenderer(LiveView);
+            frame.ImageRectChanged += Frame_ImageRectChanged;
         }
 
         private Lumix Lumix => Model?.SelectedCamera?.Camera;
@@ -64,14 +69,21 @@ namespace GMaster.Views
 
         public void Dispose()
         {
-            lastLiveViewBitmap?.Dispose();
+            frame.Dispose();
         }
 
         private async void Camera_LiveViewUpdated(Stream stream)
         {
-            stream.Position = 0;
-            bitmap = await CanvasBitmap.LoadAsync(LiveView, stream.AsRandomAccessStream());
-            LiveView.Invalidate();
+            var size = await frame.UpdateBitmap(stream);
+            var intaspect = (int)(size.Width * 10 / size.Height);
+            focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : new Point(0, 0);
+            is43 = intaspect == 13;
+        }
+
+        private async Task CameraSet()
+        {
+            await SetLut();
+            SetAspect();
         }
 
         private void CameraViewControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -89,6 +101,11 @@ namespace GMaster.Views
                 Debug.WriteLine(obj);
                 await Model.SelectedCamera.Camera.ChangeFocus(obj);
             }
+        }
+
+        private void Frame_ImageRectChanged(Rect obj)
+        {
+            RecalulateFocusPoint();
         }
 
         private async void ImageGestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
@@ -132,50 +149,13 @@ namespace GMaster.Views
 
         private void LiveView_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            var bitmap = liveViewBitmap;
-            if (!ReferenceEquals(lastLiveViewBitmap, bitmap))
+            var drawaspect = aspect;
+            if (Model.SelectedCamera.IsAspectAnamorphingVideoOnly && !(Model.SelectedCamera.Camera.IsVideoMode && is43))
             {
-                lastLiveViewBitmap?.Dispose();
+                drawaspect = 1;
             }
 
-            lastLiveViewBitmap = bitmap;
-            if (bitmap == null)
-            {
-                return;
-            }
-
-            var iW = bitmap.SizeInPixels.Width;
-            var iH = bitmap.SizeInPixels.Height;
-
-            var wW = LiveView.ActualWidth;
-            var wH = LiveView.ActualHeight;
-
-            var scaleX = wW / iW;
-            var scaleY = wH / iH;
-
-            var scale = Math.Min(scaleX, scaleY);
-
-            var rH = iH * scale;
-            var rW = iW * scale;
-
-            imageRect = new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH);
-
-            ICanvasImage content = bitmap;
-            if (lutEffect != null)
-            {
-            }
-
-            args.DrawingSession.DrawImage(content, imageRect, new Rect(0, 0, iW, iH), 1.0f, CanvasImageInterpolation.NearestNeighbor);
-
-            var sizeHash = (int)((iW * 397) ^ iH);
-            sizeHash = (sizeHash * 397) ^ wW.GetHashCode();
-            sizeHash = (sizeHash * 397) ^ wH.GetHashCode();
-
-            if (sizeHash != lastSizeHash)
-            {
-                lastSizeHash = sizeHash;
-                RecalulateFocusPoint();
-            }
+            frame.Draw(args.DrawingSession, sender.ActualWidth, sender.ActualHeight, drawaspect);
         }
 
         private async void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -183,9 +163,16 @@ namespace GMaster.Views
             switch (e.PropertyName)
             {
                 case nameof(CameraViewModel.SelectedCamera):
-                    if (Model?.SelectedCamera != null)
+                    if (lastSelectedCamera != null)
+                    {
+                        lastSelectedCamera.PropertyChanged -= SelectedCamera_PropertyChanged;
+                    }
+
+                    lastSelectedCamera = Model?.SelectedCamera;
+                    if (lastSelectedCamera != null)
                     {
                         await CameraSet();
+                        lastSelectedCamera.PropertyChanged += SelectedCamera_PropertyChanged;
                     }
 
                     var newcamera = Model?.SelectedCamera?.Camera;
@@ -212,43 +199,11 @@ namespace GMaster.Views
             }
         }
 
-        private async Task CameraSet()
-        {
-            var lutName = Model.SelectedCamera.Settings.LutName;
-            var lut = await Model.SelectedCamera.Model.LoadLut(lutName);
-            if (lut == null)
-            {
-                return;
-            }
-
-            if (lut.BlueNum > 0)
-            {
-                Set3DLut(lut);
-            }
-            else
-            {
-                Set1DLut(lut);
-            }
-        }
-
-        private ILutEffectGenerator lutEffect;
-
-        private void Set3DLut(Lut lut)
-        {
-            lutEffect = new Lut1DEffectGenerator(lut, LiveView);
-            LiveView.Invalidate();
-        }
-
-        private void Set1DLut(Lut lut)
-        {
-            throw new NotImplementedException();
-        }
-
         private async Task MoveFocusPoint(double x, double y)
         {
-            var ix = (x - imageRect.X) / imageRect.Width;
-            var iy = (y - imageRect.Y) / imageRect.Height;
-            if (x >= 0 && y >= 0 && x <= 1 && y <= 1 && Lumix != null)
+            var ix = (x - frame.ImageRect.X) / frame.ImageRect.Width;
+            var iy = (y - frame.ImageRect.Y) / frame.ImageRect.Height;
+            if (ix >= 0 && iy >= 0 && ix <= 1 && iy <= 1 && Lumix != null)
             {
                 await Lumix.SetFocusPoint(ix, iy);
             }
@@ -264,57 +219,81 @@ namespace GMaster.Views
 
             if (LiveView.Parent is FrameworkElement parent)
             {
-                var bitmap = liveViewBitmap;
-                if (bitmap != null)
+                var fp = Model.FocusPoint;
+
+                if (!frame.IsReady)
                 {
-                    var fp = Model.FocusPoint;
-
-                    double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-                    //if (!fp.Fixed)
-                    //{
-                    //    var shiftX = 0f;
-                    //    var shiftY = 0f;
-                    //    switch (bitmap.SizeInPixels.Width * 10 / bitmap.SizeInPixels.Height)
-                    //    {
-                    //        case 17:
-                    //            shiftY = 0.125f;
-                    //            break;
-
-                    //        case 15:
-                    //            shiftY = 0.058f;
-                    //            break;
-
-                    //        case 10:
-                    //            shiftX = 0.125f;
-                    //            break;
-                    //    }
-
-                    //    x1 = (x1 - shiftX) / (1 - (2 * shiftX));
-                    //    x2 = (x2 - shiftX) / (1 - (2 * shiftX));
-                    //    y1 = (y1 - shiftY) / (1 - (2 * shiftY));
-                    //    y2 = (y2 - shiftY) / (1 - (2 * shiftY));
-                    //}
-
-                    x1 = x1 * imageRect.Width;
-                    x2 = x2 * imageRect.Width;
-                    y1 = y1 * imageRect.Height;
-                    y2 = y2 * imageRect.Height;
-
-                    var iW = LiveView.ActualWidth;
-                    var iH = LiveView.ActualHeight;
-
-                    FocusPoint.Margin = new Thickness(imageRect.X + x1, imageRect.Y + y1, iW - imageRect.X - x2, iH - imageRect.Y - y2);
-                    var t = FocusPoint.StrokeThickness;
-                    FocusPointGeometry.Transform = new CompositeTransform
-                    {
-                        ScaleX = x2 - x1 - t,
-                        ScaleY = y2 - y1 - t,
-                        TranslateX = t / 2,
-                        TranslateY = t / 2
-                    };
-                    FocusPoint.Visibility = Visibility.Visible;
+                    return;
                 }
+
+                double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
+                if (!fp.Fixed)
+                {
+                    x1 = (x1 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
+                    x2 = (x2 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
+                    y1 = (y1 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
+                    y2 = (y2 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
+                }
+
+                x1 = x1 * frame.ImageRect.Width;
+                x2 = x2 * frame.ImageRect.Width;
+                y1 = y1 * frame.ImageRect.Height;
+                y2 = y2 * frame.ImageRect.Height;
+
+                var iW = LiveView.ActualWidth;
+                var iH = LiveView.ActualHeight;
+
+                FocusPoint.Margin = new Thickness(frame.ImageRect.X + x1, frame.ImageRect.Y + y1, iW - frame.ImageRect.X - x2, iH - frame.ImageRect.Y - y2);
+                var t = FocusPoint.StrokeThickness;
+                FocusPointGeometry.Transform = new CompositeTransform
+                {
+                    ScaleX = x2 - x1 - t,
+                    ScaleY = y2 - y1 - t,
+                    TranslateX = t / 2,
+                    TranslateY = t / 2
+                };
+                FocusPoint.Visibility = Visibility.Visible;
             }
+        }
+
+        private async void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ConnectedCamera.SelectedLut):
+                    await SetLut();
+                    break;
+
+                case nameof(ConnectedCamera.SelectedAspect):
+                case nameof(ConnectedCamera.IsAspectAnamorphingVideoOnly):
+                    SetAspect();
+                    break;
+            }
+        }
+
+        private void SetAspect()
+        {
+            if (!double.TryParse(Model.SelectedCamera.SelectedAspect, out aspect))
+            {
+                aspect = 1;
+            }
+        }
+
+        private async Task SetLut()
+        {
+            var selectedLut = Model?.SelectedCamera?.SelectedLut;
+            if (selectedLut == null)
+            {
+                frame.LutEffect = null;
+                return;
+            }
+
+            frame.LutEffect = (await selectedLut.LoadLut())?.GetEffectGenerator(LiveView);
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            LiveView.RemoveFromVisualTree();
         }
 
         private async void ZoomAdjuster_OnPressedReleased(ChangeDirection obj)
@@ -324,26 +303,6 @@ namespace GMaster.Views
                 Debug.WriteLine(obj);
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
-        }
-    }
-
-    public interface ILutEffectGenerator
-    {
-        ICanvasEffect GenerateEffect(IGraphicsEffectSource source);
-    }
-
-    public class Lut1DEffectGenerator : ILutEffectGenerator
-    {
-        private EffectTransferTable3D table;
-
-        public Lut1DEffectGenerator(Lut lut, ICanvasResourceCreator LiveView)
-        {
-            table = EffectTransferTable3D.CreateFromColors(LiveView, lut.Colors.ToArray(), lut.BlueNum, lut.GreenNum, lut.RedNum);
-        }
-
-        public ICanvasEffect GenerateEffect(IGraphicsEffectSource source)
-        {
-            return new TableTransfer3DEffect { Table = table, Source = source };
         }
     }
 }

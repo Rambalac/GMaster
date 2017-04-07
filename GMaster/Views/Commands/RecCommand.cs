@@ -8,13 +8,8 @@
 
     public class RecCommand : AbstractModelCommand<CameraViewModel>
     {
-        public RecCommand(CameraViewModel model)
-            : base(model)
-        {
-        }
-
         protected override bool InternalCanExecute()
-            => Model?.SelectedCamera?.Camera != null && Model.SelectedCamera.Camera.RecState != RecState.Unknown;
+            => Model?.RecState != null && Model.RecState != RecState.Unknown;
 
         protected override async Task InternalExecute()
         {

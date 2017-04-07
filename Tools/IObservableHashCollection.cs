@@ -1,9 +1,10 @@
 ﻿namespace Tools
 {
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
 
-    public interface IObservableHashCollection : INotifyPropertyChanged
+    public interface IObservableHashCollection : INotifyCollectionChanged, INotifyPropertyChanged
     {
         void Add(string pairKey, IStringIdItem pairValue);
 

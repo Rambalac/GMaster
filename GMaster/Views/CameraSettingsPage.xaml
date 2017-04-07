@@ -1,19 +1,48 @@
 ﻿<Page
     x:Class="GMaster.Views.CameraSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:GMaster.Views"
+    d:DesignWidth="600"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ConnectedCamera}">
-
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock FontSize="20">Connection</TextBlock>
-        <ToggleSwitch OffContent="Autoconnect Disabled" OnContent="Autoconnect Enabled" IsOn="{Binding Settings.Autoconnect.Value, Mode=TwoWay}" Margin="0,10,0,0" />
+        <ToggleSwitch OffContent="Autoconnect Disabled" OnContent="Autoconnect Enabled" IsOn="{Binding Settings.Autoconnect.Value, Mode=TwoWay}" Margin="0,5,0,0" />
 
-        <ComboBox ItemsSource="{Binding Model.LutNamesList, Mode=TwoWay}" SelectedItem="{Binding Settings.LutName.Value, Mode=TwoWay}"/>
+        <TextBlock FontSize="20" Margin="0,10,0,10">General image settings</TextBlock>
+        <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Center">LUT</TextBlock>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding InstalledLuts, Mode=TwoWay}" SelectedItem="{Binding SelectedLut, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10,0,0,10" />
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,0">Aspects</TextBlock>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ComboBox ItemsSource="{Binding Aspects}" SelectedItem="{Binding SelectedAspect, Mode=TwoWay}" Margin="10,0,10,0" Width="80">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                            <Run Text="{Binding}" /><Run Text="x" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <CheckBox Grid.Column="1" IsChecked="{Binding IsAspectAnamorphingVideoOnly, Mode=TwoWay}">Apply for anamorophic video only</CheckBox>
+            </Grid>
+        </Grid>
 
-        <Button Content="Forget Camera" Click="ForgerButton_OnClick" Visibility="{Binding IsForgetButtonVisible, Converter={StaticResource VisibilityConverter}}" />
-        <Button Content="Remember Camera" Click="RememberButton_OnClick" Visibility="{Binding IsRememberButtonVisible, Converter={StaticResource VisibilityConverter}}" />
+        <Button Content="Forget Camera" Click="ForgerButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource VisibilityConverter}}" />
+        <Button Content="Remember Camera" Click="RememberButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource NotVisibilityConverter}}" />
     </StackPanel>
 </Page>

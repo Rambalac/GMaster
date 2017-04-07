@@ -2,9 +2,11 @@
 
 namespace GMaster.Views
 {
-    using System;
+    using System.Linq;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
+    using Windows.UI.Xaml.Media;
 
     /// <summary>
     ///     An empty page that can be used on its own or navigated to within a Frame.
@@ -14,41 +16,16 @@ namespace GMaster.Views
         public MainPage()
         {
             InitializeComponent();
+            AddHandler(PointerPressedEvent, new PointerEventHandler(PressHandler), true);
         }
 
         private MainPageModel Model => DataContext as MainPageModel;
 
-        private void CameraSettings_Click(object sender, RoutedEventArgs e)
+        private void HideMenu()
         {
-            if ((sender as FrameworkElement)?.DataContext is ConnectedCamera camera)
-            {
-                OpenFrame(typeof(CameraSettingsPage), camera);
-            }
-        }
-
-        private void OpenFrame(Type type, object model)
-        {
-            MenuFrame.Navigate(type);
-            if (MenuFrame.Content is FrameworkElement frameworkElement)
-            {
-                frameworkElement.DataContext = model;
-            }
-
-            MenuFrame.Visibility = Visibility.Visible;
-            if (ActualWidth < 640)
-            {
-                MainMenu.DisplayMode = SplitViewDisplayMode.Overlay;
-                MainMenu.IsPaneOpen = false;
-            }
-            else
-            {
-                MainMenu.DisplayMode = SplitViewDisplayMode.Inline;
-            }
-        }
-
-        private void GeneralSettings_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFrame(typeof(GeneralSettingsPage), Model);
+            MenuFrame.Content = null;
+            MenuFrame.Visibility = Visibility.Collapsed;
+            MainMenu.IsPaneOpen = false;
         }
 
         private void MenuButton_OnClick(object sender, RoutedEventArgs e)
@@ -60,24 +37,21 @@ namespace GMaster.Views
             }
             else
             {
-                if (MenuFrame.Content == null)
-                {
-                    MainMenu.IsPaneOpen = false;
-                }
-                else
-                {
-                    MenuFrame.Content = null;
-                    MenuFrame.Visibility = Visibility.Collapsed;
-                }
+                HideMenu();
             }
         }
 
-        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        private void PressHandler(object sender, PointerRoutedEventArgs args)
         {
-            Model.View1.SelectedCamera = (ConnectedCamera)e.ClickedItem;
-            MainMenu.IsPaneOpen = false;
-            MenuFrame.Content = null;
-            MenuFrame.Visibility = Visibility.Collapsed;
+            if (MainMenu.IsPaneOpen)
+            {
+                var el1 = VisualTreeHelper.FindElementsInHostCoordinates(args.GetCurrentPoint(MainMenu).Position, MainMenu.Pane, false).Any();
+                var el2 = VisualTreeHelper.FindElementsInHostCoordinates(args.GetCurrentPoint(MainMenu).Position, MainMenu.Content, false).Any();
+                if (!el1 && !el2)
+                {
+                    HideMenu();
+                }
+            }
         }
     }
 }

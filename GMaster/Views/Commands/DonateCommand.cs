@@ -8,11 +8,6 @@ namespace GMaster.Views.Commands
 
     public class DonateCommand : AbstractParameterModelCommand<MainPageModel, string>
     {
-        public DonateCommand(MainPageModel model)
-            : base(model)
-        {
-        }
-
         protected override bool InternalCanExecute(string parameter) => true;
 
         protected override async Task InternalExecute(string parameter)
