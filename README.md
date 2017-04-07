@@ -29,7 +29,13 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users .
+#### 2017-04-07
+Pushed version 1.6.0 to MS Store
 
+* Hopefully fixed issue with modern camera models like GX85. Thanks to Lufthummel from DPreview
+* Added Cube LUT support. Don't have grading experience so could be wrong.
+* Added Anamorphic desqueezing support (1.33x, 1.5x, 1.75x, 2x).
+* Added hardware acceleration as for LUT as for general performance improvement.
 #### 2017-04-04
 Pushed version 1.5.0 to MS Store
 
