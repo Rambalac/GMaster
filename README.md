@@ -15,7 +15,8 @@ App is free and has no ad. You can install it from [MS Store](https://www.micros
 * Power Zoom lens zoom and change focus in Manual Focus mode
 * Multiple cameras can be controlled. You can connect cameras to common access point.
 
-![Screenshot](/GMaster/Assets/Screenshots/PC-2.jpg)
+![Screenshot](/images/screenshots/PC-2.jpg)
+
 ## Cameras
 ### Fully supported
 * GH4
