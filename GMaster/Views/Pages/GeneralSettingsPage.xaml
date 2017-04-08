@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:GMaster.Views"
     xmlns:commands="using:GMaster.Views.Commands"
+    xmlns:gMaster="using:GMaster"
     d:DesignWidth="600"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
     <Page.Resources>
@@ -42,5 +43,15 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Converter={StaticResource VisibilityConverter}}">
+            <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded" >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="gMaster:DebugCategoryEnable">
+                        <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </StackPanel>
 </Page>

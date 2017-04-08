@@ -1,9 +1,9 @@
 ﻿namespace GMaster
 {
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Logger;
+    using Tools;
     using Views;
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
@@ -30,6 +30,8 @@
             InitializeComponent();
             Suspending += OnSuspending;
             UnhandledException += App_UnhandledException;
+
+            Debug.AddCategory("OffFrameBytes", false);
         }
 
         public MainPageModel MainModel { get; private set; }
@@ -54,6 +56,9 @@
             }
         }
 
+        [System.Diagnostics.Conditional("DEBUG")]
+        public void IfDebug(Action action) => action();
+
         /// <summary>
         ///     Invoked when the application is launched normally by the end user.  Other entry points
         ///     will be used such as when the application is launched to open a specific file.
@@ -67,12 +72,14 @@
                 await MainModel.StartListening();
             }
 
-#if DEBUG
-            if (Debugger.IsAttached)
+            IfDebug(() =>
             {
-                DebugSettings.EnableFrameRateCounter = true;
-            }
-#endif
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    DebugSettings.EnableFrameRateCounter = true;
+                }
+            });
+
             var rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -113,10 +120,18 @@
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Log.Error(e.Exception);
-#if !DEBUG
-            e.Handled = true;
-#endif
+            switch (e.Exception)
+            {
+                case ObjectDisposedException ex:
+                    Debug.WriteLine("ObjectDisposedException in " + ex.Source, "UnhandledException");
+                    break;
+
+                default:
+                    Log.Error(e.Exception);
+                    break;
+            }
+
+            IfDebug(() => e.Handled = true);
         }
 
         /// <summary>

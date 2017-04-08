@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
+    using Tools;
 
     public class CameraViewModel : INotifyPropertyChanged
     {
@@ -86,19 +86,26 @@
 
             set
             {
-                if (selectedCamera != null)
+                if (selectedCamera?.Camera != null)
                 {
                     selectedCamera.Camera.Disconnected -= SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged -= Camera_PropertyChanged;
-                    selectedCamera.Camera.OffFrameProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
+                    if (selectedCamera.Camera.OffFrameProcessor != null)
+                    {
+                        selectedCamera.Camera.OffFrameProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
+                    }
                 }
 
-                selectedCamera = value;
-                if (selectedCamera != null)
+                if (value?.Camera?.OffFrameProcessor != null)
                 {
+                    selectedCamera = value;
                     selectedCamera.Camera.Disconnected += SelectedCamera_Disconnected;
                     selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
                     selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
+                }
+                else
+                {
+                    selectedCamera = null;
                 }
 
                 OnPropertyChanged();
@@ -135,7 +142,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    Debug.WriteLine(ex, "AsyncSetter");
                     await App.RunAsync(() => result(oldvalue));
                 }
             });

@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+
     using System.Globalization;
     using System.Linq;
     using LumixData;
@@ -190,7 +190,7 @@
 
             if (values[0] != "ok" || !int.TryParse(values[2], out var max) || !int.TryParse(values[1], out var val))
             {
-                Debug.WriteLine("Cannont parse focus: " + focus);
+                Debug.WriteLine("Cannont parse focus: " + focus, "CameraParser");
                 return null;
             }
 
@@ -199,7 +199,7 @@
 
         public LensInfo ParseLensInfo(string raw)
         {
-            Debug.WriteLine(raw);
+            Debug.WriteLine(raw, "LensInfo");
             var values = raw.Split(',');
             return new LensInfo
             {

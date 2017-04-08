@@ -3,7 +3,6 @@ namespace GMaster.Camera
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -11,6 +10,7 @@ namespace GMaster.Camera
     using Logger;
     using Rssdp;
     using Rssdp.Infrastructure;
+    using Tools;
     using Windows.Networking;
     using Windows.Networking.Connectivity;
     using Windows.Networking.Sockets;
@@ -39,7 +39,11 @@ namespace GMaster.Camera
             var result = new Lumix(device);
             if (!listeners.TryAdd(result.CameraHost, result))
             {
-                throw new Exception("Should not be more than one listener for address");
+                await result.Disconnect();
+                if (!listeners.TryAdd(result.CameraHost, result))
+                {
+                    throw new Exception("Should not be more than one listener for address");
+                }
             }
 
             result.Disconnected += Camera_Disconnected;

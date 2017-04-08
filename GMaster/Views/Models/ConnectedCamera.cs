@@ -19,7 +19,7 @@
 
         public Lumix Camera { get; set; }
 
-        public IEnumerable<LutInfo> InstalledLuts => new[] { new LutInfo { Id = null, Title = "<None>" } }.Concat(Model.InstalledLuts);
+        public IEnumerable<LutInfo> InstalledLuts => new[] { new LutInfo { Id = null, Title = string.Empty } }.Concat(Model.InstalledLuts);
 
         public bool IsAspectAnamorphingVideoOnly
         {

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
+
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -109,7 +109,6 @@
             try
             {
                 var focus = await http.GetString("?mode=camctrl&type=focus&value=" + dir.GetString());
-                Debug.WriteLine($"Focusing {dir} {focus}");
 
                 var fp = Parser.ParseFocus(focus);
                 if (fp == null)
@@ -333,7 +332,7 @@
                     {
                         if (ex.Error == LumixError.ErrorParam)
                         {
-                            Debug.WriteLine("New TouchAF not supported");
+                            Debug.WriteLine("New TouchAF not supported", "NewTouchAF");
                             useNewTouchAF = false;
                         }
                         else
@@ -370,7 +369,7 @@
 
         internal void ProcessMessage(byte[] buf)
         {
-            var imageStart = OffFrameProcessor.Process(buf);
+            var imageStart = OffFrameProcessor?.Process(buf) ?? -1;
             if (imageStart < 0)
             {
                 return;

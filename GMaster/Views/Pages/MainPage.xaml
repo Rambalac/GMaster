@@ -20,10 +20,10 @@
 
         <SplitView x:Name="MainMenu" DisplayMode="Overlay" Grid.Row="0">
             <SplitView.Pane>
-                <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}" />
+                <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}"/>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MenuFrame" Padding="10,50,10,10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" Width="600" HorizontalAlignment="Left" />
+                <Frame x:Name="MenuFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" Width="600" HorizontalAlignment="Left" />
             </SplitView.Content>
         </SplitView>
         <Button Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" Click="MenuButton_OnClick" />

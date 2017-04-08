@@ -3,7 +3,7 @@ namespace GMaster.Camera
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
+
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
@@ -67,7 +67,7 @@ namespace GMaster.Camera
                     return imageStart;
                 }
 
-                Debug.WriteLine(string.Join(",", offframeBytes.Skip(32).Take(imageStart - 32).Select(a => a.ToString("X2"))));
+                Debug.WriteLine(() => string.Join(",", offframeBytes.Skip(32).Take(imageStart - 32).Select(a => a.ToString("X2"))), "OffFrameBytes");
                 var newIso = GetFromShort(state.Main, 127, parser.IsoBinary);
                 if (!Equals(newIso, Iso))
                 {
@@ -222,7 +222,7 @@ namespace GMaster.Camera
                     Y1 = slice.ToShort(50) / 1000.0,
                     X2 = slice.ToShort(52) / 1000.0,
                     Y2 = slice.ToShort(54) / 1000.0,
-                    Fixed = parser != null && parser is GH4Parser
+                    Fixed = parser is GH4Parser
                 };
             }
 
@@ -258,7 +258,7 @@ namespace GMaster.Camera
 
             public short ToShort(int i)
             {
-                return (short)((((int)this[i]) << 8) + this[i + 1]);
+                return (short)((this[i] << 8) + this[i + 1]);
             }
         }
     }

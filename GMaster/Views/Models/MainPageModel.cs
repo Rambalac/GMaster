@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views
+﻿using System.Diagnostics;
+
+namespace GMaster.Views
 {
     using System;
     using System.Collections.ObjectModel;
@@ -11,6 +13,7 @@
     using Annotations;
     using Camera;
     using Logger;
+    using Tools;
     using Windows.ApplicationModel;
     using Windows.UI.Xaml;
 
@@ -77,6 +80,8 @@
         }
 
         public CameraViewModel View1 { get; } = new CameraViewModel();
+
+        public object IsDebug => Debugger.IsAttached;
 
         public void AddConnectableDevice(DeviceInfo device)
         {

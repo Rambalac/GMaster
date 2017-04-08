@@ -1,6 +1,5 @@
 namespace GMaster.Views.Commands
 {
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Camera;
     using Tools;
@@ -9,8 +8,10 @@ namespace GMaster.Views.Commands
     {
         public override async Task InternalExecute(Lumix parameter)
         {
-            Debug.Assert(parameter != null, "lumix != null");
-            await parameter.Disconnect();
+            if (parameter != null)
+            {
+                await parameter.Disconnect();
+            }
         }
     }
 }

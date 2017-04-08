@@ -14,7 +14,7 @@
         [Conditional("DEBUG")]
         public static void Debug(Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(exception);
+            Tools.Debug.WriteLine(exception);
         }
 
         public static void Error(Exception exception)
@@ -25,7 +25,7 @@
                 HockeyClient.Current.TrackException(exception);
             }
 
-            System.Diagnostics.Debug.WriteLine(exception);
+            Tools.Debug.WriteLine(exception);
         }
 
         [Conditional("DEBUG")]

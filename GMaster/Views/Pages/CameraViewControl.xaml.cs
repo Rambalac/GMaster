@@ -4,7 +4,7 @@ namespace GMaster.Views
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+
     using System.IO;
     using System.Threading.Tasks;
     using Camera;
@@ -98,7 +98,6 @@ namespace GMaster.Views
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
-                Debug.WriteLine(obj);
                 await Model.SelectedCamera.Camera.ChangeFocus(obj);
             }
         }
@@ -282,7 +281,7 @@ namespace GMaster.Views
         private async Task SetLut()
         {
             var selectedLut = Model?.SelectedCamera?.SelectedLut;
-            if (selectedLut == null)
+            if (selectedLut?.Id == null)
             {
                 frame.LutEffect = null;
                 return;
@@ -300,7 +299,6 @@ namespace GMaster.Views
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
-                Debug.WriteLine(obj);
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
         }

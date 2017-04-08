@@ -118,6 +118,7 @@
     <Compile Include="Camera\LumixError.cs" />
     <Compile Include="Camera\OffFrameProcessor.cs" />
     <Compile Include="CubeLutParser.cs" />
+    <Compile Include="Views\Models\DebugCategoryEnable.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="Camera\LumixData\ChangeDirection.cs" />
     <Compile Include="Camera\ICameraMenuItem.cs" />
@@ -152,14 +153,14 @@
     <Compile Include="Views\ILutEffectGenerator.cs" />
     <Compile Include="Views\Lut1DEffectGenerator.cs" />
     <Compile Include="Views\Lut3DEffectGenerator.cs" />
-    <Compile Include="Views\MainMenu.xaml.cs">
+    <Compile Include="Views\Pages\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Adjuster.xaml.cs">
+    <Compile Include="Views\Pages\Adjuster.xaml.cs">
       <DependentUpon>Adjuster.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CameraSettings.cs" />
-    <Compile Include="Views\CameraSettingsPage.xaml.cs">
+    <Compile Include="Views\Pages\CameraSettingsPage.xaml.cs">
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\AboutCommand.cs" />
@@ -171,7 +172,7 @@
     <Compile Include="Views\Converters\VisibilityNullConverter.cs" />
     <Compile Include="Views\FrameRenderer.cs" />
     <Compile Include="Views\GeneralSettings.cs" />
-    <Compile Include="Views\GeneralSettingsPage.xaml.cs">
+    <Compile Include="Views\Pages\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\CaptureCommand.cs" />
@@ -179,17 +180,17 @@
     <Compile Include="Camera\Lumix.cs" />
     <Compile Include="Camera\LumixException.cs" />
     <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
-    <Compile Include="Views\ConnectedCamera.cs" />
+    <Compile Include="Views\Models\ConnectedCamera.cs" />
     <Compile Include="Views\LutInfo.cs" />
-    <Compile Include="Views\MainPageModel.cs" />
+    <Compile Include="Views\Models\MainPageModel.cs" />
     <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
-    <Compile Include="Views\MainPage.xaml.cs">
+    <Compile Include="Views\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CameraViewModel.cs" />
+    <Compile Include="Views\Models\CameraViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\CameraViewControl.xaml.cs">
+    <Compile Include="Views\Pages\CameraViewControl.xaml.cs">
       <DependentUpon>CameraViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\RecCommand.cs" />
@@ -261,32 +262,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\MainMenu.xaml">
+    <Page Include="Views\Pages\MainMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Adjuster.xaml">
+    <Page Include="Views\Pages\Adjuster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CameraSettingsPage.xaml">
+    <Page Include="Views\Pages\CameraSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CameraViewControlResources.xaml">
+    <Page Include="Views\Pages\CameraViewControlResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\GeneralSettingsPage.xaml">
+    <Page Include="Views\Pages\GeneralSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainPage.xaml">
+    <Page Include="Views\Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CameraViewControl.xaml">
+    <Page Include="Views\Pages\CameraViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
