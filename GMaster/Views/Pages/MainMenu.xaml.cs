@@ -71,5 +71,10 @@ namespace GMaster.Views
                 MainMenu.DisplayMode = SplitViewDisplayMode.Inline;
             }
         }
+
+        private void WiFi_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFrame(typeof(WiFiPage), Model);
+        }
     }
 }

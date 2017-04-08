@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -13,7 +12,6 @@ namespace GMaster.Views
     using Annotations;
     using Camera;
     using Logger;
-    using Tools;
     using Windows.ApplicationModel;
     using Windows.UI.Xaml;
 
@@ -22,7 +20,6 @@ namespace GMaster.Views
         private readonly DispatcherTimer cameraRefreshTimer;
         private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
 
-        private readonly WiFiHelper wifidirect;
         private DeviceInfo selectedDevice;
 
         public MainPageModel()
@@ -35,9 +32,7 @@ namespace GMaster.Views
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
             Task.Run(LoadLutsInfo);
-
-            wifidirect = new WiFiHelper();
-            wifidirect.Start();
+            Task.Run(() => Wifi.Init());
 
             ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
         }
@@ -56,6 +51,8 @@ namespace GMaster.Views
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
         public ObservableCollection<LutInfo> InstalledLuts { get; } = new ObservableCollection<LutInfo>();
+
+        public object IsDebug => Debugger.IsAttached;
 
         public LumixManager LumixManager { get; }
 
@@ -81,7 +78,7 @@ namespace GMaster.Views
 
         public CameraViewModel View1 { get; } = new CameraViewModel();
 
-        public object IsDebug => Debugger.IsAttached;
+        public WiFiHelper Wifi { get; } = new WiFiHelper();
 
         public void AddConnectableDevice(DeviceInfo device)
         {

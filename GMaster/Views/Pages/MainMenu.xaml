@@ -36,25 +36,33 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2" />
+        <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" />
 
-        <Button Grid.Column="0" Grid.Row="1" Background="Transparent" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Margin="0,0,0,10" Click="GeneralSettings_Click">
+        <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Click="WiFi_Click" Visibility="{Binding Wifi.Present, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE701;" Margin="0,3,0,0" />
+                <TextBlock Text="Connect WiFi" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
+
+        <Button Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Click="GeneralSettings_Click">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting" />
                 <TextBlock Text="General settings" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center" />
             </StackPanel>
         </Button>
 
-        <Rectangle Grid.Row="2" Grid.Column="0" Height="4" Fill="White" />
+        <Rectangle Grid.Row="3" Grid.Column="0" Height="4" Fill="White" Margin="5" />
 
-        <Grid Grid.Row="3" Grid.Column="0">
+        <Grid Grid.Row="4" Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ComboBox Margin="0,10,10,10" HorizontalAlignment="Stretch"
                   ItemsSource="{Binding ConnectableDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
@@ -69,14 +77,14 @@
             <Button Content="Connect" Grid.Column="1" Margin="0,10,0,10"
                     Command="{StaticResource ConnectCommand}" />
         </Grid>
-        <ListView Margin="-10,0,-10,0" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" HorizontalContentAlignment="Stretch"  ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
+        <ListView Grid.Row="5" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Grid Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0">
+        <Grid Grid.Row="6" Grid.Column="0">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="0,0,10,0">
                     <Button HorizontalAlignment="Center" Command="{StaticResource FeedbackCommand}" Padding="10">

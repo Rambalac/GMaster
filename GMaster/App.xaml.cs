@@ -67,6 +67,7 @@
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
+
             if (MainModel != null)
             {
                 await MainModel.StartListening();

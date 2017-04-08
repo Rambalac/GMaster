@@ -20,7 +20,7 @@
 
         <SplitView x:Name="MainMenu" DisplayMode="Overlay" Grid.Row="0">
             <SplitView.Pane>
-                <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}"/>
+                <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}" />
             </SplitView.Pane>
             <SplitView.Content>
                 <Frame x:Name="MenuFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" Width="600" HorizontalAlignment="Left" />

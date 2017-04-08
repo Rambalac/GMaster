@@ -1,7 +1,5 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-using System.Diagnostics;
-
 namespace GMaster.Views
 {
     using Tools;
@@ -20,7 +18,7 @@ namespace GMaster.Views
 
         private void DebugCategoryList_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Debugger.IsAttached)
+            if (System.Diagnostics.Debugger.IsAttached)
             {
                 DebugCategoryList.Items?.Clear();
                 foreach (var name in Debug.Categories.Keys)
