@@ -65,10 +65,12 @@ namespace GMaster.Views
             {
                 MainMenu.DisplayMode = SplitViewDisplayMode.Overlay;
                 MainMenu.IsPaneOpen = false;
+                MenuFrame.Padding = new Thickness(0, 30, 0, 0);
             }
             else
             {
                 MainMenu.DisplayMode = SplitViewDisplayMode.Inline;
+                MenuFrame.Padding = new Thickness(0);
             }
         }
 

@@ -1,13 +1,13 @@
 ﻿namespace GMaster
 {
+    using Annotations;
+    using Logger;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using Annotations;
-    using Logger;
     using Windows.Devices.WiFi;
     using Windows.UI.Xaml;
 
@@ -19,9 +19,14 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<string> AccessPoints { get; } = new ObservableCollection<string>();
+        public ObservableCollection<WiFiAvailableNetwork> AccessPoints { get; } = new ObservableCollection<WiFiAvailableNetwork>();
 
         public bool Present { get; private set; }
+
+        public async Task ConnecAccessPoint(WiFiAvailableNetwork ap)
+        {
+            await adapter.ConnectAsync(ap, WiFiReconnectionKind.Automatic);
+        }
 
         public async Task Init()
         {
@@ -66,7 +71,7 @@
 
         private void Adapter_AvailableNetworksChanged(WiFiAdapter sender, object args)
         {
-            var list = sender.NetworkReport.AvailableNetworks.Select(n => n.Ssid).ToList();
+            var list = sender.NetworkReport.AvailableNetworks.ToList();
 
             var toremove = AccessPoints.Except(list);
             var toadd = list.Except(AccessPoints);
@@ -74,6 +79,7 @@
             {
                 AccessPoints.Remove(ap);
             }
+
             foreach (var ap in toadd)
             {
                 AccessPoints.Add(ap);

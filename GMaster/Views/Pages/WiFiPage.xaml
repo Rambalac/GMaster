@@ -5,11 +5,30 @@
     xmlns:local="using:GMaster" d:DesignWidth="600"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wiFi="using:Windows.Devices.WiFi"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
 
     <StackPanel Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
-        <ListBox ItemsSource="{Binding Wifi.AccessPoints}">
-            
-        </ListBox>
+        <ListView ItemsSource="{Binding Wifi.AccessPoints}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="wiFi:WiFiAvailableNetwork">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="{Binding Ssid}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0"/>
+                        <Button Grid.Column="1">
+                            <SymbolIcon Symbol="Add"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackPanel>
 </Page>
