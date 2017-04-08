@@ -8,7 +8,12 @@
     <Application.Resources>
         <local:MainPageModel x:Key="MainModel" />
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:VisibilityZeroConverter x:Key="VisibilityZeroConverter" />
+        <converters:VisibilityNotZeroConverter x:Key="VisibilityNotZeroConverter" />
+        <converters:VisibilityNotNullConverter x:Key="VisibilityNotNullConverter" />
         <converters:VisibilityNullConverter x:Key="VisibilityNullConverter" />
+        <converters:NullFalseConverter x:Key="NullFalseConverter" />
+        <converters:NullTrueConverter x:Key="NullTrueConverter" />
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
         <converters:NotConverter x:Key="NotConverter" />
     </Application.Resources>

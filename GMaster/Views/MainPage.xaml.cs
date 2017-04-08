@@ -53,5 +53,10 @@ namespace GMaster.Views
                 }
             }
         }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Model.Init();
+        }
     }
 }

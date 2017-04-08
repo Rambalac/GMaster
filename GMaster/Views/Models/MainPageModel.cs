@@ -31,10 +31,14 @@
             cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
-            Task.Run(LoadLutsInfo);
-            Task.Run(() => Wifi.Init());
 
             ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
+        }
+
+        public async Task Init()
+        {
+            await Wifi.Init();
+            await LoadLutsInfo();
         }
 
         public event Action<Lumix> CameraDisconnected;

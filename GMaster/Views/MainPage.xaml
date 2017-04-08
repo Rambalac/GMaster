@@ -8,7 +8,7 @@
     xmlns:commands="using:GMaster.Views.Commands"
     xmlns:converters="using:GMaster.Views.Converters"
     xmlns:gMaster="using:GMaster"
-    mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}">
+    mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}" Loaded="Page_Loaded">
     <Page.Resources>
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
     </Page.Resources>
@@ -23,7 +23,7 @@
                 <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}" />
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MenuFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" Width="600" HorizontalAlignment="Left" />
+                <Frame x:Name="MenuFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" Width="400" HorizontalAlignment="Left" />
             </SplitView.Content>
         </SplitView>
         <Button Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Left" VerticalAlignment="Top" Click="MenuButton_OnClick" />

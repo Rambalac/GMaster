@@ -118,6 +118,12 @@
     <Compile Include="Camera\LumixError.cs" />
     <Compile Include="Camera\OffFrameProcessor.cs" />
     <Compile Include="CubeLutParser.cs" />
+    <Compile Include="Views\Commands\ForgetWiFiCommand.cs" />
+    <Compile Include="Views\Converters\NullFalseConverter.cs" />
+    <Compile Include="Views\Converters\NullTrueConverter.cs" />
+    <Compile Include="Views\Converters\VisibilityNotNullConverter.cs" />
+    <Compile Include="Views\Converters\VisibilityNotZeroConverter.cs" />
+    <Compile Include="Views\Converters\VisibilityZeroConverter.cs" />
     <Compile Include="Views\Models\DebugCategoryEnable.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="Camera\LumixData\ChangeDirection.cs" />
@@ -150,29 +156,28 @@
     <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Lut.cs" />
     <Compile Include="Views\Commands\DeleteLutCommand.cs" />
-    <Compile Include="Views\ILutEffectGenerator.cs" />
-    <Compile Include="Views\Lut1DEffectGenerator.cs" />
-    <Compile Include="Views\Lut3DEffectGenerator.cs" />
-    <Compile Include="Views\Pages\MainMenu.xaml.cs">
+    <Compile Include="Views\Misc\ILutEffectGenerator.cs" />
+    <Compile Include="Views\Misc\Lut1DEffectGenerator.cs" />
+    <Compile Include="Views\Misc\Lut3DEffectGenerator.cs" />
+    <Compile Include="Views\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\Adjuster.xaml.cs">
+    <Compile Include="Views\Adjuster.xaml.cs">
       <DependentUpon>Adjuster.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CameraSettings.cs" />
-    <Compile Include="Views\Pages\CameraSettingsPage.xaml.cs">
+    <Compile Include="Views\Misc\CameraSettings.cs" />
+    <Compile Include="Views\CameraSettingsPage.xaml.cs">
       <DependentUpon>CameraSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\AboutCommand.cs" />
     <Compile Include="Views\Commands\AddLutCommand.cs" />
     <Compile Include="Views\Commands\DonateCommand.cs" />
     <Compile Include="Views\Commands\FeedbackCommand.cs" />
-    <Compile Include="Views\Commands\ZoomCommand.cs" />
     <Compile Include="Views\Converters\NotConverter.cs" />
     <Compile Include="Views\Converters\VisibilityNullConverter.cs" />
-    <Compile Include="Views\FrameRenderer.cs" />
-    <Compile Include="Views\GeneralSettings.cs" />
-    <Compile Include="Views\Pages\GeneralSettingsPage.xaml.cs">
+    <Compile Include="Views\Misc\FrameRenderer.cs" />
+    <Compile Include="Views\Misc\GeneralSettings.cs" />
+    <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\CaptureCommand.cs" />
@@ -181,16 +186,16 @@
     <Compile Include="Camera\LumixException.cs" />
     <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
     <Compile Include="Views\Models\ConnectedCamera.cs" />
-    <Compile Include="Views\LutInfo.cs" />
+    <Compile Include="Views\Misc\LutInfo.cs" />
     <Compile Include="Views\Models\MainPageModel.cs" />
     <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
-    <Compile Include="Views\Pages\MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Models\CameraViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Pages\CameraViewControl.xaml.cs">
+    <Compile Include="Views\CameraViewControl.xaml.cs">
       <DependentUpon>CameraViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Commands\RecCommand.cs" />
@@ -199,6 +204,9 @@
     <Compile Include="Views\Converters\NotVisibilityConverter.cs" />
     <Compile Include="Views\Converters\RecStateConvertor.cs" />
     <Compile Include="Views\Converters\VisibilityConverter.cs" />
+    <Compile Include="Views\WiFiPage.xaml.cs">
+      <DependentUpon>WiFiPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WiFiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -262,36 +270,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\Pages\MainMenu.xaml">
+    <Page Include="Views\MainMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Pages\Adjuster.xaml">
+    <Page Include="Views\Adjuster.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\CameraSettingsPage.xaml">
+    <Page Include="Views\CameraSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\CameraViewControlResources.xaml">
+    <Page Include="Views\CameraViewControlResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\Pages\GeneralSettingsPage.xaml">
+    <Page Include="Views\GeneralSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Pages\CameraViewControl.xaml">
+    <Page Include="Views\CameraViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\WiFiPage.xaml">
+    <Page Include="Views\WiFiPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

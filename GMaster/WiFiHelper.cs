@@ -10,51 +10,104 @@
     using System.Threading.Tasks;
     using Windows.Devices.WiFi;
     using Windows.UI.Xaml;
+    using Nito.AsyncEx;
 
     public class WiFiHelper : INotifyPropertyChanged
     {
         private WiFiAdapter adapter;
 
-        private DispatcherTimer scanTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
+        private DispatcherTimer scanTimer;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<WiFiAvailableNetwork> AccessPoints { get; } = new ObservableCollection<WiFiAvailableNetwork>();
 
+        public ObservableCollection<string> AutoconnectAccessPoints { get; } = new ObservableCollection<string>();
+
+        public void MakeCurrentAutoconnect()
+        {
+            if (!AutoconnectAccessPoints.Contains(ConnectedWiFi))
+            {
+                AutoconnectAccessPoints.Add(ConnectedWiFi);
+            }
+        }
+
+        private string connectedWiFi;
+
+        public string ConnectedWiFi
+        {
+            get => connectedWiFi; private set
+            {
+                if (connectedWiFi != value)
+                {
+                    connectedWiFi = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool Present { get; private set; }
 
         public async Task ConnecAccessPoint(WiFiAvailableNetwork ap)
         {
-            await adapter.ConnectAsync(ap, WiFiReconnectionKind.Automatic);
+            var result = await adapter.ConnectAsync(ap, WiFiReconnectionKind.Automatic);
+            if (result.ConnectionStatus == WiFiConnectionStatus.Success)
+            {
+                ConnectedWiFi = ap.Ssid;
+            }
         }
 
         public async Task Init()
         {
-            if (await WiFiAdapter.RequestAccessAsync() != WiFiAccessStatus.Allowed)
+            try
             {
-                return;
-            }
+                if (await WiFiAdapter.RequestAccessAsync() != WiFiAccessStatus.Allowed)
+                {
+                    return;
+                }
 
-            var adapters = await WiFiAdapter.FindAllAdaptersAsync();
-            if (adapters.Count > 1)
+                var adapters = await WiFiAdapter.FindAllAdaptersAsync();
+                if (adapters.Count > 1)
+                {
+                    Log.Warn("More than 1 WiFi adapter");
+                }
+
+                adapter = adapters.FirstOrDefault();
+                if (adapter == null)
+                {
+                    return;
+                }
+
+                Present = true;
+                OnPropertyChanged(nameof(Present));
+
+                adapter.AvailableNetworksChanged += Adapter_AvailableNetworksChanged;
+
+                await CheckAndScan();
+
+                scanTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+                scanTimer.Tick += ScanTimer_Tick;
+                scanTimer.Start();
+            }
+            catch (Exception ex)
             {
-                Log.Warn("More than 1 WiFi adapter");
+                Log.Error(ex);
             }
+        }
 
-            adapter = adapters.FirstOrDefault();
-            if (adapter == null)
+        private async Task CheckAndScan()
+        {
+            var profile = await adapter.NetworkAdapter.GetConnectedProfileAsync();
+            if (ConnectedWiFi != profile?.ProfileName)
             {
-                return;
+                ConnectedWiFi = profile?.ProfileName;
             }
-
-            Present = true;
-            OnPropertyChanged(nameof(Present));
-
-            adapter.AvailableNetworksChanged += Adapter_AvailableNetworksChanged;
 
             await adapter.ScanAsync();
+        }
 
-            scanTimer.Tick += ScanTimer_Tick;
+        public void Start()
+        {
             scanTimer.Start();
         }
 
@@ -69,26 +122,71 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public bool AutoconnectAlways { get; set; } = false;
+
         private void Adapter_AvailableNetworksChanged(WiFiAdapter sender, object args)
         {
-            var list = sender.NetworkReport.AvailableNetworks.ToList();
+            var list = sender.NetworkReport.AvailableNetworks.Where(n => !string.IsNullOrWhiteSpace(n.Ssid)).ToList();
 
-            var toremove = AccessPoints.Except(list);
-            var toadd = list.Except(AccessPoints);
-            foreach (var ap in toremove)
+            App.RunAsync(async () =>
             {
-                AccessPoints.Remove(ap);
-            }
+                var toremove = AccessPoints.Except(list).ToList();
+                var toadd = list.Except(AccessPoints).ToList();
+                foreach (var ap in toremove)
+                {
+                    AccessPoints.Remove(ap);
+                }
 
-            foreach (var ap in toadd)
-            {
-                AccessPoints.Add(ap);
-            }
+                foreach (var ap in toadd)
+                {
+                    AccessPoints.Add(ap);
+                }
+
+                if (AutoconnectAlways || ConnectedWiFi == null)
+                {
+                    foreach (string ssid in AutoconnectAccessPoints)
+                    {
+                        if (ssid == ConnectedWiFi)
+                        {
+                            break;
+                        }
+
+                        var autoconnect = list.FirstOrDefault(n => n.Ssid == ssid);
+                        if (autoconnect != null)
+                        {
+                            var result = await adapter.ConnectAsync(autoconnect, WiFiReconnectionKind.Automatic);
+                            if (result.ConnectionStatus == WiFiConnectionStatus.Success)
+                            {
+                                ConnectedWiFi = autoconnect.Ssid;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            });
+
         }
+
+        bool scanFlag = false;
 
         private async void ScanTimer_Tick(object sender, object e)
         {
-            await adapter.ScanAsync();
+            if (!scanFlag)
+            {
+                try
+                {
+                    await CheckAndScan();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                }
+                finally
+                {
+                    scanFlag = false;
+                }
+            }
         }
     }
 }
