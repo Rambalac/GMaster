@@ -1,6 +1,7 @@
 ﻿namespace GMaster.Views
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -11,7 +12,9 @@
     using Annotations;
     using Camera;
     using Logger;
+    using Tools;
     using Windows.ApplicationModel;
+    using Windows.Devices.WiFi;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
@@ -20,6 +23,7 @@
         private readonly CameraViewModel[] allViews =
             { new CameraViewModel(), new CameraViewModel(), new CameraViewModel(), new CameraViewModel() };
 
+        private readonly WiFiHelper wifi = new WiFiHelper();
         private CameraViewModel[] activeViews;
         private bool? isLandscape;
         private GridLength secondColumnWidth = new GridLength(0, GridUnitType.Star);
@@ -38,13 +42,17 @@
             cameraRefreshTimer.Start();
 
             ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
-            Wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
+            wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
             foreach (var ap in GeneralSettings.WiFiAutoconnectAccessPoints.Value)
             {
-                Wifi.AutoconnectAccessPoints.Add(ap);
+                wifi.AutoconnectAccessPoints.Add(ap);
             }
 
-            Wifi.PropertyChanged += Wifi_PropertyChanged;
+            wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
+
+            wifi.PropertyChanged += Wifi_PropertyChanged;
+            wifi.AccessPointsUpdated += Wifi_AccessPointsUpdated;
+            WifiAutoconnectAccessPoints.CollectionChanged += WifiAutoconnectAccessPoints_CollectionChanged;
         }
 
         public event Action<Lumix> CameraDisconnected;
@@ -225,7 +233,21 @@
 
         public CameraViewModel View4 => allViews[3];
 
-        public WiFiHelper Wifi { get; } = new WiFiHelper();
+        public ObservableCollection<WiFiAvailableNetwork> WifiAccessPoints { get; }
+
+        public ObservableCollection<string> WifiAutoconnectAccessPoints { get; }
+
+        public bool WiFiAutoconnectAlways
+        {
+            get => wifi.AutoconnectAlways;
+            set
+            {
+                wifi.AutoconnectAlways = value;
+                GeneralSettings.WiFiAutoconnectAlways.Value = value;
+            }
+        }
+
+        public bool WiFiPresent => wifi.Present;
 
         public void AddConnectableDevice(DeviceInfo device)
         {
@@ -261,6 +283,11 @@
             return connectedCamera;
         }
 
+        public async Task ConnectAccessPoint(WiFiAvailableNetwork eClickedItem)
+        {
+            await wifi.ConnectAccessPoint(eClickedItem);
+        }
+
         public async Task ConnectCamera(DeviceInfo modelSelectedDevice)
         {
             var lumix = await LumixManager.ConnectCamera(modelSelectedDevice);
@@ -274,7 +301,7 @@
 
         public async Task Init()
         {
-            await Wifi.Init();
+            await wifi.Init();
             await LoadLutsInfo();
         }
 
@@ -311,6 +338,11 @@
         public void StopListening()
         {
             LumixManager.StopListening();
+        }
+
+        public void WifiMakeCurrentAutoconnect()
+        {
+            WifiAutoconnectAccessPoints.Add(wifi.ConnectedWiFi);
         }
 
         protected virtual void OnCameraDisconnected(Lumix obj)
@@ -408,18 +440,29 @@
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }
 
+        private void Wifi_AccessPointsUpdated(IList<WiFiAvailableNetwork> obj)
+        {
+            WifiAccessPoints.Reset(obj);
+        }
+
         private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(WiFiHelper.AutoconnectAlways):
-                    GeneralSettings.WiFiAutoconnectAlways.Value = Wifi.AutoconnectAlways;
-                    break;
+            var task = RunAsync(() =>
+              {
+                  switch (e.PropertyName)
+                  {
+                      case nameof(WiFiHelper.Present):
+                          OnPropertyChanged(nameof(WiFiPresent));
+                          break;
+                  }
+              });
+        }
 
-                case nameof(WiFiHelper.AutoconnectAccessPoints):
-                    GeneralSettings.WiFiAutoconnectAccessPoints.Value = Wifi.AutoconnectAccessPoints;
-                    break;
-            }
+        private void WifiAutoconnectAccessPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            GeneralSettings.WiFiAutoconnectAccessPoints.Value = WifiAutoconnectAccessPoints;
+
+            wifi.AutoconnectAccessPoints.Reset(WifiAutoconnectAccessPoints);
         }
     }
 }

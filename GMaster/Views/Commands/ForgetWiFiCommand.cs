@@ -9,7 +9,7 @@
 
         protected override Task InternalExecute(string parameter)
         {
-            Model.Wifi.AutoconnectAccessPoints.Remove(parameter);
+            Model.WifiAutoconnectAccessPoints.Remove(parameter);
             return Task.CompletedTask;
         }
     }

@@ -29,7 +29,7 @@ namespace GMaster.Camera
 
         public TextBinValue Aperture { get; private set; }
 
-        public CameraMode CameraMode { get; private set; }
+        public CameraMode CameraMode { get; private set; } = CameraMode.Unknown;
 
         public int ExposureShift { get; private set; }
 

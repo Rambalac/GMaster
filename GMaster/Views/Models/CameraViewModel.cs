@@ -20,11 +20,15 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool CanCapture => SelectedCamera?.Camera?.CanCapture ?? false;
+
         public bool CanChangeAperture => SelectedCamera?.Camera?.CanChangeAperture ?? true;
 
         public bool CanChangeShutter => SelectedCamera?.Camera?.CanChangeShutter ?? true;
 
         public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
+
+        public int CurentZoom => SelectedCamera?.Camera?.OffFrameProcessor?.Zoom ?? 0;
 
         public ICameraMenuItem CurrentAperture
         {
@@ -43,6 +47,10 @@
         }
 
         public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera?.Camera?.CurrentApertures;
+
+        public string CurrentApertureText => SelectedCamera?.Camera?.OffFrameProcessor?.Aperture.Text ?? string.Empty;
+
+        public int CurrentFocus => SelectedCamera?.Camera?.CurrentFocus ?? 0;
 
         public ICameraMenuItem CurrentIso
         {
@@ -72,13 +80,23 @@
             }
         }
 
-        public FocusPoint FocusPoint { get; private set; }
+        public string CurrentShutterText => SelectedCamera?.Camera?.OffFrameProcessor?.Shutter.Text ?? string.Empty;
+
+        public CoreDispatcher Dispatcher { get; set; }
+
+        public FocusPoint FocusPoint => SelectedCamera?.Camera?.OffFrameProcessor?.FocusPoint;
 
         public bool HasPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
 
         public bool IsConnected => selectedCamera != null;
 
         public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
+
+        public int MaximumFocus => SelectedCamera?.Camera?.MaximumFocus ?? 0;
+
+        public int MaxZoom => SelectedCamera?.Camera?.LensInfo?.MaxZoom ?? 0;
+
+        public int MinZoom => SelectedCamera?.Camera?.LensInfo?.MinZoom ?? 0;
 
         public RecState? RecState => SelectedCamera?.Camera?.RecState;
 
@@ -117,26 +135,35 @@
                 {
                     try
                     {
+                        if (selectedCamera != null)
+                        {
+                            currentAperture = selectedCamera.Camera.CurrentAperture;
+                            currentShutter = selectedCamera.Camera.CurrentShutter;
+                            currentIso = selectedCamera.Camera.CurrentIso;
+                        }
+
                         OnPropertyChanged();
+                        OnPropertyChanged(nameof(IsConnected));
+
                         OnPropertyChanged(nameof(CanChangeAperture));
                         OnPropertyChanged(nameof(CanChangeShutter));
-                        OnPropertyChanged(nameof(HasPowerZoom));
                         OnPropertyChanged(nameof(CanManualFocus));
+
                         OnPropertyChanged(nameof(ShutterSpeeds));
                         OnPropertyChanged(nameof(CurrentApertures));
                         OnPropertyChanged(nameof(IsoValues));
+
                         OnPropertyChanged(nameof(CurrentAperture));
                         OnPropertyChanged(nameof(CurrentShutter));
                         OnPropertyChanged(nameof(CurrentIso));
+
                         OnPropertyChanged(nameof(CanCapture));
-                        OnPropertyChanged(nameof(IsConnected));
+                        OnPropertyChanged(nameof(HasPowerZoom));
                         OnPropertyChanged(nameof(MaxZoom));
                         OnPropertyChanged(nameof(MinZoom));
                         OnPropertyChanged(nameof(CurentZoom));
 
-                        FocusPoint = null;
                         OnPropertyChanged(nameof(FocusPoint));
-
                     }
                     catch (Exception ex)
                     {
@@ -150,36 +177,30 @@
 
         public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera?.Camera?.MenuSet?.ShutterSpeeds;
 
-        public bool CanCapture => SelectedCamera?.Camera?.CanCapture ?? false;
-
-        public string CurrentApertureText => SelectedCamera?.Camera?.OffFrameProcessor?.Aperture.Text ?? string.Empty;
-
-        public int MinZoom => SelectedCamera?.Camera?.LensInfo?.MinZoom ?? 0;
-
-        public int MaxZoom => SelectedCamera?.Camera?.LensInfo?.MaxZoom ?? 0;
-
-        public int CurentZoom => SelectedCamera?.Camera?.OffFrameProcessor?.Zoom ?? 0;
-
-        public int MaximumFocus => SelectedCamera?.Camera?.MaximumFocus ?? 0;
-
-        public int CurrentFocus => SelectedCamera?.Camera?.CurrentFocus ?? 0;
-
-        public string CurrentShutterText => SelectedCamera?.Camera?.OffFrameProcessor?.Shutter.Text ?? string.Empty;
-
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CoreDispatcher Dispatcher { get; set; }
-
-        private async Task RunAsync(Action act)
+        private void AsyncMenuItemSetter(ICameraMenuItem old, ICameraMenuItem value, Action<ICameraMenuItem> onResult)
         {
-            if (Dispatcher != null)
+            if (value == null)
             {
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => act());
+                return;
             }
+
+            AsyncSetter(
+                old,
+                value,
+                async v =>
+                {
+                    if (selectedCamera != null)
+                    {
+                        await selectedCamera.Camera.SendMenuItem(v);
+                    }
+                },
+                onResult);
         }
 
         private void AsyncSetter<TValue>(TValue oldvalue, TValue newvalue, Func<TValue, Task> action, Action<TValue> result)
@@ -197,21 +218,6 @@
                     await RunAsync(() => result(oldvalue));
                 }
             });
-        }
-
-        private void AsyncMenuItemSetter(ICameraMenuItem old, ICameraMenuItem value, Action<ICameraMenuItem> onResult)
-        {
-            AsyncSetter(
-                old,
-                value,
-                async v =>
-                {
-                    if (selectedCamera != null)
-                    {
-                        await selectedCamera.Camera.SendMenuItem(v);
-                    }
-                },
-                onResult);
         }
 
         private async void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -246,12 +252,15 @@
                         case nameof(Lumix.RecState):
                             OnPropertyChanged(nameof(RecState));
                             break;
+
                         case nameof(Lumix.CanCapture):
                             OnPropertyChanged(nameof(CanCapture));
                             break;
+
                         case nameof(Lumix.MaximumFocus):
                             OnPropertyChanged(nameof(MaximumFocus));
                             break;
+
                         case nameof(Lumix.CurrentFocus):
                             OnPropertyChanged(nameof(CurrentFocus));
                             break;
@@ -301,7 +310,6 @@
                             break;
 
                         case nameof(OffFrameProcessor.FocusPoint):
-                            FocusPoint = camera.OffFrameProcessor.FocusPoint;
                             OnPropertyChanged(nameof(FocusPoint));
                             break;
                     }
@@ -311,6 +319,14 @@
                     Log.Error(ex);
                 }
             });
+        }
+
+        private async Task RunAsync(Action act)
+        {
+            if (Dispatcher != null)
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => act());
+            }
         }
 
         private void SelectedCamera_Disconnected(Lumix lumix, bool stillAvailable)

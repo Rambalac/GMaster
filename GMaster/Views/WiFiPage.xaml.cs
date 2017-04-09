@@ -19,12 +19,12 @@ namespace GMaster.Views
 
         private async void Connect_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await Model.Wifi.ConnecAccessPoint((WiFiAvailableNetwork)e.ClickedItem);
+            await Model.ConnectAccessPoint((WiFiAvailableNetwork)e.ClickedItem);
         }
 
         private void RememberButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Model.Wifi.MakeCurrentAutoconnect();
+            Model.WifiMakeCurrentAutoconnect();
         }
     }
 }

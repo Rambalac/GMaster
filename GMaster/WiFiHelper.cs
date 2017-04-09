@@ -1,7 +1,8 @@
 ﻿namespace GMaster
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -17,19 +18,18 @@
 
     public class WiFiHelper : INotifyPropertyChanged
     {
-        private bool autoconnectAlways;
         private WiFiAdapter adapter;
-
+        private bool autoconnectAlways;
         private DispatcherTimer connectedTimer;
         private string connectedWiFi;
         private int scanFlag;
         private DispatcherTimer scanTimer;
 
+        public event Action<IList<WiFiAvailableNetwork>> AccessPointsUpdated;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<WiFiAvailableNetwork> AccessPoints { get; } = new ObservableCollection<WiFiAvailableNetwork>();
-
-        public ObservableCollection<string> AutoconnectAccessPoints { get; } = new ObservableCollection<string>();
+        public ConcurrentBag<string> AutoconnectAccessPoints { get; } = new ConcurrentBag<string>();
 
         public bool AutoconnectAlways
         {
@@ -54,7 +54,7 @@
 
         public bool Present { get; private set; }
 
-        public async Task ConnecAccessPoint(WiFiAvailableNetwork ap)
+        public async Task ConnectAccessPoint(WiFiAvailableNetwork ap)
         {
             var result = await adapter.ConnectAsync(ap, WiFiReconnectionKind.Automatic);
             if (result.ConnectionStatus == WiFiConnectionStatus.Success)
@@ -146,15 +146,9 @@
 
         private async void Adapter_AvailableNetworksChanged(WiFiAdapter sender, object args)
         {
-            var list = sender.NetworkReport.AvailableNetworks.Where(n => !string.IsNullOrWhiteSpace(n.Ssid)).ToList();
+            var list = sender.NetworkReport.AvailableNetworks.Where(n => !string.IsNullOrWhiteSpace(n.Ssid)).OrderByDescending(n => n.SignalBars).ToList();
 
-            var toadd = list.OrderByDescending(n => n.SignalBars).ToList();
-            AccessPoints.Clear();
-
-            foreach (var ap in toadd)
-            {
-                AccessPoints.Add(ap);
-            }
+            AccessPointsUpdated?.Invoke(list);
 
             if (AutoconnectAlways || ConnectedWiFi == null)
             {

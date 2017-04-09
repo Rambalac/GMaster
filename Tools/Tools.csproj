@@ -114,6 +114,7 @@
     <Compile Include="AbstractParameterModelCommand.cs" />
     <Compile Include="AbstractSimpleCommand.cs" />
     <Compile Include="AbstractSimpleParameterCommand.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="EnumExceptionAttribute.cs" />
     <Compile Include="EnumToValue.cs" />
