@@ -5,9 +5,11 @@ namespace GMaster.Camera
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
     using Logger;
+    using Nito.AsyncEx;
     using Rssdp;
     using Rssdp.Infrastructure;
     using Tools;
@@ -55,12 +57,36 @@ namespace GMaster.Camera
 
         public async Task SearchCameras()
         {
-            if (deviceLocators != null)
+            try
             {
-                foreach (var dev in deviceLocators)
+                if (deviceLocators != null)
                 {
-                    await dev.SearchAsync();
+                    foreach (var dev in deviceLocators)
+                    {
+                        if (!dev.IsSearching)
+                        {
+                            var task = Task.Run(async () =>
+                              {
+                                  try
+                                  {
+                                      await dev.SearchAsync();
+                                  }
+                                  catch (ObjectDisposedException)
+                                  {
+                                      // Ignore due RSSDP lacks Cancellation
+                                  }
+                                  catch (Exception ex)
+                                  {
+                                      Log.Error(ex);
+                                  }
+                              });
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
             }
         }
 

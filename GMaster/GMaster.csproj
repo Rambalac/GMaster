@@ -121,6 +121,7 @@
     <Compile Include="Views\Commands\ForgetWiFiCommand.cs" />
     <Compile Include="Views\Converters\NullFalseConverter.cs" />
     <Compile Include="Views\Converters\NullTrueConverter.cs" />
+    <Compile Include="Views\Converters\SignalBarsConverter.cs" />
     <Compile Include="Views\Converters\VisibilityNotNullConverter.cs" />
     <Compile Include="Views\Converters\VisibilityNotZeroConverter.cs" />
     <Compile Include="Views\Converters\VisibilityZeroConverter.cs" />

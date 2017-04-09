@@ -23,6 +23,8 @@
         public NotifyProperty<bool> Autoconnect { get; } = true;
 
         public ObservableHashCollection<CameraSettings> Cameras { get; private set; }
+        public NotifyProperty<bool> WiFiAutoconnectAlways { get; } = false;
+        public NotifyProperty<ICollection<string>> WiFiAutoconnectAccessPoints { get; } = new string[0];
 
         public void Save()
         {

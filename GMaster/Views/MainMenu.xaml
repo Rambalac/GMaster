@@ -78,8 +78,8 @@
                 <SymbolIcon Symbol="Add"/>
             </Button>
         </Grid>
-        <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView Grid.Row="5" Grid.Column="0" ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
+        <ScrollViewer Grid.Row="5" Grid.Column="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

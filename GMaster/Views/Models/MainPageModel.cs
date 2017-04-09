@@ -15,10 +15,9 @@
     using Windows.ApplicationModel;
     using Windows.UI.Xaml;
 
-    public class MainPageModel : INotifyPropertyChanged, IDisposable
+    public class MainPageModel : INotifyPropertyChanged
     {
         private readonly DispatcherTimer cameraRefreshTimer;
-        private readonly SemaphoreSlim camerasearchSem = new SemaphoreSlim(1);
 
         private DeviceInfo selectedDevice;
 
@@ -33,6 +32,26 @@
             cameraRefreshTimer.Start();
 
             ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
+            Wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
+            foreach (string ap in GeneralSettings.WiFiAutoconnectAccessPoints.Value)
+            {
+                Wifi.AutoconnectAccessPoints.Add(ap);
+            }
+
+            Wifi.PropertyChanged += Wifi_PropertyChanged;
+        }
+
+        private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(WiFiHelper.AutoconnectAlways):
+                    GeneralSettings.WiFiAutoconnectAlways.Value = Wifi.AutoconnectAlways;
+                    break;
+                case nameof(WiFiHelper.AutoconnectAccessPoints):
+                    GeneralSettings.WiFiAutoconnectAccessPoints.Value = Wifi.AutoconnectAccessPoints;
+                    break;
+            }
         }
 
         public async Task Init()
@@ -129,10 +148,6 @@
             }
         }
 
-        public void Dispose()
-        {
-            camerasearchSem.Dispose();
-        }
 
         public async Task LoadLutsInfo()
         {
@@ -147,7 +162,7 @@
         public async Task StartListening()
         {
             await LumixManager.StartListening();
-            var task = Task.Run(CameraRefresh);
+            var task = Task.Run(async () => await LumixManager.SearchCameras());
         }
 
         public void StopListening()
@@ -166,30 +181,9 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async Task CameraRefresh()
-        {
-            if (!await camerasearchSem.WaitAsync(0))
-            {
-                return;
-            }
-
-            try
-            {
-                await LumixManager.SearchCameras();
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e);
-            }
-            finally
-            {
-                camerasearchSem.Release();
-            }
-        }
-
         private async void CameraRefreshTimer_Tick(object sender, object e)
         {
-            await CameraRefresh();
+            await LumixManager.SearchCameras();
         }
 
         private void ConnectableDevices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

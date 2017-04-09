@@ -75,9 +75,12 @@ namespace GMaster.Views
         private async void Camera_LiveViewUpdated(Stream stream)
         {
             var size = await frame.UpdateBitmap(stream);
-            var intaspect = (int)(size.Width * 10 / size.Height);
-            focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : new Point(0, 0);
-            is43 = intaspect == 13;
+            if (size != null)
+            {
+                var intaspect = (int)(size.Value.Width * 10 / size.Value.Height);
+                focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : new Point(0, 0);
+                is43 = intaspect == 13;
+            }
         }
 
         private async Task CameraSet()

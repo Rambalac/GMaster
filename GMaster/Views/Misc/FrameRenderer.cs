@@ -2,6 +2,7 @@ namespace GMaster.Views
 {
     using System;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -68,35 +69,48 @@ namespace GMaster.Views
             }
         }
 
-        public async Task<Size> UpdateBitmap(Stream stream)
+        int updateBitmapFlag;
+
+        public async Task<Size?> UpdateBitmap(Stream stream)
         {
-            stream.Position = 0;
-
-            var newframe = new FrameData();
-            ICanvasImage content = newframe.Bitmap = await CanvasBitmap.LoadAsync(view, stream.AsRandomAccessStream());
-            if (LutEffect != null)
+            if (Interlocked.CompareExchange(ref updateBitmapFlag, 1, 0) == 0)
             {
-                content = newframe.LutImage = LutEffect.GenerateEffect(content);
-            }
-
-            newframe.Content = content;
-
-            var oldframe = currentFrame;
-            currentFrame = newframe;
-
-            if (oldframe != null)
-            {
-                var task = Task.Run(() =>
+                try
                 {
-                    lock (frameDrawLock)
-                    {
-                        oldframe.Dispose();
-                    }
-                });
-            }
+                    stream.Position = 0;
 
-            view.Invalidate();
-            return newframe.Bitmap.Size;
+                    var newframe = new FrameData();
+                    ICanvasImage content = newframe.Bitmap = await CanvasBitmap.LoadAsync(view, stream.AsRandomAccessStream());
+                    if (LutEffect != null)
+                    {
+                        content = newframe.LutImage = LutEffect.GenerateEffect(content);
+                    }
+
+                    newframe.Content = content;
+
+                    var oldframe = currentFrame;
+                    currentFrame = newframe;
+
+                    if (oldframe != null)
+                    {
+                        var task = Task.Run(() =>
+                        {
+                            lock (frameDrawLock)
+                            {
+                                oldframe.Dispose();
+                            }
+                        });
+                    }
+
+                    view.Invalidate();
+                    return newframe.Bitmap.Size;
+                }
+                finally
+                {
+                    updateBitmapFlag = 0;
+                }
+            }
+            return null;
         }
 
         private class FrameData : IDisposable

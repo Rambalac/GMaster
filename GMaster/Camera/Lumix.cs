@@ -253,8 +253,8 @@
             try
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
-                RecState = RecState.Unknown;
-                OnPropertyChanged(nameof(RecState));
+                await Task.Delay(100);
+                await UpdateState();
                 return true;
             }
             catch (Exception e)
@@ -269,8 +269,8 @@
             try
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
-                RecState = RecState.Unknown;
-                OnPropertyChanged(nameof(RecState));
+                await Task.Delay(500);
+                await UpdateState();
                 return true;
             }
             catch (Exception e)

@@ -42,6 +42,7 @@ namespace GMaster.Camera
         [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Video)]
         vM = 0x3f,
 
+        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Photo)]
         Unknown = 0
     }
 }

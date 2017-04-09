@@ -41,7 +41,18 @@ namespace Tools
                     var propvalue = (AbstractNotifyProperty)prop.GetValue(this);
                     if (settings.TryGetValue(prop.Name, out var val))
                     {
-                        propvalue.SetValue(val);
+                        switch (val)
+                        {
+                            case JObject jo:
+                                propvalue.SetValue(jo.ToObject(prop.PropertyType.GenericTypeArguments[0]));
+                                break;
+                            case JArray ja:
+                                propvalue.SetValue(ja.ToObject(prop.PropertyType.GenericTypeArguments[0]));
+                                break;
+                            default:
+                                propvalue.SetValue(val);
+                                break;
+                        }
                     }
                 }
                 else if (typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
