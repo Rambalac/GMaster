@@ -4,6 +4,7 @@ namespace GMaster.Camera
     {
         Stopped,
         Unknown,
-        Started
+        Started,
+        StopNotSupported
     }
 }

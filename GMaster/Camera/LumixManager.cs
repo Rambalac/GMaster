@@ -37,20 +37,17 @@ namespace GMaster.Camera
         public async Task<Lumix> ConnectCamera(DeviceInfo device)
         {
             var result = new Lumix(device);
-            if (!listeners.TryAdd(result.CameraHost, result))
-            {
-                await result.Disconnect();
-                if (!listeners.TryAdd(result.CameraHost, result))
-                {
-                    throw new Exception("Should not be more than one listener for address");
-                }
-            }
 
             result.Disconnected += Camera_Disconnected;
 
-            await result.Connect(LiveViewPort, lang);
+            if (await result.Connect(LiveViewPort, lang))
+            {
 
-            return result;
+                listeners[result.CameraHost] = result;
+                return result;
+            }
+
+            return null;
         }
 
         public void SearchCameras()

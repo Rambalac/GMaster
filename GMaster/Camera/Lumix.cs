@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-
-    using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
@@ -23,7 +21,9 @@
 
         private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
 
+        private bool recStopSupported = true;
         private bool useNewTouchAF = true;
+        private RecState recState = RecState.Unknown;
 
         public Lumix(DeviceInfo device)
         {
@@ -38,13 +38,13 @@
 
         public event DisconnectedDelegate Disconnected;
 
-        public event Action<Stream> LiveViewUpdated;
+        public event Action<ArraySegment<byte>> LiveViewUpdated;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string CameraHost => Device.Host;
 
-        public bool CanCapture { get; set; } = true;
+        public bool CanCapture { get; private set; } = true;
 
         public bool CanChangeAperture { get; private set; } = true;
 
@@ -83,7 +83,20 @@
 
         public CameraParser Parser { get; private set; }
 
-        public RecState RecState { get; private set; } = RecState.Unknown;
+        public RecState RecState
+        {
+            get => recState;
+            private set
+            {
+                if (value == recState)
+                {
+                    return;
+                }
+
+                recState = value;
+                OnSelfChanged();
+            }
+        }
 
         public CameraState State { get; private set; }
 
@@ -151,10 +164,15 @@
             }
         }
 
+        static readonly HashSet<string> RecStopNotSupported = new HashSet<string> { "DMC-GH3" };
+
         public async Task<bool> Connect(int liveviewport, string lang)
         {
             try
             {
+                recStopSupported = !RecStopNotSupported.Contains(Device.ModelName);
+
+                await FakeImageApp();
                 if (!await ReadMenuSet(lang))
                 {
                     return false;
@@ -164,7 +182,6 @@
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
-                await FakeImageApp();
                 await SwitchToRec();
                 await UpdateState();
                 stateTimer.Start();
@@ -253,8 +270,14 @@
             try
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
-                await Task.Delay(100);
-                await UpdateState();
+                if (recStopSupported)
+                {
+                    await Task.Delay(100);
+                    await UpdateState();
+                    return true;
+                }
+
+                RecState = RecState.Unknown;
                 return true;
             }
             catch (Exception e)
@@ -266,18 +289,31 @@
 
         public async Task<bool> RecStop()
         {
-            try
+            if (recStopSupported)
             {
-                await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
-                await Task.Delay(500);
-                await UpdateState();
-                return true;
+                try
+                {
+                    await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
+                    await Task.Delay(500);
+                    await UpdateState();
+                    return true;
+                }
+                catch (LumixException ex)
+                {
+                    if (ex.Error == LumixError.ErrorParam)
+                    {
+                        Debug.WriteLine("RecStop not supported", "RecStop");
+                        recStopSupported = false;
+                        RecState = RecState.StopNotSupported;
+                    }
+                    else
+                    {
+                        Debug.WriteLine(ex);
+                    }
+                }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return false;
-            }
+
+            return false;
         }
 
         public async Task<bool> ResizeFocusPoint(int size)
@@ -378,7 +414,7 @@
             if (buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 &&
                 buf[buf.Length - 2] == 0xff && buf[buf.Length - 1] == 0xd9)
             {
-                LiveViewUpdated?.Invoke(new MemoryStream(buf, imageStart, buf.Length - imageStart, false));
+                LiveViewUpdated?.Invoke(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
             }
         }
 
@@ -546,7 +582,7 @@
             var newCurrentApertures = new List<CameraMenuItem256>(MenuSet.Apertures.Count);
             var opentext = CameraParser.ApertureBinToText(open);
             newCurrentApertures.Add(new CameraMenuItem256(open.ToString(), opentext, "setsetting", "shtrspeed", open));
-            newCurrentApertures.AddRange(MenuSet.Apertures.Where(a => a.IntValue >= open && a.Text != opentext && a.IntValue <= LensInfo.ClosedAperture));
+            newCurrentApertures.AddRange(MenuSet.Apertures.Where(a => a.IntValue >= open && a.Text != opentext && (LensInfo == null || a.IntValue <= LensInfo.ClosedAperture)));
             if (newCurrentApertures.Count != CurrentApertures.Count ||
                 newCurrentApertures.First().Value != CurrentApertures.First().Value)
             {
@@ -565,10 +601,9 @@
 
             State = newState.State ?? throw new NullReferenceException();
 
-            RecState = State.Rec == OnOff.On ? RecState.Started : RecState.Stopped;
+            RecState = State.Rec == OnOff.On ? (recStopSupported ? RecState.Started : RecState.StopNotSupported) : RecState.Stopped;
 
             OnPropertyChanged(nameof(State));
-            OnPropertyChanged(nameof(RecState));
             return State;
         }
     }

@@ -12,11 +12,20 @@
     using Camera;
     using Logger;
     using Windows.ApplicationModel;
+    using Windows.UI.Core;
     using Windows.UI.Xaml;
 
     public class MainPageModel : INotifyPropertyChanged
     {
+        private readonly CameraViewModel[] allViews =
+            { new CameraViewModel(), new CameraViewModel(), new CameraViewModel(), new CameraViewModel() };
+
+        private CameraViewModel[] activeViews;
+        private bool? isLandscape;
+        private GridLength secondColumnWidth = new GridLength(0, GridUnitType.Star);
+        private GridLength secondRowHeight = new GridLength(0);
         private DeviceInfo selectedDevice;
+        private SplitMode splitMode;
 
         public MainPageModel()
         {
@@ -30,7 +39,7 @@
 
             ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
             Wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
-            foreach (string ap in GeneralSettings.WiFiAutoconnectAccessPoints.Value)
+            foreach (var ap in GeneralSettings.WiFiAutoconnectAccessPoints.Value)
             {
                 Wifi.AutoconnectAccessPoints.Add(ap);
             }
@@ -42,10 +51,35 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public CameraViewModel[] ActiveViews
+        {
+            get
+            {
+                if (activeViews == null)
+                {
+                    activeViews = new[] { View1 };
+                }
+
+                return activeViews;
+            }
+
+            set
+            {
+                activeViews = value;
+
+                foreach (var view in allViews.Except(value))
+                {
+                    view.SelectedCamera = null;
+                }
+            }
+        }
+
         public ObservableCollection<DeviceInfo> ConnectableDevices { get; } = new ObservableCollection<DeviceInfo>();
 
         public ObservableCollection<ConnectedCamera> ConnectedCameras { get; } =
             new ObservableCollection<ConnectedCamera>();
+
+        public CoreDispatcher Dispatcher { get; set; }
 
         public Donations Donations { get; } = new Donations();
 
@@ -55,7 +89,49 @@
 
         public object IsDebug => Debugger.IsAttached;
 
+        public bool IsLandscape
+        {
+            set
+            {
+                if (isLandscape != value)
+                {
+                    isLandscape = value;
+                    SplitMode = value ? GeneralSettings.LandscapeSplitMode : GeneralSettings.PortraitSplitMode;
+                }
+            }
+        }
+
         public LumixManager LumixManager { get; }
+
+        public GridLength SecondColumnWidth
+        {
+            get => secondColumnWidth;
+            set
+            {
+                if (value.Equals(secondColumnWidth))
+                {
+                    return;
+                }
+
+                secondColumnWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public GridLength SecondRowHeight
+        {
+            get => secondRowHeight;
+            set
+            {
+                if (value.Equals(secondRowHeight))
+                {
+                    return;
+                }
+
+                secondRowHeight = value;
+                OnPropertyChanged();
+            }
+        }
 
         public DeviceInfo SelectedDevice
         {
@@ -68,6 +144,63 @@
             }
         }
 
+        public SplitMode SplitMode
+        {
+            get => splitMode;
+            set
+            {
+                splitMode = value;
+                switch (value)
+                {
+                    case SplitMode.One:
+                        ActiveViews = new[] { View1 };
+                        SecondColumnWidth = new GridLength(0);
+                        SecondRowHeight = new GridLength(0);
+                        break;
+
+                    case SplitMode.Horizontal:
+                        ActiveViews = new[] { View1, View3 };
+                        SecondColumnWidth = new GridLength(0);
+                        SecondRowHeight = new GridLength(1, GridUnitType.Star);
+                        if (View3.SelectedCamera == null && View2.SelectedCamera != null)
+                        {
+                            View3.SelectedCamera = View2.SelectedCamera;
+                            View2.SelectedCamera = null;
+                        }
+
+                        FillViews();
+
+                        break;
+
+                    case SplitMode.Vertical:
+                        ActiveViews = new[] { View1, View2 };
+                        SecondColumnWidth = new GridLength(1, GridUnitType.Star);
+                        SecondRowHeight = new GridLength(0);
+                        if (View2.SelectedCamera == null && View3.SelectedCamera != null)
+                        {
+                            View2.SelectedCamera = View3.SelectedCamera;
+                            View3.SelectedCamera = null;
+                        }
+
+                        FillViews();
+
+                        break;
+
+                    case SplitMode.Four:
+                        ActiveViews = new[] { View1, View2, View3, View4 };
+                        SecondColumnWidth = new GridLength(1, GridUnitType.Star);
+                        SecondRowHeight = new GridLength(1, GridUnitType.Star);
+                        FillViews();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(value), value, null);
+                }
+
+                GeneralSettings.LandscapeSplitMode.Value = value;
+            }
+        }
+
         public string Version
         {
             get
@@ -77,7 +210,13 @@
             }
         }
 
-        public CameraViewModel View1 { get; } = new CameraViewModel();
+        public CameraViewModel View1 => allViews[0];
+
+        public CameraViewModel View2 => allViews[1];
+
+        public CameraViewModel View3 => allViews[2];
+
+        public CameraViewModel View4 => allViews[3];
 
         public WiFiHelper Wifi { get; } = new WiFiHelper();
 
@@ -118,11 +257,11 @@
         public async Task ConnectCamera(DeviceInfo modelSelectedDevice)
         {
             var lumix = await LumixManager.ConnectCamera(modelSelectedDevice);
-            var connectedCamera = AddConnectedDevice(lumix);
-
-            if (View1.SelectedCamera == null)
+            if (lumix != null)
             {
-                View1.SelectedCamera = connectedCamera;
+                var connectedCamera = AddConnectedDevice(lumix);
+
+                ShowCamera(connectedCamera);
             }
         }
 
@@ -139,6 +278,20 @@
             foreach (var file in (await lutFolder.GetFilesAsync()).Where(f => f.FileType == ".info"))
             {
                 InstalledLuts.Add(await LutInfo.LoadfromFile(file));
+            }
+        }
+
+        public void ShowCamera(ConnectedCamera eClickedItem)
+        {
+            if (ActiveViews.Any(c => c.SelectedCamera == eClickedItem))
+            {
+                return;
+            }
+
+            var first = ActiveViews.Aggregate((curMin, x) => curMin == null || x.SetTime < curMin.SetTime ? x : curMin);
+            if (first != null)
+            {
+                first.SelectedCamera = eClickedItem;
             }
         }
 
@@ -174,34 +327,53 @@
             OnPropertyChanged(nameof(ConnectableDevices));
         }
 
+        private void FillViews()
+        {
+            foreach (var view in ActiveViews.Where(v => v.SelectedCamera == null))
+            {
+                var con = ConnectedCameras.FirstOrDefault(c => ActiveViews.All(v => v.SelectedCamera != c));
+                if (con != null)
+                {
+                    view.SelectedCamera = con;
+                }
+            }
+        }
+
         private async void Lumix_DeviceDiscovered(DeviceInfo dev)
         {
             try
             {
-                await App.RunAsync(async () =>
+                await RunAsync(async () =>
                 {
-                    var camerafound = false;
-                    var cameraauto = false;
-                    if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
+                    try
                     {
-                        cameraauto = settings.Autoconnect;
-                        camerafound = true;
-                    }
+                        var camerafound = false;
+                        var cameraauto = false;
+                        if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
+                        {
+                            cameraauto = settings.Autoconnect;
+                            camerafound = true;
+                        }
 
-                    if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
-                    {
-                        try
+                        if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
                         {
-                            await ConnectCamera(dev);
+                            try
+                            {
+                                await ConnectCamera(dev);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Error(e);
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Log.Error(e);
+                            AddConnectableDevice(dev);
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        AddConnectableDevice(dev);
+                        Log.Error(ex);
                     }
                 });
             }
@@ -222,6 +394,11 @@
             }
 
             OnCameraDisconnected(lumix);
+        }
+
+        private async Task RunAsync(Action action)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }
 
         private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)

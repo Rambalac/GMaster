@@ -7,6 +7,7 @@
     using Views;
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
+    using Windows.ApplicationModel.Core;
     using Windows.ApplicationModel.Resources;
     using Windows.Storage;
     using Windows.UI.Core;
@@ -18,7 +19,6 @@
     {
         private static readonly StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
         private static readonly ResourceLoader Strings = new ResourceLoader();
-        private static CoreDispatcher dispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
@@ -42,19 +42,6 @@
         }
 
         public static string GetString(string id) => Strings.GetString(id);
-
-        public static Task RunAsync(DispatchedHandler action)
-        {
-            try
-            {
-                return dispatcher.RunAsync(CoreDispatcherPriority.Normal, action).AsTask();
-            }
-            catch (Exception)
-            {
-                // throw;
-                return Task.CompletedTask;
-            }
-        }
 
         [System.Diagnostics.Conditional("DEBUG")]
         public void IfDebug(Action action) => action();
@@ -112,11 +99,6 @@
                 Window.Current.Activate();
             }
 
-            dispatcher = Window.Current.Dispatcher;
-            if (dispatcher == null)
-            {
-                throw new NullReferenceException("Null dispatcher");
-            }
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)

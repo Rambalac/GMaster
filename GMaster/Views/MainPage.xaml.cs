@@ -3,6 +3,7 @@
 namespace GMaster.Views
 {
     using System.Linq;
+    using Windows.UI.ViewManagement;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
@@ -17,6 +18,8 @@ namespace GMaster.Views
         {
             InitializeComponent();
             AddHandler(PointerPressedEvent, new PointerEventHandler(PressHandler), true);
+            Model.Dispatcher = Dispatcher;
+            CheckOrientation();
         }
 
         private MainPageModel Model => DataContext as MainPageModel;
@@ -57,6 +60,18 @@ namespace GMaster.Views
                     HideMenu();
                 }
             }
+        }
+
+        private void ViewsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            CheckOrientation();
+        }
+
+        private void CheckOrientation()
+        {
+            var currentView = ApplicationView.GetForCurrentView();
+
+            Model.IsLandscape = currentView.Orientation == ApplicationViewOrientation.Landscape;
         }
     }
 }

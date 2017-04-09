@@ -36,24 +36,45 @@ namespace Tools
         {
             foreach (var prop in GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
+                var gentype = prop.PropertyType.GenericTypeArguments[0];
                 if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
                 {
                     var propvalue = (AbstractNotifyProperty)prop.GetValue(this);
                     if (settings.TryGetValue(prop.Name, out var val))
                     {
-                        switch (val)
+                        if (typeof(Enum).IsAssignableFrom(gentype))
                         {
-                            case JObject jo:
-                                propvalue.SetValue(jo.ToObject(prop.PropertyType.GenericTypeArguments[0]));
-                                break;
+                            switch (val)
+                            {
+                                case int _:
+                                    continue;
+                                case long _:
+                                    propvalue.SetValue(Enum.ToObject(gentype, val));
+                                    break;
 
-                            case JArray ja:
-                                propvalue.SetValue(ja.ToObject(prop.PropertyType.GenericTypeArguments[0]));
-                                break;
+                                case string str:
+                                    propvalue.SetValue(Enum.Parse(gentype, str));
+                                    break;
+                                default:
+                                    throw new InvalidCastException($"Cannot cast {val.GetType()} into {gentype}");
+                            }
 
-                            default:
-                                propvalue.SetValue(val);
-                                break;
+                        }
+                        else
+                        {
+                            switch (val)
+                            {
+                                case JObject jo:
+                                    propvalue.SetValue(jo.ToObject(gentype));
+                                    break;
+
+                                case JArray ja:
+                                    propvalue.SetValue(ja.ToObject(gentype));
+                                    break;
+                                default:
+                                    propvalue.SetValue(val);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -65,7 +86,7 @@ namespace Tools
                         var collection = jobj.ToObject<Dictionary<string, object>>();
                         foreach (var pair in collection)
                         {
-                            var cont = (SettingsContainer)Activator.CreateInstance(prop.PropertyType.GenericTypeArguments[0], pair.Key);
+                            var cont = (SettingsContainer)Activator.CreateInstance(gentype, pair.Key);
                             if (pair.Value is JObject jObject)
                             {
                                 cont.Load(jObject.ToObject<Dictionary<string, object>>());
@@ -92,7 +113,15 @@ namespace Tools
                 if (typeof(AbstractNotifyProperty).IsAssignableFrom(prop.PropertyType))
                 {
                     var propvalue = (AbstractNotifyProperty)prop.GetValue(this);
-                    settings[prop.Name] = propvalue.GetValue();
+                    var gentype = prop.PropertyType.GenericTypeArguments[0].GetTypeInfo();
+                    if (!gentype.IsEnum)
+                    {
+                        settings[prop.Name] = propvalue.GetValue();
+                    }
+                    else
+                    {
+                        settings[prop.Name] = propvalue.GetValue().ToString();
+                    }
                 }
                 else if (typeof(IObservableHashCollection).IsAssignableFrom(prop.PropertyType))
                 {

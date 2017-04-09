@@ -144,43 +144,40 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Adapter_AvailableNetworksChanged(WiFiAdapter sender, object args)
+        private async void Adapter_AvailableNetworksChanged(WiFiAdapter sender, object args)
         {
             var list = sender.NetworkReport.AvailableNetworks.Where(n => !string.IsNullOrWhiteSpace(n.Ssid)).ToList();
 
-            App.RunAsync(async () =>
+            var toadd = list.OrderByDescending(n => n.SignalBars).ToList();
+            AccessPoints.Clear();
+
+            foreach (var ap in toadd)
             {
-                var toadd = list.OrderByDescending(n => n.SignalBars).ToList();
-                AccessPoints.Clear();
+                AccessPoints.Add(ap);
+            }
 
-                foreach (var ap in toadd)
+            if (AutoconnectAlways || ConnectedWiFi == null)
+            {
+                foreach (var ssid in AutoconnectAccessPoints)
                 {
-                    AccessPoints.Add(ap);
-                }
-
-                if (AutoconnectAlways || ConnectedWiFi == null)
-                {
-                    foreach (string ssid in AutoconnectAccessPoints)
+                    if (ssid == ConnectedWiFi)
                     {
-                        if (ssid == ConnectedWiFi)
+                        break;
+                    }
+
+                    var autoconnect = list.FirstOrDefault(n => n.Ssid == ssid);
+                    if (autoconnect != null)
+                    {
+                        var result = await adapter.ConnectAsync(autoconnect, WiFiReconnectionKind.Automatic);
+                        if (result.ConnectionStatus == WiFiConnectionStatus.Success)
                         {
-                            break;
+                            ConnectedWiFi = autoconnect.Ssid;
                         }
 
-                        var autoconnect = list.FirstOrDefault(n => n.Ssid == ssid);
-                        if (autoconnect != null)
-                        {
-                            var result = await adapter.ConnectAsync(autoconnect, WiFiReconnectionKind.Automatic);
-                            if (result.ConnectionStatus == WiFiConnectionStatus.Success)
-                            {
-                                ConnectedWiFi = autoconnect.Ssid;
-                            }
-
-                            break;
-                        }
+                        break;
                     }
                 }
-            });
+            }
         }
 
         private async Task<PasswordCredential> AskPassword()

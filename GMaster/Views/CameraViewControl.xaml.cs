@@ -4,13 +4,14 @@ namespace GMaster.Views
 {
     using System;
     using System.Collections.Generic;
-
     using System.IO;
     using System.Threading.Tasks;
     using Camera;
     using Camera.LumixData;
     using Microsoft.Graphics.Canvas.UI.Xaml;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.Foundation;
+    using Windows.UI.Core;
     using Windows.UI.Input;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -66,16 +67,16 @@ namespace GMaster.Views
 
         private Lumix Lumix => Model?.SelectedCamera?.Camera;
 
-        private CameraViewModel Model => DataContext as CameraViewModel;
+        public CameraViewModel Model => DataContext as CameraViewModel;
 
         public void Dispose()
         {
             frame.Dispose();
         }
 
-        private async void Camera_LiveViewUpdated(Stream stream)
+        private async void Camera_LiveViewUpdated(ArraySegment<byte> segment)
         {
-            var size = await frame.UpdateBitmap(stream);
+            var size = await frame.UpdateBitmap(new MemoryStream(segment.Array, segment.Offset, segment.Count));
             if (size != null)
             {
                 var intaspect = (int)(size.Value.Width * 10 / size.Value.Height);
@@ -95,6 +96,7 @@ namespace GMaster.Views
             if (args.NewValue != null)
             {
                 Model.PropertyChanged += Model_PropertyChanged;
+                Model.Dispatcher = Dispatcher;
             }
         }
 
@@ -152,13 +154,17 @@ namespace GMaster.Views
 
         private void LiveView_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            var drawaspect = aspect;
-            if (Model.SelectedCamera.IsAspectAnamorphingVideoOnly && !(Model.SelectedCamera.Camera.IsVideoMode && is43))
+            if (Model.SelectedCamera != null)
             {
-                drawaspect = 1;
-            }
+                var drawaspect = aspect;
+                if (Model.SelectedCamera.IsAspectAnamorphingVideoOnly &&
+                    !(Model.SelectedCamera.Camera.IsVideoMode && is43))
+                {
+                    drawaspect = 1;
+                }
 
-            frame.Draw(args.DrawingSession, sender.ActualWidth, sender.ActualHeight, drawaspect);
+                frame.Draw(args.DrawingSession, sender.ActualWidth, sender.ActualHeight, drawaspect);
+            }
         }
 
         private async void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -256,19 +262,22 @@ namespace GMaster.Views
             FocusPoint.Visibility = Visibility.Visible;
         }
 
-        private async void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(ConnectedCamera.SelectedLut):
-                    await SetLut();
-                    break;
+            var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+              {
+                  switch (e.PropertyName)
+                  {
+                      case nameof(ConnectedCamera.SelectedLut):
+                          await SetLut();
+                          break;
 
-                case nameof(ConnectedCamera.SelectedAspect):
-                case nameof(ConnectedCamera.IsAspectAnamorphingVideoOnly):
-                    SetAspect();
-                    break;
-            }
+                      case nameof(ConnectedCamera.SelectedAspect):
+                      case nameof(ConnectedCamera.IsAspectAnamorphingVideoOnly):
+                          SetAspect();
+                          break;
+                  }
+              });
         }
 
         private void SetAspect()
@@ -302,6 +311,23 @@ namespace GMaster.Views
             {
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
+        }
+
+        private void CameraViewControl_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.DataView != null && e.DataView.Properties.TryGetValue("camera", out object camera))
+            {
+                Model.SelectedCamera = camera as ConnectedCamera;
+            }
+        }
+
+        private void CameraViewControl_OnDragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView != null && e.DataView.Properties.ContainsKey("camera"))
+            {
+                e.AcceptedOperation = DataPackageOperation.Link;
+            }
+
         }
     }
 }

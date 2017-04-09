@@ -18,7 +18,10 @@ namespace GMaster.Camera
 
     public enum CameraMode
     {
+        [EnumValue(CameraModeFlags.Photo)]
         iA = 09,
+
+        [EnumValue(CameraModeFlags.Photo)]
         P = 01,
 
         [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Photo)]

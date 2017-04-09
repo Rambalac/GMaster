@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GMaster.Views"
     xmlns:converters="using:GMaster.Views.Converters"
+    xmlns:commands="using:GMaster.Views.Commands"
     RequestedTheme="Light">
     <Application.Resources>
         <local:MainPageModel x:Key="MainModel" />
@@ -17,5 +18,6 @@
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
         <converters:NotConverter x:Key="NotConverter" />
         <converters:SignalBarsConverter x:Key="SignalBarsConvertor" />
+        <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
     </Application.Resources>
 </Application>

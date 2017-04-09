@@ -7,16 +7,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:commands="using:GMaster.Views.Commands"
     mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}" Loaded="Page_Loaded">
-    <Page.Resources>
-        <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
-    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <local:CameraViewControl DataContext="{Binding View1}" Grid.ColumnSpan="3" />
+        <Grid x:Name="ViewsGrid" HorizontalAlignment="Stretch" SizeChanged="ViewsGrid_SizeChanged" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{x:Bind Model.SecondColumnWidth, Mode=TwoWay}"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="{x:Bind Model.SecondRowHeight, Mode=TwoWay}"/>
+            </Grid.RowDefinitions>
+            <local:CameraViewControl Grid.Column="0" Grid.Row="0" DataContext="{Binding View1}" Tag="View1"/>
+            <local:CameraViewControl Grid.Column="1" Grid.Row="0" DataContext="{Binding View2}" Tag="View2" />
+            <local:CameraViewControl Grid.Column="0" Grid.Row="1" DataContext="{Binding View3}" Tag="View3" />
+            <local:CameraViewControl Grid.Column="1" Grid.Row="1" DataContext="{Binding View4}" Tag="View4" />
+        </Grid>
         <Button Grid.Row="0" Command="{StaticResource SwitchFullScreenCommand}" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Top">
             <SymbolIcon Symbol="FullScreen" />
         </Button>
 
-        <SplitView x:Name="MainMenu" DisplayMode="Overlay" Grid.Row="0">
+        <SplitView x:Name="MainMenu" DisplayMode="Overlay" HorizontalAlignment="Left">
             <SplitView.Pane>
                 <local:MainMenuPane MainMenu="{x:Bind MainMenu}" MenuFrame="{x:Bind MenuFrame}" />
             </SplitView.Pane>

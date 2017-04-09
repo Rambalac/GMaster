@@ -1,8 +1,12 @@
 namespace GMaster.Views
 {
     using System;
+    using Windows.ApplicationModel.Core;
+    using Windows.UI.Core;
+    using Windows.UI.ViewManagement;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
 
     public partial class MainMenuPane : UserControl
     {
@@ -46,7 +50,7 @@ namespace GMaster.Views
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            Model.View1.SelectedCamera = (ConnectedCamera)e.ClickedItem;
+            Model.ShowCamera((ConnectedCamera)e.ClickedItem);
             MainMenu.IsPaneOpen = false;
             MenuFrame.Content = null;
             MenuFrame.Visibility = Visibility.Collapsed;
@@ -61,7 +65,7 @@ namespace GMaster.Views
             }
 
             MenuFrame.Visibility = Visibility.Visible;
-            if (MainMenu.ActualWidth < 640)
+            if (((MainMenu.Parent as FrameworkElement)?.ActualWidth ?? 0) < 640)
             {
                 MainMenu.DisplayMode = SplitViewDisplayMode.Overlay;
                 MainMenu.IsPaneOpen = false;
@@ -77,6 +81,64 @@ namespace GMaster.Views
         private void WiFi_Click(object sender, RoutedEventArgs e)
         {
             OpenFrame(typeof(WiFiPage), Model);
+        }
+
+        private void ViewOne_OnClick(object sender, RoutedEventArgs e)
+        {
+            Model.SplitMode = SplitMode.One;
+        }
+
+        private void ViewHorizontal_OnClick(object sender, RoutedEventArgs e)
+        {
+            Model.SplitMode = SplitMode.Horizontal;
+        }
+
+        private void ViewVertical_OnClick(object sender, RoutedEventArgs e)
+        {
+            Model.SplitMode = SplitMode.Vertical;
+        }
+
+        private void ViewFour_OnClick(object sender, RoutedEventArgs e)
+        {
+            Model.SplitMode = SplitMode.Four;
+        }
+
+        private void ListViewBase_OnDragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        {
+            if (e.Items.Count != 1)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            e.Data.Properties.Add("camera", e.Items[0]);
+
+            MainMenu.IsPaneOpen = false;
+            MenuFrame.Content = null;
+            MenuFrame.Visibility = Visibility.Collapsed;
+        }
+
+        private void UIElement_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var camera = (sender as FrameworkElement)?.DataContext as ConnectedCamera;
+            if (camera != null)
+            {
+
+            }
+        }
+
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var newView = CoreApplication.CreateNewView();
+            var newViewId = 0;
+            await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Window.Current.Content = new NewWindowsPage();
+                Window.Current.Activate();
+
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
     }
 }

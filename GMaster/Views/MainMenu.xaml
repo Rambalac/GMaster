@@ -12,7 +12,7 @@
         <commands:AboutCommand x:Key="AboutCommand" />
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
         <DataTemplate x:Key="CameraItemTemplate" x:DataType="views:ConnectedCamera">
-            <Grid HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RightTapped="UIElement_OnRightTapped">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -21,7 +21,7 @@
                 <Button Grid.Column="0" Click="CameraSettings_Click">
                     <SymbolIcon Symbol="Setting" />
                 </Button>
-                <TextBlock Grid.Column="1" Text="{x:Bind Name}" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,5,0" />
+                <TextBlock Grid.Column="1" Text="{x:Bind Name}" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,5,0" RightTapped="UIElement_OnRightTapped"/>
                 <Button Grid.Column="2" Command="{StaticResource CameraDisconnectCommand}" CommandParameter="{x:Bind Camera}">
                     <SymbolIcon Symbol="Remove" />
                 </Button>
@@ -33,6 +33,7 @@
     <Grid Background="#202020" Padding="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -59,7 +60,32 @@
 
         <Rectangle Grid.Row="3" Grid.Column="0" Height="4" Fill="White" Margin="5" />
 
-        <Grid Grid.Row="4" Grid.Column="0">
+        <Grid Grid.Row="4" Padding="0,5,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Click="ViewOne_OnClick" HorizontalAlignment="Center" >
+                <Image Source="/images/X1.png" Stretch="None" />
+            </Button>
+            <Button Grid.Column="1" Click="ViewHorizontal_OnClick" HorizontalAlignment="Center" >
+                <Image Source="/images/H2.png" Stretch="None"/>
+            </Button>
+            <Button Grid.Column="2" Click="ViewVertical_OnClick" HorizontalAlignment="Center">
+                <Image Source="/images/V2.png" Stretch="None"/>
+            </Button>
+            <Button Grid.Column="3" Click="ViewFour_OnClick" HorizontalAlignment="Center" >
+                <Image Source="/images/X4.png" Stretch="None"/>
+            </Button>
+            <Button Grid.Column="4" Click="ButtonBase_OnClick">
+                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xECC4;" HorizontalAlignment="Center" />
+            </Button>
+        </Grid>
+        
+        <Grid Grid.Row="5" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -78,16 +104,17 @@
                 <SymbolIcon Symbol="Add" />
             </Button>
         </Grid>
-        <ScrollViewer Grid.Row="5" Grid.Column="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True">
+        <ScrollViewer Grid.Row="6" Grid.Column="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" CanDragItems="True" CanDrag="True" DragItemsStarting="ListViewBase_OnDragItemsStarting">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
         </ScrollViewer>
-        <Grid Grid.Row="6" Grid.Column="0">
+        <Grid Grid.Row="7" Grid.Column="0">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Margin="0,0,10,0">
                     <Button HorizontalAlignment="Center" Command="{StaticResource FeedbackCommand}" Padding="10">

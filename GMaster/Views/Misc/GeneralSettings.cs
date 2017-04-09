@@ -1,9 +1,8 @@
-﻿using GMaster.Annotations;
-
-namespace GMaster.Views
+﻿namespace GMaster.Views
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using GMaster.Annotations;
     using Newtonsoft.Json;
     using Tools;
     using Windows.Storage;
@@ -29,6 +28,10 @@ namespace GMaster.Views
         public NotifyProperty<ICollection<string>> WiFiAutoconnectAccessPoints { get; } = new string[0];
 
         public NotifyProperty<bool> WiFiAutoconnectAlways { get; } = false;
+
+        public NotifyProperty<SplitMode> LandscapeSplitMode { get; } = SplitMode.One;
+
+        public NotifyProperty<SplitMode> PortraitSplitMode { get; } = SplitMode.Horizontal;
 
         public void Save()
         {

@@ -38,7 +38,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <CheckBox Grid.Column="1" IsChecked="{Binding IsAspectAnamorphingVideoOnly, Mode=TwoWay}">Apply for anamorophic video only</CheckBox>
+                <CheckBox Grid.Column="1" IsChecked="{Binding IsAspectAnamorphingVideoOnly, Mode=TwoWay}">Anamorophic video only</CheckBox>
             </Grid>
         </Grid>
 

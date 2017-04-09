@@ -205,6 +205,10 @@
     <Compile Include="Views\Converters\NotVisibilityConverter.cs" />
     <Compile Include="Views\Converters\RecStateConvertor.cs" />
     <Compile Include="Views\Converters\VisibilityConverter.cs" />
+    <Compile Include="Views\NewWindowsPage.xaml.cs">
+      <DependentUpon>NewWindowsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SplitMode.cs" />
     <Compile Include="Views\WiFiPage.xaml.cs">
       <DependentUpon>WiFiPage.xaml</DependentUpon>
     </Compile>
@@ -262,8 +266,10 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="images\icon.png" />
-    <Content Include="images\rec.png" />
+    <Content Include="images\H2.png" />
+    <Content Include="images\V2.png" />
+    <Content Include="images\X1.png" />
+    <Content Include="images\X4.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +303,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CameraViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewWindowsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -115,7 +115,7 @@ namespace GMaster.Camera
                 {
                     if (Zoom == 0 || newZoom == 0)
                     {
-                        App.RunAsync(() => LensUpdated?.Invoke());
+                        LensUpdated?.Invoke();
                     }
 
                     Zoom = newZoom;
@@ -157,7 +157,7 @@ namespace GMaster.Camera
         {
             try
             {
-                App.RunAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             catch (Exception e)
             {
