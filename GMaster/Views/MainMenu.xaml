@@ -105,7 +105,7 @@
             </Button>
         </Grid>
         <ScrollViewer Grid.Row="6" Grid.Column="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True" CanReorderItems="True" AllowDrop="True" CanDragItems="True" CanDrag="True" DragItemsStarting="ListViewBase_OnDragItemsStarting">
+            <ListView ItemsSource="{Binding ConnectedCameras}" ItemTemplate="{StaticResource CameraItemTemplate}" ItemClick="ListViewBase_OnItemClick" IsItemClickEnabled="True" CanDragItems="True" CanDrag="True" DragItemsStarting="ListViewBase_OnDragItemsStarting">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

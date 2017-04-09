@@ -197,7 +197,14 @@
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
 
-                GeneralSettings.LandscapeSplitMode.Value = value;
+                if (isLandscape ?? true)
+                {
+                    GeneralSettings.LandscapeSplitMode.Value = value;
+                }
+                else
+                {
+                    GeneralSettings.PortraitSplitMode.Value = value;
+                }
             }
         }
 
