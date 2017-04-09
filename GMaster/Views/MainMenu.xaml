@@ -75,7 +75,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Button Grid.Column="1" Margin="0,10,0,10" Command="{StaticResource ConnectCommand}">
-                <SymbolIcon Symbol="Add"/>
+                <SymbolIcon Symbol="Add" />
             </Button>
         </Grid>
         <ScrollViewer Grid.Row="5" Grid.Column="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">

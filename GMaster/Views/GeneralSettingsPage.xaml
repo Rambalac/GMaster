@@ -45,10 +45,10 @@
         </ListBox>
 
         <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Converter={StaticResource VisibilityConverter}}">
-            <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded" >
+            <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="gMaster:DebugCategoryEnable">
-                        <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled, Mode=TwoWay}"/>
+                        <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled, Mode=TwoWay}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

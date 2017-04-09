@@ -164,7 +164,7 @@
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
-                // await FakeImageApp();
+                await FakeImageApp();
                 await SwitchToRec();
                 await UpdateState();
                 stateTimer.Start();

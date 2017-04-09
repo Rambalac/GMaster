@@ -26,6 +26,8 @@ namespace GMaster.Views
             { 10, new Point(0.125f, 0) }
         };
 
+        private readonly FrameRenderer frame;
+
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly GestureRecognizer imageGestureRecognizer;
 
@@ -33,7 +35,6 @@ namespace GMaster.Views
 
         private double aspect = 1;
         private Point focusPointShift;
-        private FrameRenderer frame;
         private bool is43;
         private Lumix lastCamera;
         private double lastExpansion;
@@ -219,43 +220,40 @@ namespace GMaster.Views
                 return;
             }
 
-            if (LiveView.Parent is FrameworkElement parent)
+            var fp = Model.FocusPoint;
+
+            if (!frame.IsReady)
             {
-                var fp = Model.FocusPoint;
-
-                if (!frame.IsReady)
-                {
-                    return;
-                }
-
-                double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-                if (!fp.Fixed)
-                {
-                    x1 = (x1 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
-                    x2 = (x2 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
-                    y1 = (y1 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
-                    y2 = (y2 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
-                }
-
-                x1 = x1 * frame.ImageRect.Width;
-                x2 = x2 * frame.ImageRect.Width;
-                y1 = y1 * frame.ImageRect.Height;
-                y2 = y2 * frame.ImageRect.Height;
-
-                var iW = LiveView.ActualWidth;
-                var iH = LiveView.ActualHeight;
-
-                FocusPoint.Margin = new Thickness(frame.ImageRect.X + x1, frame.ImageRect.Y + y1, iW - frame.ImageRect.X - x2, iH - frame.ImageRect.Y - y2);
-                var t = FocusPoint.StrokeThickness;
-                FocusPointGeometry.Transform = new CompositeTransform
-                {
-                    ScaleX = x2 - x1 - t,
-                    ScaleY = y2 - y1 - t,
-                    TranslateX = t / 2,
-                    TranslateY = t / 2
-                };
-                FocusPoint.Visibility = Visibility.Visible;
+                return;
             }
+
+            double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
+            if (!fp.Fixed)
+            {
+                x1 = (x1 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
+                x2 = (x2 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
+                y1 = (y1 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
+                y2 = (y2 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
+            }
+
+            x1 = x1 * frame.ImageRect.Width;
+            x2 = x2 * frame.ImageRect.Width;
+            y1 = y1 * frame.ImageRect.Height;
+            y2 = y2 * frame.ImageRect.Height;
+
+            var iW = LiveView.ActualWidth;
+            var iH = LiveView.ActualHeight;
+
+            FocusPoint.Margin = new Thickness(frame.ImageRect.X + x1, frame.ImageRect.Y + y1, iW - frame.ImageRect.X - x2, iH - frame.ImageRect.Y - y2);
+            var t = FocusPoint.StrokeThickness;
+            FocusPointGeometry.Transform = new CompositeTransform
+            {
+                ScaleX = x2 - x1 - t,
+                ScaleY = y2 - y1 - t,
+                TranslateX = t / 2,
+                TranslateY = t / 2
+            };
+            FocusPoint.Visibility = Visibility.Visible;
         }
 
         private async void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -16,6 +16,8 @@ namespace GMaster.Views
 
         private Rect imageRect;
 
+        private int updateBitmapFlag;
+
         public FrameRenderer(CanvasControl view)
         {
             this.view = view;
@@ -69,8 +71,6 @@ namespace GMaster.Views
             }
         }
 
-        int updateBitmapFlag;
-
         public async Task<Size?> UpdateBitmap(Stream stream)
         {
             if (Interlocked.CompareExchange(ref updateBitmapFlag, 1, 0) == 0)
@@ -110,6 +110,7 @@ namespace GMaster.Views
                     updateBitmapFlag = 0;
                 }
             }
+
             return null;
         }
 

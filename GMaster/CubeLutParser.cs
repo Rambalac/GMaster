@@ -12,7 +12,7 @@
             using (var reader = new StreamReader(stream))
             {
                 Color[] colors = null;
-                var n3d = 0;
+                var num = 0;
                 var r = 0;
                 var g = 0;
                 var b = 0;
@@ -37,8 +37,8 @@
 
                     if (values[0] == "LUT_3D_SIZE")
                     {
-                        n3d = int.Parse(values[1]);
-                        colors = new Color[n3d * n3d * n3d];
+                        num = int.Parse(values[1]);
+                        colors = new Color[num * num * num];
                         continue;
                     }
 
@@ -49,15 +49,15 @@
                     {
                         var col = Color.FromArgb(255, (byte)(255 * rC), (byte)(255 * gC), (byte)(255 * bC));
 
-                        if (n3d > 0)
+                        if (num > 0)
                         {
-                            colors[(r * n3d * n3d) + (g * n3d) + b] = col;
+                            colors[(r * num * num) + (g * num) + b] = col;
                             r++;
-                            if (r == n3d)
+                            if (r == num)
                             {
                                 g++;
                                 r = 0;
-                                if (g == n3d)
+                                if (g == num)
                                 {
                                     b++;
                                     g = 0;
@@ -71,7 +71,7 @@
                     }
                 }
 
-                return new Lut { Colors = colors, BlueNum = n3d, GreenNum = n3d, RedNum = n3d };
+                return new Lut { Colors = colors, BlueNum = num, GreenNum = num, RedNum = num };
             }
         }
     }

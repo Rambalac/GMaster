@@ -16,6 +16,6 @@
         <converters:NullTrueConverter x:Key="NullTrueConverter" />
         <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
         <converters:NotConverter x:Key="NotConverter" />
-        <converters:SignalBarsConverter x:Key="SignalBarsConvertor"/>
+        <converters:SignalBarsConverter x:Key="SignalBarsConvertor" />
     </Application.Resources>
 </Application>

@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views
+﻿using GMaster.Annotations;
+
+namespace GMaster.Views
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -22,9 +24,11 @@
 
         public NotifyProperty<bool> Autoconnect { get; } = true;
 
-        public ObservableHashCollection<CameraSettings> Cameras { get; private set; }
-        public NotifyProperty<bool> WiFiAutoconnectAlways { get; } = false;
+        public ObservableHashCollection<CameraSettings> Cameras { get; [UsedImplicitly] private set; }
+
         public NotifyProperty<ICollection<string>> WiFiAutoconnectAccessPoints { get; } = new string[0];
+
+        public NotifyProperty<bool> WiFiAutoconnectAlways { get; } = false;
 
         public void Save()
         {

@@ -6,9 +6,9 @@
 
     public class Lut1DEffectGenerator : ILutEffectGenerator
     {
-        private readonly float[] redTable;
         private readonly float[] blueTable;
         private readonly float[] greenTable;
+        private readonly float[] redTable;
 
         public Lut1DEffectGenerator(Lut lut)
         {

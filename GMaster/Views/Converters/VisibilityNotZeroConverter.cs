@@ -1,7 +1,6 @@
 ﻿namespace GMaster.Views.Converters
 {
     using System;
-    using System.Collections;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 

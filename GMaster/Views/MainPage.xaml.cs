@@ -41,6 +41,11 @@ namespace GMaster.Views
             }
         }
 
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Model.Init();
+        }
+
         private void PressHandler(object sender, PointerRoutedEventArgs args)
         {
             if (MainMenu.IsPaneOpen)
@@ -52,11 +57,6 @@ namespace GMaster.Views
                     HideMenu();
                 }
             }
-        }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            await Model.Init();
         }
     }
 }

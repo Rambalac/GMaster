@@ -2,33 +2,33 @@
     x:Class="GMaster.Views.WiFiPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GMaster" d:DesignWidth="600"
+    d:DesignWidth="600"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wiFi="using:Windows.Devices.WiFi"
     xmlns:commands="using:GMaster.Views.Commands"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
     <Page.Resources>
-        <commands:ForgetWiFiCommand x:Key="ForgetWiFiCommand" Model="{Binding}"/>
+        <commands:ForgetWiFiCommand x:Key="ForgetWiFiCommand" Model="{Binding}" />
     </Page.Resources>
     <Grid Background= "{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ToggleSwitch IsOn="{Binding Wifi.AutoconnectAlways, Mode=TwoWay}" OnContent="Autoconnect even if connected to WiFi" OffContent="Autoconnect only if not connected to WiFi"/>
+        <ToggleSwitch IsOn="{Binding Wifi.AutoconnectAlways, Mode=TwoWay}" OnContent="Autoconnect even if connected to WiFi" OffContent="Autoconnect only if not connected to WiFi" />
         <TextBlock Grid.Row="1" FontSize="20">Connected WiFi</TextBlock>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Wifi.ConnectedWiFi}" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNotNullConverter}}"/>
-            <TextBlock Text="Not connected" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNullConverter}}"/>
+            <TextBlock Text="{Binding Wifi.ConnectedWiFi}" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNotNullConverter}}" />
+            <TextBlock Grid.Column="0" Text="Not connected" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNullConverter}}" />
             <Button Grid.Column="1" IsEnabled="{Binding Wifi.ConnectedWiFi, Converter={StaticResource NullFalseConverter}}" Click="RememberButton_Click">
-                <SymbolIcon Symbol="Add"/>
+                <SymbolIcon Symbol="Add" />
             </Button>
         </Grid>
 
@@ -39,40 +39,40 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0,5,0,0"/>
-                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,5,0,0" />
+                            <Setter Property="Padding" Value="0" />
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="wiFi:WiFiAvailableNetwork">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding}" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding}" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                                 <Button Grid.Column="1" Command="{StaticResource ForgetWiFiCommand}" CommandParameter="{Binding}">
-                                    <SymbolIcon Symbol="Remove"/>
+                                    <SymbolIcon Symbol="Remove" />
                                 </Button>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
                 <TextBlock FontSize="20">Available WiFi Access Points</TextBlock>
-                <TextBlock Text="Not found" Foreground="Gray" Visibility="{Binding Wifi.AccessPoints.Count, Converter={StaticResource VisibilityZeroConverter}}"/>
+                <TextBlock Text="Not found" Foreground="Gray" Visibility="{Binding Wifi.AccessPoints.Count, Converter={StaticResource VisibilityZeroConverter}}" />
                 <ListView ItemsSource="{Binding Wifi.AccessPoints}" ItemClick="Connect_ItemClick" IsItemClickEnabled="True">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Background" Value="#454545"/>
-                            <Setter Property="Margin" Value="0,5,0,0"/>
+                            <Setter Property="Background" Value="#454545" />
+                            <Setter Property="Margin" Value="0,5,0,0" />
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="wiFi:WiFiAvailableNetwork">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding SignalBars, Converter={StaticResource SignalBarsConvertor}}" FontFamily="Segoe MDL2 Assets" FontSize="25" VerticalAlignment="Center" Margin="0,-10,0,0"/>
-                                <TextBlock Text="{Binding Ssid}"  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding SignalBars, Converter={StaticResource SignalBarsConvertor}}" FontFamily="Segoe MDL2 Assets" FontSize="25" VerticalAlignment="Center" Margin="0,-10,0,0" />
+                                <TextBlock Text="{Binding Ssid}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

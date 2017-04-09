@@ -1,7 +1,6 @@
 namespace GMaster.Views.Converters
 {
     using System;
-    using System.Collections;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
@@ -9,7 +8,7 @@ namespace GMaster.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (value == null) ? Visibility.Visible : Visibility.Collapsed;
+            return value == null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

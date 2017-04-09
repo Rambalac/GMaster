@@ -1,6 +1,5 @@
 ﻿namespace GMaster.Views.Commands
 {
-    using System;
     using System.Threading.Tasks;
     using Tools;
 

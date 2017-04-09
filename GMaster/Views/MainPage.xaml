@@ -6,8 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:commands="using:GMaster.Views.Commands"
-    xmlns:converters="using:GMaster.Views.Converters"
-    xmlns:gMaster="using:GMaster"
     mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}" Loaded="Page_Loaded">
     <Page.Resources>
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />

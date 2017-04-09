@@ -7,7 +7,6 @@
     using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
@@ -17,8 +16,6 @@
 
     public class MainPageModel : INotifyPropertyChanged
     {
-        private readonly DispatcherTimer cameraRefreshTimer;
-
         private DeviceInfo selectedDevice;
 
         public MainPageModel()
@@ -27,7 +24,7 @@
 
             LumixManager.DeviceDiscovered += Lumix_DeviceDiscovered;
 
-            cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            var cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
             cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
             cameraRefreshTimer.Start();
 
@@ -39,25 +36,6 @@
             }
 
             Wifi.PropertyChanged += Wifi_PropertyChanged;
-        }
-
-        private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(WiFiHelper.AutoconnectAlways):
-                    GeneralSettings.WiFiAutoconnectAlways.Value = Wifi.AutoconnectAlways;
-                    break;
-                case nameof(WiFiHelper.AutoconnectAccessPoints):
-                    GeneralSettings.WiFiAutoconnectAccessPoints.Value = Wifi.AutoconnectAccessPoints;
-                    break;
-            }
-        }
-
-        public async Task Init()
-        {
-            await Wifi.Init();
-            await LoadLutsInfo();
         }
 
         public event Action<Lumix> CameraDisconnected;
@@ -148,6 +126,11 @@
             }
         }
 
+        public async Task Init()
+        {
+            await Wifi.Init();
+            await LoadLutsInfo();
+        }
 
         public async Task LoadLutsInfo()
         {
@@ -162,7 +145,7 @@
         public async Task StartListening()
         {
             await LumixManager.StartListening();
-            var task = Task.Run(async () => await LumixManager.SearchCameras());
+            LumixManager.SearchCameras();
         }
 
         public void StopListening()
@@ -181,9 +164,9 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async void CameraRefreshTimer_Tick(object sender, object e)
+        private void CameraRefreshTimer_Tick(object sender, object e)
         {
-            await LumixManager.SearchCameras();
+            LumixManager.SearchCameras();
         }
 
         private void ConnectableDevices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -239,6 +222,20 @@
             }
 
             OnCameraDisconnected(lumix);
+        }
+
+        private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(WiFiHelper.AutoconnectAlways):
+                    GeneralSettings.WiFiAutoconnectAlways.Value = Wifi.AutoconnectAlways;
+                    break;
+
+                case nameof(WiFiHelper.AutoconnectAccessPoints):
+                    GeneralSettings.WiFiAutoconnectAccessPoints.Value = Wifi.AutoconnectAccessPoints;
+                    break;
+            }
         }
     }
 }

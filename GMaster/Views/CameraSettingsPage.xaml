@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Margin="0,0,0,10" VerticalAlignment="Center">LUT</TextBlock>
-            <ComboBox Grid.Column="1" ItemsSource="{Binding InstalledLuts, Mode=TwoWay}" SelectedItem="{Binding SelectedLut, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10,0,0,10" />
+            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding InstalledLuts, Mode=TwoWay}" SelectedItem="{Binding SelectedLut, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10,0,0,10" />
             <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,0">Aspects</TextBlock>
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>

@@ -1,7 +1,6 @@
 ﻿namespace GMaster.Views.Converters
 {
     using System;
-    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
     public class SignalBarsConverter : IValueConverter

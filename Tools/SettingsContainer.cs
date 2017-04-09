@@ -46,9 +46,11 @@ namespace Tools
                             case JObject jo:
                                 propvalue.SetValue(jo.ToObject(prop.PropertyType.GenericTypeArguments[0]));
                                 break;
+
                             case JArray ja:
                                 propvalue.SetValue(ja.ToObject(prop.PropertyType.GenericTypeArguments[0]));
                                 break;
+
                             default:
                                 propvalue.SetValue(val);
                                 break;

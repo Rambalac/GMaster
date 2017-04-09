@@ -5,11 +5,9 @@ namespace GMaster.Camera
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
     using Logger;
-    using Nito.AsyncEx;
     using Rssdp;
     using Rssdp.Infrastructure;
     using Tools;
@@ -55,7 +53,7 @@ namespace GMaster.Camera
             return result;
         }
 
-        public async Task SearchCameras()
+        public void SearchCameras()
         {
             try
             {

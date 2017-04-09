@@ -6,7 +6,7 @@
     using System.ComponentModel;
     using System.Linq;
 
-    public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection, IEnumerable<TItem>, IEnumerable
+    public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection
         where TItem : IStringIdItem
     {
         public ObservableHashCollection(IEnumerable<TItem> items)

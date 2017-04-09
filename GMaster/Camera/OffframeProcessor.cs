@@ -188,7 +188,7 @@ namespace GMaster.Camera
 
             var val1 = list[index - 1];
             var val2 = list[index];
-            return (val2 - value > value - val1) ? dict[val1] : dict[val2];
+            return val2 - value > value - val1 ? dict[val1] : dict[val2];
         }
 
         private TextBinValue GetFromShort(Slice slice, int index, IReadOnlyDictionary<int, string> dict)
@@ -216,14 +216,13 @@ namespace GMaster.Camera
             var t = slice[47];
             if (t > 0)
             {
-                return new FocusPoint
-                {
-                    X1 = slice.ToShort(48) / 1000.0,
-                    Y1 = slice.ToShort(50) / 1000.0,
-                    X2 = slice.ToShort(52) / 1000.0,
-                    Y2 = slice.ToShort(54) / 1000.0,
-                    Fixed = parser is GH4Parser
-                };
+                return new FocusPoint(
+                    slice.ToShort(48) / 1000.0,
+                    slice.ToShort(50) / 1000.0,
+                    slice.ToShort(52) / 1000.0,
+                    slice.ToShort(54) / 1000.0,
+                    parser is GH4Parser
+                );
             }
 
             return null;
