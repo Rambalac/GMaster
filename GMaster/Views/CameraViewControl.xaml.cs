@@ -65,9 +65,9 @@ namespace GMaster.Views
             frame.ImageRectChanged += Frame_ImageRectChanged;
         }
 
-        private Lumix Lumix => Model?.SelectedCamera?.Camera;
-
         public CameraViewModel Model => DataContext as CameraViewModel;
+
+        private Lumix Lumix => Model?.SelectedCamera?.Camera;
 
         public void Dispose()
         {
@@ -97,6 +97,22 @@ namespace GMaster.Views
             {
                 Model.PropertyChanged += Model_PropertyChanged;
                 Model.Dispatcher = Dispatcher;
+            }
+        }
+
+        private void CameraViewControl_OnDragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView != null && e.DataView.Properties.ContainsKey("camera"))
+            {
+                e.AcceptedOperation = DataPackageOperation.Link;
+            }
+        }
+
+        private void CameraViewControl_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.DataView != null && e.DataView.Properties.TryGetValue("camera", out object camera))
+            {
+                Model.SelectedCamera = camera as ConnectedCamera;
             }
         }
 
@@ -311,23 +327,6 @@ namespace GMaster.Views
             {
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
-        }
-
-        private void CameraViewControl_OnDrop(object sender, DragEventArgs e)
-        {
-            if (e.DataView != null && e.DataView.Properties.TryGetValue("camera", out object camera))
-            {
-                Model.SelectedCamera = camera as ConnectedCamera;
-            }
-        }
-
-        private void CameraViewControl_OnDragOver(object sender, DragEventArgs e)
-        {
-            if (e.DataView != null && e.DataView.Properties.ContainsKey("camera"))
-            {
-                e.AcceptedOperation = DataPackageOperation.Link;
-            }
-
         }
     }
 }

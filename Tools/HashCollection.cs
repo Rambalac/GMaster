@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class HashCollection<TItem> : ICollection<TItem>, IEnumerable, IEnumerable<TItem>
+    public class HashCollection<TItem> : ICollection<TItem>
         where TItem : IStringIdItem
     {
         private readonly Dictionary<string, TItem> dictionary = new Dictionary<string, TItem>();

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-
-namespace Tools
+﻿namespace Tools
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     public static class CollectionExtensions

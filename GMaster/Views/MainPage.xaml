@@ -5,10 +5,9 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:commands="using:GMaster.Views.Commands"
     mc:Ignorable="d" RequestedTheme="Dark" DataContext="{StaticResource MainModel}" Loaded="Page_Loaded">
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid x:Name="ViewsGrid" HorizontalAlignment="Stretch" SizeChanged="ViewsGrid_SizeChanged" >
+        <Grid HorizontalAlignment="Stretch" SizeChanged="ViewsGrid_SizeChanged" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="{x:Bind Model.SecondColumnWidth, Mode=TwoWay}"/>

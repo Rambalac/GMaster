@@ -58,7 +58,6 @@ namespace Tools
                                 default:
                                     throw new InvalidCastException($"Cannot cast {val.GetType()} into {gentype}");
                             }
-
                         }
                         else
                         {

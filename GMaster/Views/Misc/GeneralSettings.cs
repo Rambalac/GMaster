@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using GMaster.Annotations;
+    using Annotations;
     using Newtonsoft.Json;
     using Tools;
     using Windows.Storage;
@@ -23,7 +23,12 @@
 
         public NotifyProperty<bool> Autoconnect { get; } = true;
 
-        public ObservableHashCollection<CameraSettings> Cameras { get; [UsedImplicitly] private set; }
+        public ObservableHashCollection<CameraSettings> Cameras
+        {
+            get;
+            [UsedImplicitly]
+            private set;
+        }
 
         public NotifyProperty<ICollection<string>> WiFiAutoconnectAccessPoints { get; } = new string[0];
 

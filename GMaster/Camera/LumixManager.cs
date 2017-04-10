@@ -42,7 +42,6 @@ namespace GMaster.Camera
 
             if (await result.Connect(LiveViewPort, lang))
             {
-
                 listeners[result.CameraHost] = result;
                 return result;
             }

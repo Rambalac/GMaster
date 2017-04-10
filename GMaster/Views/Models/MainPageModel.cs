@@ -63,15 +63,7 @@
 
         public CameraViewModel[] ActiveViews
         {
-            get
-            {
-                if (activeViews == null)
-                {
-                    activeViews = new[] { View1 };
-                }
-
-                return activeViews;
-            }
+            get => activeViews ?? (activeViews = new[] { View1 });
 
             set
             {
@@ -252,6 +244,7 @@
         public bool WiFiPresent => wifi.Present;
 
         public string ConnectedWiFi => wifi.ConnectedWiFi;
+
         public void AddConnectableDevice(DeviceInfo device)
         {
             ConnectableDevices.Add(device);

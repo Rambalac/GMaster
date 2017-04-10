@@ -7,10 +7,8 @@
     using Views;
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
-    using Windows.ApplicationModel.Core;
     using Windows.ApplicationModel.Resources;
     using Windows.Storage;
-    using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
@@ -98,7 +96,6 @@
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)

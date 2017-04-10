@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Annotations;
     using Camera;
-    using GMaster.Logger;
+    using Logger;
     using Tools;
     using Windows.UI.Core;
 

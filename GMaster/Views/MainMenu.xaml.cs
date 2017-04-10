@@ -123,7 +123,6 @@ namespace GMaster.Views
             var camera = (sender as FrameworkElement)?.DataContext as ConnectedCamera;
             if (camera != null)
             {
-
             }
         }
 
@@ -138,7 +137,7 @@ namespace GMaster.Views
 
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
-            var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+            await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
     }
 }

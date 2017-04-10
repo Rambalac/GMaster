@@ -221,8 +221,7 @@ namespace GMaster.Camera
                     slice.ToShort(50) / 1000.0,
                     slice.ToShort(52) / 1000.0,
                     slice.ToShort(54) / 1000.0,
-                    parser is GH4Parser
-                );
+                    parser is GH4Parser);
             }
 
             return null;

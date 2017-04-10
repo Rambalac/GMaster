@@ -15,15 +15,16 @@
 
     public class Lumix : INotifyPropertyChanged, IDisposable
     {
+        private static readonly HashSet<string> RecStopNotSupported = new HashSet<string> { "DMC-GH3" };
         private readonly Http http;
 
         private readonly DispatcherTimer stateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
 
         private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
 
+        private RecState recState = RecState.Unknown;
         private bool recStopSupported = true;
         private bool useNewTouchAF = true;
-        private RecState recState = RecState.Unknown;
 
         public Lumix(DeviceInfo device)
         {
@@ -163,8 +164,6 @@
                 return false;
             }
         }
-
-        static readonly HashSet<string> RecStopNotSupported = new HashSet<string> { "DMC-GH3" };
 
         public async Task<bool> Connect(int liveviewport, string lang)
         {
