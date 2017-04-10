@@ -44,7 +44,7 @@
 
         <TextBlock Text="{Binding Version}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" />
 
-        <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Click="WiFi_Click" Visibility="{Binding Wifi.Present, Converter={StaticResource VisibilityConverter}}">
+        <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Left" Click="WiFi_Click" Visibility="{Binding WiFiPresent, Converter={StaticResource VisibilityConverter}}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE701;" Margin="0,3,0,0" />
                 <TextBlock Text="Connect WiFi" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center" />

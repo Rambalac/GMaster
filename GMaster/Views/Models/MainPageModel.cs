@@ -53,6 +53,8 @@
             wifi.PropertyChanged += Wifi_PropertyChanged;
             wifi.AccessPointsUpdated += Wifi_AccessPointsUpdated;
             WifiAutoconnectAccessPoints.CollectionChanged += WifiAutoconnectAccessPoints_CollectionChanged;
+
+            WifiAutoconnectAccessPoints.AddRange(GeneralSettings.WiFiAutoconnectAccessPoints.Value);
         }
 
         public event Action<Lumix> CameraDisconnected;
@@ -233,9 +235,9 @@
 
         public CameraViewModel View4 => allViews[3];
 
-        public ObservableCollection<WiFiAvailableNetwork> WifiAccessPoints { get; }
+        public ObservableCollection<WiFiAvailableNetwork> WifiAccessPoints { get; } = new ObservableCollection<WiFiAvailableNetwork>();
 
-        public ObservableCollection<string> WifiAutoconnectAccessPoints { get; }
+        public ObservableCollection<string> WifiAutoconnectAccessPoints { get; } = new ObservableCollection<string>();
 
         public bool WiFiAutoconnectAlways
         {
@@ -249,6 +251,7 @@
 
         public bool WiFiPresent => wifi.Present;
 
+        public string ConnectedWiFi => wifi.ConnectedWiFi;
         public void AddConnectableDevice(DeviceInfo device)
         {
             ConnectableDevices.Add(device);
@@ -442,7 +445,10 @@
 
         private void Wifi_AccessPointsUpdated(IList<WiFiAvailableNetwork> obj)
         {
-            WifiAccessPoints.Reset(obj);
+            var task = RunAsync(() =>
+              {
+                  WifiAccessPoints.Reset(obj);
+              });
         }
 
         private void Wifi_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -453,6 +459,9 @@
                   {
                       case nameof(WiFiHelper.Present):
                           OnPropertyChanged(nameof(WiFiPresent));
+                          break;
+                      case nameof(WiFiHelper.ConnectedWiFi):
+                          OnPropertyChanged(nameof(ConnectedWiFi));
                           break;
                   }
               });

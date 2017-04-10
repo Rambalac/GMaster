@@ -18,16 +18,16 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ToggleSwitch IsOn="{Binding Wifi.AutoconnectAlways, Mode=TwoWay}" OnContent="Autoconnect even if connected to WiFi" OffContent="Autoconnect only if not connected to WiFi" />
+        <ToggleSwitch IsOn="{Binding WiFiAutoconnectAlways, Mode=TwoWay}" OnContent="Autoconnect even if connected to WiFi" OffContent="Autoconnect only if not connected to WiFi" />
         <TextBlock Grid.Row="1" FontSize="20">Connected WiFi</TextBlock>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Wifi.ConnectedWiFi}" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNotNullConverter}}" />
-            <TextBlock Grid.Column="0" Text="Not connected" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding Wifi.ConnectedWiFi, Converter={StaticResource VisibilityNullConverter}}" />
-            <Button Grid.Column="1" IsEnabled="{Binding Wifi.ConnectedWiFi, Converter={StaticResource NullFalseConverter}}" Click="RememberButton_Click">
+            <TextBlock Text="{Binding ConnectedWiFi}" VerticalAlignment="Center" Visibility="{Binding ConnectedWiFi, Converter={StaticResource VisibilityNotNullConverter}}" />
+            <TextBlock Grid.Column="0" Text="Not connected" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding ConnectedWiFi, Converter={StaticResource VisibilityNullConverter}}" />
+            <Button Grid.Column="1" IsEnabled="{Binding ConnectedWiFi, Converter={StaticResource NullFalseConverter}}" Click="RememberButton_Click">
                 <SymbolIcon Symbol="Add" />
             </Button>
         </Grid>
@@ -35,7 +35,7 @@
         <ScrollViewer Margin="0,5,-20,0" Padding="0,0,20,0"  Grid.Row="3" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <TextBlock FontSize="20">Autoconnect WiFi Access Points</TextBlock>
-                <ListView ItemsSource="{Binding Wifi.AutoconnectAccessPoints, Mode=TwoWay}" CanReorderItems="True" AllowDrop="True">
+                <ListView ItemsSource="{Binding WifiAutoconnectAccessPoints, Mode=TwoWay}" CanReorderItems="True" AllowDrop="True">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -59,8 +59,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <TextBlock FontSize="20">Available WiFi Access Points</TextBlock>
-                <TextBlock Text="Not found" Foreground="Gray" Visibility="{Binding Wifi.AccessPoints.Count, Converter={StaticResource VisibilityZeroConverter}}" />
-                <ListView ItemsSource="{Binding Wifi.AccessPoints}" ItemClick="Connect_ItemClick" IsItemClickEnabled="True">
+                <TextBlock Text="Not found" Foreground="Gray" Visibility="{Binding WifiAccessPoints.Count, Converter={StaticResource VisibilityZeroConverter}}" />
+                <ListView ItemsSource="{Binding WifiAccessPoints}" ItemClick="Connect_ItemClick" IsItemClickEnabled="True">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
