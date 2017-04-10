@@ -284,15 +284,20 @@
             await wifi.ConnectAccessPoint(eClickedItem);
         }
 
-        public async Task ConnectCamera(DeviceInfo modelSelectedDevice)
+        public void ConnectCamera(DeviceInfo modelSelectedDevice)
         {
-            var lumix = await LumixManager.ConnectCamera(modelSelectedDevice);
-            if (lumix != null)
+            var lumix = new Lumix(modelSelectedDevice);
+            var connectedCamera = AddConnectedDevice(lumix);
+            LumixManager.StartConnectCamera(lumix, result =>
             {
-                var connectedCamera = AddConnectedDevice(lumix);
-
-                ShowCamera(connectedCamera);
-            }
+                var task = RunAsync(() =>
+                 {
+                     if (result)
+                     {
+                         ShowCamera(connectedCamera);
+                     }
+                 });
+            });
         }
 
         public async Task Init()
@@ -313,6 +318,11 @@
 
         public void ShowCamera(ConnectedCamera eClickedItem)
         {
+            if (eClickedItem.Camera.IsConnecting)
+            {
+                return;
+            }
+
             if (ActiveViews.Any(c => c.SelectedCamera == eClickedItem))
             {
                 return;
@@ -378,7 +388,7 @@
         {
             try
             {
-                await RunAsync(async () =>
+                await RunAsync(() =>
                 {
                     try
                     {
@@ -394,7 +404,7 @@
                         {
                             try
                             {
-                                await ConnectCamera(dev);
+                                ConnectCamera(dev);
                             }
                             catch (Exception e)
                             {
@@ -431,7 +441,7 @@
             OnCameraDisconnected(lumix);
         }
 
-        private async Task RunAsync(Action action)
+        public async Task RunAsync(Action action)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }

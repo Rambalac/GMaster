@@ -33,20 +33,20 @@ namespace GMaster.Camera
 
         public event Action<DeviceInfo> DeviceDiscovered;
 
-        [NotNull]
-        public async Task<Lumix> ConnectCamera(DeviceInfo device)
+        public void StartConnectCamera(Lumix camera, Action<bool> onConnect)
         {
-            var result = new Lumix(device);
+            camera.Disconnected += Camera_Disconnected;
 
-            result.Disconnected += Camera_Disconnected;
+            Task.Run(async () =>
+              {
+                  var connectResult = await camera.Connect(LiveViewPort, lang);
+                  if (connectResult)
+                  {
+                      listeners[camera.CameraHost] = camera;
+                  }
 
-            if (await result.Connect(LiveViewPort, lang))
-            {
-                listeners[result.CameraHost] = result;
-                return result;
-            }
-
-            return null;
+                  onConnect(connectResult);
+              });
         }
 
         public void SearchCameras()
@@ -164,10 +164,7 @@ namespace GMaster.Camera
                 }
             }
 
-            if (!listeners.TryRemove(obj.CameraHost, out _))
-            {
-                throw new Exception("Listener is not connected");
-            }
+            listeners.TryRemove(obj.CameraHost, out _);
         }
 
         private async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)

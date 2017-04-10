@@ -12,12 +12,32 @@
         private bool isAspectAnamorphingVideoOnly;
         private string selectedAspect;
         private LutInfo selectedLut;
+        private Lumix camera;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string[] Aspects => new[] { "1", "1.33", "1.5", "1.75", "2" };
 
-        public Lumix Camera { get; set; }
+        public Lumix Camera
+        {
+            get => camera;
+            set
+            {
+                camera = value;
+                camera.PropertyChanged += Camera_PropertyChanged;
+            }
+        }
+
+        private void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Lumix.IsConnecting))
+            {
+                var task = Model.RunAsync(() =>
+                  {
+                      OnPropertyChanged(nameof(IsConnecting));
+                  });
+            }
+        }
 
         public IEnumerable<LutInfo> InstalledLuts => new[] { new LutInfo { Id = null, Title = string.Empty } }.Concat(Model.InstalledLuts);
 
@@ -64,6 +84,8 @@
         public CameraSettings Settings { get; set; }
 
         public string Udn => Camera.Udn;
+
+        public bool IsConnecting => Camera.IsConnecting;
 
         public void Add()
         {

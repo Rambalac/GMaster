@@ -7,9 +7,10 @@
     {
         protected override bool InternalCanExecute() => Model.SelectedDevice != null;
 
-        protected override async Task InternalExecute()
+        protected override Task InternalExecute()
         {
-            await Model.ConnectCamera(Model.SelectedDevice);
+            Model.ConnectCamera(Model.SelectedDevice);
+            return Task.CompletedTask;
         }
     }
 }

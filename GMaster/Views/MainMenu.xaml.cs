@@ -50,10 +50,14 @@ namespace GMaster.Views
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            Model.ShowCamera((ConnectedCamera)e.ClickedItem);
-            MainMenu.IsPaneOpen = false;
-            MenuFrame.Content = null;
-            MenuFrame.Visibility = Visibility.Collapsed;
+            var camera = (ConnectedCamera)e.ClickedItem;
+            if (!camera.IsConnecting)
+            {
+                Model.ShowCamera(camera);
+                MainMenu.IsPaneOpen = false;
+                MenuFrame.Content = null;
+                MenuFrame.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void OpenFrame(Type type, object model)
@@ -118,15 +122,7 @@ namespace GMaster.Views
             MenuFrame.Visibility = Visibility.Collapsed;
         }
 
-        private void UIElement_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            var camera = (sender as FrameworkElement)?.DataContext as ConnectedCamera;
-            if (camera != null)
-            {
-            }
-        }
-
-        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private async void NewWindow_OnClick(object sender, RoutedEventArgs e)
         {
             var newView = CoreApplication.CreateNewView();
             var newViewId = 0;

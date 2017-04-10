@@ -1,4 +1,6 @@
-﻿namespace GMaster.Camera
+﻿using System.Runtime.InteropServices;
+
+namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
@@ -31,6 +33,7 @@
             Device = device;
             var baseUri = new Uri($"http://{CameraHost}/cam.cgi");
             stateTimer.Tick += StateTimer_Tick;
+            stateTimer.Start();
 
             http = new Http(baseUri);
         }
@@ -165,17 +168,51 @@
             }
         }
 
+        private CancellationTokenSource connectCancellation = new CancellationTokenSource();
+
+        private bool isConnecting = true;
+
+        public bool IsConnecting
+        {
+            get => isConnecting;
+            private set
+            {
+                isConnecting = value;
+                OnPropertyChanged(nameof(IsConnecting));
+            }
+        }
+
         public async Task<bool> Connect(int liveviewport, string lang)
         {
+            var token = connectCancellation.Token;
             try
             {
                 recStopSupported = !RecStopNotSupported.Contains(Device.ModelName);
-
-                await FakeImageApp();
-                if (!await ReadMenuSet(lang))
+                do
                 {
-                    return false;
-                }
+                    try
+                    {
+                        await RequestAccess(token);
+
+                        if (!await ReadMenuSet(lang))
+                        {
+                            return false;
+                        }
+
+                        token.ThrowIfCancellationRequested();
+                        break;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex);
+                    }
+
+                    await Task.Delay(1000, token);
+                } while (true);
 
                 OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser);
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
@@ -183,7 +220,6 @@
 
                 await SwitchToRec();
                 await UpdateState();
-                stateTimer.Start();
                 await ReadLensInfo();
                 await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
 
@@ -191,10 +227,18 @@
                 OnPropertyChanged(nameof(IsConnected));
                 return true;
             }
+            catch (OperationCanceledException)
+            {
+                return false;
+            }
             catch (Exception e)
             {
                 Log.Error(e);
                 return false;
+            }
+            finally
+            {
+                IsConnecting = false;
             }
         }
 
@@ -202,6 +246,7 @@
         {
             try
             {
+                connectCancellation.Cancel();
                 IsConnected = false;
                 stateTimer.Stop();
                 try
@@ -213,6 +258,7 @@
                 {
                     Disconnected?.Invoke(this, false);
                 }
+
             }
             catch (Exception e)
             {
@@ -226,6 +272,8 @@
 
         public void Dispose()
         {
+            connectCancellation.Cancel();
+            connectCancellation.Dispose();
             stateUpdatingSem.Dispose();
             http.Dispose();
         }
@@ -434,10 +482,35 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async Task FakeImageApp()
+        private async Task<bool> RequestAccess(CancellationToken token)
         {
-            await TryGet($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
+            do
+            {
+                try
+                {
+                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
+                    if (str.StartsWith("<?xml"))
+                    {
+                        break;
+                    }
+
+                    var fields = str.Split(',');
+                    if (fields.FirstOrDefault() == "ok")
+                    {
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                }
+
+                await Task.Delay(1000, token);
+            }
+            while (true);
+
             await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
+            return true;
         }
 
         private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -529,6 +602,11 @@
 
         private async void StateTimer_Tick(object sender, object e)
         {
+            if (!IsConnected)
+            {
+                return;
+            }
+
             await stateUpdatingSem.WaitAsync();
             {
                 try
