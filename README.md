@@ -8,13 +8,14 @@ And if something is wrong or not enough I can fix it much much faster than Panas
 App is free and has no ad. You can install it from [MS Store](https://www.microsoft.com/store/apps/9NC2W8KC526F) or from [Project Release page](https://github.com/Rambalac/GMaster/releases/latest)
 
 ## Features
-* Fullscreen camera liveview.
+* Fullscreen camera liveview. Split screen and new windows for multiple cameras.
+* LUT preview. Per camera setting.
 * Photo capture and video recording start/stop.
 * Change basic parameters like ISO, Aperture, and Shutter. Changes on camera get reflected on the screen in real time.
 * Move/resize Autofocus point by mouse or gesture. Real AF area is displayed in real time for Point and Following AF.
 * Power Zoom lens zoom and change focus in Manual Focus mode.
 * Anamorphic desqueezing (1.33x, 1.5x, 1.75x, 2x). Per camera setting with option for Anamorphinc Video mode only.
-* LUT preview. Per camera setting.
+* WiFi manager to autoconnect to camera WiFi access point.
 * Multiple cameras can be controlled. You can connect cameras to common access point.
 
 ![Screenshot](/images/screenshots/PC-4.jpg)
