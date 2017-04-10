@@ -17,7 +17,7 @@ App is free and has no ad. You can install it from [MS Store](https://www.micros
 * LUT preview. Per camera setting.
 * Multiple cameras can be controlled. You can connect cameras to common access point.
 
-![Screenshot](/images/screenshots/PC-2.jpg)
+![Screenshot](/images/screenshots/PC-4.jpg)
 
 ## Cameras
 ### Fully supported
@@ -31,6 +31,13 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users .
+#### 2017-04-10
+Pushed version 1.7.0 to MS Store
+
+* More fixes and workarounds for other cameras connectivity.
+* Added split screen modes and new window.
+* Added WiFi management to remember and autoconnect to access points.
+* Minor fixes.
 #### 2017-04-07
 Pushed version 1.6.0 to MS Store
 
