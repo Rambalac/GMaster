@@ -1,4 +1,4 @@
-﻿namespace GMaster.Views
+﻿namespace GMaster.Views.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel;

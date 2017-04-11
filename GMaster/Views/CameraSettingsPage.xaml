@@ -5,8 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:GMaster.Views"
+    xmlns:models="using:GMaster.Views.Models"
     d:DesignWidth="600"
-    mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ConnectedCamera}">
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance models:ConnectedCamera}">
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
         <TextBlock FontSize="20">Connection</TextBlock>
         <ToggleSwitch OffContent="Autoconnect Disabled" OnContent="Autoconnect Enabled" IsOn="{Binding Settings.Autoconnect.Value, Mode=TwoWay}" Margin="0,5,0,0" />

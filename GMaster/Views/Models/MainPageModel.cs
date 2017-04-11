@@ -1,4 +1,4 @@
-﻿namespace GMaster.Views
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -89,7 +89,7 @@
 
         public ObservableCollection<LutInfo> InstalledLuts { get; } = new ObservableCollection<LutInfo>();
 
-        public object IsDebug => Debugger.IsAttached;
+        public bool IsDebug => Debugger.IsAttached;
 
         public bool IsLandscape
         {

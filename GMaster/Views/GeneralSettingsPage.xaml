@@ -7,6 +7,7 @@
     xmlns:views="using:GMaster.Views"
     xmlns:commands="using:GMaster.Views.Commands"
     xmlns:gMaster="using:GMaster"
+    xmlns:models="using:GMaster.Views.Models"
     d:DesignWidth="600"
     mc:Ignorable="d" DataContext="{StaticResource MainModel}">
     <Page.Resources>
@@ -44,10 +45,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Converter={StaticResource VisibilityConverter}}">
+        <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibilityConverter}}">
             <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="gMaster:DebugCategoryEnable">
+                    <DataTemplate x:DataType="models:DebugCategoryEnable">
                         <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled, Mode=TwoWay}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -229,7 +229,7 @@ namespace GMaster.Camera
                 {
                     var buf = new byte[reader.UnconsumedBufferLength];
                     reader.ReadBytes(buf);
-                    camera.ProcessMessage(buf);
+                    Task.Run(() => camera.ProcessMessage(buf));
                 }
             }
             catch (Exception e)

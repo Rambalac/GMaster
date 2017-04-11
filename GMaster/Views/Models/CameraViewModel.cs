@@ -1,4 +1,4 @@
-﻿namespace GMaster.Views
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -84,9 +84,9 @@
 
         public CoreDispatcher Dispatcher { get; set; }
 
-        public FocusPoint FocusPoint => SelectedCamera?.Camera?.OffFrameProcessor?.FocusPoint;
+        public FocusAreas FocusAreas => SelectedCamera?.Camera?.OffFrameProcessor?.FocusPoints;
 
-        public bool HasPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
+        public bool CanPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
 
         public bool IsConnected => selectedCamera != null;
 
@@ -148,6 +148,7 @@
                         OnPropertyChanged(nameof(CanChangeAperture));
                         OnPropertyChanged(nameof(CanChangeShutter));
                         OnPropertyChanged(nameof(CanManualFocus));
+                        OnPropertyChanged(nameof(CanPowerZoom));
 
                         OnPropertyChanged(nameof(ShutterSpeeds));
                         OnPropertyChanged(nameof(CurrentApertures));
@@ -158,12 +159,11 @@
                         OnPropertyChanged(nameof(CurrentIso));
 
                         OnPropertyChanged(nameof(CanCapture));
-                        OnPropertyChanged(nameof(HasPowerZoom));
                         OnPropertyChanged(nameof(MaxZoom));
                         OnPropertyChanged(nameof(MinZoom));
                         OnPropertyChanged(nameof(CurentZoom));
 
-                        OnPropertyChanged(nameof(FocusPoint));
+                        OnPropertyChanged(nameof(FocusAreas));
                     }
                     catch (Exception ex)
                     {
@@ -266,7 +266,7 @@
                             break;
 
                         case nameof(Lumix.LensInfo):
-                            OnPropertyChanged(nameof(HasPowerZoom));
+                            OnPropertyChanged(nameof(CanPowerZoom));
                             OnPropertyChanged(nameof(MaxZoom));
                             OnPropertyChanged(nameof(MinZoom));
                             break;
@@ -309,8 +309,8 @@
                             OnPropertyChanged(nameof(CurentZoom));
                             break;
 
-                        case nameof(OffFrameProcessor.FocusPoint):
-                            OnPropertyChanged(nameof(FocusPoint));
+                        case nameof(OffFrameProcessor.FocusPoints):
+                            OnPropertyChanged(nameof(FocusAreas));
                             break;
                     }
                 }

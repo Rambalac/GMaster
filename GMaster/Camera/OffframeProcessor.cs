@@ -35,7 +35,7 @@ namespace GMaster.Camera
 
         public FocusMode FocusMode { get; private set; }
 
-        public FocusPoint FocusPoint { get; private set; }
+        public FocusAreas FocusPoints { get; private set; }
 
         public TextBinValue Iso { get; private set; }
 
@@ -49,25 +49,18 @@ namespace GMaster.Camera
 
         public int Zoom { get; private set; }
 
-        public int Process(byte[] offframeBytes)
+        public void Process(Slice slice, CameraPoint size)
         {
             try
             {
-                if (offframeBytes.Length < 31)
+                var state = new ProcessState(slice);
+
+                if (!OffframeBytesSupported || slice.Length < 130)
                 {
-                    return -1;
+                    return;
                 }
 
-                var state = new ProcessState(offframeBytes);
-
-                var imageStart = state.Original.ToShort(30) + 32;
-
-                if (!OffframeBytesSupported || offframeBytes.Length - imageStart < 130)
-                {
-                    return imageStart;
-                }
-
-                Debug.WriteLine(() => string.Join(",", offframeBytes.Skip(32).Take(imageStart - 32).Select(a => a.ToString("X2"))), "OffFrameBytes");
+                Debug.WriteLine(() => string.Join(",", slice.Skip(32).Select(a => a.ToString("X2"))), "OffFrameBytes");
                 var newIso = GetFromShort(state.Main, 127, parser.IsoBinary);
                 if (!Equals(newIso, Iso))
                 {
@@ -129,11 +122,11 @@ namespace GMaster.Camera
                     OnPropertyChanged(nameof(ExposureShift));
                 }
 
-                var newFocusPoint = GetPointZoom(state.Original);
-                if (!Equals(newFocusPoint, FocusPoint))
+                var newFocusPoints = GetFocusPoint(state.Original, size);
+                if (!Equals(newFocusPoints, FocusPoints))
                 {
-                    FocusPoint = newFocusPoint;
-                    OnPropertyChanged(nameof(FocusPoint));
+                    FocusPoints = newFocusPoints;
+                    OnPropertyChanged(nameof(FocusPoints));
                 }
 
                 var newFocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
@@ -142,13 +135,10 @@ namespace GMaster.Camera
                     FocusMode = newFocusMode;
                     OnPropertyChanged(nameof(FocusMode));
                 }
-
-                return imageStart;
             }
             catch (Exception e)
             {
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
-                return -1;
             }
         }
 
@@ -211,17 +201,23 @@ namespace GMaster.Camera
             }
         }
 
-        private FocusPoint GetPointZoom(Slice slice)
+        private FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
         {
-            var t = slice[47];
-            if (t > 0)
+            var pointsNum = slice[47];
+            if (pointsNum > 0)
             {
-                return new FocusPoint(
-                    slice.ToShort(48) / 1000.0,
-                    slice.ToShort(50) / 1000.0,
-                    slice.ToShort(52) / 1000.0,
-                    slice.ToShort(54) / 1000.0,
-                    parser is GH4Parser);
+                var result = new FocusAreas(pointsNum, size, parser is GH4Parser);
+
+                for (var i = 0; i < pointsNum; i++)
+                {
+                    result.AddBox(
+                        slice.ToShort(48 + (i * 16)),
+                        slice.ToShort(50 + (i * 16)),
+                        slice.ToShort(52 + (i * 16)),
+                        slice.ToShort(54 + (i * 16)));
+                }
+
+                return result;
             }
 
             return null;
@@ -229,9 +225,9 @@ namespace GMaster.Camera
 
         private class ProcessState
         {
-            public ProcessState(byte[] array)
+            public ProcessState(Slice array)
             {
-                Original = new Slice(array);
+                Original = array;
 
                 Main = new Slice(array, Original[47] * 16);
             }
@@ -239,25 +235,6 @@ namespace GMaster.Camera
             public Slice Main { get; }
 
             public Slice Original { get; }
-        }
-
-        private class Slice
-        {
-            private readonly byte[] array;
-            private readonly int offset;
-
-            public Slice(byte[] array, int offset = 0)
-            {
-                this.array = array;
-                this.offset = offset;
-            }
-
-            public byte this[int index] => array[offset + index];
-
-            public short ToShort(int i)
-            {
-                return (short)((this[i] << 8) + this[i + 1]);
-            }
         }
     }
 }

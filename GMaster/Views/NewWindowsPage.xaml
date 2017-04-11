@@ -5,11 +5,12 @@
     xmlns:local="using:GMaster.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:GMaster.Views.Models"
     mc:Ignorable="d" RequestedTheme="Dark" >
     <Grid>
         <local:CameraViewControl>
             <local:CameraViewControl.DataContext>
-                <local:CameraViewModel/>
+                <models:CameraViewModel/>
             </local:CameraViewControl.DataContext>
         </local:CameraViewControl>
         <Button Grid.Row="0" Command="{StaticResource SwitchFullScreenCommand}" Background="#99000000" BorderBrush="White" Padding="0" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Top">

@@ -6,8 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:models="using:GMaster.Views.Models"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance local:CameraViewModel}" Unloaded="UserControl_Unloaded" AllowDrop="True" Drop="CameraViewControl_OnDrop" DragOver="CameraViewControl_OnDragOver">
+    d:DataContext="{d:DesignInstance models:CameraViewModel}" Unloaded="UserControl_Unloaded" AllowDrop="True" Drop="CameraViewControl_OnDrop" DragOver="CameraViewControl_OnDragOver">
     <UserControl.Resources>
         <ResourceDictionary Source="CameraViewControlResources.xaml" />
     </UserControl.Resources>
@@ -19,38 +20,24 @@
 
             <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}, Mode=TwoWay}">
                 <xaml:CanvasControl x:Name="LiveView" Draw="LiveView_OnDraw" />
-                <Path Stroke="Gold" StrokeThickness="5" x:Name="FocusPoint">
-                    <Path.Data>
-                        <PathGeometry x:Name="FocusPointGeometry">
-                            <PathGeometry.Figures>
-                                <PathFigure StartPoint="0,0.3">
-                                    <PathFigure.Segments>
-                                        <LineSegment Point="0,0" />
-                                        <LineSegment Point="0.3,0" />
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                                <PathFigure StartPoint="1,0.3">
-                                    <PathFigure.Segments>
-                                        <LineSegment Point="1,0" />
-                                        <LineSegment Point="0.7,0" />
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                                <PathFigure StartPoint="0,0.7">
-                                    <PathFigure.Segments>
-                                        <LineSegment Point="0,1" />
-                                        <LineSegment Point="0.3,1" />
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                                <PathFigure StartPoint="1,0.7">
-                                    <PathFigure.Segments>
-                                        <LineSegment Point="1,1" />
-                                        <LineSegment Point="0.7,1" />
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                            </PathGeometry.Figures>
-                        </PathGeometry>
-                    </Path.Data>
-                </Path>
+                <ItemsControl ItemsSource="{Binding FocusAreas}" x:Name="FocusAreasControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Height, Mode=TwoWay}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:FocusArea">
+                            <local:FocusBox Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}" Visibility="{Binding Visible, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -112,7 +99,7 @@
                                   SelectedItem="{Binding CurrentIso, Mode=TwoWay}" />
                         </StackPanel>
 
-                        <local:Adjuster IsEnabled="{Binding HasPowerZoom, Mode=TwoWay}" Width="200"
+                        <local:Adjuster IsEnabled="{Binding CanPowerZoom, Mode=TwoWay}" Width="200"
                                     PressedReleased="ZoomAdjuster_OnPressedReleased"
                                     Minimum="{Binding MinZoom, Mode=TwoWay}"
                                     Maximum="{Binding MaxZoom, Mode=TwoWay}"

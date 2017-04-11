@@ -1,4 +1,4 @@
-namespace GMaster
+namespace GMaster.Views.Models
 {
     using Tools;
 

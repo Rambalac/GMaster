@@ -5,13 +5,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:views="using:GMaster.Views"
 	xmlns:commands="using:GMaster.Views.Commands"
+	xmlns:models="using:GMaster.Views.Models"
 	mc:Ignorable="d" d:DesignWidth="300"
-    d:DataContext="{d:DesignInstance views:MainPageModel}">
+    d:DataContext="{d:DesignInstance models:MainPageModel}">
     <UserControl.Resources>
         <commands:FeedbackCommand x:Key="FeedbackCommand" />
         <commands:AboutCommand x:Key="AboutCommand" />
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
-        <DataTemplate x:Key="CameraItemTemplate" x:DataType="views:ConnectedCamera">
+        <DataTemplate x:Key="CameraItemTemplate" x:DataType="models:ConnectedCamera">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RightTapped="UIElement_OnRightTapped">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

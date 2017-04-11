@@ -39,7 +39,7 @@
 
         public event DisconnectedDelegate Disconnected;
 
-        public event Action<ArraySegment<byte>> LiveViewUpdated;
+        public event Func<ArraySegment<byte>, Task<CameraPoint?>> LiveViewUpdated;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -402,18 +402,23 @@
             }
         }
 
-        internal void ProcessMessage(byte[] buf)
+        internal async Task ProcessMessage(byte[] buf)
         {
-            var imageStart = OffFrameProcessor?.Process(buf) ?? -1;
-            if (imageStart < 0)
-            {
-                return;
-            }
+            var slice = new Slice(buf);
+            var imageStart = slice.ToShort(30) + 32;
 
-            if (buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 &&
-                buf[buf.Length - 2] == 0xff && buf[buf.Length - 1] == 0xd9)
+            if (LiveViewUpdated != null && imageStart > 60 && imageStart < buf.Length - 100 && buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 && buf[buf.Length - 2] == 0xff && buf[buf.Length - 1] == 0xd9)
             {
-                LiveViewUpdated?.Invoke(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
+                CameraPoint? size = null;
+                foreach (var ev in LiveViewUpdated.GetInvocationList())
+                {
+                    size = await ((Func<ArraySegment<byte>, Task<CameraPoint?>>)ev)(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
+                }
+
+                if (size != null)
+                {
+                    OffFrameProcessor?.Process(new Slice(slice, 0, imageStart), size.Value);
+                }
             }
         }
 

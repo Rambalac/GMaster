@@ -110,13 +110,15 @@
     <Compile Include="Camera\CameraMenuItem256.cs" />
     <Compile Include="Camera\CameraMode.cs" />
     <Compile Include="Camera\CameraOrientation.cs" />
-    <Compile Include="Camera\FocusPoint.cs" />
+    <Compile Include="Camera\CameraPoint.cs" />
+    <Compile Include="Camera\FocusAreas.cs" />
     <Compile Include="Camera\FocusPosition.cs" />
     <Compile Include="Camera\Http.cs" />
     <Compile Include="Camera\LumixData\FocusMode.cs" />
     <Compile Include="Camera\LumixData\FocusModeRequestResult.cs" />
     <Compile Include="Camera\LumixError.cs" />
     <Compile Include="Camera\OffFrameProcessor.cs" />
+    <Compile Include="Camera\Slice.cs" />
     <Compile Include="CubeLutParser.cs" />
     <Compile Include="Views\Commands\ForgetWiFiCommand.cs" />
     <Compile Include="Views\Converters\NullFalseConverter.cs" />
@@ -125,6 +127,9 @@
     <Compile Include="Views\Converters\VisibilityNotNullConverter.cs" />
     <Compile Include="Views\Converters\VisibilityNotZeroConverter.cs" />
     <Compile Include="Views\Converters\VisibilityZeroConverter.cs" />
+    <Compile Include="Views\FocusBox.xaml.cs">
+      <DependentUpon>FocusBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Models\DebugCategoryEnable.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="Camera\LumixData\ChangeDirection.cs" />
@@ -188,6 +193,7 @@
     <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
     <Compile Include="Views\Models\ConnectedCamera.cs" />
     <Compile Include="Views\Misc\LutInfo.cs" />
+    <Compile Include="Views\Models\FocusArea.cs" />
     <Compile Include="Views\Models\MainPageModel.cs" />
     <Compile Include="Views\Converters\ImageMemoryStreamConverter.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
@@ -208,7 +214,7 @@
     <Compile Include="Views\NewWindowsPage.xaml.cs">
       <DependentUpon>NewWindowsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SplitMode.cs" />
+    <Compile Include="Views\Misc\SplitMode.cs" />
     <Compile Include="Views\WiFiPage.xaml.cs">
       <DependentUpon>WiFiPage.xaml</DependentUpon>
     </Compile>
@@ -277,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\FocusBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

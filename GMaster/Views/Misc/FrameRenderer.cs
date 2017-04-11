@@ -1,3 +1,5 @@
+using GMaster.Camera;
+
 namespace GMaster.Views
 {
     using System;
@@ -71,7 +73,7 @@ namespace GMaster.Views
             }
         }
 
-        public async Task<Size?> UpdateBitmap(Stream stream)
+        public async Task<CameraPoint?> UpdateBitmap(Stream stream)
         {
             if (Interlocked.CompareExchange(ref updateBitmapFlag, 1, 0) == 0)
             {
@@ -103,7 +105,7 @@ namespace GMaster.Views
                     }
 
                     view.Invalidate();
-                    return newframe.Bitmap.Size;
+                    return new CameraPoint((int)newframe.Bitmap.SizeInPixels.Width, (int)newframe.Bitmap.SizeInPixels.Height);
                 }
                 finally
                 {

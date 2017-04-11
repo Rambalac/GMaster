@@ -1,3 +1,5 @@
+using GMaster.Views.Models;
+
 namespace GMaster.Views.Commands
 {
     using System;

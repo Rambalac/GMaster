@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views.Commands
+﻿using GMaster.Views.Models;
+
+namespace GMaster.Views.Commands
 {
     using System;
     using System.Threading.Tasks;

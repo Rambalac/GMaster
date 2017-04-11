@@ -1,9 +1,11 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
+using System.Linq;
+using GMaster.Views.Models;
+
 namespace GMaster.Views
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
     using Camera;
@@ -15,18 +17,9 @@ namespace GMaster.Views
     using Windows.UI.Input;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Media;
 
     public sealed partial class CameraViewControl : UserControl, IDisposable
     {
-        private static readonly Dictionary<int, Point> FocusPointShifts = new Dictionary<int, Point>
-        {
-            { 13, new Point(0, 0) },
-            { 17, new Point(0, 0.125f) },
-            { 15, new Point(0, 0.058f) },
-            { 10, new Point(0.125f, 0) }
-        };
-
         private readonly FrameRenderer frame;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -65,6 +58,8 @@ namespace GMaster.Views
             frame.ImageRectChanged += Frame_ImageRectChanged;
         }
 
+        public FocusArea[] FocusAreas { get; } = Enumerable.Range(0, 16).Select(i => new FocusArea()).ToArray();
+
         public CameraViewModel Model => DataContext as CameraViewModel;
 
         private Lumix Lumix => Model?.SelectedCamera?.Camera;
@@ -74,15 +69,16 @@ namespace GMaster.Views
             frame.Dispose();
         }
 
-        private async void Camera_LiveViewUpdated(ArraySegment<byte> segment)
+        private async Task<CameraPoint?> Camera_LiveViewUpdated(ArraySegment<byte> segment)
         {
             var size = await frame.UpdateBitmap(new MemoryStream(segment.Array, segment.Offset, segment.Count));
             if (size != null)
             {
-                var intaspect = (int)(size.Value.Width * 10 / size.Value.Height);
-                focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : new Point(0, 0);
+                var intaspect = (int)(size.Value.X * 10 / size.Value.Y);
                 is43 = intaspect == 13;
             }
+
+            return size;
         }
 
         private async Task CameraSet()
@@ -218,7 +214,7 @@ namespace GMaster.Views
 
                     break;
 
-                case nameof(CameraViewModel.FocusPoint):
+                case nameof(CameraViewModel.FocusAreas):
                     RecalulateFocusPoint();
                     break;
             }
@@ -236,46 +232,33 @@ namespace GMaster.Views
 
         private void RecalulateFocusPoint()
         {
-            if (Model.FocusPoint == null)
+            var focusAreas = Model.FocusAreas;
+            if (focusAreas == null)
             {
-                FocusPoint.Visibility = Visibility.Collapsed;
+                FocusAreasControl.Visibility = Visibility.Collapsed;
                 return;
             }
-
-            var fp = Model.FocusPoint;
 
             if (!frame.IsReady)
             {
                 return;
             }
 
-            double x1 = fp.X1, x2 = fp.X2, y1 = fp.Y1, y2 = fp.Y2;
-            if (!fp.Fixed)
+            var cameraAreas = Model.FocusAreas;
+
+            for (var i = 0; i < FocusAreas.Length; i++)
             {
-                x1 = (x1 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
-                x2 = (x2 - focusPointShift.X) / (1 - (2 * focusPointShift.X));
-                y1 = (y1 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
-                y2 = (y2 - focusPointShift.Y) / (1 - (2 * focusPointShift.Y));
+                var area = FocusAreas[i];
+                if (i >= cameraAreas.Boxes.Count)
+                {
+                    area.Hide();
+                    continue;
+                }
+
+                area.Update(cameraAreas.Boxes[i], frame.ImageRect);
             }
 
-            x1 = x1 * frame.ImageRect.Width;
-            x2 = x2 * frame.ImageRect.Width;
-            y1 = y1 * frame.ImageRect.Height;
-            y2 = y2 * frame.ImageRect.Height;
-
-            var iW = LiveView.ActualWidth;
-            var iH = LiveView.ActualHeight;
-
-            FocusPoint.Margin = new Thickness(frame.ImageRect.X + x1, frame.ImageRect.Y + y1, iW - frame.ImageRect.X - x2, iH - frame.ImageRect.Y - y2);
-            var t = FocusPoint.StrokeThickness;
-            FocusPointGeometry.Transform = new CompositeTransform
-            {
-                ScaleX = x2 - x1 - t,
-                ScaleY = y2 - y1 - t,
-                TranslateX = t / 2,
-                TranslateY = t / 2
-            };
-            FocusPoint.Visibility = Visibility.Visible;
+            FocusAreasControl.Visibility = Visibility.Visible;
         }
 
         private void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
