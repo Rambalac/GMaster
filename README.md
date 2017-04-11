@@ -7,6 +7,8 @@ And if something is wrong or not enough I can fix it much much faster than Panas
 
 App is free and has no ad. You can install it from [MS Store](https://www.microsoft.com/store/apps/9NC2W8KC526F) or from [Project Release page](https://github.com/Rambalac/GMaster/releases/latest)
 
+[Manual](/Manual.md) (incomplete)
+
 ## Features
 * Fullscreen camera liveview. Split screen and new windows for multiple cameras.
 * LUT preview. Per camera setting.
