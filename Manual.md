@@ -1,7 +1,7 @@
 # Manual
 ## Camera connect
 There are two supported ways to connect camera.
-### Camera Access Point
+### 1. Camera Access Point
 If your device has WiFi you can set camera as WiFi access point and connect device to it. This way works only for single camera.
 If your device has no WiFi, like PC, you can use another way.
 
@@ -14,7 +14,7 @@ If your device has no WiFi, like PC, you can use another way.
 * Tap **Connect WiFi**.
 * In the right list tap Camera's access point to connect.
 * If you want to conneect to this Camera always automatically when you setup Camera as access point, tap *plus* icon.
-### Common access point
+### 2. Common access point
 You can use your home/office WiFi access point or setup this device or another device as mobile hotspot. 
 This way works with multiple camers.
 
