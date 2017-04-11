@@ -1,1 +1,1 @@
-H:\Projects\C#\GMaster\GMaster\bin\ARM\Release\Upload\GMaster_1.7.0.0\GMaster_1.7.0.0_x86_x64_arm.appxbundle
+H:\Projects\C#\GMaster\GMaster\bin\ARM\Release\Upload\GMaster_1.7.1.0\GMaster_1.7.1.0_x86_x64_arm.appxbundle
