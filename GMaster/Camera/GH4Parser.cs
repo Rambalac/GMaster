@@ -62,7 +62,7 @@
             result.FlashModes = ToMenuItems(photosettings["menu_item_id_flash"]);
 
             result.Angles = ToMenuItems(qmenu["menu_item_id_f_and_ss_angle"]);
-            result.ExposureShifts = ToMenuItems(qmenu["menu_item_id_exposure2"]);
+            result.ExposureShifts = ToMenuItems(qmenu["menu_item_id_exposure3"] ?? qmenu["menu_item_id_exposure2"]);
             result.AutofocusModes = ToMenuItems(qmenu["menu_item_id_afmode"]);
             result.CustomMultiModes = ToMenuItems(qmenu["menu_item_id_afmode"].Items["menu_item_id_afmode_custom_multi"]);
             result.IsoValues = ToMenuItems(qmenu["menu_item_id_sensitivity"]);

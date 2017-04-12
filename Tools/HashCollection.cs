@@ -24,11 +24,14 @@
 
         public bool IsReadOnly => false;
 
-        public TItem this[string index] => dictionary.TryGetValue(index, out var value) ? value : throw new KeyNotFoundException("Key not found: " + index);
+        public TItem this[string index] => dictionary.TryGetValue(index, out var value) ? value : default(TItem);
 
         public virtual void Add(TItem item)
         {
-            dictionary.Add(item.Id, item);
+            if (!dictionary.ContainsKey(item.Id))
+            {
+                dictionary.Add(item.Id, item);
+            }
         }
 
         public virtual void Clear()

@@ -134,16 +134,16 @@
             return Math.Pow(2, bin / 512.0).ToString("F1", CultureInfo.InvariantCulture);
         }
 
-        public static CameraParser TryParseMenuSet(RawMenuSet resultMenuSet, string lang, out MenuSet menuset)
+        public static CameraParser TryParseMenuSet(RawMenuSet resultMenuSet, string lang, out MenuSet menuset, CameraParser[] parsers = null)
         {
-            var parsers = new CameraParser[]
+            var innerParsers = parsers ?? new CameraParser[]
             {
                 new GH4Parser(),
                 new GH3Parser()
             };
 
             var exceptions = new List<Exception>();
-            foreach (var p in parsers)
+            foreach (var p in innerParsers)
             {
                 try
                 {
