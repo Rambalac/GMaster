@@ -33,7 +33,11 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 * GX85 - As some people reported App cannot connect. Hopefull v 1.6.0 fixes that.
 
 ## News
-※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users .
+※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+#### 2017-04-12
+Pushed version 1.7.3 to MS Store
+
+* Added workaround for wrong XML returned by at least GH5. XML response contains duplicated ids.
 #### 2017-04-10
 Pushed version 1.7.0 to MS Store
 
