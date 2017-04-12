@@ -10,7 +10,7 @@
     using Windows.ApplicationModel;
     using Xunit;
 
-    public class MenuSetHelperTestsGh3
+    public class MenuSetHelperTests
     {
         private MenuSet menuset;
 
@@ -52,6 +52,5 @@
             Assert.Equal(2, menuset.LiveviewQuality.Count);
             Assert.True(menuset.LiveviewQuality.Any(q => q.Value == "vga"));
         }
-
     }
 }
