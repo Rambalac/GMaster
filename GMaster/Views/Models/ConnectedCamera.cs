@@ -9,10 +9,10 @@
 
     public class ConnectedCamera : INotifyPropertyChanged
     {
+        private Lumix camera;
         private bool isAspectAnamorphingVideoOnly;
         private string selectedAspect;
         private LutInfo selectedLut;
-        private Lumix camera;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,17 +28,6 @@
             }
         }
 
-        private void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Lumix.IsConnecting))
-            {
-                var task = Model.RunAsync(() =>
-                  {
-                      OnPropertyChanged(nameof(IsConnecting));
-                  });
-            }
-        }
-
         public IEnumerable<LutInfo> InstalledLuts => new[] { new LutInfo { Id = null, Title = string.Empty } }.Concat(Model.InstalledLuts);
 
         public bool IsAspectAnamorphingVideoOnly
@@ -51,6 +40,8 @@
                 OnPropertyChanged();
             }
         }
+
+        public bool IsConnecting => Camera.IsConnecting;
 
         public bool IsRemembered => Settings.GeneralSettings.Cameras.Contains(Settings);
 
@@ -83,9 +74,7 @@
 
         public CameraSettings Settings { get; set; }
 
-        public string Udn => Camera.Udn;
-
-        public bool IsConnecting => Camera.IsConnecting;
+        public string Udn => Camera.Uuid;
 
         public void Add()
         {
@@ -103,6 +92,17 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Lumix.IsConnecting))
+            {
+                var task = Model.RunAsync(() =>
+                  {
+                      OnPropertyChanged(nameof(IsConnecting));
+                  });
+            }
         }
     }
 }

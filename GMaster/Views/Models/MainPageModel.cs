@@ -81,6 +81,8 @@
         public ObservableCollection<ConnectedCamera> ConnectedCameras { get; } =
             new ObservableCollection<ConnectedCamera>();
 
+        public string ConnectedWiFi => wifi.ConnectedWiFi;
+
         public CoreDispatcher Dispatcher { get; set; }
 
         public Donations Donations { get; } = new Donations();
@@ -243,8 +245,6 @@
 
         public bool WiFiPresent => wifi.Present;
 
-        public string ConnectedWiFi => wifi.ConnectedWiFi;
-
         public void AddConnectableDevice(DeviceInfo device)
         {
             ConnectableDevices.Add(device);
@@ -257,9 +257,9 @@
         public ConnectedCamera AddConnectedDevice(Lumix lumix)
         {
             ConnectableDevices.Remove(lumix.Device);
-            if (!GeneralSettings.Cameras.TryGetValue(lumix.Udn, out var settings))
+            if (!GeneralSettings.Cameras.TryGetValue(lumix.Uuid, out var settings))
             {
-                settings = new CameraSettings(lumix.Udn);
+                settings = new CameraSettings(lumix.Uuid);
             }
 
             settings.GeneralSettings = GeneralSettings;
@@ -314,6 +314,11 @@
             {
                 InstalledLuts.Add(await LutInfo.LoadfromFile(file));
             }
+        }
+
+        public async Task RunAsync(Action action)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }
 
         public void ShowCamera(ConnectedCamera eClickedItem)
@@ -432,18 +437,13 @@
         private void Lumix_Disconnected(Lumix lumix, bool stillAvailbale)
         {
             lumix.Disconnected -= Lumix_Disconnected;
-            ConnectedCameras.Remove(ConnectedCameras.Single(c => c.Udn == lumix.Udn));
+            ConnectedCameras.Remove(ConnectedCameras.Single(c => c.Udn == lumix.Uuid));
             if (stillAvailbale)
             {
                 AddConnectableDevice(lumix.Device);
             }
 
             OnCameraDisconnected(lumix);
-        }
-
-        public async Task RunAsync(Action action)
-        {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
         }
 
         private void Wifi_AccessPointsUpdated(IList<WiFiAvailableNetwork> obj)
@@ -463,6 +463,7 @@
                       case nameof(WiFiHelper.Present):
                           OnPropertyChanged(nameof(WiFiPresent));
                           break;
+
                       case nameof(WiFiHelper.ConnectedWiFi):
                           OnPropertyChanged(nameof(ConnectedWiFi));
                           break;

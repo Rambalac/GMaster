@@ -1,12 +1,11 @@
-﻿using GMaster.Views.Models;
-
-namespace GMaster
+﻿namespace GMaster
 {
     using System;
     using System.Threading.Tasks;
     using Logger;
     using Tools;
     using Views;
+    using Views.Models;
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
     using Windows.ApplicationModel.Resources;

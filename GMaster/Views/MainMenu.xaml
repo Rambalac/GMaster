@@ -12,7 +12,7 @@
         <commands:FeedbackCommand x:Key="FeedbackCommand" />
         <commands:AboutCommand x:Key="AboutCommand" />
         <commands:CameraDisconnectCommand x:Key="CameraDisconnectCommand" />
-        <DataTemplate x:Key="CameraItemTemplate" x:DataType="views:ConnectedCamera">
+        <DataTemplate x:Key="CameraItemTemplate" x:DataType="models:ConnectedCamera">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

@@ -154,13 +154,13 @@ namespace GMaster.Camera
             DeviceDiscovered?.Invoke(obj);
         }
 
-        private void Camera_Disconnected(Lumix obj, bool stillAvailabe)
+        private void Camera_Disconnected(Lumix obj, bool stillAvailable)
         {
-            if (!stillAvailabe)
+            if (!stillAvailable)
             {
                 lock (foundDevices)
                 {
-                    foundDevices.Clear();
+                    foundDevices.Remove(obj.Device.Usn);
                 }
             }
 
@@ -197,7 +197,7 @@ namespace GMaster.Camera
                     return;
                 }
 
-                var dev = new DeviceInfo(info);
+                var dev = new DeviceInfo(info, arg.DiscoveredDevice.Usn);
                 OnDeviceDiscovered(dev);
             }
             catch (HttpRequestException e)

@@ -56,5 +56,15 @@ namespace GMaster.Camera
         {
             return (short)((this[i] << 8) + this[i + 1]);
         }
+
+        public ushort ToUShort(int i)
+        {
+            return (ushort)((this[i] << 8) + this[i + 1]);
+        }
+
+        public object ToInt(int i)
+        {
+            return (short)((this[i] << 24) + (this[i + 1] << 16) + (this[i + 2] << 8) + this[i + 3]);
+        }
     }
 }

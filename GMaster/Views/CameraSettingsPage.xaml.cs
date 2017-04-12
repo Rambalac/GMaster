@@ -1,9 +1,8 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-using GMaster.Views.Models;
-
 namespace GMaster.Views
 {
+    using Models;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 

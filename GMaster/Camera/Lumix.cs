@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace GMaster.Camera
+﻿namespace GMaster.Camera
 {
     using System;
     using System.Collections.Generic;
@@ -24,6 +22,9 @@ namespace GMaster.Camera
 
         private readonly SemaphoreSlim stateUpdatingSem = new SemaphoreSlim(1);
 
+        private readonly CancellationTokenSource connectCancellation = new CancellationTokenSource();
+        private bool firstconnect = true;
+        private bool isConnecting = true;
         private RecState recState = RecState.Unknown;
         private bool recStopSupported = true;
         private bool useNewTouchAF = true;
@@ -73,6 +74,16 @@ namespace GMaster.Camera
 
         public bool IsConnected { get; private set; }
 
+        public bool IsConnecting
+        {
+            get => isConnecting;
+            private set
+            {
+                isConnecting = value;
+                OnPropertyChanged(nameof(IsConnecting));
+            }
+        }
+
         public bool IsLimited => MenuSet == null;
 
         public bool IsVideoMode { get; private set; }
@@ -104,7 +115,7 @@ namespace GMaster.Camera
 
         public CameraState State { get; private set; }
 
-        public string Udn => Device.Uuid;
+        public string Uuid => Device.Uuid;
 
         public async Task<bool> Capture()
         {
@@ -168,23 +179,10 @@ namespace GMaster.Camera
             }
         }
 
-        private CancellationTokenSource connectCancellation = new CancellationTokenSource();
-
-        private bool isConnecting = true;
-
-        public bool IsConnecting
-        {
-            get => isConnecting;
-            private set
-            {
-                isConnecting = value;
-                OnPropertyChanged(nameof(IsConnecting));
-            }
-        }
-
         public async Task<bool> Connect(int liveviewport, string lang)
         {
             var token = connectCancellation.Token;
+            var connectStage = 0;
             try
             {
                 recStopSupported = !RecStopNotSupported.Contains(Device.ModelName);
@@ -194,10 +192,19 @@ namespace GMaster.Camera
                     {
                         await RequestAccess(token);
 
+                        connectStage = 1;
+
+                        await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
+
+                        connectStage = 2;
+
                         if (!await ReadMenuSet(lang))
                         {
+                            Log.Trace($"Camera connection failed on Stage {connectStage} for camera {Device.ModelName}");
                             return false;
                         }
+
+                        connectStage = 3;
 
                         token.ThrowIfCancellationRequested();
                         break;
@@ -208,19 +215,28 @@ namespace GMaster.Camera
                     }
                     catch (Exception ex)
                     {
+                        Log.Trace($"Camera connection failed on Stage {connectStage} for camera {Device.ModelName}");
                         Log.Error(ex);
                     }
 
                     await Task.Delay(1000, token);
-                } while (true);
+                }
+                while (true);
 
                 OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser);
                 OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
                 OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
 
+                connectStage = 4;
                 await SwitchToRec();
+
+                connectStage = 5;
                 await UpdateState();
+
+                connectStage = 6;
                 await ReadLensInfo();
+
+                connectStage = 7;
                 await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
 
                 IsConnected = true;
@@ -233,6 +249,7 @@ namespace GMaster.Camera
             }
             catch (Exception e)
             {
+                Log.Trace($"Camera connection failed on Stage {connectStage} for camera {Device.ModelName}");
                 Log.Error(e);
                 return false;
             }
@@ -258,7 +275,6 @@ namespace GMaster.Camera
                 {
                     Disconnected?.Invoke(this, false);
                 }
-
             }
             catch (Exception e)
             {
@@ -309,7 +325,7 @@ namespace GMaster.Camera
 
         public override int GetHashCode()
         {
-            return Udn?.GetHashCode() ?? 0;
+            return Uuid?.GetHashCode() ?? 0;
         }
 
         public async Task<bool> RecStart()
@@ -452,27 +468,56 @@ namespace GMaster.Camera
 
         internal async Task ProcessMessage(byte[] buf)
         {
-            var slice = new Slice(buf);
-            var imageStart = slice.ToShort(30) + 32;
-
-            if (LiveViewUpdated != null && imageStart > 60 && imageStart < buf.Length - 100 && buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 && buf[buf.Length - 2] == 0xff && buf[buf.Length - 1] == 0xd9)
+            try
             {
-                CameraPoint? size = null;
-                foreach (var ev in LiveViewUpdated.GetInvocationList())
+                if (OffFrameProcessor == null)
                 {
-                    size = await ((Func<ArraySegment<byte>, Task<CameraPoint?>>)ev)(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
+                    return;
                 }
 
-                if (size != null)
+                var slice = new Slice(buf);
+
+                var imageStart = OffFrameProcessor.CalcImageStart(slice);
+
+                if (LiveViewUpdated != null && imageStart > 60 && imageStart < buf.Length - 100 &&
+                    buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 && buf[buf.Length - 2] == 0xff &&
+                    buf[buf.Length - 1] == 0xd9)
                 {
-                    OffFrameProcessor?.Process(new Slice(slice, 0, imageStart), size.Value);
+                    CameraPoint? size = null;
+                    foreach (var ev in LiveViewUpdated.GetInvocationList())
+                    {
+                        size =
+                            await ((Func<ArraySegment<byte>, Task<CameraPoint?>>)ev)(
+                                new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
+                    }
+
+                    if (size != null)
+                    {
+                        OffFrameProcessor.Process(new Slice(slice, 0, imageStart), size.Value);
+                    }
+
+                    if (firstconnect)
+                    {
+                        firstconnect = false;
+                        Log.Trace($"Camera connected and got first frame {Device.ModelName}");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                if (firstconnect)
+                {
+                    firstconnect = false;
+                    Log.Trace($"Camera failed first frame {Device.ModelName}");
+                }
+
+                Log.Error(ex);
             }
         }
 
         protected bool Equals(Lumix other)
         {
-            return Equals(Udn, other.Udn);
+            return Equals(Uuid, other.Uuid);
         }
 
         [NotifyPropertyChangedInvocator]
@@ -485,37 +530,6 @@ namespace GMaster.Camera
         protected virtual void OnSelfChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private async Task<bool> RequestAccess(CancellationToken token)
-        {
-            do
-            {
-                try
-                {
-                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
-                    if (str.StartsWith("<?xml"))
-                    {
-                        break;
-                    }
-
-                    var fields = str.Split(',');
-                    if (fields.FirstOrDefault() == "ok")
-                    {
-                        break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
-
-                await Task.Delay(1000, token);
-            }
-            while (true);
-
-            await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
-            return true;
         }
 
         private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -603,6 +617,36 @@ namespace GMaster.Camera
                 Log.Error(new Exception("Cannot parse MenuSet.\r\n" + allmenuString, ex));
                 return false;
             }
+        }
+
+        private async Task<bool> RequestAccess(CancellationToken token)
+        {
+            do
+            {
+                try
+                {
+                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
+                    if (str.StartsWith("<?xml"))
+                    {
+                        break;
+                    }
+
+                    var fields = str.Split(',');
+                    if (fields.FirstOrDefault() == "ok")
+                    {
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                }
+
+                await Task.Delay(1000, token);
+            }
+            while (true);
+
+            return true;
         }
 
         private async void StateTimer_Tick(object sender, object e)

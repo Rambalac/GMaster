@@ -1,11 +1,10 @@
-using GMaster.Views.Models;
-
 namespace GMaster.Views.Commands
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Logger;
+    using Models;
     using Tools;
     using Windows.Storage;
 

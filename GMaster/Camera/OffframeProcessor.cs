@@ -11,6 +11,19 @@ namespace GMaster.Camera
     using LumixData;
     using Tools;
 
+    public enum FocusAreaType
+    {
+        OneAreaSelected = 0x0001,
+        FaceOther = 0xff01,
+        MainFace = 0x0002,
+        Eye = 0xff09,
+        TrackUnlock = 0xff03,
+        TrackLock = 0x0003,
+
+        Box = 0xff02,
+        Cross = 0xff04
+    }
+
     public class OffFrameProcessor : INotifyPropertyChanged
     {
         private readonly string deviceName;
@@ -49,11 +62,16 @@ namespace GMaster.Camera
 
         public int Zoom { get; private set; }
 
+        public int CalcImageStart(Slice slice)
+        {
+            return slice.ToShort(30) + 32;
+        }
+
         public void Process(Slice slice, CameraPoint size)
         {
             try
             {
-                var state = new ProcessState(slice);
+                var state = new ProcessState(slice, GetMultiplier(slice));
 
                 if (!OffframeBytesSupported || slice.Length < 130)
                 {
@@ -181,6 +199,38 @@ namespace GMaster.Camera
             return val2 - value > value - val1 ? dict[val1] : dict[val2];
         }
 
+        private static int GetMultiplier(Slice slice)
+        {
+            return slice[46] == 0xff ? 12 : 16;
+        }
+
+        private FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
+        {
+            var pointsNum = slice[47];
+            var focusSlice = new Slice(slice, 48);
+            int multiplier = GetMultiplier(slice);
+            if (pointsNum > 0)
+            {
+                var result = new FocusAreas(pointsNum, size, slice[46] == 0xff);
+
+                for (var i = 0; i < pointsNum; i++)
+                {
+                    var x1 = focusSlice.ToShort(0 + (i * multiplier));
+                    var y1 = focusSlice.ToShort(2 + (i * multiplier));
+                    var x2 = focusSlice.ToShort(4 + (i * multiplier));
+                    var y2 = focusSlice.ToShort(6 + (i * multiplier));
+                    var typeval = (int)focusSlice.ToUShort(10 + (i * multiplier));
+                    var type = Enum.IsDefined(typeof(FocusAreaType), typeval) ? (FocusAreaType)typeval : FocusAreaType.FaceOther;
+                    var failed = focusSlice[9 + (i * multiplier)] == 0;
+                    result.AddBox(x1, y1, x2, y2, type, failed);
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+
         private TextBinValue GetFromShort(Slice slice, int index, IReadOnlyDictionary<int, string> dict)
         {
             var bin = slice.ToShort(index);
@@ -201,35 +251,13 @@ namespace GMaster.Camera
             }
         }
 
-        private FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
-        {
-            var pointsNum = slice[47];
-            if (pointsNum > 0)
-            {
-                var result = new FocusAreas(pointsNum, size, parser is GH4Parser);
-
-                for (var i = 0; i < pointsNum; i++)
-                {
-                    result.AddBox(
-                        slice.ToShort(48 + (i * 16)),
-                        slice.ToShort(50 + (i * 16)),
-                        slice.ToShort(52 + (i * 16)),
-                        slice.ToShort(54 + (i * 16)));
-                }
-
-                return result;
-            }
-
-            return null;
-        }
-
         private class ProcessState
         {
-            public ProcessState(Slice array)
+            public ProcessState(Slice array, int multiplier)
             {
                 Original = array;
 
-                Main = new Slice(array, Original[47] * 16);
+                Main = new Slice(array, Original[47] * multiplier);
             }
 
             public Slice Main { get; }

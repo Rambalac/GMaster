@@ -1,11 +1,10 @@
-using GMaster.Camera;
-
 namespace GMaster.Views
 {
     using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+    using Camera;
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Windows.Foundation;

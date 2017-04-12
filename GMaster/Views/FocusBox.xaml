@@ -7,38 +7,74 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300" 
-    d:DesignWidth="400" SizeChanged="FocusBox_OnSizeChanged">
+    d:DesignWidth="400">
+    <Canvas>
+        <Path x:Name="SelectPath">
+            <Path.Data>
+                <PathGeometry x:Name="SelectGeometry">
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="0,0.3">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0,0" />
+                                <LineSegment Point="0.3,0" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="1,0.3">
+                            <PathFigure.Segments>
+                                <LineSegment Point="1,0" />
+                                <LineSegment Point="0.7,0" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="0,0.7">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0,1" />
+                                <LineSegment Point="0.3,1" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="1,0.7">
+                            <PathFigure.Segments>
+                                <LineSegment Point="1,1" />
+                                <LineSegment Point="0.7,1" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
 
-    <Path>
-        <Path.Data>
-            <PathGeometry x:Name="FocusPointGeometry">
-                <PathGeometry.Figures>
-                    <PathFigure StartPoint="0,0.3">
-                        <PathFigure.Segments>
-                            <LineSegment Point="0,0" />
-                            <LineSegment Point="0.3,0" />
-                        </PathFigure.Segments>
-                    </PathFigure>
-                    <PathFigure StartPoint="1,0.3">
-                        <PathFigure.Segments>
-                            <LineSegment Point="1,0" />
-                            <LineSegment Point="0.7,0" />
-                        </PathFigure.Segments>
-                    </PathFigure>
-                    <PathFigure StartPoint="0,0.7">
-                        <PathFigure.Segments>
-                            <LineSegment Point="0,1" />
-                            <LineSegment Point="0.3,1" />
-                        </PathFigure.Segments>
-                    </PathFigure>
-                    <PathFigure StartPoint="1,0.7">
-                        <PathFigure.Segments>
-                            <LineSegment Point="1,1" />
-                            <LineSegment Point="0.7,1" />
-                        </PathFigure.Segments>
-                    </PathFigure>
-                </PathGeometry.Figures>
-            </PathGeometry>
-        </Path.Data>
-    </Path>
+        <Path x:Name="BoxPath" Stroke="Gold">
+            <Path.Data>
+                <PathGeometry x:Name="BoxGeometry">
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="0,0" IsClosed="True">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0,0" />
+                                <LineSegment Point="1,0" />
+                                <LineSegment Point="1,1" />
+                                <LineSegment Point="0,1" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Path x:Name="CrossPath" Stroke="White">
+            <Path.Data>
+                <PathGeometry x:Name="CrossGeometry">
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="0.5,0">
+                            <PathFigure.Segments>
+                                <LineSegment Point="0.5,1" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                        <PathFigure StartPoint="0,0.5">
+                            <PathFigure.Segments>
+                                <LineSegment Point="1,0.5" />
+                            </PathFigure.Segments>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+    </Canvas>
 </UserControl>

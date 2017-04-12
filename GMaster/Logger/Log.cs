@@ -29,6 +29,11 @@
         }
 
         [Conditional("DEBUG")]
+        public static void DebugTrace(string str)
+        {
+            HockeyClient.Current.TrackTrace(str, SeverityLevel.Information);
+        }
+
         public static void Trace(string str)
         {
             HockeyClient.Current.TrackTrace(str, SeverityLevel.Information);

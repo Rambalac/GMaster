@@ -1,8 +1,7 @@
-using GMaster.Views.Models;
-
 namespace GMaster.Views
 {
     using System;
+    using Models;
     using Windows.ApplicationModel.Core;
     using Windows.UI.Core;
     using Windows.UI.ViewManagement;

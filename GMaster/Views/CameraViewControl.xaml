@@ -20,21 +20,15 @@
 
             <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}, Mode=TwoWay}">
                 <xaml:CanvasControl x:Name="LiveView" Draw="LiveView_OnDraw" />
-                <ItemsControl ItemsSource="{Binding FocusAreas}" x:Name="FocusAreasControl">
+                <ItemsControl ItemsSource="{x:Bind FocusAreas}" x:Name="FocusAreasControl">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}"/>
-                            <Setter Property="Canvas.Top" Value="{Binding Height, Mode=TwoWay}"/>
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:FocusArea">
-                            <local:FocusBox Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}" Visibility="{Binding Visible, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}"/>
+                            <local:FocusBox Rect="{Binding Rect, Mode=TwoWay}" Props="{Binding Props, Mode=TwoWay}" StrokeThickness="3" Visibility="{Binding Visible, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

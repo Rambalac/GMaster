@@ -1,8 +1,7 @@
-﻿using GMaster.Views.Models;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
     using System.Threading.Tasks;
+    using Models;
     using Tools;
 
     public class ConnectCommand : AbstractModelCommand<MainPageModel>

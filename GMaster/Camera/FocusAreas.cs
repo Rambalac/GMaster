@@ -20,20 +20,26 @@ namespace GMaster.Camera
         {
             Fixed = fix;
             boxes = new List<Box>(number);
-            var intaspect = size.X * 10 / size.Y;
-            focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : FocusPointShifts[13];
+            if (fix)
+            {
+                var intaspect = size.X * 10 / size.Y;
+                focusPointShift = FocusPointShifts.TryGetValue(intaspect, out var val) ? val : FocusPointShifts[13];
+            }
         }
 
         public IReadOnlyList<Box> Boxes => boxes;
 
         public bool Fixed { get; }
 
-        public void AddBox(int x1, int y1, int x2, int y2)
+        public void AddBox(int x1, int y1, int x2, int y2, FocusAreaType type, bool failed)
         {
-            var box = new Box(x1, y1, x2, y2);
+            var box = new Box(x1, y1, x2, y2, type, failed);
             hashcode = (hashcode * 397) ^ box.GetHashCode();
             box.Fix(focusPointShift);
-            boxes.Add(box);
+            if (box.X1 >= 0 && box.X1 <= 1 && box.X2 >= 0 && box.X2 <= 1 && box.Y1 >= 0 && box.Y1 <= 1 && box.Y1 >= 0 && box.Y2 <= 1 && box.X2 >= box.X1 && box.Y2 >= box.Y1)
+            {
+                boxes.Add(box);
+            }
         }
 
         public override bool Equals(object obj)
@@ -65,6 +71,7 @@ namespace GMaster.Camera
 
         public class Box
         {
+            private readonly BoxProps props;
             private int x1;
             private int x2;
             private double xDivider = 1000;
@@ -72,13 +79,17 @@ namespace GMaster.Camera
             private int y2;
             private double yDivider = 1000;
 
-            internal Box(int x1, int y1, int x2, int y2)
+            internal Box(int x1, int y1, int x2, int y2, FocusAreaType type, bool failed)
             {
                 this.x1 = x1;
                 this.y1 = y1;
                 this.x2 = x2;
                 this.y2 = y2;
+                props.Type = type;
+                props.Failed = failed;
             }
+
+            public BoxProps Props => props;
 
             public double X1 => x1 / xDivider;
 
@@ -105,17 +116,18 @@ namespace GMaster.Camera
                     return false;
                 }
 
-                return Equals((FocusAreas)obj);
+                return Equals((Box)obj);
             }
 
             public override int GetHashCode()
             {
                 unchecked
                 {
-                    var hashCode = X1.GetHashCode();
-                    hashCode = (hashCode * 397) ^ X2.GetHashCode();
-                    hashCode = (hashCode * 397) ^ Y1.GetHashCode();
-                    hashCode = (hashCode * 397) ^ Y2.GetHashCode();
+                    var hashCode = props.GetHashCode();
+                    hashCode = (hashCode * 397) ^ x1;
+                    hashCode = (hashCode * 397) ^ x2;
+                    hashCode = (hashCode * 397) ^ y1;
+                    hashCode = (hashCode * 397) ^ y2;
                     return hashCode;
                 }
             }
@@ -127,13 +139,43 @@ namespace GMaster.Camera
                 y1 -= p.Y;
                 y2 -= p.Y;
 
-                xDivider -= p.X * 2;
-                yDivider -= p.Y * 2;
+                xDivider = 1000 - (p.X * 2);
+                yDivider = 1000 - (p.Y * 2);
             }
 
             protected bool Equals(Box other)
             {
-                return Equals(X1, other.X1) && Equals(X2, other.X2) && Equals(Y1, other.Y1) && Equals(Y2, other.Y2);
+                return props.Equals(other.props) && x1 == other.x1 && x2 == other.x2 && y1 == other.y1 && y2 == other.y2;
+            }
+
+            public struct BoxProps
+            {
+                public bool Failed { get; internal set; }
+
+                public FocusAreaType Type { get; internal set; }
+
+                public bool Equals(BoxProps other)
+                {
+                    return Failed == other.Failed && Type == other.Type;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj))
+                    {
+                        return false;
+                    }
+
+                    return obj is BoxProps && Equals((BoxProps)obj);
+                }
+
+                public override int GetHashCode()
+                {
+                    unchecked
+                    {
+                        return (Failed.GetHashCode() * 397) ^ (int)Type;
+                    }
+                }
             }
         }
     }

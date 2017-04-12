@@ -1,16 +1,15 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-using System.Linq;
-using GMaster.Views.Models;
-
 namespace GMaster.Views
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using Camera;
     using Camera.LumixData;
     using Microsoft.Graphics.Canvas.UI.Xaml;
+    using Models;
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Foundation;
     using Windows.UI.Core;
@@ -28,7 +27,6 @@ namespace GMaster.Views
         private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(100);
 
         private double aspect = 1;
-        private Point focusPointShift;
         private bool is43;
         private Lumix lastCamera;
         private double lastExpansion;
@@ -244,18 +242,16 @@ namespace GMaster.Views
                 return;
             }
 
-            var cameraAreas = Model.FocusAreas;
-
             for (var i = 0; i < FocusAreas.Length; i++)
             {
                 var area = FocusAreas[i];
-                if (i >= cameraAreas.Boxes.Count)
+                if (i >= focusAreas.Boxes.Count)
                 {
                     area.Hide();
                     continue;
                 }
 
-                area.Update(cameraAreas.Boxes[i], frame.ImageRect);
+                area.Update(focusAreas.Boxes[i], frame.ImageRect);
             }
 
             FocusAreasControl.Visibility = Visibility.Visible;

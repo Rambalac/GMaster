@@ -4,8 +4,9 @@ namespace GMaster.Camera
 
     public class DeviceInfo
     {
-        internal DeviceInfo(SsdpRootDevice dev)
+        internal DeviceInfo(SsdpRootDevice dev, string usn)
         {
+            Usn = usn;
             Uuid = dev.Uuid;
             Host = dev.Location.Host;
             FriendlyName = dev.FriendlyName;
@@ -17,6 +18,8 @@ namespace GMaster.Camera
         public string Host { get; }
 
         public string ModelName { get; }
+
+        public string Usn { get; }
 
         public string Uuid { get; }
     }

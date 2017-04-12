@@ -8,41 +8,50 @@ namespace GMaster.Views.Models
 
     public class FocusArea : INotifyPropertyChanged
     {
+        private bool visible;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public double Height { get; private set; }
+        public FocusAreas.Box.BoxProps Props { get; set; }
 
-        public double Width { get; private set; }
+        public Rect Rect { get; set; }
 
-        public double Left { get; private set; }
+        public bool Visible
+        {
+            get => visible;
+            set
+            {
+                if (value == visible)
+                {
+                    return;
+                }
 
-        public double Top { get; private set; }
-
-        public bool Visible { get; private set; }
+                visible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void Hide()
         {
-            var old = Visible;
             Visible = false;
-            if (old != Visible)
-            {
-                OnPropertyChanged(nameof(Visible));
-            }
         }
 
         public void Update(FocusAreas.Box box, Rect image)
         {
             Visible = true;
-            Left = image.Left + (box.X1 * image.Width);
-            Top = image.Top + (box.Y1 * image.Height);
-            Width = (box.X2 - box.X1) * image.Width;
-            Height = (box.Y2 - box.Y1) * image.Height;
+            Rect = new Rect(
+                image.Left + (box.X1 * image.Width),
+                image.Top + (box.Y1 * image.Height),
+                (box.X2 - box.X1) * image.Width,
+                (box.Y2 - box.Y1) * image.Height);
 
-            OnPropertyChanged(nameof(Height));
-            OnPropertyChanged(nameof(Width));
-            OnPropertyChanged(nameof(Left));
-            OnPropertyChanged(nameof(Top));
-            OnPropertyChanged(nameof(Visible));
+            OnPropertyChanged(nameof(Rect));
+
+            if (!Equals(Props, box.Props))
+            {
+                Props = box.Props;
+                OnPropertyChanged(nameof(Props));
+            }
         }
 
         [NotifyPropertyChangedInvocator]
