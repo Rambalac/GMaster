@@ -114,14 +114,7 @@
     <Compile Include="AbstractParameterModelCommand.cs" />
     <Compile Include="AbstractSimpleCommand.cs" />
     <Compile Include="AbstractSimpleParameterCommand.cs" />
-    <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="Debug.cs" />
-    <Compile Include="EnumExceptionAttribute.cs" />
-    <Compile Include="EnumToValue.cs" />
-    <Compile Include="EnumValueAttribute.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HashCollection.cs" />
-    <Compile Include="IStringIdItem.cs" />
     <Compile Include="IObservableHashCollection.cs" />
     <Compile Include="NotifyProperty.cs" />
     <Compile Include="ObservableHashCollection.cs" />
@@ -129,8 +122,13 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsContainer.cs" />
-    <Compile Include="ValueToEnum.cs" />
     <EmbeddedResource Include="Properties\Tools.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{6FA17036-459D-4967-A31B-8E8C7264E497}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

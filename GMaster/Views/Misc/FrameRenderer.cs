@@ -4,7 +4,8 @@ namespace GMaster.Views
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-    using Camera;
+    using Core.Camera;
+    using Core.Tools;
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Windows.Foundation;
@@ -96,9 +97,16 @@ namespace GMaster.Views
                     {
                         var task = Task.Run(() =>
                         {
-                            lock (frameDrawLock)
+                            try
                             {
-                                oldframe.Dispose();
+                                lock (frameDrawLock)
+                                {
+                                    oldframe.Dispose();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error(new Exception("Frame dispose failed", ex));
                             }
                         });
                     }

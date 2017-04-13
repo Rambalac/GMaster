@@ -10,9 +10,8 @@
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
-    using Camera;
-    using Logger;
-    using Tools;
+    using Core.Camera;
+    using Core.Tools;
     using Windows.ApplicationModel;
     using Windows.Devices.WiFi;
     using Windows.UI.Core;
@@ -30,10 +29,11 @@
         private GridLength secondRowHeight = new GridLength(0);
         private DeviceInfo selectedDevice;
         private SplitMode splitMode;
+        private Network network = new Network();
 
         public MainPageModel()
         {
-            LumixManager = new LumixManager(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            LumixManager = new LumixManager(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, network);
 
             LumixManager.DeviceDiscovered += Lumix_DeviceDiscovered;
 
@@ -286,7 +286,7 @@
 
         public void ConnectCamera(DeviceInfo modelSelectedDevice)
         {
-            var lumix = new Lumix(modelSelectedDevice);
+            var lumix = new Lumix(modelSelectedDevice, new WindowsHttpClient());
             var connectedCamera = AddConnectedDevice(lumix);
             LumixManager.StartConnectCamera(lumix, result =>
             {

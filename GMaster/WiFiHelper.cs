@@ -9,12 +9,12 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Annotations;
-    using Logger;
-    using Tools;
+    using Core.Tools;
     using Windows.Devices.WiFi;
     using Windows.Security.Credentials;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Debug = System.Diagnostics.Debug;
 
     public class WiFiHelper : INotifyPropertyChanged
     {

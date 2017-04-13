@@ -2,8 +2,8 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Camera;
-    using Logger;
+    using Core.Camera;
+    using Core.Tools;
     using Models;
     using Tools;
 

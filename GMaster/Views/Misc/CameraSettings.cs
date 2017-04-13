@@ -1,5 +1,6 @@
 namespace GMaster.Views
 {
+    using Core.Tools;
     using Tools;
 
     public class CameraSettings : SettingsContainer, IStringIdItem

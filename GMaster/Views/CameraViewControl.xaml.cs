@@ -6,8 +6,8 @@ namespace GMaster.Views
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Camera;
-    using Camera.LumixData;
+    using Core.Camera;
+    using Core.Camera.LumixData;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Models;
     using Windows.ApplicationModel.DataTransfer;

@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
-    using Camera;
+    using Core.Camera;
 
     public class ConnectedCamera : INotifyPropertyChanged
     {

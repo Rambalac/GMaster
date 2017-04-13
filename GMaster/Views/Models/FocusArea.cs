@@ -3,7 +3,7 @@ namespace GMaster.Views.Models
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Annotations;
-    using Camera;
+    using Core.Camera;
     using Windows.Foundation;
 
     public class FocusArea : INotifyPropertyChanged

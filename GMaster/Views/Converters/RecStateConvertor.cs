@@ -1,7 +1,7 @@
 namespace GMaster.Views.Converters
 {
     using System;
-    using Camera;
+    using Core.Camera;
     using Windows.UI.Xaml.Data;
 
     public class RecStateConvertor : IValueConverter

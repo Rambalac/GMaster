@@ -107,19 +107,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Camera\CameraMenuItem256.cs" />
-    <Compile Include="Camera\CameraMode.cs" />
-    <Compile Include="Camera\CameraOrientation.cs" />
-    <Compile Include="Camera\CameraPoint.cs" />
-    <Compile Include="Camera\FocusAreas.cs" />
-    <Compile Include="Camera\FocusPosition.cs" />
-    <Compile Include="Camera\Http.cs" />
-    <Compile Include="Camera\LumixData\FocusMode.cs" />
-    <Compile Include="Camera\LumixData\FocusModeRequestResult.cs" />
-    <Compile Include="Camera\LumixError.cs" />
-    <Compile Include="Camera\OffFrameProcessor.cs" />
-    <Compile Include="Camera\Slice.cs" />
     <Compile Include="CubeLutParser.cs" />
+    <Compile Include="WindowsHttpClient.cs" />
     <Compile Include="Views\Commands\ForgetWiFiCommand.cs" />
     <Compile Include="Views\Converters\NullFalseConverter.cs" />
     <Compile Include="Views\Converters\NullTrueConverter.cs" />
@@ -130,36 +119,11 @@
     <Compile Include="Views\FocusBox.xaml.cs">
       <DependentUpon>FocusBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Models\DatagramSocket.cs" />
     <Compile Include="Views\Models\DebugCategoryEnable.cs" />
     <Compile Include="Donations.cs" />
-    <Compile Include="Camera\LumixData\ChangeDirection.cs" />
-    <Compile Include="Camera\ICameraMenuItem.cs" />
-    <Compile Include="Camera\LensInfo.cs" />
-    <Compile Include="Camera\LumixData\BaseRequestResult.cs" />
-    <Compile Include="Camera\LumixData\CameraState.cs" />
-    <Compile Include="Camera\LumixData\Item.cs" />
-    <Compile Include="Camera\LumixData\Language.cs" />
-    <Compile Include="Camera\LumixData\MenuHolder.cs" />
-    <Compile Include="Camera\LumixData\MenuSetRuquestResult.cs" />
-    <Compile Include="Camera\DeviceInfo.cs" />
-    <Compile Include="Camera\CameraMenuItemText.cs" />
-    <Compile Include="Camera\CameraParser.cs" />
-    <Compile Include="Camera\GH3Parser.cs" />
-    <Compile Include="Camera\GH4Parser.cs" />
-    <Compile Include="Camera\LumixData\OnOff.cs" />
-    <Compile Include="Camera\LumixData\RawMenuSet.cs" />
-    <Compile Include="Camera\LumixData\Title.cs" />
-    <Compile Include="Camera\LumixData\TitleList.cs" />
-    <Compile Include="Camera\LumixData\YesNo.cs" />
-    <Compile Include="Camera\MenuSet.cs" />
-    <Compile Include="Camera\RecState.cs" />
-    <Compile Include="Camera\TextBinValue.cs" />
-    <Compile Include="Camera\TitledList.cs" />
-    <Compile Include="Camera\TitledListExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ILutParser.cs" />
-    <Compile Include="Logger\Log.cs" />
-    <Compile Include="Camera\LumixManager.cs" />
     <Compile Include="Lut.cs" />
     <Compile Include="Views\Commands\DeleteLutCommand.cs" />
     <Compile Include="Views\Misc\ILutEffectGenerator.cs" />
@@ -188,9 +152,6 @@
     </Compile>
     <Compile Include="Views\Commands\CaptureCommand.cs" />
     <Compile Include="Views\Commands\ConnectCommand.cs" />
-    <Compile Include="Camera\Lumix.cs" />
-    <Compile Include="Camera\LumixException.cs" />
-    <Compile Include="Camera\LumixData\CameraStateRequestResult.cs" />
     <Compile Include="Views\Models\ConnectedCamera.cs" />
     <Compile Include="Views\Misc\LutInfo.cs" />
     <Compile Include="Views\Models\FocusArea.cs" />
@@ -211,6 +172,7 @@
     <Compile Include="Views\Converters\NotVisibilityConverter.cs" />
     <Compile Include="Views\Converters\RecStateConvertor.cs" />
     <Compile Include="Views\Converters\VisibilityConverter.cs" />
+    <Compile Include="Views\Models\Network.cs" />
     <Compile Include="Views\NewWindowsPage.xaml.cs">
       <DependentUpon>NewWindowsPage.xaml</DependentUpon>
     </Compile>
@@ -334,6 +296,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{6FA17036-459D-4967-A31B-8E8C7264E497}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{64d5f682-ccfc-4bcc-9268-dbc2a3e36b3c}</Project>
       <Name>Tools</Name>

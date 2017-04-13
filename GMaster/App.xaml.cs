@@ -2,8 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Logger;
-    using Tools;
+    using Core.Tools;
     using Views;
     using Views.Models;
     using Windows.ApplicationModel;
@@ -52,6 +51,8 @@
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", 500);
+
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
 
             if (MainModel != null)
@@ -109,6 +110,7 @@
 
                 default:
                     Log.Error(e.Exception);
+                    Log.Flush();
                     break;
             }
 
@@ -134,6 +136,8 @@
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            Log.Stop();
+
             var deferral = e.SuspendingOperation.GetDeferral();
             MainModel.StopListening();
             deferral.Complete();

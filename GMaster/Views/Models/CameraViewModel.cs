@@ -6,10 +6,10 @@
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
-    using Camera;
-    using Logger;
-    using Tools;
+    using Core.Camera;
+    using Core.Tools;
     using Windows.UI.Core;
+    using Debug = System.Diagnostics.Debug;
 
     public class CameraViewModel : INotifyPropertyChanged
     {

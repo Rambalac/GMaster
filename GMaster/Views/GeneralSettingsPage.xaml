@@ -45,6 +45,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <Button Content="Copy Log messages" Click="ButtonBase_OnClick"/> 
+        
         <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibilityConverter}}">
             <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded">
                 <ListView.ItemTemplate>

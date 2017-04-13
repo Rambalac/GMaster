@@ -4,9 +4,8 @@ namespace GMaster.Views
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using Logger;
+    using Core.Tools;
     using Newtonsoft.Json;
-    using Tools;
     using Windows.Storage;
     using Windows.Storage.Streams;
 

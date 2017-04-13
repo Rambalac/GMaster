@@ -1,6 +1,6 @@
 namespace GMaster.Views.Models
 {
-    using Tools;
+    using Core.Tools;
 
     public class DebugCategoryEnable
     {

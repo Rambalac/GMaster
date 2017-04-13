@@ -1,7 +1,7 @@
 namespace GMaster.Views.Commands
 {
     using System.Threading.Tasks;
-    using Camera;
+    using Core.Camera;
     using Tools;
 
     public class CameraDisconnectCommand : AbstractSimpleParameterCommand<Lumix>

@@ -3,7 +3,7 @@
 namespace GMaster.Views
 {
     using System;
-    using Camera.LumixData;
+    using Core.Camera.LumixData;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;

@@ -4,6 +4,7 @@
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
+    using GMaster.Core.Tools;
 
     public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection
         where TItem : IStringIdItem

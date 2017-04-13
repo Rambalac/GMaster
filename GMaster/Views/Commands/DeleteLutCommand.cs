@@ -3,7 +3,7 @@ namespace GMaster.Views.Commands
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Logger;
+    using Core.Tools;
     using Models;
     using Tools;
     using Windows.Storage;

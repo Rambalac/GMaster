@@ -3,7 +3,7 @@
 namespace GMaster.Views
 {
     using System.Collections.Generic;
-    using Camera;
+    using Core.Camera;
     using Windows.Foundation;
     using Windows.UI;
     using Windows.UI.Xaml;
