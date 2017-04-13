@@ -34,6 +34,12 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+#### 2017-04-14
+Pushed version 1.7.5 to MS Store
+
+* Fixes for Lumix G80.
+* Connection fixes for reconnect on network problems.
+* Better logging.
 #### 2017-04-12
 Pushed version 1.7.3 to MS Store
 
