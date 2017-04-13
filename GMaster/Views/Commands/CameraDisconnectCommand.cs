@@ -11,7 +11,11 @@ namespace GMaster.Views.Commands
 
         protected override async Task InternalExecute(ConnectedCamera parameter)
         {
-            await parameter.Camera.Disconnect();
+            var camera = parameter.Camera;
+            if (camera != null)
+            {
+                await camera.Disconnect();
+            }
         }
     }
 }

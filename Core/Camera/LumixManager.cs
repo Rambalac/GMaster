@@ -173,8 +173,8 @@ namespace GMaster.Core.Camera
                     foundDevices.Remove(usn + host);
                     Debug.WriteLine("Undiscovered: " + usn, "Discovery");
                 }
-                Debug.WriteLine("Remove listener: " + host, "UDP");
 
+                Debug.WriteLine("Remove listener: " + host, "UDP");
             }
             else
             {
