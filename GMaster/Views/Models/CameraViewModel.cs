@@ -356,7 +356,7 @@
                   {
                       OnPropertyChanged(nameof(IsConnectionActive));
 
-                      if (selectedCamera.Camera != null)
+                      if (selectedCamera?.Camera != null)
                       {
                           selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
                           selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;

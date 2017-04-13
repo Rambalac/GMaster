@@ -275,6 +275,7 @@
             connectCancellation.Cancel();
             connectCancellation.Dispose();
             http.Dispose();
+            stateTimer.Dispose();
         }
 
         public override bool Equals(object obj)
@@ -663,8 +664,9 @@
 
                     stateFiledTimes = 0;
                 }
-                catch (LumixException)
+                catch (LumixException ex)
                 {
+                    Debug.WriteLine(ex);
                     await Disconnect(false);
                 }
                 catch (Exception)

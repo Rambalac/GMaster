@@ -407,28 +407,36 @@
                 {
                     try
                     {
-                        var camerafound = false;
-                        var cameraauto = false;
-                        if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
+                        var existing = ConnectableDevices.SingleOrDefault(d => d.Uuid == dev.Uuid);
+                        if (existing == null)
                         {
-                            cameraauto = settings.Autoconnect;
-                            camerafound = true;
-                        }
-
-                        if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
-                        {
-                            try
+                            var camerafound = false;
+                            var cameraauto = false;
+                            if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
                             {
-                                ConnectCamera(dev);
+                                cameraauto = settings.Autoconnect;
+                                camerafound = true;
                             }
-                            catch (Exception e)
+
+                            if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
                             {
-                                Log.Error(e);
+                                try
+                                {
+                                    ConnectCamera(dev);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.Error(e);
+                                }
+                            }
+                            else
+                            {
+                                AddConnectableDevice(dev);
                             }
                         }
                         else
                         {
-                            AddConnectableDevice(dev);
+                            ConnectCamera(dev);
                         }
                     }
                     catch (Exception ex)

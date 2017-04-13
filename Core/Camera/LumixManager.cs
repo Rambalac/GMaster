@@ -173,11 +173,14 @@ namespace GMaster.Core.Camera
                     foundDevices.Remove(usn + host);
                     Debug.WriteLine("Undiscovered: " + usn, "Discovery");
                 }
-            }
+                Debug.WriteLine("Remove listener: " + host, "UDP");
 
-            Debug.WriteLine("Remove listener: " + host, "UDP");
-            ipToLumix.TryRemove(host, out _);
-            usnToLumix.TryRemove(usn, out _);
+            }
+            else
+            {
+                ipToLumix.TryRemove(host, out _);
+                usnToLumix.TryRemove(usn, out _);
+            }
         }
 
         private async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
@@ -217,7 +220,11 @@ namespace GMaster.Core.Camera
 
                 if (usnToLumix.TryGetValue(usn, out var oldcamera))
                 {
-                    await oldcamera.Disconnect();
+                    await oldcamera.Disconnect(false);
+                    lock (foundDevices)
+                    {
+                        foundDevices.Add(usn + host);
+                    }
                 }
 
                 var dev = new DeviceInfo(info, usn);
