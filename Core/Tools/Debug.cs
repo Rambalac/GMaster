@@ -29,7 +29,7 @@
         [Conditional("DEBUG")]
         public static void WriteLine(string message, string category)
         {
-            if (CategoryEnabled.GetOrAdd(category, true))
+            if (category == null || CategoryEnabled.GetOrAdd(category, true))
             {
                 System.Diagnostics.Debug.WriteLine(message);
             }

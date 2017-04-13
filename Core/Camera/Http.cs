@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
     using LumixData;
@@ -32,11 +33,11 @@
             camcgi.Dispose();
         }
 
-        public async Task<TResponse> Get<TResponse>(string path)
+        public async Task<TResponse> Get<TResponse>(string path, CancellationToken? token = null)
                     where TResponse : BaseRequestResult
         {
             var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri))
+            using (var response = await camcgi.GetAsync(uri, token ?? CancellationToken.None))
             {
                 using (var content = await response.GetContent())
                 {
@@ -76,10 +77,10 @@
             return await Get<TResponse>("?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)));
         }
 
-        public async Task<string> GetString(string path)
+        public async Task<string> GetString(string path, CancellationToken? token = null)
         {
             var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri))
+            using (var response = await camcgi.GetAsync(uri, token ?? CancellationToken.None))
             {
                 using (var content = await response.GetContent())
                 {
@@ -91,15 +92,6 @@
 
                     return str;
                 }
-            }
-        }
-
-        private static async Task<TResponse> ReadResponse<TResponse>(IHttpClientResponse response)
-        {
-            using (var content = await response.GetContent())
-            {
-                var serializer = new XmlSerializer(typeof(TResponse));
-                return (TResponse)serializer.Deserialize(content);
             }
         }
     }

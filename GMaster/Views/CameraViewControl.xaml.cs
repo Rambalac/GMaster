@@ -28,7 +28,7 @@ namespace GMaster.Views
 
         private double aspect = 1;
         private bool is43;
-        private Lumix lastCamera;
+        private Lumix currentLumix;
         private double lastExpansion;
         private ConnectedCamera lastSelectedCamera;
         private DateTime lastSkipable;
@@ -136,6 +136,15 @@ namespace GMaster.Views
             if (Lumix != null)
             {
                 lastExpansion += args.Delta.Expansion;
+
+                var now = DateTime.UtcNow;
+                if (now - lastSkipable < skipableInterval)
+                {
+                    return;
+                }
+
+                lastSkipable = now;
+
                 if (Math.Abs(lastExpansion) > 32)
                 {
                     var sig = Math.Sign(lastExpansion);
@@ -145,13 +154,6 @@ namespace GMaster.Views
 
                 if (Math.Abs(args.Delta.Expansion) < 0.001)
                 {
-                    var now = DateTime.UtcNow;
-                    if (now - lastSkipable < skipableInterval)
-                    {
-                        return;
-                    }
-
-                    lastSkipable = now;
                     await MoveFocusPoint(args.Position.X, args.Position.Y);
                 }
             }
@@ -164,7 +166,7 @@ namespace GMaster.Views
 
         private void LiveView_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            if (Model.SelectedCamera != null)
+            if (Model.SelectedCamera?.Camera != null)
             {
                 var drawaspect = aspect;
                 if (Model.SelectedCamera.IsAspectAnamorphingVideoOnly &&
@@ -194,20 +196,11 @@ namespace GMaster.Views
                         lastSelectedCamera.PropertyChanged += SelectedCamera_PropertyChanged;
                     }
 
+                    frame.Reset();
                     var newcamera = Model?.SelectedCamera?.Camera;
-                    if (!ReferenceEquals(newcamera, lastCamera))
+                    if (!ReferenceEquals(newcamera, currentLumix))
                     {
-                        if (lastCamera != null)
-                        {
-                            lastCamera.LiveViewUpdated -= Camera_LiveViewUpdated;
-                        }
-
-                        lastCamera = newcamera;
-
-                        if (lastCamera != null)
-                        {
-                            lastCamera.LiveViewUpdated += Camera_LiveViewUpdated;
-                        }
+                        UpdateCamera(newcamera);
                     }
 
                     break;
@@ -215,6 +208,21 @@ namespace GMaster.Views
                 case nameof(CameraViewModel.FocusAreas):
                     RecalulateFocusPoint();
                     break;
+            }
+        }
+
+        private void UpdateCamera(Lumix newcamera)
+        {
+            if (currentLumix != null)
+            {
+                currentLumix.LiveViewUpdated -= Camera_LiveViewUpdated;
+            }
+
+            currentLumix = newcamera;
+
+            if (currentLumix != null)
+            {
+                currentLumix.LiveViewUpdated += Camera_LiveViewUpdated;
             }
         }
 
@@ -270,6 +278,9 @@ namespace GMaster.Views
                       case nameof(ConnectedCamera.SelectedAspect):
                       case nameof(ConnectedCamera.IsAspectAnamorphingVideoOnly):
                           SetAspect();
+                          break;
+                      case nameof(ConnectedCamera.Camera):
+                          UpdateCamera(Model?.SelectedCamera?.Camera);
                           break;
                   }
               });

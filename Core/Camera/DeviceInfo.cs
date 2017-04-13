@@ -15,7 +15,7 @@ namespace GMaster.Core.Camera
 
         public string FriendlyName { get; }
 
-        public string Host { get; }
+        public string Host { get; set; }
 
         public string ModelName { get; }
 

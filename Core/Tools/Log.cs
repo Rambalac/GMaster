@@ -153,6 +153,7 @@
 
             var result = new ExceptionInfo
             {
+                Exception = exception.GetType().FullName,
                 Message = exception.Message,
                 StackTrace = exception.StackTrace
             };
@@ -191,7 +192,7 @@
                             continue;
                         }
 
-                        var result = await http.PostStringAsync(new Uri(baseUri + $"/tag/{Uri.EscapeDataString(entry.Tags)}"), entry.Message);
+                        var result = await http.PostStringAsync(new Uri(baseUri + $"/tag/{Uri.EscapeDataString(entry.Tags)}"), entry.Message, token);
                         if (result != "{\"response\" : \"ok\"}")
                         {
                             Debug.WriteLine(result, "Loggly");
@@ -211,11 +212,17 @@
 
         private class ExceptionInfo
         {
+            [JsonProperty(Order = 4)]
             public ExceptionInfo[] InnerExceptions { get; set; }
 
+            [JsonProperty(Order = 2)]
             public string Message { get; set; }
 
+            [JsonProperty(Order = 3)]
             public string StackTrace { get; set; }
+
+            [JsonProperty(Order = 1)]
+            public string Exception { get; set; }
 
             public override string ToString()
             {
@@ -232,8 +239,10 @@
 
         private class LogglyMessage
         {
+            [JsonProperty(Order = 2)]
             public object Data { get; set; }
 
+            [JsonProperty(Order = 1)]
             public string Message { get; set; }
         }
     }

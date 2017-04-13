@@ -18,7 +18,8 @@ namespace GMaster.Core.Camera
         private readonly HashSet<string> foundDevices = new HashSet<string>();
         private readonly string lang;
         private readonly INetwork network;
-        private readonly ConcurrentDictionary<string, Lumix> listeners = new ConcurrentDictionary<string, Lumix>();
+        private readonly ConcurrentDictionary<string, Lumix> ipToLumix = new ConcurrentDictionary<string, Lumix>();
+        private readonly ConcurrentDictionary<string, Lumix> usnToLumix = new ConcurrentDictionary<string, Lumix>();
         private List<SsdpDeviceLocator> deviceLocators;
         private List<IDatagramSocket> liveviewUdpSockets;
 
@@ -42,7 +43,9 @@ namespace GMaster.Core.Camera
                       var connectResult = await camera.Connect(LiveViewPort, lang);
                       if (connectResult)
                       {
-                          listeners[camera.CameraHost] = camera;
+                          ipToLumix[camera.CameraHost] = camera;
+                          usnToLumix[camera.Device.Usn] = camera;
+                          Debug.WriteLine("Add listener: " + camera.CameraHost, "UDP");
                       }
 
                       onConnect(connectResult);
@@ -161,29 +164,39 @@ namespace GMaster.Core.Camera
 
         private void Camera_Disconnected(Lumix obj, bool stillAvailable)
         {
+            var usn = obj.Device.Usn;
+            var host = obj.Device.Host;
             if (!stillAvailable)
             {
                 lock (foundDevices)
                 {
-                    foundDevices.Remove(obj.Device.Usn);
+                    foundDevices.Remove(usn + host);
+                    Debug.WriteLine("Undiscovered: " + usn, "Discovery");
                 }
             }
 
-            listeners.TryRemove(obj.CameraHost, out _);
+            Debug.WriteLine("Remove listener: " + host, "UDP");
+            ipToLumix.TryRemove(host, out _);
+            usnToLumix.TryRemove(usn, out _);
         }
 
         private async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
         {
             try
             {
+                var usn = arg.DiscoveredDevice.Usn;
+                var host = arg.DiscoveredDevice.DescriptionLocation.Host;
                 lock (foundDevices)
                 {
-                    if (foundDevices.Contains(arg.DiscoveredDevice.Usn))
+                    if (foundDevices.Contains(usn + host))
                     {
+                        Debug.WriteLine("Discovered but already found: " + usn, "Discovery");
                         return;
                     }
 
-                    foundDevices.Add(arg.DiscoveredDevice.Usn);
+                    Debug.WriteLine("Discovered new: " + usn, "Discovery");
+
+                    foundDevices.Add(usn + host);
                 }
 
                 if (!arg.DiscoveredDevice.ResponseHeaders.TryGetValues("SERVER", out var values) || !values.Any(s => s.Contains("Panasonic")))
@@ -202,7 +215,13 @@ namespace GMaster.Core.Camera
                     return;
                 }
 
-                var dev = new DeviceInfo(info, arg.DiscoveredDevice.Usn);
+                if (usnToLumix.TryGetValue(usn, out var oldcamera))
+                {
+                    await oldcamera.Disconnect();
+                }
+
+                var dev = new DeviceInfo(info, usn);
+                Log.Trace("Discovered " + dev.ModelName, tags: "camera." + dev.ModelName);
                 OnDeviceDiscovered(dev);
             }
             catch (HttpRequestException e)
@@ -222,7 +241,7 @@ namespace GMaster.Core.Camera
         {
             try
             {
-                if (!listeners.TryGetValue(args.RemoteAddress, out Lumix camera))
+                if (!ipToLumix.TryGetValue(args.RemoteAddress, out Lumix camera))
                 {
                     return;
                 }

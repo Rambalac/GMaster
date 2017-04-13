@@ -9,6 +9,7 @@ namespace GMaster.Views
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Windows.Foundation;
+    using Windows.UI;
 
     public class FrameRenderer : IDisposable
     {
@@ -70,6 +71,33 @@ namespace GMaster.Views
                     ImageRect = new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH);
                     currentFrame.Draw(session, imageRect);
                 }
+            }
+            else
+            {
+                session.Clear(Colors.Transparent);
+            }
+        }
+
+        public void Reset()
+        {
+            var cur = currentFrame;
+            currentFrame = null;
+            if (cur != null)
+            {
+                var task = Task.Run(() =>
+                {
+                    try
+                    {
+                        lock (frameDrawLock)
+                        {
+                            cur.Dispose();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(new Exception("Frame dispose failed", ex));
+                    }
+                });
             }
         }
 

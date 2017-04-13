@@ -5,9 +5,10 @@
 
     public interface INetwork
     {
+        event Action NetworkStatusChanged;
+
         IDatagramSocket CreateDatagramSocket();
 
-        event Action NetworkStatusChanged;
         IEnumerable<string> GetHostNames();
     }
 }

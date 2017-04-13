@@ -1,12 +1,11 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-using Windows.ApplicationModel.DataTransfer;
-using GMaster.Core.Tools;
-
 namespace GMaster.Views
 {
     using System.Diagnostics;
+    using GMaster.Core.Tools;
     using Models;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 

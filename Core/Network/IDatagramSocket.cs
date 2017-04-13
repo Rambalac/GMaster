@@ -3,9 +3,10 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface IDatagramSocket: IDisposable
+    public interface IDatagramSocket : IDisposable
     {
         event Action<DatagramSocketMessage> MessageReceived;
+
         Task Bind(string profile, int liveViewPort);
     }
 }

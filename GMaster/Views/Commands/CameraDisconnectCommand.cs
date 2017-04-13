@@ -1,17 +1,17 @@
 namespace GMaster.Views.Commands
 {
+    using System.Linq;
     using System.Threading.Tasks;
-    using Core.Camera;
+    using Models;
     using Tools;
 
-    public class CameraDisconnectCommand : AbstractSimpleParameterCommand<Lumix>
+    public class CameraDisconnectCommand : AbstractParameterModelCommand<MainPageModel, ConnectedCamera>
     {
-        public override async Task InternalExecute(Lumix parameter)
+        protected override bool InternalCanExecute(ConnectedCamera parameter) => true;
+
+        protected override async Task InternalExecute(ConnectedCamera parameter)
         {
-            if (parameter != null)
-            {
-                await parameter.Disconnect();
-            }
+            await parameter.Camera.Disconnect();
         }
     }
 }

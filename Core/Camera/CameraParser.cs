@@ -232,7 +232,7 @@
         {
             try
             {
-                return menuitem.Items
+                return menuitem?.Items
                     .Select(i => new CameraMenuItemText(i, GetText(i.TitleId)))
                     .ToTitledList(GetText(menuitem.TitleId));
             }

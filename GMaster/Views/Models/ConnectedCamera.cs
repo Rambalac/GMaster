@@ -23,8 +23,27 @@
             get => camera;
             set
             {
+                if (ReferenceEquals(camera, value))
+                {
+                    return;
+                }
+
+                if (camera != null)
+                {
+                    camera.PropertyChanged -= Camera_PropertyChanged;
+                    camera.Disconnected -= Camera_Disconnected;
+                }
+
                 camera = value;
-                camera.PropertyChanged += Camera_PropertyChanged;
+
+                if (camera != null)
+                {
+                    camera.PropertyChanged += Camera_PropertyChanged;
+                    camera.Disconnected += Camera_Disconnected;
+                    Name = Camera.Device.FriendlyName;
+                }
+
+                OnPropertyChanged(nameof(Camera));
             }
         }
 
@@ -41,13 +60,13 @@
             }
         }
 
-        public bool IsConnecting => Camera.IsConnecting;
+        public bool IsConnecting => Camera?.IsConnecting ?? true;
 
         public bool IsRemembered => Settings.GeneralSettings.Cameras.Contains(Settings);
 
         public MainPageModel Model { get; set; }
 
-        public string Name => Camera.Device.FriendlyName;
+        public string Name { get; private set; }
 
         public string SelectedAspect
         {
@@ -74,15 +93,15 @@
 
         public CameraSettings Settings { get; set; }
 
-        public string Udn => Camera.Uuid;
+        public string Uuid { get; set; }
 
-        public void Add()
+        public void AddToSettings()
         {
             Settings.GeneralSettings.Cameras.Add(Settings);
             OnPropertyChanged(nameof(IsRemembered));
         }
 
-        public void Remove()
+        public void RemoveFromSettings()
         {
             Settings.GeneralSettings.Cameras.Remove(Settings);
             OnPropertyChanged(nameof(IsRemembered));
@@ -92,6 +111,14 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Camera_Disconnected(Lumix sender, bool stillAvailable)
+        {
+            var task = Model.RunAsync(() =>
+            {
+                Camera = null;
+            });
         }
 
         private void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)

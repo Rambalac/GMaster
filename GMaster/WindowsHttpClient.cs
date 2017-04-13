@@ -1,11 +1,13 @@
-﻿using Windows.Storage.Streams;
-
-namespace GMaster
+﻿namespace GMaster
 {
     using System;
     using System.IO;
+    using System.Runtime.InteropServices;
+    using System.Threading;
     using System.Threading.Tasks;
     using Core.Network;
+    using Core.Tools;
+    using Windows.Storage.Streams;
     using Windows.Web.Http;
     using Windows.Web.Http.Filters;
     using Windows.Web.Http.Headers;
@@ -33,18 +35,44 @@ namespace GMaster
             http.Dispose();
         }
 
-        public async Task<IHttpClientResponse> GetAsync(Uri uri)
+        public async Task<IHttpClientResponse> GetAsync(Uri uri, CancellationToken token)
         {
-            return new WindowsHttpClientResponse(await http.GetAsync(uri));
+            do
+            {
+                try
+                {
+                    return new WindowsHttpClientResponse(await http.GetAsync(uri).AsTask(token));
+                }
+                catch (COMException ex) when ((uint)ex.HResult != 0x80072efd)
+                {
+                    Debug.WriteLine("ComException", "WindowsHttpClient");
+                }
+
+                await Task.Delay(100, token);
+            }
+            while (true);
         }
 
-        public async Task<string> PostStringAsync(Uri baseUri, string str)
+        public async Task<string> PostStringAsync(Uri baseUri, string str, CancellationToken token)
         {
-            var response = await http.PostAsync(baseUri, new HttpStringContent(str, UnicodeEncoding.Utf8, "application/x-www-form-urlencoded"));
-            using (var reader = new StreamReader((await response.Content.ReadAsInputStreamAsync()).AsStreamForRead()))
+            do
             {
-                return await reader.ReadToEndAsync();
+                try
+                {
+                    var response = await http.PostAsync(baseUri, new HttpStringContent(str, UnicodeEncoding.Utf8, "application/x-www-form-urlencoded")).AsTask(token);
+                    using (var reader = new StreamReader((await response.Content.ReadAsInputStreamAsync()).AsStreamForRead()))
+                    {
+                        return await reader.ReadToEndAsync();
+                    }
+                }
+                catch (COMException)
+                {
+                    Debug.WriteLine("ComException", "WindowsHttpClient");
+                }
+
+                await Task.Delay(100, token);
             }
+            while (true);
         }
 
         public class WindowsHttpClientResponse : IHttpClientResponse

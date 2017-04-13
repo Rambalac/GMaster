@@ -28,6 +28,8 @@
 
         public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
 
+        public bool CanPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
+
         public int CurentZoom => SelectedCamera?.Camera?.OffFrameProcessor?.Zoom ?? 0;
 
         public ICameraMenuItem CurrentAperture
@@ -86,9 +88,9 @@
 
         public FocusAreas FocusAreas => SelectedCamera?.Camera?.OffFrameProcessor?.FocusPoints;
 
-        public bool CanPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
-
         public bool IsConnected => selectedCamera != null;
+
+        public bool IsConnectionActive => SelectedCamera?.Camera != null;
 
         public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
 
@@ -108,8 +110,9 @@
             {
                 if (selectedCamera?.Camera != null)
                 {
-                    selectedCamera.Camera.Disconnected -= SelectedCamera_Disconnected;
+                    selectedCamera.PropertyChanged -= SelectedCamera_PropertyChanged;
                     selectedCamera.Camera.PropertyChanged -= Camera_PropertyChanged;
+                    selectedCamera.Camera.Disconnected -= Camera_Disconnected;
                     if (selectedCamera.Camera.OffFrameProcessor != null)
                     {
                         selectedCamera.Camera.OffFrameProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
@@ -119,10 +122,10 @@
                 if (value?.Camera?.OffFrameProcessor != null)
                 {
                     selectedCamera = value;
-                    selectedCamera.Camera.Disconnected += SelectedCamera_Disconnected;
+                    selectedCamera.PropertyChanged += SelectedCamera_PropertyChanged;
                     selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
                     selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
-
+                    selectedCamera.Camera.Disconnected += Camera_Disconnected;
                     SetTime = DateTime.UtcNow;
                 }
                 else
@@ -133,42 +136,9 @@
 
                 var task = RunAsync(() =>
                 {
-                    try
-                    {
-                        if (selectedCamera != null)
-                        {
-                            currentAperture = selectedCamera.Camera.CurrentAperture;
-                            currentShutter = selectedCamera.Camera.CurrentShutter;
-                            currentIso = selectedCamera.Camera.CurrentIso;
-                        }
+                    OnPropertyChanged(nameof(SelectedCamera));
 
-                        OnPropertyChanged();
-                        OnPropertyChanged(nameof(IsConnected));
-
-                        OnPropertyChanged(nameof(CanChangeAperture));
-                        OnPropertyChanged(nameof(CanChangeShutter));
-                        OnPropertyChanged(nameof(CanManualFocus));
-                        OnPropertyChanged(nameof(CanPowerZoom));
-
-                        OnPropertyChanged(nameof(ShutterSpeeds));
-                        OnPropertyChanged(nameof(CurrentApertures));
-                        OnPropertyChanged(nameof(IsoValues));
-
-                        OnPropertyChanged(nameof(CurrentAperture));
-                        OnPropertyChanged(nameof(CurrentShutter));
-                        OnPropertyChanged(nameof(CurrentIso));
-
-                        OnPropertyChanged(nameof(CanCapture));
-                        OnPropertyChanged(nameof(MaxZoom));
-                        OnPropertyChanged(nameof(MinZoom));
-                        OnPropertyChanged(nameof(CurentZoom));
-
-                        OnPropertyChanged(nameof(FocusAreas));
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex);
-                    }
+                    RefreshAll();
                 });
             }
         }
@@ -218,6 +188,14 @@
                     await RunAsync(() => result(oldvalue));
                 }
             });
+        }
+
+        private void Camera_Disconnected(Lumix sender, bool stillAvailable)
+        {
+            if (stillAvailable)
+            {
+                SelectedCamera = null;
+            }
         }
 
         private async void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -321,6 +299,47 @@
             });
         }
 
+        private void RefreshAll()
+        {
+            try
+            {
+                if (selectedCamera != null)
+                {
+                    currentAperture = selectedCamera?.Camera?.CurrentAperture;
+                    currentShutter = selectedCamera?.Camera?.CurrentShutter;
+                    currentIso = selectedCamera?.Camera?.CurrentIso;
+                }
+
+                OnPropertyChanged(nameof(IsConnected));
+                OnPropertyChanged(nameof(IsConnectionActive));
+
+                OnPropertyChanged(nameof(CanChangeAperture));
+                OnPropertyChanged(nameof(CanChangeShutter));
+                OnPropertyChanged(nameof(CanManualFocus));
+                OnPropertyChanged(nameof(CanPowerZoom));
+                OnPropertyChanged(nameof(RecState));
+
+                OnPropertyChanged(nameof(ShutterSpeeds));
+                OnPropertyChanged(nameof(CurrentApertures));
+                OnPropertyChanged(nameof(IsoValues));
+
+                OnPropertyChanged(nameof(CurrentAperture));
+                OnPropertyChanged(nameof(CurrentShutter));
+                OnPropertyChanged(nameof(CurrentIso));
+
+                OnPropertyChanged(nameof(CanCapture));
+                OnPropertyChanged(nameof(MaxZoom));
+                OnPropertyChanged(nameof(MinZoom));
+                OnPropertyChanged(nameof(CurentZoom));
+
+                OnPropertyChanged(nameof(FocusAreas));
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+            }
+        }
+
         private async Task RunAsync(Action act)
         {
             if (Dispatcher != null)
@@ -329,12 +348,23 @@
             }
         }
 
-        private void SelectedCamera_Disconnected(Lumix lumix, bool stillAvailable)
+        private void SelectedCamera_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ReferenceEquals(lumix, SelectedCamera.Camera))
-            {
-                SelectedCamera = null;
-            }
+            var task = RunAsync(() =>
+              {
+                  if (e.PropertyName == nameof(ConnectedCamera.Camera))
+                  {
+                      OnPropertyChanged(nameof(IsConnectionActive));
+
+                      if (selectedCamera.Camera != null)
+                      {
+                          selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
+                          selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
+                      }
+
+                      RefreshAll();
+                  }
+              });
         }
     }
 }

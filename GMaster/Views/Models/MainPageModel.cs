@@ -25,11 +25,11 @@
         private readonly WiFiHelper wifi = new WiFiHelper();
         private CameraViewModel[] activeViews;
         private bool? isLandscape;
+        private Network network = new Network();
         private GridLength secondColumnWidth = new GridLength(0, GridUnitType.Star);
         private GridLength secondRowHeight = new GridLength(0);
         private DeviceInfo selectedDevice;
         private SplitMode splitMode;
-        private Network network = new Network();
 
         public MainPageModel()
         {
@@ -264,17 +264,27 @@
 
             settings.GeneralSettings = GeneralSettings;
 
-            var connectedCamera = new ConnectedCamera
+            var connectedCamera = ConnectedCameras.SingleOrDefault(c => c.Uuid == lumix.Device.Uuid);
+            if (connectedCamera == null)
             {
-                Camera = lumix,
-                Model = this,
-                Settings = settings,
-                SelectedLut = InstalledLuts.SingleOrDefault(l => l?.Id == settings.LutId),
-                SelectedAspect = settings.Aspect,
-                IsAspectAnamorphingVideoOnly = settings.IsAspectAnamorphingVideoOnly
-            };
+                connectedCamera = new ConnectedCamera
+                {
+                    Uuid = lumix.Device.Uuid,
+                    Camera = lumix,
+                    Model = this,
+                    Settings = settings,
+                    SelectedLut = InstalledLuts.SingleOrDefault(l => l?.Id == settings.LutId),
+                    SelectedAspect = settings.Aspect,
+                    IsAspectAnamorphingVideoOnly = settings.IsAspectAnamorphingVideoOnly
+                };
 
-            ConnectedCameras.Add(connectedCamera);
+                ConnectedCameras.Add(connectedCamera);
+            }
+            else
+            {
+                connectedCamera.Camera = lumix;
+            }
+
             lumix.Disconnected += Lumix_Disconnected;
             return connectedCamera;
         }
@@ -287,13 +297,13 @@
         public void ConnectCamera(DeviceInfo modelSelectedDevice)
         {
             var lumix = new Lumix(modelSelectedDevice, new WindowsHttpClient());
-            var connectedCamera = AddConnectedDevice(lumix);
             LumixManager.StartConnectCamera(lumix, result =>
             {
                 var task = RunAsync(() =>
                  {
                      if (result)
                      {
+                         var connectedCamera = AddConnectedDevice(lumix);
                          ShowCamera(connectedCamera);
                      }
                  });
@@ -437,13 +447,22 @@
         private void Lumix_Disconnected(Lumix lumix, bool stillAvailbale)
         {
             lumix.Disconnected -= Lumix_Disconnected;
-            ConnectedCameras.Remove(ConnectedCameras.Single(c => c.Udn == lumix.Uuid));
-            if (stillAvailbale)
-            {
-                AddConnectableDevice(lumix.Device);
-            }
 
             OnCameraDisconnected(lumix);
+
+            if (!stillAvailbale)
+            {
+                ConnectCamera(lumix.Device);
+            }
+            else
+            {
+                var connected = ConnectedCameras.FirstOrDefault(c => c.Camera == lumix);
+                if (connected != null)
+                {
+                    ConnectedCameras.Remove(connected);
+                    AddConnectableDevice(lumix.Device);
+                }
+            }
         }
 
         private void Wifi_AccessPointsUpdated(IList<WiFiAvailableNetwork> obj)
