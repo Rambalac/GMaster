@@ -51,7 +51,9 @@
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", 500);
+            var ver = Package.Current.Id.Version;
+
+            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", 500);
 
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
 
@@ -109,7 +111,7 @@
                     break;
 
                 default:
-                    Log.Error(e.Exception);
+                    Log.Error(e.Exception, "Unhandled");
                     Log.Flush();
                     break;
             }

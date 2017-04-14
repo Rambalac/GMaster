@@ -1,4 +1,6 @@
-﻿namespace GMaster.Core.Tools
+﻿using System.Runtime.CompilerServices;
+
+namespace GMaster.Core.Tools
 {
     using System;
     using System.Collections.Concurrent;
@@ -22,9 +24,7 @@
 
         private static int sendQueueCount = 0;
 
-        static Log()
-        {
-        }
+        private static string version;
 
         public enum Severity
         {
@@ -34,22 +34,11 @@
             Trace
         }
 
-        [System.Diagnostics.Conditional("DEBUG")]
-        public static void DebugError(Exception exception)
-        {
-            Debug.WriteLine(exception);
-        }
-
-        [System.Diagnostics.Conditional("DEBUG")]
-        public static void DebugTrace(string str)
-        {
-        }
-
-        public static void Error(string message, Exception exception, string tags = null)
+        public static void Error(string message, Exception exception, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
             try
             {
-                InnerTrace(message, Severity.Error, PrepareException(exception), tags);
+                InnerTrace(message, Severity.Error, PrepareException(exception), tags, fileName, methodName);
             }
             catch (Exception ex)
             {
@@ -57,9 +46,9 @@
             }
         }
 
-        public static void Error(string message, string tags = null) => Trace(message, Severity.Error, tags: tags);
+        public static void Error(string message, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null) => Trace(message, Severity.Error, null, tags, fileName, methodName);
 
-        public static void Error(Exception ex) => Error(ex.Message, ex);
+        public static void Error(Exception ex, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null) => Error(ex.Message, ex, tags, fileName, methodName);
 
         public static void Flush()
         {
@@ -71,8 +60,9 @@
             return string.Join("\r\n", memoryEntries);
         }
 
-        public static void Init(IHttpClient client, string token, int inmemory = 0)
+        public static void Init(IHttpClient client, string token, string ver, int inmemory = 0)
         {
+            version = ver.Replace('.', '_');
             http = client;
             memoryLines = inmemory;
             if (memoryLines != 0)
@@ -90,11 +80,11 @@
             cancellation.Cancel();
         }
 
-        public static void Trace(string message, Severity severity = Severity.Trace, object data = null, string tags = null)
+        public static void Trace(string message, Severity severity = Severity.Trace, object data = null, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
             try
             {
-                InnerTrace(message, severity, data, tags);
+                InnerTrace(message, severity, data, tags, fileName, methodName);
             }
             catch (Exception ex)
             {
@@ -102,9 +92,9 @@
             }
         }
 
-        public static void Warn(string str, string tags = null) => Trace(str, Severity.Warn, null, tags);
+        public static void Warn(string str, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null) => Trace(str, Severity.Warn, null, tags, fileName, methodName);
 
-        private static void InnerTrace(string message, Severity severity = Severity.Trace, object data = null, string tags = null)
+        private static void InnerTrace(string message, Severity severity, object data, string tags, string fileName, string methodName)
         {
             Debug.WriteLine(severity + ": " + message, tags);
 
@@ -116,6 +106,8 @@
             var logglyMessage = new LogglyMessage
             {
                 Message = message,
+                File = fileName,
+                Method = methodName,
                 Data = data
             };
 
@@ -133,10 +125,11 @@
                 }
             }
 
+            var tagsText = tags != null ? "," + tags : string.Empty;
             var entry = new LogEntry
             {
                 Message = str,
-                Tags = $"severity.{severity},{tags ?? string.Empty}"
+                Tags = $"severity.{severity},version.{version}{tagsText}"
             };
 
             SendQueueEmpty.Reset();
@@ -212,6 +205,9 @@
 
         private class ExceptionInfo
         {
+            [JsonProperty(Order = 1)]
+            public string Exception { get; set; }
+
             [JsonProperty(Order = 4)]
             public ExceptionInfo[] InnerExceptions { get; set; }
 
@@ -220,9 +216,6 @@
 
             [JsonProperty(Order = 3)]
             public string StackTrace { get; set; }
-
-            [JsonProperty(Order = 1)]
-            public string Exception { get; set; }
 
             public override string ToString()
             {
@@ -239,11 +232,17 @@
 
         private class LogglyMessage
         {
-            [JsonProperty(Order = 2)]
+            [JsonProperty(Order = 4)]
             public object Data { get; set; }
+
+            [JsonProperty(Order = 3)]
+            public string File { get; set; }
 
             [JsonProperty(Order = 1)]
             public string Message { get; set; }
+
+            [JsonProperty(Order = 2)]
+            public string Method { get; set; }
         }
     }
 }

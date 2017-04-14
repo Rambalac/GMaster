@@ -257,16 +257,16 @@
         public ConnectedCamera AddConnectedDevice(Lumix lumix)
         {
             ConnectableDevices.Remove(lumix.Device);
-            if (!GeneralSettings.Cameras.TryGetValue(lumix.Uuid, out var settings))
-            {
-                settings = new CameraSettings(lumix.Uuid);
-            }
-
-            settings.GeneralSettings = GeneralSettings;
 
             var connectedCamera = ConnectedCameras.SingleOrDefault(c => c.Uuid == lumix.Device.Uuid);
             if (connectedCamera == null)
             {
+                if (!GeneralSettings.Cameras.TryGetValue(lumix.Uuid, out var settings))
+                {
+                    settings = new CameraSettings(lumix.Uuid);
+                }
+
+                settings.GeneralSettings = GeneralSettings;
                 connectedCamera = new ConnectedCamera
                 {
                     Uuid = lumix.Device.Uuid,
@@ -294,20 +294,21 @@
             await wifi.ConnectAccessPoint(eClickedItem);
         }
 
-        public void ConnectCamera(DeviceInfo modelSelectedDevice)
+        public Lumix ConnectCamera(DeviceInfo modelSelectedDevice)
         {
             var lumix = new Lumix(modelSelectedDevice, new WindowsHttpClient());
+            var connectedCamera = AddConnectedDevice(lumix);
             LumixManager.StartConnectCamera(lumix, result =>
             {
                 var task = RunAsync(() =>
                  {
                      if (result)
                      {
-                         var connectedCamera = AddConnectedDevice(lumix);
                          ShowCamera(connectedCamera);
                      }
                  });
             });
+            return lumix;
         }
 
         public async Task Init()
@@ -458,13 +459,17 @@
 
             OnCameraDisconnected(lumix);
 
+            var connected = ConnectedCameras.FirstOrDefault(c => c.Camera == lumix);
             if (!stillAvailbale)
             {
-                ConnectCamera(lumix.Device);
+                var newlumix = ConnectCamera(lumix.Device);
+                if (connected != null)
+                {
+                    connected.Camera = newlumix;
+                }
             }
             else
             {
-                var connected = ConnectedCameras.FirstOrDefault(c => c.Camera == lumix);
                 if (connected != null)
                 {
                     ConnectedCameras.Remove(connected);

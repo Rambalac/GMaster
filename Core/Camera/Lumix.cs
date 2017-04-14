@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
     using LumixData;
@@ -252,7 +253,10 @@
                 Debug.WriteLine("Timer stopped", "Disconnect");
                 using (var timeout = new CancellationTokenSource(1000))
                 {
-                    await Try(async () => await http.Get<BaseRequestResult>("?mode=stopstream", timeout.Token));
+                    if (!isConnecting)
+                    {
+                        await Try(async () => await http.Get<BaseRequestResult>("?mode=stopstream", timeout.Token));
+                    }
 
                     Disconnected?.Invoke(this, stillAvailbale);
                     Debug.WriteLine("Disconnected called", "Disconnect");
@@ -275,6 +279,8 @@
             connectCancellation.Cancel();
             connectCancellation.Dispose();
             http.Dispose();
+            OffFrameProcessor.PropertyChanged -= OffFrameProcessor_PropertyChanged;
+            OffFrameProcessor.LensUpdated -= OfframeProcessor_LensUpdated;
             stateTimer.Dispose();
         }
 
@@ -488,34 +494,31 @@
 
         protected virtual void OnSelfChanged([CallerMemberName] string propertyName = null) => OnPropertyChanged(propertyName);
 
-        private void LogError(string message, string place)
+        private void LogError(string message, string place = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
-            Log.Error(message, $"place.{place},camera.{Device.ModelName}");
+            var placeText = place != null ? $"place.{place}," : string.Empty;
+            Log.Error(message, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private void LogError(string message, Exception ex)
+        private void LogError(string message, Exception ex, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
-            Log.Error(message, ex, $"camera.{Device.ModelName}");
+            Log.Error(message, ex, $"camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private void LogError(string message, object obj)
+        private void LogError(string message, object obj, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
-            Log.Trace(message, Log.Severity.Error, obj, $"camera.{Device.ModelName}");
+            Log.Trace(message, Log.Severity.Error, obj, $"camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private void LogError(Exception ex)
+        private void LogError(Exception ex, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
-            Log.Error(ex.Message, ex, $"camera.{Device.ModelName}");
+            Log.Error(ex.Message, ex, $"camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private void LogTrace(string message)
+        private void LogTrace(string message, string place = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
-            Log.Trace(message, tags: $"camera.{Device.ModelName}");
-        }
-
-        private void LogTrace(string message, string place)
-        {
-            Log.Trace(message, tags: $"place.{place},camera.{Device.ModelName}");
+            var placeText = place != null ? $"place.{place}," : string.Empty;
+            Log.Trace(message, Log.Severity.Trace, null, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
         }
 
         private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -616,11 +619,12 @@
 
         private async Task<bool> RequestAccess(CancellationToken token)
         {
+            var noconnection = 0;
             do
             {
                 try
                 {
-                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350");
+                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350", token);
                     if (str.StartsWith("<?xml"))
                     {
                         break;
@@ -631,6 +635,24 @@
                     {
                         break;
                     }
+
+                    noconnection = 0;
+                }
+                catch (COMException ex)
+                {
+                    Log.Error(ex);
+                    if ((uint)ex.HResult == 0x80072efd)
+                    {
+                        if (++noconnection > 2)
+                        {
+                            Log.Error("Cannot connect to " + CameraHost);
+                            return false;
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {

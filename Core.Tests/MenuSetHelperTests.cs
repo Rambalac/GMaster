@@ -61,6 +61,7 @@ namespace Gmaster.Core.Camera
 
         [Theory]
         [InlineData("TestMenuSetG80.json")]
+        [InlineData("TestMenuSetGX7.json")]
         public void TestJsons(string filename)
         {
             using (var stream = File.OpenRead(filename))

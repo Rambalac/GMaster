@@ -16,6 +16,10 @@ namespace GMaster.Views.Commands
             {
                 await camera.Disconnect();
             }
+            else
+            {
+                Model.ConnectedCameras.Remove(parameter);
+            }
         }
     }
 }
