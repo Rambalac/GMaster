@@ -745,7 +745,7 @@
 
             var newCurrentApertures = new List<CameraMenuItem256>(MenuSet.Apertures.Count);
             var opentext = CameraParser.ApertureBinToText(open);
-            newCurrentApertures.Add(new CameraMenuItem256(open.ToString(), opentext, "setsetting", "shtrspeed", open));
+            newCurrentApertures.Add(new CameraMenuItem256(open.ToString(), opentext, "setsetting", "focal", open));
             newCurrentApertures.AddRange(MenuSet.Apertures.Where(a => a.IntValue >= open && a.Text != opentext && (LensInfo == null || a.IntValue <= LensInfo.ClosedAperture)));
             if (newCurrentApertures.Count != CurrentApertures.Count ||
                 newCurrentApertures.First().Value != CurrentApertures.First().Value)
