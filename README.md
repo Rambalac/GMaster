@@ -20,17 +20,15 @@ App is free and has no ad. You can install it from [MS Store](https://www.micros
 * WiFi manager to autoconnect to camera WiFi access point.
 * Multiple cameras can be controlled. You can connect cameras to common access point.
 
-![Screenshot](/images/screenshots/PC-4.jpg)
-
 ## Cameras
 ### Fully supported
-* GH4
-* GH3
-
+GH4, GH3
+### Confirmed
+GX85, GX80, GX7, G7, G85
 ### Other
 App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
-* GX85 - As some people reported App cannot connect. Hopefull v 1.6.0 fixes that.
+![Screenshot](/images/screenshots/PC-4.jpg)
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
