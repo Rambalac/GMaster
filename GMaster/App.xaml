@@ -8,16 +8,16 @@
     RequestedTheme="Light">
     <Application.Resources>
         <models:MainPageModel x:Key="MainModel" />
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
-        <converters:VisibilityZeroConverter x:Key="VisibilityZeroConverter" />
-        <converters:VisibilityNotZeroConverter x:Key="VisibilityNotZeroConverter" />
-        <converters:VisibilityNotNullConverter x:Key="VisibilityNotNullConverter" />
-        <converters:VisibilityNullConverter x:Key="VisibilityNullConverter" />
-        <converters:NullFalseConverter x:Key="NullFalseConverter" />
-        <converters:NullTrueConverter x:Key="NullTrueConverter" />
-        <converters:NotVisibilityConverter x:Key="NotVisibilityConverter" />
-        <converters:NotConverter x:Key="NotConverter" />
-        <converters:SignalBarsConverter x:Key="SignalBarsConvertor" />
+        <converters:ZeroToVisibileConverter x:Key="ZeroToVisibileConverter" />
+        <converters:NotZeroToVisibileConverter x:Key="NotZeroToVisibileConverter" />
+        <converters:NotNullToVisibleConverter x:Key="NotNullToVisibleConverter" />
+        <converters:NullToVisibleConverter x:Key="NullToVisibleConverter" />
+        <converters:NullToFalseConverter x:Key="NullToFalseConverter" />
+        <converters:NullToTrueConverter x:Key="NullToTrueConverter" />
+        <converters:TrueToVisibileConverter x:Key="TrueToVisibileConverter" />
+        <converters:FalseToVisibileConverter x:Key="FalseToVisibileConverter" />
+        <converters:BoolNotConverter x:Key="BoolNotConverter" />
+        <converters:SignalBarsToIconConverter x:Key="SignalBarsToIconConverter" />
         <commands:SwitchFullScreenCommand x:Key="SwitchFullScreenCommand" />
     </Application.Resources>
 </Application>

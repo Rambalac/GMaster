@@ -36,6 +36,18 @@
             { 8707, "25600" }
         };
 
+        public override CurMenu ParseCurMenu(MenuInfo info)
+        {
+            var result = new CurMenu();
+
+            foreach (var item in info.MainMenu.Concat(info.Photosettings).Concat(info.Qmenu2))
+            {
+                result.Enabled[item.Id] = item.Enable == YesNo.Yes;
+            }
+
+            return result;
+        }
+
         protected override bool InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
         {
             var photosettings = menuset?.Photosettings?.Items;

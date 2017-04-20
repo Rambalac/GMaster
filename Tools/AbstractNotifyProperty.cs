@@ -1,8 +1,7 @@
-namespace Tools
+namespace GMaster.Tools
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Annotations;
 
     public abstract class AbstractNotifyProperty : INotifyPropertyChanged
     {
@@ -26,7 +25,6 @@ namespace Tools
             OnPropertyChanged();
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -33,11 +33,27 @@
             camcgi.Dispose();
         }
 
-        public async Task<TResponse> Get<TResponse>(string path, CancellationToken? token = null)
+        public async Task<TResponse> Get<TResponse>(string path)
+            where TResponse : BaseRequestResult
+        {
+            try
+            {
+                using (var source = new CancellationTokenSource(1000))
+                {
+                    return await Get<TResponse>(path, source.Token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                throw new TimeoutException();
+            }
+        }
+
+        public async Task<TResponse> Get<TResponse>(string path, CancellationToken token)
                     where TResponse : BaseRequestResult
         {
             var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri, token ?? CancellationToken.None))
+            using (var response = await camcgi.GetAsync(uri, token))
             {
                 using (var content = await response.GetContent())
                 {
@@ -77,10 +93,25 @@
             return await Get<TResponse>("?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)));
         }
 
-        public async Task<string> GetString(string path, CancellationToken? token = null)
+        public async Task<string> GetString(string path)
+        {
+            try
+            {
+                using (var source = new CancellationTokenSource(1000))
+                {
+                    return await GetString(path, source.Token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                throw new TimeoutException();
+            }
+        }
+
+        public async Task<string> GetString(string path, CancellationToken token)
         {
             var uri = new Uri(baseUri, path);
-            using (var response = await camcgi.GetAsync(uri, token ?? CancellationToken.None))
+            using (var response = await camcgi.GetAsync(uri, token))
             {
                 using (var content = await response.GetContent())
                 {

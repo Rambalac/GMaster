@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
@@ -13,108 +12,52 @@
     using Nito.AsyncEx;
     using Tools;
 
-    public class Lumix : INotifyPropertyChanged, IDisposable
+    public class Lumix : IDisposable
     {
-        private const int StateFailedTimesOk = 3;
-        private static readonly HashSet<string> RecStopNotSupported = new HashSet<string> { "DMC-GH3" };
-        private readonly CancellationTokenSource connectCancellation = new CancellationTokenSource();
         private readonly Http http;
-
+        private readonly CameraProfile profile;
         private readonly Timer stateTimer;
-
         private readonly AsyncLock stateUpdatingLock = new AsyncLock();
+        private CancellationTokenSource connectCancellation = new CancellationTokenSource();
         private bool firstconnect = true;
         private bool isConnecting = true;
         private int isUpdatingState;
-        private RecState recState = RecState.Unknown;
-        private bool recStopSupported = true;
+        private string language;
         private int stateFiledTimes;
-        private bool useNewTouchAF = true;
 
         public Lumix(DeviceInfo device, IHttpClient client)
         {
             Device = device;
+            profile = CameraProfile.Profiles.TryGetValue(device.ModelName, out var prof) ? prof : new CameraProfile();
+
             stateTimer = new Timer(StateTimer_Tick, null, -1, -1);
             var baseUri = new Uri($"http://{CameraHost}/cam.cgi");
 
             http = new Http(baseUri, client);
         }
 
-        public delegate void DisconnectedDelegate(Lumix sender, bool stillAvailable);
+        public delegate Task<CameraPoint?> LiveViewUpdatedDelegate(ArraySegment<byte> data);
 
-        public event DisconnectedDelegate Disconnected;
+        public event LiveViewUpdatedDelegate LiveViewUpdated;
 
-        public event Func<ArraySegment<byte>, Task<CameraPoint?>> LiveViewUpdated;
+        public event Action<Lumix, UpdateStateFailReason> StateUpdateFailed;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public enum UpdateStateFailReason
+        {
+            RequestFailed,
+            LumixException,
+            NotConnected
+        }
 
         public string CameraHost => Device.Host;
 
-        public bool CanCapture { get; private set; } = true;
-
-        public bool CanChangeAperture { get; private set; } = true;
-
-        public bool CanChangeShutter { get; private set; } = true;
-
-        public bool CanManualFocus { get; set; }
-
-        public ICameraMenuItem CurrentAperture => CurrentApertures.FirstOrDefault(
-                s => s.IntValue == OffFrameProcessor.Aperture.Bin);
-
-        public ICollection<CameraMenuItem256> CurrentApertures { get; private set; } = new List<CameraMenuItem256>();
-
-        public int CurrentFocus { get; private set; }
-
-        public ICameraMenuItem CurrentIso => MenuSet.IsoValues.FirstOrDefault(
-                s => s.Value == OffFrameProcessor.Iso.Text);
-
-        public ICameraMenuItem CurrentShutter => MenuSet.ShutterSpeeds.FirstOrDefault(
-                s => s.Value == OffFrameProcessor.Shutter.Bin + "/256");
-
         public DeviceInfo Device { get; }
 
-        public bool IsConnected { get; private set; }
-
-        public bool IsConnecting
-        {
-            get => isConnecting;
-            private set
-            {
-                isConnecting = value;
-                OnPropertyChanged(nameof(IsConnecting));
-            }
-        }
-
-        public bool IsLimited => MenuSet == null;
-
-        public bool IsVideoMode { get; private set; }
-
-        public LensInfo LensInfo { get; private set; }
-
-        public int MaximumFocus { get; private set; }
-
-        public MenuSet MenuSet { get; private set; }
+        public LumixState LumixState { get; } = new LumixState();
 
         public OffFrameProcessor OffFrameProcessor { get; private set; }
 
         public CameraParser Parser { get; private set; }
-
-        public RecState RecState
-        {
-            get => recState;
-            private set
-            {
-                if (value == recState)
-                {
-                    return;
-                }
-
-                recState = value;
-                OnSelfChanged();
-            }
-        }
-
-        public CameraState State { get; private set; }
 
         public string Uuid => Device.Uuid;
 
@@ -140,16 +83,14 @@
                     return false;
                 }
 
-                if (fp.Maximum != MaximumFocus)
+                if (fp.Maximum != LumixState.MaximumFocus)
                 {
-                    MaximumFocus = fp.Maximum;
-                    OnPropertyChanged(nameof(MaximumFocus));
+                    LumixState.MaximumFocus = fp.Maximum;
                 }
 
-                if (fp.Value != CurrentFocus)
+                if (fp.Value != LumixState.CurrentFocus)
                 {
-                    CurrentFocus = fp.Value;
-                    OnPropertyChanged(nameof(CurrentFocus));
+                    LumixState.CurrentFocus = fp.Value;
                 }
 
                 return true;
@@ -163,35 +104,66 @@
 
         public async Task<bool> Connect(int liveviewport, string lang)
         {
+            language = lang;
             var token = connectCancellation.Token;
             var connectStage = 0;
             try
             {
                 LogTrace("Connecting camera " + Device.ModelName);
-
-                recStopSupported = !RecStopNotSupported.Contains(Device.ModelName);
                 do
                 {
                     try
                     {
-                        await RequestAccess(token);
+                        if (profile.RequestConnection)
+                        {
+                            await RequestAccess(token);
+                        }
 
                         connectStage = 1;
 
-                        await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
+                        if (profile.SetDeviceName)
+                        {
+                            await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
+                        }
 
                         connectStage = 2;
 
-                        if (!await ReadMenuSet(lang))
+                        LumixState.Reset();
+
+                        LumixState.MenuSet = await GetMenuSet();
+                        if (LumixState.MenuSet == null)
                         {
                             LogError($"Camera connection failed on Stage {connectStage} for camera {Device.ModelName}", "CameraConnect");
-                            return false;
+                            LumixState.IsLimited = true;
+                        }
+
+                        if (!LumixState.IsLimited)
+                        {
+                            LumixState.CurMenu = await GetCurMenu();
                         }
 
                         connectStage = 3;
+                        await SwitchToRec();
+
+                        connectStage = 4;
+                        LumixState.LensInfo = await GetLensInfo();
+
+                        connectStage = 5;
+                        LumixState.State = await GetState();
+
+                        connectStage = 6;
+                        await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}", token);
 
                         token.ThrowIfCancellationRequested();
                         break;
+                    }
+                    catch (ConnectionLostException)
+                    {
+                        Debug.WriteLine("Connection lost", "Connection");
+                    }
+                    catch (TimeoutException)
+                    {
+                        Debug.WriteLine("Timeout", "Connection");
                     }
                     catch (OperationCanceledException)
                     {
@@ -206,30 +178,19 @@
                 }
                 while (true);
 
-                OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser);
-                OffFrameProcessor.PropertyChanged += OffFrameProcessor_PropertyChanged;
-                OffFrameProcessor.LensUpdated += OfframeProcessor_LensUpdated;
-                OnPropertyChanged(nameof(OffFrameProcessor));
+                if (OffFrameProcessor == null)
+                {
+                    connectStage = 7;
+                    OffFrameProcessor = new OffFrameProcessor(Device.ModelName, Parser, LumixState);
+                    OffFrameProcessor.LensChanged += OffFrameProcessor_LensChanged;
+                }
 
-                connectStage = 4;
-                await SwitchToRec();
-
-                connectStage = 5;
-                await UpdateState();
                 stateTimer.Change(2000, 2000);
-
-                connectStage = 6;
-                await ReadLensInfo();
-
-                connectStage = 7;
-                await http.Get<BaseRequestResult>($"?mode=startstream&value={liveviewport}");
-
-                IsConnected = true;
-                OnPropertyChanged(nameof(IsConnected));
                 return true;
             }
             catch (OperationCanceledException)
             {
+                connectCancellation.Dispose();
                 return false;
             }
             catch (Exception e)
@@ -239,38 +200,23 @@
             }
             finally
             {
-                IsConnecting = false;
+                isConnecting = false;
             }
         }
 
-        public async Task Disconnect(bool stillAvailbale = true)
+        public void Disconnect()
         {
             try
             {
                 connectCancellation.Cancel();
-                IsConnected = false;
+                connectCancellation = new CancellationTokenSource();
+
                 stateTimer.Change(-1, -1);
                 Debug.WriteLine("Timer stopped", "Disconnect");
-                using (var timeout = new CancellationTokenSource(1000))
-                {
-                    if (!isConnecting)
-                    {
-                        await Try(async () => await http.Get<BaseRequestResult>("?mode=stopstream", timeout.Token));
-                    }
-
-                    Disconnected?.Invoke(this, stillAvailbale);
-                    Debug.WriteLine("Disconnected called", "Disconnect");
-                }
-
-                Dispose();
             }
             catch (Exception e)
             {
                 LogError(e);
-            }
-            finally
-            {
-                OnPropertyChanged(nameof(IsConnected));
             }
         }
 
@@ -279,8 +225,6 @@
             connectCancellation.Cancel();
             connectCancellation.Dispose();
             http.Dispose();
-            OffFrameProcessor.PropertyChanged -= OffFrameProcessor_PropertyChanged;
-            OffFrameProcessor.LensUpdated -= OfframeProcessor_LensUpdated;
             stateTimer.Dispose();
         }
 
@@ -323,27 +267,31 @@
             return await Try(async () =>
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
-                if (recStopSupported)
+                if (profile.RecStop)
                 {
+                    LumixState.RecState = RecState.Unknown;
                     await Task.Delay(100);
-                    await UpdateState();
+                    LumixState.State = await GetState();
                     return true;
                 }
+                else
+                {
+                    LumixState.RecState = RecState.StopNotSupported;
+                }
 
-                RecState = RecState.Unknown;
                 return true;
             });
         }
 
         public async Task<bool> RecStop()
         {
-            if (recStopSupported)
+            if (profile.RecStop)
             {
                 try
                 {
                     await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstop");
                     await Task.Delay(500);
-                    await UpdateState();
+                    LumixState.State = await GetState();
                     return true;
                 }
                 catch (LumixException ex)
@@ -351,8 +299,8 @@
                     if (ex.Error == LumixError.ErrorParam)
                     {
                         Debug.WriteLine("RecStop not supported", "RecStop");
-                        recStopSupported = false;
-                        RecState = RecState.StopNotSupported;
+                        profile.RecStop = false;
+                        LumixState.RecState = RecState.StopNotSupported;
                     }
                     else
                     {
@@ -401,7 +349,7 @@
         {
             return await Try(async () =>
             {
-                if (useNewTouchAF)
+                if (profile.NewAf)
                 {
                     try
                     {
@@ -415,7 +363,7 @@
                         if (ex.Error == LumixError.ErrorParam)
                         {
                             LogTrace("New TouchAF not supported", "NewTouchAF");
-                            useNewTouchAF = false;
+                            profile.NewAf = false;
                         }
                         else
                         {
@@ -428,6 +376,14 @@
                     $"?mode=camctrl&type=touchaf&value={(int)(x * 1000)}/{(int)(y * 1000)}");
                 return true;
             });
+        }
+
+        public async Task StopStream()
+        {
+            if (!isConnecting)
+            {
+                await Try(async () => await http.Get<BaseRequestResult>("?mode=stopstream"));
+            }
         }
 
         public async Task<bool> SwitchToRec()
@@ -453,11 +409,9 @@
                     buf[buf.Length - 1] == 0xd9)
                 {
                     CameraPoint? size = null;
-                    foreach (var ev in LiveViewUpdated.GetInvocationList())
+                    foreach (var ev in LiveViewUpdated.GetInvocationList().Cast<LiveViewUpdatedDelegate>())
                     {
-                        size =
-                            await ((Func<ArraySegment<byte>, Task<CameraPoint?>>)ev)(
-                                new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
+                        size = await ev(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
                     }
 
                     if (size != null)
@@ -487,12 +441,85 @@
             return Equals(Uuid, other.Uuid);
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        private async Task<CurMenu> GetCurMenu()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var curmenuString = await http.GetString("?mode=getinfo&type=curmenu");
+            var response = Http.ReadResponse<CurMenuRequestResult>(curmenuString);
+
+            if (response.MenuInfo == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var result = Parser.ParseCurMenu(response.MenuInfo);
+                return result;
+            }
+            catch (AggregateException)
+            {
+                LogError("Cannot parse CurMenu", (object)curmenuString);
+                return null;
+            }
         }
 
-        protected virtual void OnSelfChanged([CallerMemberName] string propertyName = null) => OnPropertyChanged(propertyName);
+        private async Task<LensInfo> GetLensInfo()
+        {
+            string raw = null;
+            try
+            {
+                raw = await http.GetString("?mode=getinfo&type=lens");
+                return Parser.ParseLensInfo(raw);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("LensInfo: " + raw, "LensInfo");
+                throw;
+            }
+        }
+
+        private async Task<MenuSet> GetMenuSet()
+        {
+            var allmenuString = await http.GetString("?mode=getinfo&type=allmenu");
+            var result = Http.ReadResponse<MenuSetRequestResult>(allmenuString);
+
+            if (result.MenuSet == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                if (Parser == null)
+                {
+                    Parser = CameraParser.TryParseMenuSet(result.MenuSet, language, out var menuset);
+                    return menuset;
+                }
+
+                return Parser.ParseMenuSet(result.MenuSet, language);
+            }
+            catch (AggregateException)
+            {
+                LogError("Cannot parse MenuSet", (object)allmenuString);
+                return null;
+            }
+        }
+
+        private async Task<CameraState> GetState()
+        {
+            var response = await http.Get<CameraStateRequestResult>("?mode=getstate");
+            var newState = response.State;
+            if (newState.Rec == OnOff.On)
+            {
+                LumixState.RecState = profile.RecStop ? RecState.Started : RecState.StopNotSupported;
+            }
+            else
+            {
+                LumixState.RecState = RecState.Stopped;
+            }
+
+            return newState;
+        }
 
         private void LogError(string message, string place = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
         {
@@ -521,100 +548,9 @@
             Log.Trace(message, Log.Severity.Trace, null, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private void OffFrameProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OffFrameProcessor_LensChanged()
         {
-            switch (e.PropertyName)
-            {
-                case nameof(OffFrameProcessor.FocusMode):
-                    CanManualFocus = OffFrameProcessor.FocusMode == FocusMode.Manual;
-                    OnPropertyChanged(nameof(CanManualFocus));
-                    break;
-
-                case nameof(OffFrameProcessor.CameraMode):
-                    CanChangeAperture = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Aperture);
-                    CanChangeShutter = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Shutter);
-                    CanCapture = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Photo);
-                    IsVideoMode = OffFrameProcessor.CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Video);
-                    OnPropertyChanged(nameof(CanCapture));
-                    OnPropertyChanged(nameof(CanChangeAperture));
-                    OnPropertyChanged(nameof(CanChangeShutter));
-                    break;
-
-                case nameof(OffFrameProcessor.OpenedAperture):
-                    UpdateCurrentApertures();
-                    break;
-            }
-        }
-
-        private async void OfframeProcessor_LensUpdated()
-        {
-            await Try(ReadLensInfo);
-        }
-
-        private async Task ReadCurMenu()
-        {
-            var allmenuString = await http.GetString("?mode=getinfo&type=curmenu");
-            var result = Http.ReadResponse<MenuSetRequestResult>(allmenuString);
-
-            try
-            {
-                // MenuSet = MenuSet.TryParseMenuSet(result.MenuSet, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            }
-            catch (AggregateException)
-            {
-                LogError("Cannot parse MenuSet", (object)allmenuString);
-            }
-
-            await http.Get<BaseRequestResult>("?mode=getinfo&type=curmenu");
-            RecState = RecState.Unknown;
-            OnPropertyChanged(nameof(RecState));
-        }
-
-        private async Task ReadLensInfo()
-        {
-            string raw = null;
-            try
-            {
-                raw = await http.GetString("?mode=getinfo&type=lens");
-                var newInfo = Parser.ParseLensInfo(raw);
-                if (!Equals(newInfo, LensInfo))
-                {
-                    LensInfo = newInfo;
-                    UpdateCurrentApertures();
-
-                    OnPropertyChanged(nameof(LensInfo));
-                    OnPropertyChanged(nameof(CurrentApertures));
-                }
-            }
-            catch (Exception)
-            {
-                Debug.WriteLine("LensInfo: " + raw, "LensInfo");
-                throw;
-            }
-        }
-
-        private async Task<bool> ReadMenuSet(string lang)
-        {
-            var allmenuString = await http.GetString("?mode=getinfo&type=allmenu");
-            var result = Http.ReadResponse<MenuSetRequestResult>(allmenuString);
-
-            if (result.MenuSet == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                Parser = CameraParser.TryParseMenuSet(result.MenuSet, lang, out var menuset);
-                MenuSet = menuset;
-                OnPropertyChanged(nameof(MenuSet));
-                return true;
-            }
-            catch (AggregateException)
-            {
-                LogError("Cannot parse MenuSet", (object)allmenuString);
-                return false;
-            }
+            LumixState.MenuSet = await GetMenuSet();
         }
 
         private async Task<bool> RequestAccess(CancellationToken token)
@@ -668,7 +604,7 @@
 
         private async void StateTimer_Tick(object sender)
         {
-            if (!IsConnected)
+            if (isConnecting)
             {
                 return;
             }
@@ -677,26 +613,36 @@
             {
                 try
                 {
-                    var lastState = State;
-                    var state = await UpdateState();
+                    var lastState = LumixState.State;
+                    var state = LumixState.State = await GetState();
                     if (lastState.Operate != null && state.Operate == null)
                     {
-                        await Disconnect(false);
+                        Debug.WriteLine("Not connected?", "StateUpdate");
+                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.NotConnected);
+                        return;
                     }
 
                     stateFiledTimes = 0;
                 }
+                catch (ConnectionLostException)
+                {
+                    Debug.WriteLine("Connection lost", "Connection");
+                    if (++stateFiledTimes > 3)
+                    {
+                        LogTrace("Connection lost");
+                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.RequestFailed);
+                    }
+                }
                 catch (LumixException ex)
                 {
                     Debug.WriteLine(ex);
-                    await Disconnect(false);
+                    StateUpdateFailed?.Invoke(this, UpdateStateFailReason.LumixException);
                 }
                 catch (Exception)
                 {
-                    stateFiledTimes++;
-                    if (stateFiledTimes > 30)
+                    if (++stateFiledTimes > 3)
                     {
-                        await Disconnect(false);
+                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.RequestFailed);
                     }
                 }
                 finally
@@ -706,26 +652,17 @@
             }
         }
 
-        private async Task<bool> Try(Func<Task> act)
-        {
-            try
-            {
-                await act();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                LogError("Camera action failed", ex);
-                return false;
-            }
-        }
-
         private async Task<bool> Try<T>(Func<Task<T>> act)
         {
             try
             {
                 await act();
                 return true;
+            }
+            catch (ConnectionLostException)
+            {
+                Debug.WriteLine("Connection lost", "Connection");
+                return false;
             }
             catch (Exception ex)
             {
@@ -737,43 +674,6 @@
         private async Task<bool> TryGet(string path)
         {
             return await Try(async () => await http.Get<BaseRequestResult>(path));
-        }
-
-        private void UpdateCurrentApertures()
-        {
-            var open = OffFrameProcessor?.OpenedAperture ?? LensInfo.OpenedAperture;
-
-            var newCurrentApertures = new List<CameraMenuItem256>(MenuSet.Apertures.Count);
-            var opentext = CameraParser.ApertureBinToText(open);
-            newCurrentApertures.Add(new CameraMenuItem256(open.ToString(), opentext, "setsetting", "focal", open));
-            newCurrentApertures.AddRange(MenuSet.Apertures.Where(a => a.IntValue >= open && a.Text != opentext && (LensInfo == null || a.IntValue <= LensInfo.ClosedAperture)));
-            if (newCurrentApertures.Count != CurrentApertures.Count ||
-                newCurrentApertures.First().Value != CurrentApertures.First().Value)
-            {
-                CurrentApertures = newCurrentApertures;
-                OnPropertyChanged(nameof(CurrentApertures));
-            }
-        }
-
-        private async Task<CameraState> UpdateState()
-        {
-            using (var timeout = new CancellationTokenSource(1000))
-            {
-                var newState = await http.Get<CameraStateRequestResult>("?mode=getstate", timeout.Token);
-                if (State != null && newState.State.Equals(State))
-                {
-                    return State;
-                }
-
-                State = newState.State ?? throw new NullReferenceException();
-
-                RecState = State.Rec == OnOff.On
-                    ? (recStopSupported ? RecState.Started : RecState.StopNotSupported)
-                    : RecState.Stopped;
-
-                OnPropertyChanged(nameof(State));
-                return State;
-            }
         }
     }
 }

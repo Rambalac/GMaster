@@ -1,4 +1,4 @@
-namespace Tools
+namespace GMaster.Tools
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,7 @@ namespace Tools
     using System.ComponentModel;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using Annotations;
-    using GMaster.Core.Tools;
+    using Core.Tools;
     using Newtonsoft.Json.Linq;
 
     public class SettingsContainer : INotifyPropertyChanged
@@ -56,6 +55,7 @@ namespace Tools
                                 case string str:
                                     propvalue.SetValue(Enum.Parse(gentype, str));
                                     break;
+
                                 default:
                                     throw new InvalidCastException($"Cannot cast {val.GetType()} into {gentype}");
                             }
@@ -71,6 +71,7 @@ namespace Tools
                                 case JArray ja:
                                     propvalue.SetValue(ja.ToObject(gentype));
                                     break;
+
                                 default:
                                     propvalue.SetValue(val);
                                     break;
@@ -100,7 +101,6 @@ namespace Tools
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

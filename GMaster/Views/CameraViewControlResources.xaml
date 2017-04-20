@@ -6,7 +6,7 @@
     <commands:CaptureCommand x:Key="CaptureCommand" Model="{Binding}" />
     <commands:RecCommand x:Key="RecCommand" Model="{Binding}" />
 
-    <converters:RecStateConvertor x:Key="RecStateConvertor" />
+    <converters:RecStateToIconConvertor x:Key="RecStateConvertor" />
     <Style x:Key="TransparentButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />

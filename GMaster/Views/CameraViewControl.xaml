@@ -14,25 +14,13 @@
     </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Gray">
         <Grid Background="DarkBlue">
-            <Viewbox Visibility="{Binding IsConnected, Converter={StaticResource NotVisibilityConverter}, Mode=TwoWay}">
+            <Viewbox Visibility="{Binding IsConnected, Converter={StaticResource FalseToVisibileConverter}, Mode=TwoWay}">
                 <TextBlock Foreground="White">NO CONNECTION</TextBlock>
             </Viewbox>
 
             <ContentControl IsEnabled="{Binding IsConnectionActive, Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                <Grid Visibility="{Binding IsConnected, Converter={StaticResource VisibilityConverter}, Mode=TwoWay}">
+                <Grid Visibility="{Binding IsConnected, Converter={StaticResource TrueToVisibileConverter}, Mode=TwoWay}">
                     <xaml:CanvasControl x:Name="LiveView" Draw="LiveView_OnDraw" />
-                    <ItemsControl ItemsSource="{x:Bind FocusAreas}" x:Name="FocusAreasControl">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="models:FocusArea">
-                                <local:FocusBox Rect="{Binding Rect, Mode=TwoWay}" Props="{Binding Props, Mode=TwoWay}" StrokeThickness="3" Visibility="{Binding Visible, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -66,25 +54,25 @@
                         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                             <StackPanel Width="100">
                                 <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
-                                  ItemsSource="{Binding CurrentApertures}"
+                                  ItemsSource="{Binding Apertures}"
                                   HorizontalContentAlignment="Center"
                                   SelectedItem="{Binding CurrentAperture, Mode=TwoWay}"
-                                  Visibility="{Binding CanChangeAperture, Converter={StaticResource VisibilityConverter}}" />
+                                  Visibility="{Binding CanChangeAperture, Converter={StaticResource TrueToVisibileConverter}}" />
                                 <TextBlock HorizontalAlignment="Stretch"
-                                   Text="{Binding CurrentApertureText}"
+                                   Text="{Binding CurrentAperture}"
                                    VerticalAlignment="Stretch" TextAlignment="Center"
-                                   Visibility="{Binding CanChangeAperture, Converter={StaticResource NotVisibilityConverter}}" />
+                                   Visibility="{Binding CanChangeAperture, Converter={StaticResource FalseToVisibileConverter}}" />
                             </StackPanel>
                             <StackPanel Width="100">
                                 <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
                                   ItemsSource="{Binding ShutterSpeeds}"
                                   HorizontalContentAlignment="Center"
                                   SelectedItem="{Binding CurrentShutter, Mode=TwoWay}"
-                                  Visibility="{Binding CanChangeShutter, Converter={StaticResource VisibilityConverter}}" />
+                                  Visibility="{Binding CanChangeShutter, Converter={StaticResource TrueToVisibileConverter}}" />
                                 <TextBlock HorizontalAlignment="Stretch"
-                                   Text="{Binding CurrentShutterText}"
+                                   Text="{Binding CurrentShutter}"
                                    TextAlignment="Center"
-                                   Visibility="{Binding CanChangeShutter, Converter={StaticResource NotVisibilityConverter}}" />
+                                   Visibility="{Binding CanChangeShutter, Converter={StaticResource FalseToVisibileConverter}}" />
                             </StackPanel>
                             <StackPanel Width="100">
                                 <ComboBox HorizontalAlignment="Stretch" Margin="0,0,10,0"
@@ -99,7 +87,7 @@
                                     Maximum="{Binding MaxZoom, Mode=TwoWay}"
                                     Value="{Binding CurentZoom, Mode=TwoWay}" />
 
-                            <local:Adjuster Visibility="{Binding CanManualFocus, Mode=TwoWay, Converter={StaticResource VisibilityConverter}}" Width="200" Margin="10,0,0,0"
+                            <local:Adjuster Visibility="{Binding CanManualFocus, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}" Width="200" Margin="10,0,0,0"
                                     RepeatClick="FocusAdjuster_OnRepeatClick"
                                     Minimum="0"
                                     Maximum="{Binding MaximumFocus, Mode=TwoWay}"

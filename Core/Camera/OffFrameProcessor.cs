@@ -2,62 +2,27 @@ namespace GMaster.Core.Camera
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using LumixData;
     using Tools;
 
-    public enum FocusAreaType
-    {
-        OneAreaSelected = 0x0001,
-        FaceOther = 0xff01,
-        MainFace = 0x0002,
-        Eye = 0xff09,
-        TrackUnlock = 0xff03,
-        TrackLock = 0x0003,
-
-        Box = 0xff02,
-        Cross = 0xff04
-    }
-
-    public class OffFrameProcessor : INotifyPropertyChanged
+    public class OffFrameProcessor
     {
         private readonly string deviceName;
 
+        private readonly LumixState lumixState;
         private readonly CameraParser parser;
 
-        public OffFrameProcessor(string deviceName, CameraParser parser)
+        public OffFrameProcessor(string deviceName, CameraParser parser, LumixState lumixState)
         {
             this.parser = parser;
+            this.lumixState = lumixState;
             this.deviceName = deviceName;
         }
 
-        public event Action LensUpdated;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public TextBinValue Aperture { get; private set; }
-
-        public CameraMode CameraMode { get; private set; } = CameraMode.Unknown;
-
-        public int ExposureShift { get; private set; }
-
-        public FocusMode FocusMode { get; private set; }
-
-        public FocusAreas FocusPoints { get; private set; }
-
-        public TextBinValue Iso { get; private set; }
+        public event Action LensChanged;
 
         public bool OffframeBytesSupported { get; } = true;
-
-        public int OpenedAperture { get; private set; }
-
-        public CameraOrientation Orientation { get; private set; }
-
-        public TextBinValue Shutter { get; private set; }
-
-        public int Zoom { get; private set; }
 
         public int CalcImageStart(Slice slice)
         {
@@ -76,96 +41,33 @@ namespace GMaster.Core.Camera
                 }
 
                 Debug.WriteLine(() => string.Join(",", slice.Skip(32).Select(a => a.ToString("X2"))), "OffFrameBytes");
-                var newIso = GetFromShort(state.Main, 127, parser.IsoBinary);
-                if (!Equals(newIso, Iso))
+                lumixState.Iso = GetFromShort(state.Main, 127, parser.IsoBinary);
+
+                lumixState.Shutter = GetFromShort(state.Main, 68, parser.ShutterBinary);
+
+                lumixState.Aperture = GetFromShort(state.Main, 56, parser.ApertureBinary);
+
+                lumixState.CameraMode = state.Main[92].ToEnum(CameraMode.Unknown);
+
+                lumixState.Orientation = state.Original[42].ToEnum(CameraOrientation.Undefined);
+
+                var newzoom = state.Main.ToShort(85);
+                if (lumixState.Zoom == 0 && newzoom != 0)
                 {
-                    Iso = newIso;
-                    OnPropertyChanged(nameof(Iso));
+                    LensChanged?.Invoke();
                 }
 
-                var newShutter = GetFromShort(state.Main, 68, parser.ShutterBinary);
-                if (!Equals(newShutter, Shutter))
-                {
-                    Shutter = newShutter;
-                    OnPropertyChanged(nameof(Shutter));
-                }
+                lumixState.Zoom = newzoom;
 
-                var newOpenedAperture = state.Main.ToShort(52);
-                if (newOpenedAperture != OpenedAperture)
-                {
-                    OpenedAperture = newOpenedAperture;
-                    OnPropertyChanged(nameof(OpenedAperture));
-                }
+                lumixState.ExposureShift = state.Main.ToShort(128);
 
-                var newAperture = GetFromShort(state.Main, 56, parser.ApertureBinary);
-                if (!Equals(newAperture, Aperture))
-                {
-                    Aperture = newAperture;
-                    OnPropertyChanged(nameof(Aperture));
-                }
+                lumixState.FocusPoints = GetFocusPoint(state.Original, size);
 
-                var newMode = state.Main[92].ToEnum(CameraMode.Unknown);
-                if (newMode != CameraMode)
-                {
-                    CameraMode = newMode;
-                    OnPropertyChanged(nameof(CameraMode));
-                }
-
-                var newOrient = state.Original[42].ToEnum(CameraOrientation.Undefined);
-                if (newOrient != Orientation)
-                {
-                    Orientation = newOrient;
-                    OnPropertyChanged(nameof(Orientation));
-                }
-
-                var newZoom = (int)state.Main.ToShort(85);
-                if (newZoom != Zoom)
-                {
-                    if (Zoom == 0 || newZoom == 0)
-                    {
-                        LensUpdated?.Invoke();
-                    }
-
-                    Zoom = newZoom;
-                    OnPropertyChanged(nameof(Zoom));
-                }
-
-                var newExposureShift = (int)state.Main.ToShort(128);
-                if (newExposureShift != ExposureShift)
-                {
-                    ExposureShift = newExposureShift;
-                    OnPropertyChanged(nameof(ExposureShift));
-                }
-
-                var newFocusPoints = GetFocusPoint(state.Original, size);
-                if (!Equals(newFocusPoints, FocusPoints))
-                {
-                    FocusPoints = newFocusPoints;
-                    OnPropertyChanged(nameof(FocusPoints));
-                }
-
-                var newFocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
-                if (newFocusMode != FocusMode)
-                {
-                    FocusMode = newFocusMode;
-                    OnPropertyChanged(nameof(FocusMode));
-                }
+                lumixState.FocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
             }
             catch (Exception e)
             {
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
-            }
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            try
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
             }
         }
 
@@ -200,7 +102,7 @@ namespace GMaster.Core.Camera
             return slice[46] == 0xff ? 12 : 16;
         }
 
-        private FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
+        private static FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
         {
             var pointsNum = slice[47];
             var focusSlice = new Slice(slice, 48);

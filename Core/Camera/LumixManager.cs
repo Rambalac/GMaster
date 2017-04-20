@@ -30,31 +30,27 @@ namespace GMaster.Core.Camera
             network.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
         }
 
-        public event Action<DeviceInfo> DeviceDiscovered;
+        public event Action<DeviceInfo, Lumix> DeviceDiscovered2;
 
-        public void StartConnectCamera(Lumix camera, Action<bool> onConnect)
+        public async Task<bool> ConnectCamera(Lumix camera)
         {
-            camera.Disconnected += Camera_Disconnected;
+            try
+            {
+                var connectResult = await camera.Connect(LiveViewPort, lang);
+                if (connectResult)
+                {
+                    ipToLumix[camera.CameraHost] = camera;
+                    usnToLumix[camera.Device.Usn] = camera;
+                    Debug.WriteLine("Add listener: " + camera.CameraHost, "UDP");
+                }
 
-            Task.Run(async () =>
-              {
-                  try
-                  {
-                      var connectResult = await camera.Connect(LiveViewPort, lang);
-                      if (connectResult)
-                      {
-                          ipToLumix[camera.CameraHost] = camera;
-                          usnToLumix[camera.Device.Usn] = camera;
-                          Debug.WriteLine("Add listener: " + camera.CameraHost, "UDP");
-                      }
-
-                      onConnect(connectResult);
-                  }
-                  catch (Exception ex)
-                  {
-                      Log.Error(new Exception("Connection failed", ex));
-                  }
-              });
+                return connectResult;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(new Exception("Connection failed", ex));
+                return false;
+            }
         }
 
         public void SearchCameras()
@@ -157,30 +153,22 @@ namespace GMaster.Core.Camera
             deviceLocators = null;
         }
 
-        protected void OnDeviceDiscovered(DeviceInfo obj)
+        public void ForgetDiscovery(DeviceInfo dev)
         {
-            DeviceDiscovered?.Invoke(obj);
+            var usn = dev.Usn;
+            var host = dev.Host;
+            lock (foundDevices)
+            {
+                foundDevices.Remove(usn + host);
+            }
         }
 
-        private void Camera_Disconnected(Lumix obj, bool stillAvailable)
+        public void ForgetCamera(Lumix obj)
         {
             var usn = obj.Device.Usn;
             var host = obj.Device.Host;
-            if (!stillAvailable)
-            {
-                lock (foundDevices)
-                {
-                    foundDevices.Remove(usn + host);
-                    Debug.WriteLine("Undiscovered: " + usn, "Discovery");
-                }
-
-                Debug.WriteLine("Remove listener: " + host, "UDP");
-            }
-            else
-            {
-                ipToLumix.TryRemove(host, out _);
-                usnToLumix.TryRemove(usn, out _);
-            }
+            ipToLumix.TryRemove(host, out _);
+            usnToLumix.TryRemove(usn, out _);
         }
 
         private async void DeviceLocator_DeviceAvailable(object sender, DeviceAvailableEventArgs arg)
@@ -218,18 +206,17 @@ namespace GMaster.Core.Camera
                     return;
                 }
 
-                if (usnToLumix.TryGetValue(usn, out var oldcamera))
-                {
-                    await oldcamera.Disconnect(false);
-                    lock (foundDevices)
-                    {
-                        foundDevices.Add(usn + host);
-                    }
-                }
-
                 var dev = new DeviceInfo(info, usn);
                 Log.Trace("Discovered " + dev.ModelName, tags: "camera." + dev.ModelName);
-                OnDeviceDiscovered(dev);
+
+                if (usnToLumix.TryGetValue(usn, out var oldcamera))
+                {
+                    DeviceDiscovered2?.Invoke(dev, oldcamera);
+                }
+                else
+                {
+                    DeviceDiscovered2?.Invoke(dev, null);
+                }
             }
             catch (HttpRequestException e)
             {

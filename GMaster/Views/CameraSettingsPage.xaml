@@ -43,7 +43,7 @@
             </Grid>
         </Grid>
 
-        <Button Content="Forget Camera" Click="ForgerButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource VisibilityConverter}}" />
-        <Button Content="Remember Camera" Click="RememberButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource NotVisibilityConverter}}" />
+        <Button Content="Forget Camera" Click="ForgerButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource TrueToVisibileConverter}}" />
+        <Button Content="Remember Camera" Click="RememberButton_OnClick" Visibility="{Binding IsRemembered, Converter={StaticResource FalseToVisibileConverter}}" />
     </StackPanel>
 </Page>

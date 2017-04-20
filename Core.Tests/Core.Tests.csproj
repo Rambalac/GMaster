@@ -84,6 +84,7 @@
     <None Include="TestMenuSetGX7.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestMenuSetTS5.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

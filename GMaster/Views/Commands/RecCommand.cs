@@ -9,8 +9,8 @@
 
     public class RecCommand : AbstractModelCommand<CameraViewModel>
     {
-        protected override bool InternalCanExecute()
-            => Model?.RecState != null && Model.RecState != RecState.Unknown && Model.RecState != RecState.StopNotSupported;
+        protected override bool InternalCanExecute() =>
+            Model?.RecState != null && Model.RecState != RecState.Unknown && Model.RecState != RecState.StopNotSupported;
 
         protected override async Task InternalExecute()
         {
@@ -22,13 +22,14 @@
 
             try
             {
-                if (lumix.Camera.RecState == RecState.Stopped)
+                switch (lumix.Camera.LumixState.RecState)
                 {
-                    await lumix.Camera.RecStart();
-                }
-                else if (lumix.Camera.RecState == RecState.Started)
-                {
-                    await lumix.Camera.RecStop();
+                    case RecState.Stopped:
+                        await lumix.Camera.RecStart();
+                        break;
+                    case RecState.Started:
+                        await lumix.Camera.RecStop();
+                        break;
                 }
             }
             catch (Exception e)

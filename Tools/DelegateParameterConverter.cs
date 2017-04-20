@@ -1,20 +1,20 @@
-﻿namespace GMaster.Views.Converters
+namespace GMaster.Tools
 {
     using System;
     using Windows.UI.Xaml.Data;
 
-    public class SignalBarsConverter : IValueConverter
+    public abstract class DelegateParameterConverter<TFrom, TParam, TTo> : IValueConverter
     {
-        private static readonly string[] Bars = new[] { " ", "\xE86C", "\xE86D", "\xE86E", "\xE86F", "\xE870" };
+        protected abstract Func<TFrom, TParam, TTo> Converter { get; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return Bars[(byte)value];
+            return Converter((TFrom)value, (TParam)parameter);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            return value;
+            throw new NotImplementedException();
         }
     }
 }

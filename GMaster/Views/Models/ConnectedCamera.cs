@@ -1,5 +1,6 @@
 ﻿namespace GMaster.Views.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -16,6 +17,8 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public event Action Removed;
+
         public string[] Aspects => new[] { "1", "1.33", "1.5", "1.75", "2" };
 
         public Lumix Camera
@@ -28,24 +31,14 @@
                     return;
                 }
 
-                if (camera != null)
-                {
-                    camera.PropertyChanged -= Camera_PropertyChanged;
-                    camera.Disconnected -= Camera_Disconnected;
-                }
-
                 camera = value;
-
-                if (camera != null)
-                {
-                    camera.PropertyChanged += Camera_PropertyChanged;
-                    camera.Disconnected += Camera_Disconnected;
-                    Name = Camera.Device.FriendlyName;
-                }
+                camera.LumixState.PropertyChanged += LumixState_PropertyChanged2;
 
                 OnPropertyChanged(nameof(Camera));
             }
         }
+
+        public DeviceInfo Device { get; set; }
 
         public IEnumerable<LutInfo> InstalledLuts => new[] { new LutInfo { Id = null, Title = string.Empty } }.Concat(Model.InstalledLuts);
 
@@ -60,13 +53,13 @@
             }
         }
 
-        public bool IsConnecting => Camera?.IsConnecting ?? true;
+        public bool IsBusy => Camera.LumixState.IsBusy;
 
         public bool IsRemembered => Settings.GeneralSettings.Cameras.Contains(Settings);
 
         public MainPageModel Model { get; set; }
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         public string SelectedAspect
         {
@@ -93,12 +86,17 @@
 
         public CameraSettings Settings { get; set; }
 
-        public string Uuid { get; set; }
+        public string Uuid => Device.Uuid;
 
         public void AddToSettings()
         {
             Settings.GeneralSettings.Cameras.Add(Settings);
             OnPropertyChanged(nameof(IsRemembered));
+        }
+
+        public void MakeRemoved()
+        {
+            Removed?.Invoke();
         }
 
         public void RemoveFromSettings()
@@ -113,22 +111,11 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Camera_Disconnected(Lumix sender, bool stillAvailable)
+        private void LumixState_PropertyChanged2(object sender, PropertyChangedEventArgs e)
         {
-            var task = Model.RunAsync(() =>
+            if (e.PropertyName == nameof(LumixState.IsBusy))
             {
-                Camera = null;
-            });
-        }
-
-        private void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Lumix.IsConnecting))
-            {
-                var task = Model.RunAsync(() =>
-                  {
-                      OnPropertyChanged(nameof(IsConnecting));
-                  });
+                var task = Model.RunAsync(() => OnPropertyChanged(nameof(IsBusy)));
             }
         }
     }

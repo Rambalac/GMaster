@@ -23,10 +23,12 @@
                 <SymbolIcon Symbol="Add" />
             </Button>
         </RelativePanel>
+        <TextBlock Visibility="{Binding InstalledLuts.Count, Mode=TwoWay, Converter={StaticResource ZeroToVisibileConverter}}">No installed LUTs</TextBlock>
         <ListBox  ItemsSource="{Binding InstalledLuts, Mode=TwoWay}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    <Setter Property="Padding" Value="10,3,3,3"/>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
@@ -45,9 +47,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Content="Copy Log messages" Click="ButtonBase_OnClick"/> 
-        
-        <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibilityConverter}}">
+        <Rectangle Height="3" HorizontalAlignment="Stretch" Fill="White"  Margin="0,10,0,0"/>
+        <Button Content="Copy Log messages" Click="CopyLog_OnClick" Margin="0,10,0,0"/>
+
+        <Border BorderThickness="2" BorderBrush="Red" Margin="0,50,0,0" Visibility="{Binding IsDebug, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TrueToVisibileConverter}}">
             <ListView x:Name="DebugCategoryList" Loaded="DebugCategoryList_Loaded">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:DebugCategoryEnable">

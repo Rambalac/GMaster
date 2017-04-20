@@ -8,6 +8,7 @@ namespace GMaster.Views
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Camera.LumixData;
+    using Microsoft.Graphics.Canvas.Geometry;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Models;
     using Windows.ApplicationModel.DataTransfer;
@@ -53,7 +54,6 @@ namespace GMaster.Views
                   true);
             DataContextChanged += CameraViewControl_DataContextChanged;
             frame = new FrameRenderer(LiveView);
-            frame.ImageRectChanged += Frame_ImageRectChanged;
         }
 
         public FocusArea[] FocusAreas { get; } = Enumerable.Range(0, 16).Select(i => new FocusArea()).ToArray();
@@ -118,11 +118,6 @@ namespace GMaster.Views
             }
         }
 
-        private void Frame_ImageRectChanged(Rect obj)
-        {
-            RecalulateFocusPoint();
-        }
-
         private async void ImageGestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             if (Lumix != null && Math.Abs(args.Cumulative.Expansion) < 0.001)
@@ -170,12 +165,12 @@ namespace GMaster.Views
             {
                 var drawaspect = aspect;
                 if (Model.SelectedCamera.IsAspectAnamorphingVideoOnly &&
-                    !(Model.SelectedCamera.Camera.IsVideoMode && is43))
+                    !(Model.SelectedCamera.Camera.LumixState.IsVideoMode && is43))
                 {
                     drawaspect = 1;
                 }
 
-                frame.Draw(args.DrawingSession, sender.ActualWidth, sender.ActualHeight, drawaspect);
+                frame.Draw(args.DrawingSession, sender.ActualWidth, sender.ActualHeight, drawaspect, Model.FocusAreas);
             }
         }
 
@@ -204,10 +199,6 @@ namespace GMaster.Views
                     }
 
                     break;
-
-                case nameof(CameraViewModel.FocusAreas):
-                    RecalulateFocusPoint();
-                    break;
             }
         }
 
@@ -234,35 +225,6 @@ namespace GMaster.Views
             {
                 await Lumix.SetFocusPoint(ix, iy);
             }
-        }
-
-        private void RecalulateFocusPoint()
-        {
-            var focusAreas = Model.FocusAreas;
-            if (focusAreas == null)
-            {
-                FocusAreasControl.Visibility = Visibility.Collapsed;
-                return;
-            }
-
-            if (!frame.IsReady)
-            {
-                return;
-            }
-
-            for (var i = 0; i < FocusAreas.Length; i++)
-            {
-                var area = FocusAreas[i];
-                if (i >= focusAreas.Boxes.Count)
-                {
-                    area.Hide();
-                    continue;
-                }
-
-                area.Update(focusAreas.Boxes[i], frame.ImageRect);
-            }
-
-            FocusAreasControl.Visibility = Visibility.Visible;
         }
 
         private void SelectedCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

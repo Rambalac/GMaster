@@ -18,7 +18,6 @@ namespace GMaster.Core.Camera
 
         public FocusAreas(int number, CameraPoint size, bool fix)
         {
-            Fixed = fix;
             boxes = new List<Box>(number);
             if (fix)
             {
@@ -28,8 +27,6 @@ namespace GMaster.Core.Camera
         }
 
         public IReadOnlyList<Box> Boxes => boxes;
-
-        public bool Fixed { get; }
 
         public void AddBox(int x1, int y1, int x2, int y2, FocusAreaType type, bool failed)
         {
@@ -74,10 +71,10 @@ namespace GMaster.Core.Camera
             private readonly BoxProps props;
             private int x1;
             private int x2;
-            private double xDivider = 1000;
+            private float xDivider = 1000;
             private int y1;
             private int y2;
-            private double yDivider = 1000;
+            private float yDivider = 1000;
 
             internal Box(int x1, int y1, int x2, int y2, FocusAreaType type, bool failed)
             {
@@ -89,15 +86,19 @@ namespace GMaster.Core.Camera
                 props.Failed = failed;
             }
 
+            public float Height => (y2 - y1) / yDivider;
+
             public BoxProps Props => props;
 
-            public double X1 => x1 / xDivider;
+            public float Width => (x2 - x1) / xDivider;
 
-            public double X2 => x2 / xDivider;
+            public float X1 => x1 / xDivider;
 
-            public double Y1 => y1 / yDivider;
+            public float X2 => x2 / xDivider;
 
-            public double Y2 => y2 / yDivider;
+            public float Y1 => y1 / yDivider;
+
+            public float Y2 => y2 / yDivider;
 
             public override bool Equals(object obj)
             {

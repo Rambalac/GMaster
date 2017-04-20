@@ -3,104 +3,116 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Annotations;
     using Core.Camera;
     using Core.Tools;
     using Windows.UI.Core;
-    using Debug = System.Diagnostics.Debug;
 
     public class CameraViewModel : INotifyPropertyChanged
     {
-        private ICameraMenuItem currentAperture;
-        private ICameraMenuItem currentIso;
-        private ICameraMenuItem currentShutter;
+        private LumixState lumixState;
         private ConnectedCamera selectedCamera;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool CanCapture => SelectedCamera?.Camera?.CanCapture ?? false;
-
-        public bool CanChangeAperture => SelectedCamera?.Camera?.CanChangeAperture ?? true;
-
-        public bool CanChangeShutter => SelectedCamera?.Camera?.CanChangeShutter ?? true;
-
-        public object CanManualFocus => SelectedCamera?.Camera?.CanManualFocus ?? false;
-
-        public bool CanPowerZoom => SelectedCamera?.Camera?.LensInfo?.HasPowerZoom ?? false;
-
-        public int CurentZoom => SelectedCamera?.Camera?.OffFrameProcessor?.Zoom ?? 0;
-
-        public ICameraMenuItem CurrentAperture
+        public ICollection<string> Apertures
         {
-            get => currentAperture;
-
-            set
+            get
             {
-                var newAper = value ?? currentAperture;
-
-                AsyncMenuItemSetter(currentAperture, newAper, v =>
+                if (lumixState?.LensInfo == null)
                 {
-                    currentAperture = v;
-                    OnPropertyChanged(nameof(CurrentAperture));
-                });
+                    return new List<string>();
+                }
+
+                var openedAperture = lumixState.OpenedAperture;
+                return new[] { openedAperture }
+                    .Concat(lumixState.MenuSet.Apertures.
+                            Where(a => a.IntValue <= lumixState.LensInfo.ClosedAperture &&
+                                    a.IntValue > openedAperture.IntValue))
+                    .Select(a => a.Text).ToList();
             }
         }
 
-        public ICollection<CameraMenuItem256> CurrentApertures => SelectedCamera?.Camera?.CurrentApertures;
+        public bool CanCapture => lumixState?.CanCapture ?? false;
 
-        public string CurrentApertureText => SelectedCamera?.Camera?.OffFrameProcessor?.Aperture.Text ?? string.Empty;
+        public bool CanChangeAperture => lumixState?.CanChangeAperture ?? true;
 
-        public int CurrentFocus => SelectedCamera?.Camera?.CurrentFocus ?? 0;
+        public bool CanChangeShutter => lumixState?.CanChangeShutter ?? true;
 
-        public ICameraMenuItem CurrentIso
+        public object CanManualFocus => lumixState?.CanManualFocus ?? false;
+
+        public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
+
+        public int CurentZoom => lumixState?.Zoom ?? 0;
+
+        public string CurrentAperture
         {
-            get => currentIso;
+            get => lumixState?.Aperture.Text;
 
             set
             {
-                AsyncMenuItemSetter(currentIso, value, v =>
-                {
-                    currentIso = v;
-                    OnPropertyChanged(nameof(CurrentIso));
-                });
+                AsyncMenuItemSetter(lumixState.MenuSet.Apertures.SingleOrDefault(a => a.Text == value) ?? lumixState.OpenedAperture);
             }
         }
 
-        public ICameraMenuItem CurrentShutter
+        public int CurrentFocus => lumixState?.CurrentFocus ?? 0;
+
+        public string CurrentIso
         {
-            get => currentShutter;
+            get
+            {
+                if (lumixState == null || lumixState.Iso.Text == null)
+                {
+                    return null;
+                }
+
+                return lumixState.MenuSet.IsoValues.FirstOrDefault(i => i.Text.EndsWith(lumixState.Iso.Text, StringComparison.OrdinalIgnoreCase)).Text;
+            }
 
             set
             {
-                AsyncMenuItemSetter(currentShutter, value, v =>
-                {
-                    currentShutter = v;
-                    OnPropertyChanged(nameof(CurrentShutter));
-                });
+                AsyncMenuItemSetter(lumixState?.MenuSet?.IsoValues.SingleOrDefault(a => a.Text == value));
             }
         }
 
-        public string CurrentShutterText => SelectedCamera?.Camera?.OffFrameProcessor?.Shutter.Text ?? string.Empty;
+        public string CurrentShutter
+        {
+            get => lumixState?.Shutter.Text;
+
+            set
+            {
+                Debug.WriteLine("Shutter set to: " + value, "LumixState");
+
+                AsyncMenuItemSetter(lumixState?.MenuSet?.ShutterSpeeds.SingleOrDefault(a => a.Text == value));
+            }
+        }
 
         public CoreDispatcher Dispatcher { get; set; }
 
-        public FocusAreas FocusAreas => SelectedCamera?.Camera?.OffFrameProcessor?.FocusPoints;
+        public FocusAreas FocusAreas => lumixState?.FocusPoints;
 
         public bool IsConnected => selectedCamera != null;
 
-        public bool IsConnectionActive => SelectedCamera?.Camera != null;
+        public bool IsConnectionActive => !(lumixState?.IsBusy ?? true);
 
-        public TitledList<CameraMenuItemText> IsoValues => SelectedCamera?.Camera?.MenuSet?.IsoValues;
+        public ICollection<string> IsoValues
+        {
+            get
+            {
+                return lumixState?.MenuSet?.IsoValues.Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList() ?? new List<string>();
+            }
+        }
 
-        public int MaximumFocus => SelectedCamera?.Camera?.MaximumFocus ?? 0;
+        public int MaximumFocus => lumixState?.MaximumFocus ?? 0;
 
-        public int MaxZoom => SelectedCamera?.Camera?.LensInfo?.MaxZoom ?? 0;
+        public int MaxZoom => lumixState?.LensInfo?.MaxZoom ?? 0;
 
-        public int MinZoom => SelectedCamera?.Camera?.LensInfo?.MinZoom ?? 0;
+        public int MinZoom => lumixState?.LensInfo?.MinZoom ?? 0;
 
-        public RecState? RecState => SelectedCamera?.Camera?.RecState;
+        public RecState RecState => lumixState?.RecState ?? RecState.Stopped;
 
         public ConnectedCamera SelectedCamera
         {
@@ -108,29 +120,28 @@
 
             set
             {
-                if (selectedCamera?.Camera != null)
+                if (ReferenceEquals(selectedCamera, value))
                 {
-                    selectedCamera.PropertyChanged -= SelectedCamera_PropertyChanged;
-                    selectedCamera.Camera.PropertyChanged -= Camera_PropertyChanged;
-                    selectedCamera.Camera.Disconnected -= Camera_Disconnected;
-                    if (selectedCamera.Camera.OffFrameProcessor != null)
-                    {
-                        selectedCamera.Camera.OffFrameProcessor.PropertyChanged -= OfframeProcessor_PropertyChanged;
-                    }
+                    return;
                 }
 
-                if (value?.Camera?.OffFrameProcessor != null)
+                if (selectedCamera != null)
                 {
-                    selectedCamera = value;
-                    selectedCamera.PropertyChanged += SelectedCamera_PropertyChanged;
-                    selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
-                    selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
-                    selectedCamera.Camera.Disconnected += Camera_Disconnected;
+                    lumixState.PropertyChanged -= Camera_PropertyChanged;
+                    selectedCamera.Removed -= SelectedCamera_Removed;
+                }
+
+                selectedCamera = value;
+
+                if (selectedCamera != null)
+                {
+                    selectedCamera.Removed += SelectedCamera_Removed;
+                    lumixState = selectedCamera.Camera.LumixState;
+                    lumixState.PropertyChanged += Camera_PropertyChanged;
                     SetTime = DateTime.UtcNow;
                 }
                 else
                 {
-                    selectedCamera = null;
                     SetTime = DateTime.MinValue;
                 }
 
@@ -145,7 +156,13 @@
 
         public DateTime SetTime { get; private set; } = DateTime.MinValue;
 
-        public TitledList<CameraMenuItemText> ShutterSpeeds => SelectedCamera?.Camera?.MenuSet?.ShutterSpeeds;
+        public ICollection<string> ShutterSpeeds
+        {
+            get
+            {
+                return lumixState?.MenuSet?.ShutterSpeeds.Select(s => s.Text).ToList() ?? new List<string>();
+            }
+        }
 
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -153,49 +170,24 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void AsyncMenuItemSetter(ICameraMenuItem old, ICameraMenuItem value, Action<ICameraMenuItem> onResult)
+        private void AsyncMenuItemSetter(ICameraMenuItem menu)
         {
-            if (value == null)
+            if (menu == null || SelectedCamera == null)
             {
                 return;
             }
 
-            AsyncSetter(
-                old,
-                value,
-                async v =>
-                {
-                    if (selectedCamera != null)
-                    {
-                        await selectedCamera.Camera.SendMenuItem(v);
-                    }
-                },
-                onResult);
-        }
-
-        private void AsyncSetter<TValue>(TValue oldvalue, TValue newvalue, Func<TValue, Task> action, Action<TValue> result)
-        {
             Task.Run(async () =>
             {
                 try
                 {
-                    await action(newvalue);
-                    await RunAsync(() => result(newvalue));
+                    await SelectedCamera.Camera.SendMenuItem(menu);
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex, "AsyncSetter");
-                    await RunAsync(() => result(oldvalue));
                 }
             });
-        }
-
-        private void Camera_Disconnected(Lumix sender, bool stillAvailable)
-        {
-            if (stillAvailable)
-            {
-                SelectedCamera = null;
-            }
         }
 
         private async void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -206,89 +198,72 @@
                 {
                     switch (e.PropertyName)
                     {
-                        case nameof(Lumix.CanManualFocus):
+                        case nameof(LumixState.CanManualFocus):
                             OnPropertyChanged(nameof(CanManualFocus));
                             break;
 
-                        case nameof(Lumix.CurrentApertures):
-                            OnPropertyChanged(nameof(CurrentApertures));
+                        case nameof(LumixState.OpenedAperture):
+                            OnPropertyChanged(nameof(Apertures));
                             break;
 
-                        case nameof(Lumix.CanChangeShutter):
+                        case nameof(LumixState.CanChangeShutter):
                             OnPropertyChanged(nameof(CanChangeShutter));
                             break;
 
-                        case nameof(Lumix.CanChangeAperture):
+                        case nameof(LumixState.CanChangeAperture):
                             OnPropertyChanged(nameof(CanChangeAperture));
                             break;
 
-                        case nameof(Lumix.MenuSet):
+                        case nameof(LumixState.MenuSet):
                             OnPropertyChanged(nameof(ShutterSpeeds));
                             OnPropertyChanged(nameof(IsoValues));
+                            OnPropertyChanged(nameof(Apertures));
                             break;
 
-                        case nameof(Lumix.RecState):
+                        case nameof(LumixState.RecState):
                             OnPropertyChanged(nameof(RecState));
                             break;
 
-                        case nameof(Lumix.CanCapture):
+                        case nameof(LumixState.CanCapture):
                             OnPropertyChanged(nameof(CanCapture));
                             break;
 
-                        case nameof(Lumix.MaximumFocus):
+                        case nameof(LumixState.MaximumFocus):
                             OnPropertyChanged(nameof(MaximumFocus));
                             break;
 
-                        case nameof(Lumix.CurrentFocus):
+                        case nameof(LumixState.CurrentFocus):
                             OnPropertyChanged(nameof(CurrentFocus));
                             break;
 
-                        case nameof(Lumix.LensInfo):
+                        case nameof(LumixState.LensInfo):
                             OnPropertyChanged(nameof(CanPowerZoom));
                             OnPropertyChanged(nameof(MaxZoom));
                             OnPropertyChanged(nameof(MinZoom));
                             break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
-            });
-        }
 
-        private async void OfframeProcessor_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            await RunAsync(() =>
-            {
-                try
-                {
-                    var camera = selectedCamera.Camera;
-                    switch (e.PropertyName)
-                    {
-                        case nameof(OffFrameProcessor.Shutter):
-                            currentShutter = camera.CurrentShutter ?? currentShutter;
+                        case nameof(LumixState.Shutter):
                             OnPropertyChanged(nameof(CurrentShutter));
-                            OnPropertyChanged(nameof(CurrentShutterText));
                             break;
 
-                        case nameof(OffFrameProcessor.Aperture):
-                            currentAperture = camera.CurrentAperture ?? currentAperture;
+                        case nameof(LumixState.Aperture):
                             OnPropertyChanged(nameof(CurrentAperture));
-                            OnPropertyChanged(nameof(CurrentApertureText));
                             break;
 
-                        case nameof(OffFrameProcessor.Iso):
-                            currentIso = camera.CurrentIso ?? currentIso;
+                        case nameof(LumixState.Iso):
                             OnPropertyChanged(nameof(CurrentIso));
                             break;
 
-                        case nameof(OffFrameProcessor.Zoom):
+                        case nameof(LumixState.Zoom):
                             OnPropertyChanged(nameof(CurentZoom));
                             break;
 
-                        case nameof(OffFrameProcessor.FocusPoints):
+                        case nameof(LumixState.FocusPoints):
                             OnPropertyChanged(nameof(FocusAreas));
+                            break;
+
+                        case nameof(LumixState.IsBusy):
+                            OnPropertyChanged(nameof(IsConnectionActive));
                             break;
                     }
                 }
@@ -303,13 +278,6 @@
         {
             try
             {
-                if (selectedCamera != null)
-                {
-                    currentAperture = selectedCamera?.Camera?.CurrentAperture;
-                    currentShutter = selectedCamera?.Camera?.CurrentShutter;
-                    currentIso = selectedCamera?.Camera?.CurrentIso;
-                }
-
                 OnPropertyChanged(nameof(IsConnected));
                 OnPropertyChanged(nameof(IsConnectionActive));
 
@@ -320,7 +288,7 @@
                 OnPropertyChanged(nameof(RecState));
 
                 OnPropertyChanged(nameof(ShutterSpeeds));
-                OnPropertyChanged(nameof(CurrentApertures));
+                OnPropertyChanged(nameof(Apertures));
                 OnPropertyChanged(nameof(IsoValues));
 
                 OnPropertyChanged(nameof(CurrentAperture));
@@ -348,22 +316,11 @@
             }
         }
 
-        private void SelectedCamera_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void SelectedCamera_Removed()
         {
             var task = RunAsync(() =>
               {
-                  if (e.PropertyName == nameof(ConnectedCamera.Camera))
-                  {
-                      OnPropertyChanged(nameof(IsConnectionActive));
-
-                      if (selectedCamera?.Camera != null)
-                      {
-                          selectedCamera.Camera.PropertyChanged += Camera_PropertyChanged;
-                          selectedCamera.Camera.OffFrameProcessor.PropertyChanged += OfframeProcessor_PropertyChanged;
-                      }
-
-                      RefreshAll();
-                  }
+                  SelectedCamera = null;
               });
         }
     }

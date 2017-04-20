@@ -25,7 +25,6 @@
         private readonly WiFiHelper wifi = new WiFiHelper();
         private CameraViewModel[] activeViews;
         private bool? isLandscape;
-        private Network network = new Network();
         private GridLength secondColumnWidth = new GridLength(0, GridUnitType.Star);
         private GridLength secondRowHeight = new GridLength(0);
         private DeviceInfo selectedDevice;
@@ -33,15 +32,6 @@
 
         public MainPageModel()
         {
-            LumixManager = new LumixManager(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, network);
-
-            LumixManager.DeviceDiscovered += Lumix_DeviceDiscovered;
-
-            var cameraRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
-            cameraRefreshTimer.Tick += CameraRefreshTimer_Tick;
-            cameraRefreshTimer.Start();
-
-            ConnectableDevices.CollectionChanged += ConnectableDevices_CollectionChanged;
             wifi.AutoconnectAlways = GeneralSettings.WiFiAutoconnectAlways;
             foreach (var ap in GeneralSettings.WiFiAutoconnectAccessPoints.Value)
             {
@@ -55,6 +45,8 @@
             WifiAutoconnectAccessPoints.CollectionChanged += WifiAutoconnectAccessPoints_CollectionChanged;
 
             WifiAutoconnectAccessPoints.AddRange(GeneralSettings.WiFiAutoconnectAccessPoints.Value);
+
+            ConnectionsManager = new ConnectionsManager(this, CultureInfo.CurrentUICulture);
         }
 
         public event Action<Lumix> CameraDisconnected;
@@ -89,6 +81,8 @@
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
 
+        public ConnectionsManager ConnectionsManager { get; }
+
         public ObservableCollection<LutInfo> InstalledLuts { get; } = new ObservableCollection<LutInfo>();
 
         public bool IsDebug => Debugger.IsAttached;
@@ -104,8 +98,6 @@
                 }
             }
         }
-
-        public LumixManager LumixManager { get; }
 
         public GridLength SecondColumnWidth
         {
@@ -258,57 +250,32 @@
         {
             ConnectableDevices.Remove(lumix.Device);
 
-            var connectedCamera = ConnectedCameras.SingleOrDefault(c => c.Uuid == lumix.Device.Uuid);
-            if (connectedCamera == null)
+            if (!GeneralSettings.Cameras.TryGetValue(lumix.Uuid, out var settings))
             {
-                if (!GeneralSettings.Cameras.TryGetValue(lumix.Uuid, out var settings))
-                {
-                    settings = new CameraSettings(lumix.Uuid);
-                }
-
-                settings.GeneralSettings = GeneralSettings;
-                connectedCamera = new ConnectedCamera
-                {
-                    Uuid = lumix.Device.Uuid,
-                    Camera = lumix,
-                    Model = this,
-                    Settings = settings,
-                    SelectedLut = InstalledLuts.SingleOrDefault(l => l?.Id == settings.LutId),
-                    SelectedAspect = settings.Aspect,
-                    IsAspectAnamorphingVideoOnly = settings.IsAspectAnamorphingVideoOnly
-                };
-
-                ConnectedCameras.Add(connectedCamera);
-            }
-            else
-            {
-                connectedCamera.Camera = lumix;
+                settings = new CameraSettings(lumix.Uuid);
             }
 
-            lumix.Disconnected += Lumix_Disconnected;
+            settings.GeneralSettings = GeneralSettings;
+            var connectedCamera = new ConnectedCamera
+            {
+                Device = lumix.Device,
+                Camera = lumix,
+                Model = this,
+                Name = lumix.Device.FriendlyName,
+                Settings = settings,
+                SelectedLut = InstalledLuts.SingleOrDefault(l => l?.Id == settings.LutId),
+                SelectedAspect = settings.Aspect,
+                IsAspectAnamorphingVideoOnly = settings.IsAspectAnamorphingVideoOnly
+            };
+
+            ConnectedCameras.Add(connectedCamera);
+
             return connectedCamera;
         }
 
         public async Task ConnectAccessPoint(WiFiAvailableNetwork eClickedItem)
         {
             await wifi.ConnectAccessPoint(eClickedItem);
-        }
-
-        public Lumix ConnectCamera(DeviceInfo modelSelectedDevice)
-        {
-            var lumix = new Lumix(modelSelectedDevice, new WindowsHttpClient());
-            var connectedCamera = AddConnectedDevice(lumix);
-            LumixManager.StartConnectCamera(lumix, result =>
-            {
-                var task = RunAsync(() =>
-                 {
-                     if (result)
-                     {
-                         ShowCamera(connectedCamera);
-                     }
-                 });
-            });
-            return lumix;
         }
 
         public async Task Init()
@@ -334,11 +301,6 @@
 
         public void ShowCamera(ConnectedCamera eClickedItem)
         {
-            if (eClickedItem.Camera.IsConnecting)
-            {
-                return;
-            }
-
             if (ActiveViews.Any(c => c.SelectedCamera == eClickedItem))
             {
                 return;
@@ -349,17 +311,6 @@
             {
                 first.SelectedCamera = eClickedItem;
             }
-        }
-
-        public async Task StartListening()
-        {
-            await LumixManager.StartListening();
-            LumixManager.SearchCameras();
-        }
-
-        public void StopListening()
-        {
-            LumixManager.StopListening();
         }
 
         public void WifiMakeCurrentAutoconnect()
@@ -378,16 +329,6 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void CameraRefreshTimer_Tick(object sender, object e)
-        {
-            LumixManager.SearchCameras();
-        }
-
-        private void ConnectableDevices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(ConnectableDevices));
-        }
-
         private void FillViews()
         {
             foreach (var view in ActiveViews.Where(v => v.SelectedCamera == null))
@@ -396,84 +337,6 @@
                 if (con != null)
                 {
                     view.SelectedCamera = con;
-                }
-            }
-        }
-
-        private async void Lumix_DeviceDiscovered(DeviceInfo dev)
-        {
-            try
-            {
-                await RunAsync(() =>
-                {
-                    try
-                    {
-                        var existing = ConnectableDevices.SingleOrDefault(d => d.Uuid == dev.Uuid);
-                        if (existing == null)
-                        {
-                            var camerafound = false;
-                            var cameraauto = false;
-                            if (GeneralSettings.Cameras.TryGetValue(dev.Uuid, out var settings))
-                            {
-                                cameraauto = settings.Autoconnect;
-                                camerafound = true;
-                            }
-
-                            if ((camerafound && cameraauto) || (!camerafound && GeneralSettings.Autoconnect))
-                            {
-                                try
-                                {
-                                    ConnectCamera(dev);
-                                }
-                                catch (Exception e)
-                                {
-                                    Log.Error(e);
-                                }
-                            }
-                            else
-                            {
-                                AddConnectableDevice(dev);
-                            }
-                        }
-                        else
-                        {
-                            ConnectCamera(dev);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex);
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                throw;
-            }
-        }
-
-        private void Lumix_Disconnected(Lumix lumix, bool stillAvailbale)
-        {
-            lumix.Disconnected -= Lumix_Disconnected;
-
-            OnCameraDisconnected(lumix);
-
-            var connected = ConnectedCameras.FirstOrDefault(c => c.Camera == lumix);
-            if (!stillAvailbale)
-            {
-                var newlumix = ConnectCamera(lumix.Device);
-                if (connected != null)
-                {
-                    connected.Camera = newlumix;
-                }
-            }
-            else
-            {
-                if (connected != null)
-                {
-                    ConnectedCameras.Remove(connected);
-                    AddConnectableDevice(lumix.Device);
                 }
             }
         }

@@ -179,6 +179,8 @@
             throw new KeyNotFoundException("Title not found: " + id);
         }
 
+        public abstract CurMenu ParseCurMenu(MenuInfo resultMenuInfo);
+
         public FocusPosition ParseFocus(string focus)
         {
             var values = focus.Split(',');

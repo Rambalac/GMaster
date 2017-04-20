@@ -2,11 +2,14 @@ namespace GMaster.Views
 {
     using System;
     using System.IO;
+    using System.Numerics;
     using System.Threading;
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Tools;
     using Microsoft.Graphics.Canvas;
+    using Microsoft.Graphics.Canvas.Geometry;
+    using Microsoft.Graphics.Canvas.UI;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Windows.Foundation;
     using Windows.UI;
@@ -17,16 +20,22 @@ namespace GMaster.Views
         private readonly CanvasControl view;
         private FrameData currentFrame;
 
+        private CanvasGeometry geomAim;
+        private CanvasGeometry geomBox;
+        private CanvasGeometry geomCross;
+        private CanvasGeometry geomLine;
         private Rect imageRect;
+        private Matrix3x2 imageTransform;
 
         private int updateBitmapFlag;
 
         public FrameRenderer(CanvasControl view)
         {
             this.view = view;
+            view.CreateResources += View_CreateResources;
         }
 
-        public event Action<Rect> ImageRectChanged;
+        public event Action<Rect> ImageRectChanged2;
 
         public Rect ImageRect
         {
@@ -37,7 +46,7 @@ namespace GMaster.Views
                 if (value != imageRect)
                 {
                     imageRect = value;
-                    ImageRectChanged?.Invoke(imageRect);
+                    ImageRectChanged2?.Invoke(imageRect);
                 }
             }
         }
@@ -51,7 +60,7 @@ namespace GMaster.Views
             currentFrame?.Dispose();
         }
 
-        public void Draw(CanvasDrawingSession session, double wW, double wH, double aspect)
+        public void Draw(CanvasDrawingSession session, double wW, double wH, double aspect, FocusAreas areas)
         {
             if (currentFrame != null)
             {
@@ -69,7 +78,75 @@ namespace GMaster.Views
                     var rW = iW * scale;
 
                     ImageRect = new Rect((wW - rW) / 2, (wH - rH) / 2, rW, rH);
+                    var mat = Matrix3x2.CreateScale((float)ImageRect.Width, (float)ImageRect.Height);
+                    mat.Translation = new Vector2((float)ImageRect.X, (float)ImageRect.Y);
+                    imageTransform = mat;
                     currentFrame.Draw(session, imageRect);
+                }
+
+                if (areas != null)
+                {
+                    foreach (var box in areas.Boxes)
+                    {
+                        var trans = new Vector2(box.X1, box.Y1);
+                        var scale = new Vector2(box.Width, box.Height);
+                        CanvasGeometry geom;
+                        Color col;
+                        float strokeThickness = 2;
+
+                        switch (box.Props.Type)
+                        {
+                            case FocusAreaType.OneAreaSelected:
+                                geom = geomAim;
+                                col = Colors.Gold;
+                                break;
+
+                            case FocusAreaType.FaceOther:
+                                geom = geomAim;
+                                col = Colors.White;
+                                break;
+
+                            case FocusAreaType.MainFace:
+                                geom = geomBox;
+                                col = Colors.Gold;
+                                break;
+
+                            case FocusAreaType.Eye:
+                                geom = geomLine;
+                                col = Colors.White;
+                                strokeThickness = 1;
+                                break;
+
+                            case FocusAreaType.TrackUnlock:
+                                geom = geomAim;
+                                break;
+
+                            case FocusAreaType.TrackLock:
+                                geom = geomAim;
+                                col = Colors.Gold;
+                                break;
+
+                            case FocusAreaType.Box:
+                                geom = geomBox;
+                                col = Colors.Gold;
+                                break;
+
+                            case FocusAreaType.Cross:
+                                geom = geomCross;
+                                col = Colors.White;
+                                break;
+
+                            default:
+                                continue;
+                        }
+
+                        if (box.Props.Failed)
+                        {
+                            col = Colors.Red;
+                        }
+
+                        session.DrawGeometry(geom.Transform(GetTransform(trans, scale)), col, strokeThickness);
+                    }
                 }
             }
             else
@@ -149,6 +226,86 @@ namespace GMaster.Views
             }
 
             return null;
+        }
+
+        private void CreateAim(CanvasControl view)
+        {
+            var builder = new CanvasPathBuilder(view);
+            builder.BeginFigure(0f, 0.3f);
+            builder.AddLine(0f, 0f);
+            builder.AddLine(0.3f, 0f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            builder.BeginFigure(0.7f, 0f);
+            builder.AddLine(1f, 0f);
+            builder.AddLine(1f, 0.3f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            builder.BeginFigure(1f, 0.7f);
+            builder.AddLine(1f, 1f);
+            builder.AddLine(0.7f, 1f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            builder.BeginFigure(0.3f, 1f);
+            builder.AddLine(0f, 1f);
+            builder.AddLine(0f, 0.7f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            geomAim = CanvasGeometry.CreatePath(builder);
+        }
+
+        private void CreateBox(CanvasControl view)
+        {
+            var builder = new CanvasPathBuilder(view);
+            builder.BeginFigure(0f, 0f);
+            builder.AddLine(1f, 0f);
+            builder.AddLine(1f, 1f);
+            builder.AddLine(0f, 1f);
+            builder.EndFigure(CanvasFigureLoop.Closed);
+
+            geomBox = CanvasGeometry.CreatePath(builder);
+        }
+
+        private void CreateCrest(CanvasControl view)
+        {
+            var builder = new CanvasPathBuilder(view);
+            builder.BeginFigure(0.5f, 0f);
+            builder.AddLine(0.5f, 1f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+            builder.BeginFigure(0f, 0.5f);
+            builder.AddLine(1f, 0.5f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            geomCross = CanvasGeometry.CreatePath(builder);
+        }
+
+        private void CreateLine(CanvasControl view)
+        {
+            var builder = new CanvasPathBuilder(view);
+            builder.BeginFigure(0f, 0f);
+            builder.AddLine(1f, 1f);
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            geomLine = CanvasGeometry.CreatePath(builder);
+        }
+
+        private Matrix3x2 GetTransform(Vector2 trans, Vector2 scale)
+        {
+            var newmat = Matrix3x2.CreateScale(scale);
+            newmat.Translation = trans;
+            var result = Matrix3x2.Multiply(newmat, imageTransform);
+            return result;
+        }
+
+        private void View_CreateResources(CanvasControl view, CanvasCreateResourcesEventArgs args)
+        {
+            if (args.Reason == CanvasCreateResourcesReason.FirstTime)
+            {
+                CreateCrest(view);
+                CreateBox(view);
+                CreateAim(view);
+                CreateLine(view);
+            }
         }
 
         private class FrameData : IDisposable

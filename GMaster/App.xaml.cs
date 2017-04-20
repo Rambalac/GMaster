@@ -30,6 +30,7 @@
             UnhandledException += App_UnhandledException;
 
             Debug.AddCategory("OffFrameBytes", false);
+            Debug.AddCategory("Discovery", false);
         }
 
         public MainPageModel MainModel { get; private set; }
@@ -59,7 +60,7 @@
 
             if (MainModel != null)
             {
-                await MainModel.StartListening();
+                await MainModel.ConnectionsManager.StartListening();
             }
 
             IfDebug(() =>
@@ -141,7 +142,7 @@
             Log.Stop();
 
             var deferral = e.SuspendingOperation.GetDeferral();
-            MainModel.StopListening();
+            MainModel.ConnectionsManager.StopListening();
             deferral.Complete();
         }
     }

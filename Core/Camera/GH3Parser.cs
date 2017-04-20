@@ -35,6 +35,18 @@
             { -1, "auto" }
         };
 
+        public override CurMenu ParseCurMenu(MenuInfo info)
+        {
+            var result = new CurMenu();
+
+            foreach (var item in info.MainMenu.Concat(info.Photosettings).Concat(info.Qmenu))
+            {
+                result.Enabled[item.Id] = item.Enable == YesNo.Yes;
+            }
+
+            return result;
+        }
+
         protected override bool InnerParseMenuSet(MenuSet result, RawMenuSet menuset, string lang)
         {
             DefaultLanguage = menuset.TitleList.Languages.Single(l => l.Default == YesNo.Yes).Titles;

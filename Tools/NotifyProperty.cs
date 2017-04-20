@@ -1,4 +1,4 @@
-﻿namespace Tools
+﻿namespace GMaster.Tools
 {
     using System;
 

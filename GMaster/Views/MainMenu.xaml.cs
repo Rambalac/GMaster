@@ -51,7 +51,7 @@ namespace GMaster.Views
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var camera = (ConnectedCamera)e.ClickedItem;
-            if (!camera.IsConnecting)
+            if (!camera.Camera.LumixState.IsBusy)
             {
                 Model.ShowCamera(camera);
                 MainMenu.IsPaneOpen = false;

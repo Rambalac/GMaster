@@ -6,6 +6,6 @@ namespace GMaster.Core.Camera
         UpsideDown = 3,
         LeftUp = 6,
         RightUp = 8,
-        Undefined = 0
+        Undefined = 0,
     }
 }

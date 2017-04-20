@@ -2,9 +2,9 @@ namespace GMaster.Core.Camera
 {
     public enum RecState
     {
-        Stopped,
-        Unknown,
-        Started,
-        StopNotSupported
+        Unknown = 0,
+        Stopped = 1,
+        Started = 2,
+        StopNotSupported = 3
     }
 }

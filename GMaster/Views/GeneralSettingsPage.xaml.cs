@@ -3,7 +3,7 @@
 namespace GMaster.Views
 {
     using System.Diagnostics;
-    using GMaster.Core.Tools;
+    using Core.Tools;
     using Models;
     using Windows.ApplicationModel.DataTransfer;
     using Windows.UI.Xaml;
@@ -31,7 +31,7 @@ namespace GMaster.Views
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void CopyLog_OnClick(object sender, RoutedEventArgs e)
         {
             var str = Log.GetInmemoryMessages();
             var package = new DataPackage

@@ -7,11 +7,11 @@
     <ProjectGuid>{64D5F682-CCFC-4BCC-9268-DBC2A3E36B3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tools</RootNamespace>
-    <AssemblyName>Tools</AssemblyName>
+    <RootNamespace>GMaster.Tools</RootNamespace>
+    <AssemblyName>GMaster.Tools</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -114,6 +114,8 @@
     <Compile Include="AbstractParameterModelCommand.cs" />
     <Compile Include="AbstractSimpleCommand.cs" />
     <Compile Include="AbstractSimpleParameterCommand.cs" />
+    <Compile Include="DelegateConverter.cs" />
+    <Compile Include="DelegateParameterConverter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IObservableHashCollection.cs" />
     <Compile Include="NotifyProperty.cs" />
@@ -126,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{6FA17036-459D-4967-A31B-8E8C7264E497}</Project>
+      <Project>{6fa17036-459d-4967-a31b-8e8c7264e497}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

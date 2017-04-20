@@ -1,9 +1,9 @@
-﻿namespace Tools
+﻿namespace GMaster.Tools
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
-    using GMaster.Core.Tools;
+    using Core.Tools;
 
     public interface IObservableHashCollection : INotifyCollectionChanged, INotifyPropertyChanged
     {

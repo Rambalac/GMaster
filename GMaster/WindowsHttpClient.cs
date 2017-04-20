@@ -14,7 +14,7 @@
 
     public class WindowsHttpClient : IHttpClient
     {
-        private HttpClient http;
+        private readonly HttpClient http;
 
         public WindowsHttpClient()
         {
@@ -43,6 +43,10 @@
                 {
                     return new WindowsHttpClientResponse(await http.GetAsync(uri).AsTask(token));
                 }
+                catch (COMException ex) when ((uint)ex.HResult == 0x80072efd)
+                {
+                    throw new ConnectionLostException();
+                }
                 catch (COMException ex) when ((uint)ex.HResult != 0x80072efd)
                 {
                     Debug.WriteLine("ComException", "WindowsHttpClient");
@@ -65,6 +69,10 @@
                         return await reader.ReadToEndAsync();
                     }
                 }
+                catch (COMException ex) when ((uint)ex.HResult != 0x80072efd)
+                {
+                    throw new ConnectionLostException();
+                }
                 catch (COMException)
                 {
                     Debug.WriteLine("ComException", "WindowsHttpClient");
@@ -84,9 +92,9 @@
                 this.httpResponseMessage = httpResponseMessage;
             }
 
-            public bool IsSuccessStatusCode => httpResponseMessage.IsSuccessStatusCode;
-
             public string Code => httpResponseMessage.StatusCode.ToString();
+
+            public bool IsSuccessStatusCode => httpResponseMessage.IsSuccessStatusCode;
 
             public void Dispose()
             {
