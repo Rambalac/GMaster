@@ -61,21 +61,14 @@ namespace GMaster.Core.Camera
                 }
             },
             {
-                "DMC-G7", new CameraProfile
-                {
-                    SetDeviceName = false
-                }
-            },
-            {
-                "DMC-G7", new CameraProfile
+                "DMC-TS5", new CameraProfile
                 {
                     SetDeviceName = false
                 }
             }
-
         };
 
-        public CameraParser Parser { get; set; } = null;
+        public CameraParser Parser { get; set; }
 
         public bool NewAf { get; set; } = true;
 

@@ -312,6 +312,11 @@
             return false;
         }
 
+        public async Task<bool> ReleaseTouchAF()
+        {
+            return await TryGet("?mode=camcmd&value=touchafrelease");
+        }
+
         public async Task<bool> ResizeFocusPoint(int size)
         {
             return await Try(async () =>
