@@ -9,6 +9,18 @@
 
     public abstract class CameraParser
     {
+        protected static readonly TitledList<CameraMenuItemText> DefaultIsoValues = new List<string>
+        {
+            "100",
+            "200",
+            "400",
+            "800",
+            "1600",
+            "3200",
+            "6400",
+            "12800"
+        }.Select(i => new CameraMenuItemText(i, i, "setsetting", "iso", i)).ToTitledList("ISO Values");
+
         public IReadOnlyDictionary<int, string> ApertureBinary { get; } = new Dictionary<int, string>
         {
             { 392, "1.7" },
@@ -227,6 +239,11 @@
 
         protected CameraMenuItemText ToMenuItem(Item item)
         {
+            if (item == null)
+            {
+                return null;
+            }
+
             return new CameraMenuItemText(item, GetText(item.TitleId));
         }
 

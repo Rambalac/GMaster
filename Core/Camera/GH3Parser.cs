@@ -69,11 +69,11 @@
             result.MeteringMode = ToMenuItems(photosettings["menu_item_id_lightmet"]);
 
             result.ExposureShifts = ToMenuItems(qmenu["menu_item_id_exposure2"]);
-            result.IsoValues = ToMenuItems(qmenu["menu_item_id_sensitivity"]);
+            result.IsoValues = ToMenuItems(qmenu["menu_item_id_sensitivity"]) ?? DefaultIsoValues;
             result.WhiteBalances = ToMenuItems(qmenu["menu_item_id_whitebalance"]);
 
             result.SingleShootMode = ToMenuItem(driveMode["menu_item_id_1shoot"]);
-            result.BurstModes = ToMenuItems(driveMode["menu_item_id_burst"]);
+            result.BurstModes = ToMenuItems(driveMode["menu_item_id_burst"]) ?? ToMenuItems(photosettings["menu_item_id_burst"]);
 
             result.VideoFormat = null;
 

@@ -77,5 +77,24 @@ namespace Gmaster.Core.Camera
             Assert.True(menuset.LiveviewQuality.Any(q => q.Value == "vga"));
 
         }
+
+        [Theory]
+        [InlineData("TestMenuSetTS5.json")]
+        public void TestJsonsGh3(string filename)
+        {
+            using (var stream = File.OpenRead(filename))
+            {
+                var reader = new StreamReader(stream);
+                var str = reader.ReadToEnd();
+                var obj = JsonConvert.DeserializeObject<LogglyMessage>(str);
+                var serializer = new XmlSerializer(typeof(MenuSetRequestResult));
+                var result = (MenuSetRequestResult)serializer.Deserialize(new StringReader(obj.Data));
+                CameraParser.TryParseMenuSet(result.MenuSet, "en", out menuset, new CameraParser[] { new GH3Parser() });
+            }
+
+            Assert.Equal(2, menuset.LiveviewQuality.Count);
+            Assert.True(menuset.LiveviewQuality.Any(q => q.Value == "vga"));
+
+        }
     }
 }
