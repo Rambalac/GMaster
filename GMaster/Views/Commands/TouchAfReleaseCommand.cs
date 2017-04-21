@@ -1,3 +1,5 @@
+using GMaster.Core.Camera.LumixData;
+
 namespace GMaster.Views.Commands
 {
     using System;
@@ -20,7 +22,14 @@ namespace GMaster.Views.Commands
 
             try
             {
-                await lumix.Camera.ReleaseTouchAF();
+                if (lumix.Camera.LumixState.FocusMode != FocusMode.Manual)
+                {
+                    await lumix.Camera.ReleaseTouchAF();
+                }
+                else
+                {
+                    await lumix.Camera.MfAssistOff();
+                }
             }
             catch (Exception e)
             {

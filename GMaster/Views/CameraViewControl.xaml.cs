@@ -41,7 +41,11 @@ namespace GMaster.Views
             imageGestureRecognizer.ManipulationUpdated += ImageGestureRecognizer_ManipulationUpdated;
             imageGestureRecognizer.ManipulationCompleted += ImageGestureRecognizer_ManipulationCompleted;
 
-            imageGestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX | GestureSettings.ManipulationTranslateY | GestureSettings.Tap | GestureSettings.ManipulationScale;
+            imageGestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX
+                                                    | GestureSettings.ManipulationTranslateY
+                                                    | GestureSettings.Tap
+                                                    | GestureSettings.ManipulationScale
+                                                    |GestureSettings.DoubleTap;
 
             LiveView.PointerPressed += (sender, args) => imageGestureRecognizer.ProcessDownEvent(args.GetCurrentPoint(LiveView));
             LiveView.PointerReleased += (sender, args) => imageGestureRecognizer.ProcessUpEvent(args.GetCurrentPoint(LiveView));
@@ -155,7 +159,14 @@ namespace GMaster.Views
 
         private async void ImageGestureRecognizer_Tapped(GestureRecognizer sender, TappedEventArgs args)
         {
-            await MoveFocusPoint(args.Position.X, args.Position.Y);
+            if (args.TapCount == 1)
+            {
+                await MoveFocusPoint(args.Position.X, args.Position.Y);
+            }
+            else if (Lumix.LumixState.FocusMode == FocusMode.Manual)
+            {
+                await Lumix.MfAssistAf();
+            }
         }
 
         private void LiveView_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
@@ -218,11 +229,18 @@ namespace GMaster.Views
 
         private async Task MoveFocusPoint(double x, double y)
         {
-            var ix = (x - frame.ImageRect.X) / frame.ImageRect.Width;
-            var iy = (y - frame.ImageRect.Y) / frame.ImageRect.Height;
+            var ix = (float)((x - frame.ImageRect.X) / frame.ImageRect.Width);
+            var iy = (float)((y - frame.ImageRect.Y) / frame.ImageRect.Height);
             if (ix >= 0 && iy >= 0 && ix <= 1 && iy <= 1 && Lumix != null)
             {
-                await Lumix.SetFocusPoint(ix, iy);
+                if (Lumix.LumixState.FocusMode != FocusMode.Manual)
+                {
+                    await Lumix.FocusPointMove(ix, iy);
+                }
+                else
+                {
+                    await Lumix.MfAssistMove(ix, iy);
+                }
             }
         }
 

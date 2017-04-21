@@ -181,11 +181,6 @@ namespace GMaster.Core.Camera
             get => lensInfo;
             set
             {
-                if (Equals(value, lensInfo))
-                {
-                    return;
-                }
-
                 lensInfo = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(OpenedAperture));
@@ -329,7 +324,6 @@ namespace GMaster.Core.Camera
             CameraMode = CameraMode.Unknown;
             FocusAreas = null;
             FocusMode = FocusMode.Unknown;
-            LensInfo = null;
             Zoom = 0;
             RecState = RecState.Unknown;
             Orientation = CameraOrientation.Undefined;

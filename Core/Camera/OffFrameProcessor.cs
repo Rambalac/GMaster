@@ -108,7 +108,7 @@ namespace GMaster.Core.Camera
         {
             var pointsNum = slice[47];
             var focusSlice = new Slice(slice, 48);
-            int multiplier = GetMultiplier(slice);
+            var multiplier = GetMultiplier(slice);
             if (pointsNum > 0)
             {
                 var result = new FocusAreas(pointsNum, size, slice[46] == 0xff);

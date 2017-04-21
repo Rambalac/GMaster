@@ -4,6 +4,8 @@ namespace GMaster.Core.Camera
 
     public class CameraProfile
     {
+        private static CameraParser gh3Parser = new GH3Parser();
+        private static CameraParser gh4Parser = new GH4Parser();
         public static Dictionary<string, CameraProfile> Profiles { get; } = new Dictionary<string, CameraProfile>
         {
             {
@@ -13,7 +15,7 @@ namespace GMaster.Core.Camera
                     NewAf = false,
                     RequestConnection = false,
                     SetDeviceName = false,
-                    Parser = new GH3Parser()
+                    Parser = gh3Parser
                 }
             },
             {
@@ -21,7 +23,7 @@ namespace GMaster.Core.Camera
                 {
                     RequestConnection = false,
                     SetDeviceName = false,
-                    Parser = new GH4Parser()
+                    Parser = gh4Parser
                 }
             },
             {
@@ -63,7 +65,8 @@ namespace GMaster.Core.Camera
             {
                 "DMC-TS5", new CameraProfile
                 {
-                    SetDeviceName = false
+                    SetDeviceName = false,
+                    Parser = gh3Parser
                 }
             }
         };

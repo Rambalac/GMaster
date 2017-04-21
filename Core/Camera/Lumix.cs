@@ -433,7 +433,7 @@
         }
 
         [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> SetFocusPoint(double x, double y)
+        public async Task<bool> FocusPointMove(float x, float y)
         {
             ReportAction(x, y);
             return await Try(async () =>
@@ -465,6 +465,52 @@
                     $"?mode=camctrl&type=touchaf&value={(int)(x * 1000)}/{(int)(y * 1000)}");
                 return true;
             });
+        }
+
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> MfAssistAf()
+        {
+            ReportAction();
+            return await TryGet("?mode=camcmd&value=oneshot_af");
+        }
+
+        private bool autoreviewUnlocked;
+
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> MfAssistMove(float x = 0.5f, float y = 0.5f)
+        {
+            ReportAction(x, y);
+            if (!autoreviewUnlocked)
+            {
+                autoreviewUnlocked = true;
+                await TryGet("?mode=camcmd&value=autoreviewunlock");
+            }
+
+            //await TryGetString($"?mode=camctrl&type=touch_trace&value=start&value2={(int)(x * 1000)}/{(int)(y * 1000)}");
+            //return await TryGetString($"?mode=camctrl&type=touch_trace&value=stop&value2={(int)(x * 1000)}/{(int)(y * 1000)}");
+            return await TryGetString($"?mode=camctrl&type=asst_disp&value=move&value2=mf_asst/{(int)(x * 1000)}/{(int)(y * 1000)}");
+        }
+
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> MfAssistPinp(bool pInP)
+        {
+            ReportAction(pInP);
+            var val = pInP ? "pinp" : "full";
+            return await TryGetString($"?mode=camctrl&type=asst_disp&value={val}&value2=mf_asst/0/0");
+        }
+
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> MfAssistZoom(float z = 0.5f)
+        {
+            ReportAction(z);
+            return await TryGetString($"?mode=camctrl&type=change_disp_mag&value={(int)(z * 1000)}");
+        }
+
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> MfAssistOff()
+        {
+            ReportAction();
+            return await TryGetString("?mode=camctrl&type=asst_disp&value=off&value2=mf_asst/0/0");
         }
 
         public async Task StopStream()
@@ -562,8 +608,31 @@
             }
             catch (Exception)
             {
+                if (CheckAlreadyConnected(raw))
+                {
+                    return null;
+                }
+
                 Debug.WriteLine("LensInfo: " + raw, "LensInfo");
                 throw;
+            }
+        }
+
+        private bool CheckAlreadyConnected(string raw)
+        {
+            if (!raw.StartsWith("<xml>"))
+            {
+                return false;
+            }
+
+            try
+            {
+                var res = Http.ReadResponse<BaseRequestResult>(raw);
+                return res.Result == "err_already_connected";
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -794,6 +863,16 @@
         private async Task<bool> TryGet(string path)
         {
             return await Try(async () => await http.Get<BaseRequestResult>(path));
+        }
+
+        private async Task<bool> TryGetString(string path)
+        {
+            return await Try(async () =>
+            {
+                var res=await http.GetString(path);
+                Debug.WriteLine(res, "GetString");
+                return res;
+            });
         }
 
         private class RunnableCommandInfo

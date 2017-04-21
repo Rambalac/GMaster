@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="51338Rambalac.GMaster" Publisher="CN=92765C0E-C69D-491B-9315-91859F5319B9" Version="1.7.8.0" />
+  <Identity Name="51338Rambalac.GMaster" Publisher="CN=92765C0E-C69D-491B-9315-91859F5319B9" Version="1.8.0.0" />
   <mp:PhoneIdentity PhoneProductId="19ca5020-d17a-4012-ad2c-663f57d568c7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>GMaster</DisplayName>

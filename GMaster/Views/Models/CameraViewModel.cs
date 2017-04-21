@@ -71,7 +71,7 @@
         {
             get
             {
-                if (lumixState == null || lumixState.Iso.Text == null)
+                if (lumixState?.Iso.Text == null)
                 {
                     return null;
                 }
@@ -122,7 +122,9 @@
         {
             get
             {
-                return lumixState?.MenuSet?.IsoValues.Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList() ?? new List<string>();
+                return lumixState?.MenuSet?.IsoValues
+                    .Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList() 
+                    ?? new List<string>();
             }
         }
 
