@@ -110,10 +110,12 @@
     <Compile Include="CubeLutParser.cs" />
     <Compile Include="Views\Commands\TouchAfReleaseCommand.cs" />
     <Compile Include="Views\Converters\FalseToVisibileConverter.cs" />
+    <Compile Include="Views\Converters\GreaterToTrueConverter.cs" />
     <Compile Include="Views\Converters\NullToFalseConverter.cs" />
     <Compile Include="Views\Converters\NullToTrueConverter.cs" />
     <Compile Include="Views\Converters\TrueToVisibileConverter.cs" />
     <Compile Include="Views\Models\ConnectionsManager.cs" />
+    <Compile Include="Views\Models\SynchroActionSettings.cs" />
     <Compile Include="WindowsHttpClient.cs" />
     <Compile Include="Views\Commands\ForgetWiFiCommand.cs" />
     <Compile Include="Views\Converters\SignalBarsToIconConverter.cs" />
@@ -151,7 +153,6 @@
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Commands\CaptureCommand.cs" />
     <Compile Include="Views\Commands\ConnectCommand.cs" />
     <Compile Include="Views\Models\ConnectedCamera.cs" />
     <Compile Include="Views\Misc\LutInfo.cs" />
@@ -231,6 +232,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="images\Synch.png" />
     <Content Include="images\H2.png" />
     <Content Include="images\V2.png" />
     <Content Include="images\X1.png" />

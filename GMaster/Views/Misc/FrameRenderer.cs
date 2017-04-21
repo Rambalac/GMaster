@@ -1,5 +1,3 @@
-using GMaster.Core.Camera.LumixData;
-
 namespace GMaster.Views
 {
     using System;
@@ -8,6 +6,7 @@ namespace GMaster.Views
     using System.Threading;
     using System.Threading.Tasks;
     using Core.Camera;
+    using Core.Camera.LumixData;
     using Core.Tools;
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.Geometry;

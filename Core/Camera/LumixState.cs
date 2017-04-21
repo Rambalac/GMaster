@@ -6,7 +6,7 @@ namespace GMaster.Core.Camera
     using LumixData;
     using Tools;
 
-    public class LumixState: INotifyPropertyChanged
+    public class LumixState : INotifyPropertyChanged
     {
         private TextBinValue aperture;
         private CameraMode cameraMode = CameraMode.Unknown;

@@ -68,21 +68,34 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="ViewOne_OnClick" HorizontalAlignment="Center" >
+            <Button Grid.Column="0" Click="ViewOne_OnClick" HorizontalAlignment="Center"  Margin="1">
                 <Image Source="/images/X1.png" Stretch="None" />
             </Button>
-            <Button Grid.Column="1" Click="ViewHorizontal_OnClick" HorizontalAlignment="Center" >
+            <Button Grid.Column="1" Click="ViewHorizontal_OnClick" HorizontalAlignment="Center"  Margin="1">
                 <Image Source="/images/H2.png" Stretch="None"/>
             </Button>
-            <Button Grid.Column="2" Click="ViewVertical_OnClick" HorizontalAlignment="Center">
+            <Button Grid.Column="2" Click="ViewVertical_OnClick" HorizontalAlignment="Center" Margin="1">
                 <Image Source="/images/V2.png" Stretch="None"/>
             </Button>
-            <Button Grid.Column="3" Click="ViewFour_OnClick" HorizontalAlignment="Center" >
+            <Button Grid.Column="3" Click="ViewFour_OnClick" HorizontalAlignment="Center"  Margin="1">
                 <Image Source="/images/X4.png" Stretch="None"/>
             </Button>
-            <Button Grid.Column="4" Click="NewWindow_OnClick">
+            <Button Grid.Column="4" Click="NewWindow_OnClick" Margin="1">
                 <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xECC4;" HorizontalAlignment="Center" />
+            </Button>
+            <Button Grid.Column="5" IsEnabled="{Binding ConnectedCameras.Count, Mode=TwoWay, Converter={StaticResource GreaterToTrueConverter}, ConverterParameter=1}">
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Orientation="Vertical">
+                            <CheckBox Content="Synchronize Record/Capture" IsChecked="{Binding SynchroActions.Capture, Mode=TwoWay}"/>
+                            <CheckBox Content="Synchronize Parameters" IsChecked="{Binding SynchroActions.Properties, Mode=TwoWay}"/>
+                            <CheckBox Content="Synchronize Touch AF/Focus/Zoom" IsChecked="{Binding SynchroActions.TouchAF, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <Image Source="/images/Synch.png" Stretch="None"/>
             </Button>
         </Grid>
 

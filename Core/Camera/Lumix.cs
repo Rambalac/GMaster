@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Threading;
@@ -14,6 +15,7 @@
 
     public class Lumix : IDisposable
     {
+        private static readonly Dictionary<string, RunnableCommandInfo> RunnableCommands;
         private readonly Http http;
         private readonly CameraProfile profile;
         private readonly Timer stateTimer;
@@ -23,7 +25,29 @@
         private bool isConnecting = true;
         private int isUpdatingState;
         private string language;
+        private bool reportingAction;
         private int stateFiledTimes;
+
+        static Lumix()
+        {
+            RunnableCommands = new Dictionary<string, RunnableCommandInfo>(20);
+            foreach (var method in typeof(Lumix).GetRuntimeMethods())
+            {
+                var runnable = method.GetCustomAttribute<RunnableMethodAttribute>();
+                if (runnable != null)
+                {
+                    var rett = method.ReturnType;
+                    var info = new RunnableCommandInfo
+                    {
+                        Method = method,
+                        Group = runnable.Group,
+                        Async = rett == typeof(Task) || (rett.IsConstructedGenericType && rett.GetGenericTypeDefinition() == typeof(Task<>))
+                    };
+
+                    RunnableCommands[method.Name] = info;
+                }
+            }
+        }
 
         public Lumix(DeviceInfo device, IHttpClient client)
         {
@@ -37,6 +61,8 @@
         }
 
         public delegate Task<CameraPoint?> LiveViewUpdatedDelegate(ArraySegment<byte> data);
+
+        public event Action<Lumix, string, object[]> ActionCalled;
 
         public event LiveViewUpdatedDelegate LiveViewUpdated;
 
@@ -61,21 +87,37 @@
 
         public string Uuid => Device.Uuid;
 
-        public async Task<bool> Capture()
+        public static MethodGroup GetCommandCroup(string method) => RunnableCommands[method].Group;
+
+        [RunnableMethod(MethodGroup.Capture)]
+        public async Task<bool> CaptureStart()
         {
+            ReportAction();
             return await Try(async () =>
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=capture");
+                return true;
+            });
+        }
+
+        [RunnableMethod(MethodGroup.Capture)]
+        public async Task<bool> CaptureStop()
+        {
+            ReportAction();
+            return await Try(async () =>
+            {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=capture_cancel");
                 return true;
             });
         }
 
-        public async Task<bool> ChangeFocus(ChangeDirection dir)
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> ChangeFocus(ChangeDirection focusDirection)
         {
+            ReportAction(focusDirection);
             return await Try(async () =>
             {
-                var focus = await http.GetString("?mode=camctrl&type=focus&value=" + dir.GetString());
+                var focus = await http.GetString("?mode=camctrl&type=focus&value=" + focusDirection.GetString());
 
                 var fp = Parser.ParseFocus(focus);
                 if (fp == null)
@@ -97,9 +139,11 @@
             });
         }
 
-        public async Task<bool> ChangeZoom(ChangeDirection focus)
+        [RunnableMethod(MethodGroup.Focus)]
+        public async Task<bool> ChangeZoom(ChangeDirection zoomDirection)
         {
-            return await Try(async () => await http.Get<BaseRequestResult>("?mode=camcmd&value=" + focus.GetString()));
+            ReportAction(zoomDirection);
+            return await Try(async () => await http.Get<BaseRequestResult>("?mode=camcmd&value=" + zoomDirection.GetString()));
         }
 
         public async Task<bool> Connect(int liveviewport, string lang)
@@ -262,8 +306,10 @@
             return Uuid?.GetHashCode() ?? 0;
         }
 
+        [RunnableMethod(MethodGroup.Capture)]
         public async Task<bool> RecStart()
         {
+            ReportAction();
             return await Try(async () =>
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
@@ -283,8 +329,10 @@
             });
         }
 
+        [RunnableMethod(MethodGroup.Capture)]
         public async Task<bool> RecStop()
         {
+            ReportAction();
             if (profile.RecStop)
             {
                 try
@@ -312,13 +360,17 @@
             return false;
         }
 
+        [RunnableMethod(MethodGroup.Focus)]
         public async Task<bool> ReleaseTouchAF()
         {
+            ReportAction();
             return await TryGet("?mode=camcmd&value=touchafrelease");
         }
 
+        [RunnableMethod(MethodGroup.Focus)]
         public async Task<bool> ResizeFocusPoint(int size)
         {
+            ReportAction(size);
             return await Try(async () =>
             {
                 if (size > 0)
@@ -334,8 +386,38 @@
             });
         }
 
+        public async Task RunCommand(string methodName, object[] prm)
+        {
+            if (!reportingAction)
+            {
+                try
+                {
+                    reportingAction = true;
+                    if (!RunnableCommands.TryGetValue(methodName, out var command))
+                    {
+                        throw new ArgumentException("Wrong command: " + methodName);
+                    }
+
+                    if (command.Async)
+                    {
+                        await (Task)command.Method.Invoke(this, prm);
+                    }
+                    else
+                    {
+                        command.Method.Invoke(this, prm);
+                    }
+                }
+                finally
+                {
+                    reportingAction = false;
+                }
+            }
+        }
+
+        [RunnableMethod(MethodGroup.Properties)]
         public async Task<bool> SendMenuItem(ICameraMenuItem value)
         {
+            ReportAction(value);
             if (value != null)
             {
                 return await Try(async () =>
@@ -350,8 +432,10 @@
             return false;
         }
 
+        [RunnableMethod(MethodGroup.Focus)]
         public async Task<bool> SetFocusPoint(double x, double y)
         {
+            ReportAction(x, y);
             return await Try(async () =>
             {
                 if (profile.NewAf)
@@ -558,6 +642,37 @@
             LumixState.MenuSet = await GetMenuSet();
         }
 
+        private void ReportAction(string method, object[] prm)
+        {
+            if (!reportingAction)
+            {
+                try
+                {
+                    reportingAction = true;
+                    ActionCalled?.Invoke(this, method, prm);
+                }
+                finally
+                {
+                    reportingAction = false;
+                }
+            }
+        }
+
+        private void ReportAction(object p1, [CallerMemberName]string method = null)
+        {
+            ReportAction(method, new[] { p1 });
+        }
+
+        private void ReportAction(object p1, object p2, [CallerMemberName]string method = null)
+        {
+            ReportAction(method, new[] { p1, p2 });
+        }
+
+        private void ReportAction([CallerMemberName]string method = null)
+        {
+            ReportAction(method, new object[0]);
+        }
+
         private async Task<bool> RequestAccess(CancellationToken token)
         {
             var noconnection = 0;
@@ -679,6 +794,15 @@
         private async Task<bool> TryGet(string path)
         {
             return await Try(async () => await http.Get<BaseRequestResult>(path));
+        }
+
+        private class RunnableCommandInfo
+        {
+            public bool Async { get; set; }
+
+            public MethodGroup Group { get; set; }
+
+            public MethodInfo Method { get; set; }
         }
     }
 }

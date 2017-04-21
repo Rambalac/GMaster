@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:models="using:GMaster.Views.Models"
+    xmlns:tools="using:GMaster.Tools"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance models:CameraViewModel}" Unloaded="UserControl_Unloaded" AllowDrop="True" Drop="CameraViewControl_OnDrop" DragOver="CameraViewControl_OnDragOver">
     <UserControl.Resources>
@@ -46,13 +47,13 @@
                                    Text="{Binding RecState, Mode=TwoWay, Converter={StaticResource RecStateConvertor}}" />
                             </Viewbox>
                         </Button>
-                        <Button Grid.Column="3" Grid.Row="3" Command="{StaticResource CaptureCommand}"
+                        <tools:PressButton Grid.Column="3" Grid.Row="3" Pressed="Capture_OnPressed" Released="Capture_OnReleased"
                         Style="{StaticResource TransparentButtonStyle}"
                         IsEnabled="{Binding CanCapture}">
                             <Viewbox>
                                 <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE722;" />
                             </Viewbox>
-                        </Button>
+                        </tools:PressButton>
                         <Button Grid.Column="3" Grid.Row="5"
                                 Command="{StaticResource TouchAfReleaseCommand}"
                                 Visibility="{Binding CanReleaseTouchAf, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"

@@ -1,6 +1,4 @@
-﻿using GMaster.Core.Camera.LumixData;
-
-namespace GMaster.Views.Models
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +8,7 @@ namespace GMaster.Views.Models
     using System.Threading.Tasks;
     using Annotations;
     using Core.Camera;
+    using Core.Camera.LumixData;
     using Core.Tools;
     using Windows.UI.Core;
 

@@ -8,6 +8,7 @@
     RequestedTheme="Light">
     <Application.Resources>
         <models:MainPageModel x:Key="MainModel" />
+        <converters:GreaterToTrueConverter x:Key="GreaterToTrueConverter" />
         <converters:ZeroToVisibileConverter x:Key="ZeroToVisibileConverter" />
         <converters:NotZeroToVisibileConverter x:Key="NotZeroToVisibileConverter" />
         <converters:NotNullToVisibleConverter x:Key="NotNullToVisibleConverter" />

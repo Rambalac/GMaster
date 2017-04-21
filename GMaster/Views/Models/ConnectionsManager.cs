@@ -40,6 +40,7 @@
             connected.MakeRemoved();
             var camera = connected.Camera;
             camera.StateUpdateFailed -= Lumix_StateUpdateFailed;
+            camera.ActionCalled -= model.LumixActionCalled;
             await camera.StopStream();
             camera.Disconnect();
             camera.Dispose();
@@ -65,6 +66,7 @@
         {
             var lumix = new Lumix(dev, new WindowsHttpClient());
             lumix.StateUpdateFailed += Lumix_StateUpdateFailed;
+            lumix.ActionCalled += model.LumixActionCalled;
 
             var connectedCamera = model.AddConnectedDevice(lumix);
             var result = await lumixManager.ConnectCamera(lumix);

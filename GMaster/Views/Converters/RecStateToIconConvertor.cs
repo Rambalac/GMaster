@@ -1,9 +1,7 @@
-using GMaster.Core.Camera.LumixData;
-
 namespace GMaster.Views.Converters
 {
     using System;
-    using Core.Camera;
+    using Core.Camera.LumixData;
     using Tools;
 
     public class RecStateToIconConvertor : DelegateConverter<RecState, string>

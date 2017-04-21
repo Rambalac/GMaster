@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:GMaster.Views.Converters"
     xmlns:commands="using:GMaster.Views.Commands">
-    <commands:CaptureCommand x:Key="CaptureCommand" Model="{Binding}" />
     <commands:RecCommand x:Key="RecCommand" Model="{Binding}" />
     <commands:TouchAfReleaseCommand x:Key="TouchAfReleaseCommand" Model="{Binding}" />
 

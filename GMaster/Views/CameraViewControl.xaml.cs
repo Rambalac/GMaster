@@ -8,15 +8,14 @@ namespace GMaster.Views
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Camera.LumixData;
-    using Microsoft.Graphics.Canvas.Geometry;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Models;
     using Windows.ApplicationModel.DataTransfer;
-    using Windows.Foundation;
     using Windows.UI.Core;
     using Windows.UI.Input;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
 
     public sealed partial class CameraViewControl : UserControl, IDisposable
     {
@@ -279,6 +278,28 @@ namespace GMaster.Views
             {
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
+        }
+
+        private async void Capture_OnPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var lumix = Model.SelectedCamera;
+            if (lumix == null)
+            {
+                return;
+            }
+
+            await lumix.Camera.CaptureStart();
+        }
+
+        private async void Capture_OnReleased(object sender, PointerRoutedEventArgs e)
+        {
+            var lumix = Model.SelectedCamera;
+            if (lumix == null)
+            {
+                return;
+            }
+
+            await lumix.Camera.CaptureStop();
         }
     }
 }

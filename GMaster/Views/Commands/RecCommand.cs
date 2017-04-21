@@ -1,10 +1,8 @@
-﻿using GMaster.Core.Camera.LumixData;
-
-namespace GMaster.Views.Commands
+﻿namespace GMaster.Views.Commands
 {
     using System;
     using System.Threading.Tasks;
-    using Core.Camera;
+    using Core.Camera.LumixData;
     using Core.Tools;
     using Models;
     using Tools;

@@ -1,7 +1,7 @@
-using GMaster.Core.Tools;
-
 namespace GMaster.Core.Camera.LumixData
 {
+    using Tools;
+
     public enum AutoFocusModeFlags
     {
         None,
@@ -16,12 +16,14 @@ namespace GMaster.Core.Camera.LumixData
         [EnumValue(AutoFocusModeFlags.None)]
         Manual = 0,
 
+        [EnumException(4)]
         [EnumValue(AutoFocusModeFlags.TouchAFRelease)]
         Face = 3,
 
         [EnumValue(AutoFocusModeFlags.TouchAFRelease)]
         Track = 5,
 
+        [EnumException(6)]
         [EnumValue(AutoFocusModeFlags.TouchAFRelease)]
         MultiArea = 8,
 

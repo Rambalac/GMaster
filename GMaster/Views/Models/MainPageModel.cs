@@ -75,13 +75,13 @@
 
         public string ConnectedWiFi => wifi.ConnectedWiFi;
 
+        public ConnectionsManager ConnectionsManager { get; }
+
         public CoreDispatcher Dispatcher { get; set; }
 
         public Donations Donations { get; } = new Donations();
 
         public GeneralSettings GeneralSettings { get; } = new GeneralSettings();
-
-        public ConnectionsManager ConnectionsManager { get; }
 
         public ObservableCollection<LutInfo> InstalledLuts { get; } = new ObservableCollection<LutInfo>();
 
@@ -152,6 +152,21 @@
                         ActiveViews = new[] { View1 };
                         SecondColumnWidth = new GridLength(0);
                         SecondRowHeight = new GridLength(0);
+                        if (View1.SelectedCamera == null)
+                        {
+                            if (View2.SelectedCamera != null)
+                            {
+                                View1.SelectedCamera = View2.SelectedCamera;
+                                View2.SelectedCamera = null;
+                            }
+                            else if (View3.SelectedCamera != null)
+                            {
+                                View1.SelectedCamera = View3.SelectedCamera;
+                                View3.SelectedCamera = null;
+                            }
+                        }
+
+                        FillViews();
                         break;
 
                     case SplitMode.Horizontal:
@@ -165,7 +180,6 @@
                         }
 
                         FillViews();
-
                         break;
 
                     case SplitMode.Vertical:
@@ -179,7 +193,6 @@
                         }
 
                         FillViews();
-
                         break;
 
                     case SplitMode.Four:
@@ -203,6 +216,8 @@
                 }
             }
         }
+
+        public SynchroActionSettings SynchroActions { get; } = new SynchroActionSettings();
 
         public string Version
         {
@@ -294,6 +309,36 @@
             }
         }
 
+        public void LumixActionCalled(Lumix camera, string method, object[] prm)
+        {
+            switch (Lumix.GetCommandCroup(method))
+            {
+                case MethodGroup.Capture:
+                    if (SynchroActions.Capture)
+                    {
+                        RunForAll(method, prm, camera);
+                    }
+
+                    break;
+
+                case MethodGroup.Properties:
+                    if (SynchroActions.Properties)
+                    {
+                        RunForAll(method, prm, camera);
+                    }
+
+                    break;
+
+                case MethodGroup.Focus:
+                    if (SynchroActions.TouchAF)
+                    {
+                        RunForAll(method, prm, camera);
+                    }
+
+                    break;
+            }
+        }
+
         public async Task RunAsync(Action action)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
@@ -338,6 +383,14 @@
                 {
                     view.SelectedCamera = con;
                 }
+            }
+        }
+
+        private void RunForAll(string method, object[] prm, Lumix exceptCamera)
+        {
+            foreach (var connectedCamera in ConnectedCameras.Where(c => c.Camera != null && !ReferenceEquals(c.Camera, exceptCamera)))
+            {
+                Task.Run(async () => await connectedCamera.Camera.RunCommand(method, prm));
             }
         }
 

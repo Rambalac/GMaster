@@ -1,8 +1,7 @@
-using GMaster.Core.Camera.LumixData;
-
 namespace GMaster.Core.Camera
 {
     using System.Collections.Generic;
+    using LumixData;
 
     public class FocusAreas
     {
