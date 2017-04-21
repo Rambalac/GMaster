@@ -1,12 +1,12 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using System;
+using GMaster.Core.Tools;
+
 #pragma warning disable SA1300 // Element must begin with upper-case letter
 
-namespace GMaster.Core.Camera
+namespace GMaster.Core.Camera.LumixData
 {
-    using System;
-    using Tools;
-
     [Flags]
     public enum CameraModeFlags
     {

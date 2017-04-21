@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views.Commands
+﻿using GMaster.Core.Camera.LumixData;
+
+namespace GMaster.Views.Commands
 {
     using System;
     using System.Threading.Tasks;

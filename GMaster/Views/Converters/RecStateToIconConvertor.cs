@@ -1,3 +1,5 @@
+using GMaster.Core.Camera.LumixData;
+
 namespace GMaster.Views.Converters
 {
     using System;

@@ -61,9 +61,11 @@ namespace GMaster.Core.Camera
 
                 lumixState.ExposureShift = state.Main.ToShort(128);
 
-                lumixState.FocusPoints = GetFocusPoint(state.Original, size);
+                lumixState.FocusAreas = GetFocusPoint(state.Original, size);
 
                 lumixState.FocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
+
+                lumixState.AutoFocusMode = state.Main[109].ToEnum(AutoFocusMode.Unknown);
             }
             catch (Exception e)
             {

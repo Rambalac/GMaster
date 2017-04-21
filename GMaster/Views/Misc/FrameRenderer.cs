@@ -1,3 +1,5 @@
+using GMaster.Core.Camera.LumixData;
+
 namespace GMaster.Views
 {
     using System;
@@ -119,6 +121,7 @@ namespace GMaster.Views
 
                             case FocusAreaType.TrackUnlock:
                                 geom = geomAim;
+                                col = Colors.White;
                                 break;
 
                             case FocusAreaType.TrackLock:

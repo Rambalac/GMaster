@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views.Models
+﻿using GMaster.Core.Camera.LumixData;
+
+namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +15,7 @@
 
     public class CameraViewModel : INotifyPropertyChanged
     {
+        private int lastFocusAreasCount;
         private LumixState lumixState;
         private ConnectedCamera selectedCamera;
 
@@ -36,6 +39,8 @@
             }
         }
 
+        public AutoFocusMode AutoFocusMode => lumixState?.AutoFocusMode ?? AutoFocusMode.Unknown;
+
         public bool CanCapture => lumixState?.CanCapture ?? false;
 
         public bool CanChangeAperture => lumixState?.CanChangeAperture ?? true;
@@ -45,6 +50,9 @@
         public object CanManualFocus => lumixState?.CanManualFocus ?? false;
 
         public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
+
+        public bool CanReleaseTouchAf => AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
+                                            && FocusAreas != null && FocusAreas.Boxes.Count > 0;
 
         public int CurentZoom => lumixState?.Zoom ?? 0;
 
@@ -92,7 +100,20 @@
 
         public CoreDispatcher Dispatcher { get; set; }
 
-        public FocusAreas FocusAreas => lumixState?.FocusPoints;
+        public FocusAreas FocusAreas
+        {
+            get
+            {
+                var newval = lumixState?.FocusAreas;
+                if (lastFocusAreasCount != (newval?.Boxes.Count ?? 0))
+                {
+                    lastFocusAreasCount = newval?.Boxes.Count ?? 0;
+                    OnPropertyChanged(nameof(CanReleaseTouchAf));
+                }
+
+                return newval;
+            }
+        }
 
         public bool IsConnected => selectedCamera != null;
 
@@ -258,8 +279,13 @@
                             OnPropertyChanged(nameof(CurentZoom));
                             break;
 
-                        case nameof(LumixState.FocusPoints):
+                        case nameof(LumixState.FocusAreas):
                             OnPropertyChanged(nameof(FocusAreas));
+                            break;
+
+                        case nameof(LumixState.AutoFocusMode):
+                            OnPropertyChanged(nameof(AutoFocusMode));
+                            OnPropertyChanged(nameof(CanReleaseTouchAf));
                             break;
 
                         case nameof(LumixState.IsBusy):

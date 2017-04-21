@@ -6,7 +6,7 @@ namespace GMaster.Core.Camera
     using LumixData;
     using Tools;
 
-    public class LumixState
+    public class LumixState: INotifyPropertyChanged
     {
         private TextBinValue aperture;
         private CameraMode cameraMode = CameraMode.Unknown;
@@ -25,6 +25,7 @@ namespace GMaster.Core.Camera
         private TextBinValue shutter;
         private CameraState state;
         private int zoom;
+        private AutoFocusMode autoFocusMode;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -126,7 +127,7 @@ namespace GMaster.Core.Camera
             }
         }
 
-        public FocusAreas FocusPoints
+        public FocusAreas FocusAreas
         {
             get => focusPoints;
             set
@@ -305,13 +306,28 @@ namespace GMaster.Core.Camera
             }
         }
 
+        public AutoFocusMode AutoFocusMode
+        {
+            get => autoFocusMode;
+            set
+            {
+                if (value == autoFocusMode)
+                {
+                    return;
+                }
+
+                autoFocusMode = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void Reset()
         {
             Aperture = default(TextBinValue);
             Shutter = default(TextBinValue);
             Iso = default(TextBinValue);
             CameraMode = CameraMode.Unknown;
-            FocusPoints = null;
+            FocusAreas = null;
             FocusMode = FocusMode.Unknown;
             LensInfo = null;
             Zoom = 0;

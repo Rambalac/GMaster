@@ -5,6 +5,7 @@
     xmlns:commands="using:GMaster.Views.Commands">
     <commands:CaptureCommand x:Key="CaptureCommand" Model="{Binding}" />
     <commands:RecCommand x:Key="RecCommand" Model="{Binding}" />
+    <commands:TouchAfReleaseCommand x:Key="TouchAfReleaseCommand" Model="{Binding}" />
 
     <converters:RecStateToIconConvertor x:Key="RecStateConvertor" />
     <Style x:Key="TransparentButtonStyle" TargetType="Button">

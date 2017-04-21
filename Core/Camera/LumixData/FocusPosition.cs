@@ -1,4 +1,4 @@
-﻿namespace GMaster.Core.Camera
+﻿namespace GMaster.Core.Camera.LumixData
 {
     public class FocusPosition
     {
