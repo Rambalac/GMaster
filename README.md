@@ -32,6 +32,13 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+### 2017-04-26
+Pushed version 1.8.1 to MS Store
+
+* Fixed minor bugs
+* Fixed one focus area resize on GH4
+* Added full support for manual focus with assist moving, switching and resizing
+
 ### 2017-04-21
 Pushed version 1.8.0 to MS Store
 
