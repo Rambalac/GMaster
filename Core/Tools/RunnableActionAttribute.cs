@@ -3,13 +3,13 @@ namespace GMaster.Core.Tools
     using System;
 
     [AttributeUsage(AttributeTargets.Method)]
-    public class RunnableMethodAttribute : Attribute
+    public class RunnableActionAttribute : Attribute
     {
-        public MethodGroup Group { get; }
-
-        public RunnableMethodAttribute(MethodGroup group)
+        public RunnableActionAttribute(MethodGroup group)
         {
             Group = group;
         }
+
+        public MethodGroup Group { get; }
     }
 }

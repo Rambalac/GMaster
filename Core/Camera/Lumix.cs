@@ -2,94 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
     using LumixData;
     using Network;
-    using Nito.AsyncEx;
     using Tools;
 
-    public class Lumix : IDisposable
+    public partial class Lumix : IDisposable
     {
-        private static readonly Dictionary<string, RunnableCommandInfo> RunnableCommands;
-        private readonly Http http;
-        private readonly CameraProfile profile;
-        private readonly Timer stateTimer;
-        private readonly AsyncLock stateUpdatingLock = new AsyncLock();
-        private CancellationTokenSource connectCancellation = new CancellationTokenSource();
-        private bool firstconnect = true;
-        private bool isConnecting = true;
-        private int isUpdatingState;
-        private string language;
-        private bool reportingAction;
-        private int stateFiledTimes;
-
-        static Lumix()
-        {
-            RunnableCommands = new Dictionary<string, RunnableCommandInfo>(20);
-            foreach (var method in typeof(Lumix).GetRuntimeMethods())
-            {
-                var runnable = method.GetCustomAttribute<RunnableMethodAttribute>();
-                if (runnable != null)
-                {
-                    var rett = method.ReturnType;
-                    var info = new RunnableCommandInfo
-                    {
-                        Method = method,
-                        Group = runnable.Group,
-                        Async = rett == typeof(Task) || (rett.IsConstructedGenericType && rett.GetGenericTypeDefinition() == typeof(Task<>))
-                    };
-
-                    RunnableCommands[method.Name] = info;
-                }
-            }
-        }
-
-        public Lumix(DeviceInfo device, IHttpClient client)
-        {
-            Device = device;
-            profile = CameraProfile.Profiles.TryGetValue(device.ModelName, out var prof) ? prof : new CameraProfile();
-
-            stateTimer = new Timer(StateTimer_Tick, null, -1, -1);
-            var baseUri = new Uri($"http://{CameraHost}/cam.cgi");
-
-            http = new Http(baseUri, client);
-        }
-
-        public delegate Task<CameraPoint?> LiveViewUpdatedDelegate(ArraySegment<byte> data);
-
-        public event Action<Lumix, string, object[]> ActionCalled;
-
-        public event LiveViewUpdatedDelegate LiveViewUpdated;
-
-        public event Action<Lumix, UpdateStateFailReason> StateUpdateFailed;
-
-        public enum UpdateStateFailReason
-        {
-            RequestFailed,
-            LumixException,
-            NotConnected
-        }
-
-        public string CameraHost => Device.Host;
-
-        public DeviceInfo Device { get; }
-
-        public LumixState LumixState { get; } = new LumixState();
-
-        public OffFrameProcessor OffFrameProcessor { get; private set; }
+        private float lastOldPinchSize;
 
         public CameraParser Parser { get; private set; }
 
-        public string Uuid => Device.Uuid;
-
-        public static MethodGroup GetCommandCroup(string method) => RunnableCommands[method].Group;
-
-        [RunnableMethod(MethodGroup.Capture)]
+        [RunnableAction(MethodGroup.Capture)]
         public async Task<bool> CaptureStart()
         {
             ReportAction();
@@ -100,7 +25,7 @@
             });
         }
 
-        [RunnableMethod(MethodGroup.Capture)]
+        [RunnableAction(MethodGroup.Capture)]
         public async Task<bool> CaptureStop()
         {
             ReportAction();
@@ -111,7 +36,7 @@
             });
         }
 
-        [RunnableMethod(MethodGroup.Focus)]
+        [RunnableAction(MethodGroup.Focus)]
         public async Task<bool> ChangeFocus(ChangeDirection focusDirection)
         {
             ReportAction(focusDirection);
@@ -139,7 +64,7 @@
             });
         }
 
-        [RunnableMethod(MethodGroup.Focus)]
+        [RunnableAction(MethodGroup.Focus)]
         public async Task<bool> ChangeZoom(ChangeDirection zoomDirection)
         {
             ReportAction(zoomDirection);
@@ -158,14 +83,14 @@
                 {
                     try
                     {
-                        if (profile.RequestConnection)
+                        if (Profile.RequestConnection)
                         {
                             await RequestAccess(token);
                         }
 
                         connectStage = 1;
 
-                        if (profile.SetDeviceName)
+                        if (Profile.SetDeviceName)
                         {
                             await TryGet("?mode=setsetting&type=device_name&value=SM-G9350");
                         }
@@ -264,27 +189,41 @@
             }
         }
 
-        public void Dispose()
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> FocusPointMove(FloatPoint p)
         {
-            connectCancellation.Cancel();
-            connectCancellation.Dispose();
-            http.Dispose();
-            stateTimer.Dispose();
+            ReportAction(p);
+            return await OldNewAction(
+                async () => await TryGet($"?mode=camctrl&type=touch&value={(int)(p.X * 1000)}/{(int)(p.Y * 1000)}&value2=on"),
+                async () => await TryGet($"?mode=camctrl&type=touchaf&value={(int)(p.X * 1000)}/{(int)(p.Y * 1000)}"),
+                Profile.NewTouch,
+                f => Profile.NewTouch = f);
         }
 
-        public override bool Equals(object obj)
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> FocusPointResize(PinchStage stage, FloatPoint p, float size)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
+            ReportAction(size);
+            return await OldNewAction(
+                async () => await PinchZoom(stage, p, size),
+                async () =>
+                {
+                    var dif = size - lastOldPinchSize;
+                    if (Math.Abs(dif) > 0.03f)
+                    {
+                        lastOldPinchSize = size;
+                        var val = dif > 0 ? "up" : "down";
+                        await http.Get<BaseRequestResult>($"?mode=camctrl&type=touchaf_chg_area&value={val}");
+                    }
+                    if (stage == PinchStage.Stop || stage == PinchStage.Single)
+                    {
+                        lastOldPinchSize = 0;
+                    }
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return obj.GetType() == GetType() && Equals((Lumix)obj);
+                    return true;
+                },
+                Profile.NewTouch,
+                f => Profile.NewTouch = f);
         }
 
         public async Task<FocusMode> GetFocusMode()
@@ -301,19 +240,102 @@
             }
         }
 
-        public override int GetHashCode()
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> MfAssistAf()
         {
-            return Uuid?.GetHashCode() ?? 0;
+            ReportAction();
+            if (Profile.ManualFocusAF)
+            {
+                return await Try(async () =>
+                {
+                    try
+                    {
+                        await http.Get<BaseRequestResult>("?mode=camcmd&value=oneshot_af");
+                        return true;
+                    }
+                    catch (LumixException ex)
+                    {
+                        if (ex.Error == LumixError.ErrorParam)
+                        {
+                            Profile.ManualFocusAF = false;
+                            ProfileUpdated?.Invoke();
+                            return false;
+                        }
+                        throw;
+                    }
+                });
+            }
+
+            return false;
         }
 
-        [RunnableMethod(MethodGroup.Capture)]
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> MfAssistMove(PinchStage stage, FloatPoint p)
+        {
+            ReportAction(stage, p);
+            return await OldNewAction(
+                async () => await NewMfAssistMove(stage, p),
+                async () => await TryGetString($"?mode=camctrl&type=mf_asst&value={(int)(p.X * 1000)}/{(int)(p.Y * 1000)}"),
+                Profile.NewTouch,
+                f => Profile.NewTouch = f);
+        }
+
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> MfAssistOff()
+        {
+            ReportAction();
+            return await OldNewAction(
+            async () => await TryGetString("?mode=camctrl&type=asst_disp&value=off&value2=mf_asst/0/0"),
+            async () => await TryGet("?mode=setsetting&type=mf_asst_mag&value=1"),
+            Profile.NewTouch,
+            f => Profile.NewTouch = f);
+        }
+
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> MfAssistPinp(bool pInP)
+        {
+            ReportAction(pInP);
+            var val = pInP ? "pinp" : "full";
+            return await TryGetString($"?mode=camctrl&type=asst_disp&value={val}&value2=mf_asst/0/0");
+        }
+
+        [RunnableAction(MethodGroup.Focus)]
+        public async Task<bool> MfAssistZoom(PinchStage stage, FloatPoint p, float size)
+        {
+            ReportAction(stage, p, size);
+            return await OldNewAction(
+                async () => await PinchZoom(stage, p, size),
+                async () => await OldMfAssistZoom(stage, p, size),
+                Profile.NewTouch,
+                f => Profile.NewTouch = f);
+        }
+
+        private async Task<bool> OldMfAssistZoom(PinchStage stage, FloatPoint floatPoint, float size)
+        {
+            if (stage == PinchStage.Start)
+            {
+                lastOldPinchSize = size;
+                return true;
+            }
+
+            if (LumixState.CameraMode != CameraMode.MFAssist)
+            {
+                return await MfAssistMove(stage, floatPoint);
+            }
+
+            var val = size - lastOldPinchSize > 0 ? 10 : 5;
+            Debug.WriteLine("Mag val:" + val, "MFAssist");
+            return await TryGet($"?mode=setsetting&type=mf_asst_mag&value={val}");
+        }
+
+        [RunnableAction(MethodGroup.Capture)]
         public async Task<bool> RecStart()
         {
             ReportAction();
             return await Try(async () =>
             {
                 await http.Get<BaseRequestResult>("?mode=camcmd&value=video_recstart");
-                if (profile.RecStop)
+                if (Profile.RecStop)
                 {
                     LumixState.RecState = RecState.Unknown;
                     await Task.Delay(100);
@@ -329,11 +351,11 @@
             });
         }
 
-        [RunnableMethod(MethodGroup.Capture)]
+        [RunnableAction(MethodGroup.Capture)]
         public async Task<bool> RecStop()
         {
             ReportAction();
-            if (profile.RecStop)
+            if (Profile.RecStop)
             {
                 try
                 {
@@ -347,7 +369,7 @@
                     if (ex.Error == LumixError.ErrorParam)
                     {
                         Debug.WriteLine("RecStop not supported", "RecStop");
-                        profile.RecStop = false;
+                        Profile.RecStop = false;
                         LumixState.RecState = RecState.StopNotSupported;
                     }
                     else
@@ -360,30 +382,11 @@
             return false;
         }
 
-        [RunnableMethod(MethodGroup.Focus)]
+        [RunnableAction(MethodGroup.Focus)]
         public async Task<bool> ReleaseTouchAF()
         {
             ReportAction();
             return await TryGet("?mode=camcmd&value=touchafrelease");
-        }
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> ResizeFocusPoint(int size)
-        {
-            ReportAction(size);
-            return await Try(async () =>
-            {
-                if (size > 0)
-                {
-                    await http.Get<BaseRequestResult>("?mode=camctrl&type=touchaf_chg_area&value=up");
-                }
-                else if (size < 0)
-                {
-                    await http.Get<BaseRequestResult>("?mode=camctrl&type=touchaf_chg_area&value=down");
-                }
-
-                return true;
-            });
         }
 
         public async Task RunCommand(string methodName, object[] prm)
@@ -414,7 +417,7 @@
             }
         }
 
-        [RunnableMethod(MethodGroup.Properties)]
+        [RunnableAction(MethodGroup.Properties)]
         public async Task<bool> SendMenuItem(ICameraMenuItem value)
         {
             ReportAction(value);
@@ -432,87 +435,6 @@
             return false;
         }
 
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> FocusPointMove(float x, float y)
-        {
-            ReportAction(x, y);
-            return await Try(async () =>
-            {
-                if (profile.NewAf)
-                {
-                    try
-                    {
-                        var onoff = "on"; // "off"
-                        await http.Get<BaseRequestResult>(
-                            $"?mode=camctrl&type=touch&value={(int)(x * 1000)}/{(int)(y * 1000)}&value2={onoff}");
-                        return true;
-                    }
-                    catch (LumixException ex)
-                    {
-                        if (ex.Error == LumixError.ErrorParam)
-                        {
-                            LogTrace("New TouchAF not supported", "NewTouchAF");
-                            profile.NewAf = false;
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                }
-
-                await http.Get<BaseRequestResult>(
-                    $"?mode=camctrl&type=touchaf&value={(int)(x * 1000)}/{(int)(y * 1000)}");
-                return true;
-            });
-        }
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> MfAssistAf()
-        {
-            ReportAction();
-            return await TryGet("?mode=camcmd&value=oneshot_af");
-        }
-
-        private bool autoreviewUnlocked;
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> MfAssistMove(float x = 0.5f, float y = 0.5f)
-        {
-            ReportAction(x, y);
-            if (!autoreviewUnlocked)
-            {
-                autoreviewUnlocked = true;
-                await TryGet("?mode=camcmd&value=autoreviewunlock");
-            }
-
-            //await TryGetString($"?mode=camctrl&type=touch_trace&value=start&value2={(int)(x * 1000)}/{(int)(y * 1000)}");
-            //return await TryGetString($"?mode=camctrl&type=touch_trace&value=stop&value2={(int)(x * 1000)}/{(int)(y * 1000)}");
-            return await TryGetString($"?mode=camctrl&type=asst_disp&value=move&value2=mf_asst/{(int)(x * 1000)}/{(int)(y * 1000)}");
-        }
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> MfAssistPinp(bool pInP)
-        {
-            ReportAction(pInP);
-            var val = pInP ? "pinp" : "full";
-            return await TryGetString($"?mode=camctrl&type=asst_disp&value={val}&value2=mf_asst/0/0");
-        }
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> MfAssistZoom(float z = 0.5f)
-        {
-            ReportAction(z);
-            return await TryGetString($"?mode=camctrl&type=change_disp_mag&value={(int)(z * 1000)}");
-        }
-
-        [RunnableMethod(MethodGroup.Focus)]
-        public async Task<bool> MfAssistOff()
-        {
-            ReportAction();
-            return await TryGetString("?mode=camctrl&type=asst_disp&value=off&value2=mf_asst/0/0");
-        }
-
         public async Task StopStream()
         {
             if (!isConnecting)
@@ -524,56 +446,6 @@
         public async Task<bool> SwitchToRec()
         {
             return await Try(async () => await http.Get<BaseRequestResult>("?mode=camcmd&value=recmode"));
-        }
-
-        internal async Task ProcessMessage(byte[] buf)
-        {
-            try
-            {
-                if (OffFrameProcessor == null)
-                {
-                    return;
-                }
-
-                var slice = new Slice(buf);
-
-                var imageStart = OffFrameProcessor.CalcImageStart(slice);
-
-                if (LiveViewUpdated != null && imageStart > 60 && imageStart < buf.Length - 100 &&
-                    buf[imageStart] == 0xff && buf[imageStart + 1] == 0xd8 && buf[buf.Length - 2] == 0xff &&
-                    buf[buf.Length - 1] == 0xd9)
-                {
-                    CameraPoint? size = null;
-                    foreach (var ev in LiveViewUpdated.GetInvocationList().Cast<LiveViewUpdatedDelegate>())
-                    {
-                        size = await ev(new ArraySegment<byte>(buf, imageStart, buf.Length - imageStart));
-                    }
-
-                    if (size != null)
-                    {
-                        OffFrameProcessor.Process(new Slice(slice, 0, imageStart), size.Value);
-                    }
-
-                    if (firstconnect)
-                    {
-                        firstconnect = false;
-                        LogTrace($"Camera connected and got first frame {Device.ModelName}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                if (firstconnect)
-                {
-                    firstconnect = false;
-                    LogError($"Camera failed first frame {Device.ModelName}", ex);
-                }
-            }
-        }
-
-        protected bool Equals(Lumix other)
-        {
-            return Equals(Uuid, other.Uuid);
         }
 
         private async Task<CurMenu> GetCurMenu()
@@ -618,24 +490,6 @@
             }
         }
 
-        private bool CheckAlreadyConnected(string raw)
-        {
-            if (!raw.StartsWith("<xml>"))
-            {
-                return false;
-            }
-
-            try
-            {
-                var res = Http.ReadResponse<BaseRequestResult>(raw);
-                return res.Result == "err_already_connected";
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         private async Task<MenuSet> GetMenuSet()
         {
             var allmenuString = await http.GetString("?mode=getinfo&type=allmenu");
@@ -669,7 +523,7 @@
             var newState = response.State;
             if (newState.Rec == OnOff.On)
             {
-                LumixState.RecState = profile.RecStop ? RecState.Started : RecState.StopNotSupported;
+                LumixState.RecState = Profile.RecStop ? RecState.Started : RecState.StopNotSupported;
             }
             else
             {
@@ -679,174 +533,101 @@
             return newState;
         }
 
-        private void LogError(string message, string place = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
+        [RunnableAction(MethodGroup.Focus)]
+        private async Task<bool> NewMfAssistMove(PinchStage stage, FloatPoint p)
         {
-            var placeText = place != null ? $"place.{place}," : string.Empty;
-            Log.Error(message, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
-        }
-
-        private void LogError(string message, Exception ex, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
-        {
-            Log.Error(message, ex, $"camera.{Device.ModelName}", fileName, methodName);
-        }
-
-        private void LogError(string message, object obj, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
-        {
-            Log.Trace(message, Log.Severity.Error, obj, $"camera.{Device.ModelName}", fileName, methodName);
-        }
-
-        private void LogError(Exception ex, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
-        {
-            Log.Error(ex.Message, ex, $"camera.{Device.ModelName}", fileName, methodName);
-        }
-
-        private void LogTrace(string message, string place = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
-        {
-            var placeText = place != null ? $"place.{place}," : string.Empty;
-            Log.Trace(message, Log.Severity.Trace, null, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
-        }
-
-        private async void OffFrameProcessor_LensChanged()
-        {
-            LumixState.MenuSet = await GetMenuSet();
-        }
-
-        private void ReportAction(string method, object[] prm)
-        {
-            if (!reportingAction)
+            ReportAction(stage, p);
+            if (!autoreviewUnlocked)
             {
-                try
-                {
-                    reportingAction = true;
-                    ActionCalled?.Invoke(this, method, prm);
-                }
-                finally
-                {
-                    reportingAction = false;
-                }
+                autoreviewUnlocked = true;
+                await TryGet("?mode=camcmd&value=autoreviewunlock");
             }
-        }
 
-        private void ReportAction(object p1, [CallerMemberName]string method = null)
-        {
-            ReportAction(method, new[] { p1 });
-        }
-
-        private void ReportAction(object p1, object p2, [CallerMemberName]string method = null)
-        {
-            ReportAction(method, new[] { p1, p2 });
-        }
-
-        private void ReportAction([CallerMemberName]string method = null)
-        {
-            ReportAction(method, new object[0]);
-        }
-
-        private async Task<bool> RequestAccess(CancellationToken token)
-        {
-            var noconnection = 0;
-            do
+            var val2 = $"{(int)(p.X * 1000)}/{(int)(p.Y * 1000)}";
+            if (stage != PinchStage.Single)
             {
-                try
+                var res = await TryGetString($"?mode=camctrl&type=touch_trace&value={stage.GetString()}&value2={val2}");
+                if (stage == PinchStage.Stop)
                 {
-                    var str = await http.GetString($"?mode=accctrl&type=req_acc&value={Device.Uuid}&value2=SM-G9350", token);
-                    if (str.StartsWith("<?xml"))
-                    {
-                        break;
-                    }
-
-                    var fields = str.Split(',');
-                    if (fields.FirstOrDefault() == "ok")
-                    {
-                        break;
-                    }
-
-                    noconnection = 0;
-                }
-                catch (COMException ex)
-                {
-                    Log.Error(ex);
-                    if ((uint)ex.HResult == 0x80072efd)
-                    {
-                        if (++noconnection > 2)
-                        {
-                            Log.Error("Cannot connect to " + CameraHost);
-                            return false;
-                        }
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    LogError(ex);
+                    autoreviewUnlocked = false;
                 }
 
-                await Task.Delay(1000, token);
+                return res;
             }
-            while (true);
 
+            await TryGetString($"?mode=camctrl&type=touch_trace&value=start&value2={val2}");
+            await TryGetString($"?mode=camctrl&type=touch_trace&value=continue&value2={val2}");
+            await TryGetString($"?mode=camctrl&type=touch_trace&value=stop&value2={val2}");
+            autoreviewUnlocked = false;
             return true;
         }
 
-        private async void StateTimer_Tick(object sender)
+        private async Task<bool> OldNewAction(Func<Task<bool>> newAction, Func<Task<bool>> oldAction, bool flag, Action<bool> flagSet)
         {
-            if (isConnecting)
+            return await Try(async () =>
             {
-                return;
-            }
+                if (flag)
+                {
+                    try
+                    {
+                        return await newAction();
+                    }
+                    catch (LumixException ex)
+                    {
+                        if (ex.Error == LumixError.ErrorParam)
+                        {
+                            LogTrace("New action not supported", "NewAction");
+                            flagSet(false);
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
 
-            if (Interlocked.CompareExchange(ref isUpdatingState, 1, 0) == 0)
-            {
-                try
-                {
-                    var lastState = LumixState.State;
-                    var state = LumixState.State = await GetState();
-                    if (lastState.Operate != null && state.Operate == null)
-                    {
-                        Debug.WriteLine("Not connected?", "StateUpdate");
-                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.NotConnected);
-                        return;
-                    }
-
-                    stateFiledTimes = 0;
-                }
-                catch (ConnectionLostException)
-                {
-                    Debug.WriteLine("Connection lost", "Connection");
-                    if (++stateFiledTimes > 3)
-                    {
-                        LogTrace("Connection lost");
-                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.RequestFailed);
-                    }
-                }
-                catch (LumixException ex)
-                {
-                    Debug.WriteLine(ex);
-                    StateUpdateFailed?.Invoke(this, UpdateStateFailReason.LumixException);
-                }
-                catch (Exception)
-                {
-                    if (++stateFiledTimes > 3)
-                    {
-                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.RequestFailed);
-                    }
-                }
-                finally
-                {
-                    isUpdatingState = 0;
-                }
-            }
+                return await oldAction();
+            });
         }
 
-        private async Task<bool> Try<T>(Func<Task<T>> act)
+        [RunnableAction(MethodGroup.Focus)]
+        private async Task<bool> PinchZoom(PinchStage stage, FloatPoint p, float size)
         {
             try
             {
-                await act();
+                if (!autoreviewUnlocked)
+                {
+                    autoreviewUnlocked = true;
+                    await TryGet("?mode=camcmd&value=autoreviewunlock");
+                }
+
+                var pp1 = new IntPoint(p - size, 1000f).Clamp(0, 1000);
+                var pp2 = new IntPoint(p + size, 1000f).Clamp(0, 1000);
+
+                var url = $"?mode=camctrl&type=pinch&value={stage.GetString()}&value2={pp1.X}/{pp1.Y}/{pp2.X}/{pp2.Y}";
+                Debug.WriteLine(url, "PinchZoom");
+                var resstring = await http.GetString(url);
+                if (resstring.StartsWith("<xml>"))
+                {
+                    return false;
+                }
+
+                var csv = resstring.Split(',');
+                if (csv[0] != "ok")
+                {
+                    return false;
+                }
+
+                if (stage == PinchStage.Stop)
+                {
+                    autoreviewUnlocked = false;
+                }
+
                 return true;
+            }
+            catch (LumixException)
+            {
+                throw;
             }
             catch (ConnectionLostException)
             {
@@ -858,30 +639,6 @@
                 LogError("Camera action failed", ex);
                 return false;
             }
-        }
-
-        private async Task<bool> TryGet(string path)
-        {
-            return await Try(async () => await http.Get<BaseRequestResult>(path));
-        }
-
-        private async Task<bool> TryGetString(string path)
-        {
-            return await Try(async () =>
-            {
-                var res=await http.GetString(path);
-                Debug.WriteLine(res, "GetString");
-                return res;
-            });
-        }
-
-        private class RunnableCommandInfo
-        {
-            public bool Async { get; set; }
-
-            public MethodGroup Group { get; set; }
-
-            public MethodInfo Method { get; set; }
         }
     }
 }

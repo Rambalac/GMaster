@@ -50,8 +50,13 @@
 
         public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
 
-        public bool CanReleaseTouchAf => AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
-                                            && FocusAreas != null && FocusAreas.Boxes.Count > 0;
+        public bool CanReleaseTouchAf => (AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
+                                          && FocusAreas != null && FocusAreas.Boxes.Count > 0)
+                                         || lumixState?.CameraMode == CameraMode.MFAssist
+                                        || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP
+                                                || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
+
+        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.Manual && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
 
         public int CurentZoom => lumixState?.Zoom ?? 0;
 
@@ -123,7 +128,7 @@
             get
             {
                 return lumixState?.MenuSet?.IsoValues
-                    .Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList() 
+                    .Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList()
                     ?? new List<string>();
             }
         }
@@ -151,6 +156,7 @@
                 {
                     lumixState.PropertyChanged -= Camera_PropertyChanged;
                     selectedCamera.Removed -= SelectedCamera_Removed;
+                    selectedCamera.Camera.ProfileUpdated -= Camera_ProfileUpdated;
                 }
 
                 selectedCamera = value;
@@ -158,6 +164,7 @@
                 if (selectedCamera != null)
                 {
                     selectedCamera.Removed += SelectedCamera_Removed;
+                    selectedCamera.Camera.ProfileUpdated += Camera_ProfileUpdated;
                     lumixState = selectedCamera.Camera.LumixState;
                     lumixState.PropertyChanged += Camera_PropertyChanged;
                     SetTime = DateTime.UtcNow;
@@ -212,6 +219,11 @@
             });
         }
 
+        private void Camera_ProfileUpdated()
+        {
+            OnPropertyChanged(nameof(CanManualFocusAf));
+        }
+
         private async void Camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             await RunAsync(() =>
@@ -220,6 +232,14 @@
                 {
                     switch (e.PropertyName)
                     {
+                        case nameof(LumixState.FocusMode):
+                            OnPropertyChanged(nameof(CanManualFocusAf));
+
+                            break;
+                        case nameof(LumixState.CameraMode):
+                            OnPropertyChanged(nameof(CanReleaseTouchAf));
+                            break;
+
                         case nameof(LumixState.CanManualFocus):
                             OnPropertyChanged(nameof(CanManualFocus));
                             break;
@@ -282,13 +302,13 @@
 
                         case nameof(LumixState.FocusAreas):
                             OnPropertyChanged(nameof(FocusAreas));
+                            OnPropertyChanged(nameof(CanReleaseTouchAf));
                             break;
 
                         case nameof(LumixState.AutoFocusMode):
                             OnPropertyChanged(nameof(AutoFocusMode));
                             OnPropertyChanged(nameof(CanReleaseTouchAf));
                             break;
-
                         case nameof(LumixState.IsBusy):
                             OnPropertyChanged(nameof(IsConnectionActive));
                             break;
@@ -308,6 +328,8 @@
                 OnPropertyChanged(nameof(IsConnected));
                 OnPropertyChanged(nameof(IsConnectionActive));
 
+                OnPropertyChanged(nameof(CanReleaseTouchAf));
+                OnPropertyChanged(nameof(CanManualFocusAf));
                 OnPropertyChanged(nameof(CanChangeAperture));
                 OnPropertyChanged(nameof(CanChangeShutter));
                 OnPropertyChanged(nameof(CanManualFocus));

@@ -4,18 +4,20 @@ namespace GMaster.Core.Camera
 
     public class CameraProfile
     {
-        private static CameraParser gh3Parser = new GH3Parser();
-        private static CameraParser gh4Parser = new GH4Parser();
+        private static readonly CameraParser GH3Parser = new GH3Parser();
+        private static readonly CameraParser GH4Parser = new GH4Parser();
+
         public static Dictionary<string, CameraProfile> Profiles { get; } = new Dictionary<string, CameraProfile>
         {
             {
                 "DMC-GH3", new CameraProfile
                 {
                     RecStop = false,
-                    NewAf = false,
+                    NewTouch = false,
                     RequestConnection = false,
                     SetDeviceName = false,
-                    Parser = gh3Parser
+                    Parser = GH3Parser,
+                    ManualFocusAF = false
                 }
             },
             {
@@ -23,7 +25,7 @@ namespace GMaster.Core.Camera
                 {
                     RequestConnection = false,
                     SetDeviceName = false,
-                    Parser = gh4Parser
+                    Parser = GH4Parser
                 }
             },
             {
@@ -66,19 +68,27 @@ namespace GMaster.Core.Camera
                 "DMC-TS5", new CameraProfile
                 {
                     SetDeviceName = false,
-                    Parser = gh3Parser
+                    Parser = GH3Parser
+                }
+            },
+            {
+                "DMC-GM1", new CameraProfile
+                {
+                    SetDeviceName = false,
                 }
             }
         };
 
-        public CameraParser Parser { get; set; }
+        public bool NewTouch { get; set; } = true;
 
-        public bool NewAf { get; set; } = true;
+        public CameraParser Parser { get; set; }
 
         public bool RecStop { get; set; } = true;
 
         public bool RequestConnection { get; set; } = true;
 
         public bool SetDeviceName { get; set; } = true;
+
+        public bool ManualFocusAF { get; set; } = true;
     }
 }

@@ -10,6 +10,7 @@ namespace GMaster.Core.Camera.LumixData
     [Flags]
     public enum CameraModeFlags
     {
+        None = 0,
         Shutter = 1 << 0,
         Aperture = 1 << 1,
         Video = 1 << 2,
@@ -46,7 +47,10 @@ namespace GMaster.Core.Camera.LumixData
         vM = 0x3f,
 
         [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Photo)]
-        Unknown = 0
+        Unknown = 0,
+
+        [EnumValue(CameraModeFlags.None)]
+        MFAssist = 0xff
     }
 }
 

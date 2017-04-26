@@ -18,7 +18,7 @@
         private static CancellationTokenSource cancellation;
         private static IHttpClient http;
         private static ConcurrentQueue<string> memoryEntries;
-
+        private static string deviceName;
         private static int memoryLines;
 
         private static int sendQueueCount = 0;
@@ -59,11 +59,12 @@
             return string.Join("\r\n", memoryEntries);
         }
 
-        public static void Init(IHttpClient client, string token, string ver, int inmemory = 0)
+        public static void Init(IHttpClient client, string token, string ver, string device, int inmemory = 0)
         {
             version = ver.Replace('.', '_');
             http = client;
             memoryLines = inmemory;
+            deviceName = device;
             if (memoryLines != 0)
             {
                 memoryEntries = new ConcurrentQueue<string>();
@@ -107,7 +108,10 @@
                 Message = message,
                 File = fileName,
                 Method = methodName,
-                Data = data
+                Data = data,
+                Device = deviceName,
+                Version = version,
+                Severity = severity
             };
 
             var str = JsonConvert.SerializeObject(
@@ -128,7 +132,7 @@
             var entry = new LogEntry
             {
                 Message = str,
-                Tags = $"severity.{severity},version.{version}{tagsText}"
+                Tags = $"severity.{severity},version.{version},device.{deviceName}{tagsText}"
             };
 
             SendQueueEmpty.Reset();
@@ -242,6 +246,10 @@
 
             [JsonProperty(Order = 2)]
             public string Method { get; set; }
+
+            public Severity Severity { get; set; }
+            public string Version { get; set; }
+            public string Device { get; set; }
         }
     }
 }

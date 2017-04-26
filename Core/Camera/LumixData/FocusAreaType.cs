@@ -8,7 +8,10 @@ namespace GMaster.Core.Camera.LumixData
         Eye = 0xff09,
         TrackUnlock = 0xff03,
         TrackLock = 0x0003,
-
+        MfAssistSelection = 0x0005,
+        MfAssistPinP = 0x0006,
+        MfAssistFullscreen = 0x0007,
+        MfAssistLimit = 0x0008,
         Box = 0xff02,
         Cross = 0xff04
     }

@@ -1,4 +1,7 @@
-﻿namespace GMaster
+﻿using System.Linq;
+using Windows.Security.ExchangeActiveSyncProvisioning;
+
+namespace GMaster
 {
     using System;
     using System.Threading.Tasks;
@@ -54,7 +57,14 @@
         {
             var ver = Package.Current.Id.Version;
 
-            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", 500);
+            var eas = new EasClientDeviceInformation();
+            var deviceName = string.Concat(eas.SystemProductName.Where(char.IsLetterOrDigit));
+            if (deviceName == "SystemProductName")
+            {
+                deviceName = "PC";
+            }
+
+            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", deviceName, 500);
 
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
 

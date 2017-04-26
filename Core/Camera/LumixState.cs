@@ -9,6 +9,7 @@ namespace GMaster.Core.Camera
     public class LumixState : INotifyPropertyChanged
     {
         private TextBinValue aperture;
+        private AutoFocusMode autoFocusMode;
         private CameraMode cameraMode = CameraMode.Unknown;
         private CurMenu curMenu;
         private int currentFocus;
@@ -25,7 +26,6 @@ namespace GMaster.Core.Camera
         private TextBinValue shutter;
         private CameraState state;
         private int zoom;
-        private AutoFocusMode autoFocusMode;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -40,6 +40,21 @@ namespace GMaster.Core.Camera
                 }
 
                 aperture = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public AutoFocusMode AutoFocusMode
+        {
+            get => autoFocusMode;
+            set
+            {
+                if (value == autoFocusMode)
+                {
+                    return;
+                }
+
+                autoFocusMode = value;
                 OnPropertyChanged();
             }
         }
@@ -111,6 +126,21 @@ namespace GMaster.Core.Camera
             }
         }
 
+        public FocusAreas FocusAreas
+        {
+            get => focusPoints;
+            set
+            {
+                if (Equals(value, focusPoints))
+                {
+                    return;
+                }
+
+                focusPoints = value;
+                OnPropertyChanged();
+            }
+        }
+
         public FocusMode FocusMode
         {
             get => focusMode;
@@ -124,21 +154,6 @@ namespace GMaster.Core.Camera
                 focusMode = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanManualFocus));
-            }
-        }
-
-        public FocusAreas FocusAreas
-        {
-            get => focusPoints;
-            set
-            {
-                if (Equals(value, focusPoints))
-                {
-                    return;
-                }
-
-                focusPoints = value;
-                OnPropertyChanged();
             }
         }
 
@@ -297,21 +312,6 @@ namespace GMaster.Core.Camera
                 }
 
                 zoom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public AutoFocusMode AutoFocusMode
-        {
-            get => autoFocusMode;
-            set
-            {
-                if (value == autoFocusMode)
-                {
-                    return;
-                }
-
-                autoFocusMode = value;
                 OnPropertyChanged();
             }
         }

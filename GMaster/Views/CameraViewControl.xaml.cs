@@ -8,9 +8,11 @@ namespace GMaster.Views
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Camera.LumixData;
+    using Core.Tools;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Models;
     using Windows.ApplicationModel.DataTransfer;
+    using Windows.Devices.Input;
     using Windows.UI.Core;
     using Windows.UI.Input;
     using Windows.UI.Xaml;
@@ -24,14 +26,17 @@ namespace GMaster.Views
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly GestureRecognizer imageGestureRecognizer;
 
-        private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(100);
+        private readonly TimeSpan skipableInterval = TimeSpan.FromMilliseconds(200);
 
         private double aspect = 1;
-        private bool is43;
         private Lumix currentLumix;
-        private double lastExpansion;
+        private bool is43;
         private ConnectedCamera lastSelectedCamera;
         private DateTime lastSkipable;
+
+        private bool manipulating;
+
+        private bool manipulationJustStarted = true;
 
         public CameraViewControl()
         {
@@ -45,7 +50,7 @@ namespace GMaster.Views
                                                     | GestureSettings.ManipulationTranslateY
                                                     | GestureSettings.Tap
                                                     | GestureSettings.ManipulationScale
-                                                    |GestureSettings.DoubleTap;
+                                                    | GestureSettings.DoubleTap;
 
             LiveView.PointerPressed += (sender, args) => imageGestureRecognizer.ProcessDownEvent(args.GetCurrentPoint(LiveView));
             LiveView.PointerReleased += (sender, args) => imageGestureRecognizer.ProcessUpEvent(args.GetCurrentPoint(LiveView));
@@ -59,8 +64,6 @@ namespace GMaster.Views
             frame = new FrameRenderer(LiveView);
         }
 
-        public FocusArea[] FocusAreas { get; } = Enumerable.Range(0, 16).Select(i => new FocusArea()).ToArray();
-
         public CameraViewModel Model => DataContext as CameraViewModel;
 
         private Lumix Lumix => Model?.SelectedCamera?.Camera;
@@ -70,12 +73,12 @@ namespace GMaster.Views
             frame.Dispose();
         }
 
-        private async Task<CameraPoint?> Camera_LiveViewUpdated(ArraySegment<byte> segment)
+        private async Task<IntPoint?> Camera_LiveViewUpdated(ArraySegment<byte> segment)
         {
             var size = await frame.UpdateBitmap(new MemoryStream(segment.Array, segment.Offset, segment.Count));
             if (size != null)
             {
-                var intaspect = (int)(size.Value.X * 10 / size.Value.Y);
+                var intaspect = size.Value.X * 10 / size.Value.Y;
                 is43 = intaspect == 13;
             }
 
@@ -113,6 +116,28 @@ namespace GMaster.Views
             }
         }
 
+        private async void Capture_OnPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var lumix = Model.SelectedCamera;
+            if (lumix == null)
+            {
+                return;
+            }
+
+            await lumix.Camera.CaptureStart();
+        }
+
+        private async void Capture_OnReleased(object sender, PointerRoutedEventArgs e)
+        {
+            var lumix = Model.SelectedCamera;
+            if (lumix == null)
+            {
+                return;
+            }
+
+            await lumix.Camera.CaptureStop();
+        }
+
         private async void FocusAdjuster_OnRepeatClick(ChangeDirection obj)
         {
             if (Model?.SelectedCamera?.Camera != null)
@@ -123,17 +148,45 @@ namespace GMaster.Views
 
         private async void ImageGestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
-            if (Lumix != null && Math.Abs(args.Cumulative.Expansion) < 0.001)
+            manipulationJustStarted = true;
+            if (Lumix == null)
             {
-                await MoveFocusPoint(args.Position.X, args.Position.Y);
+                return;
+            }
+
+            if (Math.Abs(args.Cumulative.Expansion) < 0.001)
+            {
+                await MoveFocusPoint(args.Position.X, args.Position.Y, PinchStage.Stop);
+            }
+            else
+            {
+                if (Lumix.LumixState.FocusMode == FocusMode.Manual)
+                {
+                    if (args.PointerDeviceType != PointerDeviceType.Mouse)
+                    {
+                        await Lumix.MfAssistZoom(PinchStage.Stop, new FloatPoint(args.Position.X, args.Position.Y), (200 + args.Cumulative.Expansion) / 1000);
+                    }
+
+                    Debug.WriteLine("MF Pinch Zoom Stopped", "Manipulation");
+                }
             }
         }
 
         private async void ImageGestureRecognizer_ManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
         {
-            if (Lumix != null)
+            if (manipulating || Lumix == null)
             {
-                lastExpansion += args.Delta.Expansion;
+                return;
+            }
+
+            manipulating = true;
+
+            try
+            {
+                if (Math.Abs(args.Delta.Expansion) < 0.001 && Math.Abs(args.Delta.Translation.X) + Math.Abs(args.Delta.Translation.Y) < 0.001)
+                {
+                    return;
+                }
 
                 var now = DateTime.UtcNow;
                 if (now - lastSkipable < skipableInterval)
@@ -143,17 +196,35 @@ namespace GMaster.Views
 
                 lastSkipable = now;
 
-                if (Math.Abs(lastExpansion) > 32)
-                {
-                    var sig = Math.Sign(lastExpansion);
-                    lastExpansion = 0;
-                    await Lumix.ResizeFocusPoint(sig);
-                }
-
+                var pinchStage = manipulationJustStarted ? PinchStage.Start : PinchStage.Continue;
                 if (Math.Abs(args.Delta.Expansion) < 0.001)
                 {
-                    await MoveFocusPoint(args.Position.X, args.Position.Y);
+                    await MoveFocusPoint(args.Position.X, args.Position.Y, pinchStage);
+                    manipulationJustStarted = false;
                 }
+                else
+                {
+                    var floatPoint = ToFloatPoint(args.Position.X, args.Position.Y);
+                    if (args.PointerDeviceType == PointerDeviceType.Mouse)
+                    {
+                        await PinchZoom(PinchStage.Start, floatPoint, 0);
+                        var zoomed = args.Cumulative.Expansion * 3;
+                        await Task.Delay(50);
+                        await PinchZoom(PinchStage.Continue, floatPoint, 0.5f * zoomed);
+                        await Task.Delay(50);
+                        await PinchZoom(PinchStage.Stop, floatPoint, 1 * zoomed);
+                    }
+                    else
+                    {
+                        await PinchZoom(pinchStage, floatPoint, args.Cumulative.Expansion);
+                    }
+
+                    manipulationJustStarted = false;
+                }
+            }
+            finally
+            {
+                manipulating = false;
             }
         }
 
@@ -161,11 +232,7 @@ namespace GMaster.Views
         {
             if (args.TapCount == 1)
             {
-                await MoveFocusPoint(args.Position.X, args.Position.Y);
-            }
-            else if (Lumix.LumixState.FocusMode == FocusMode.Manual)
-            {
-                await Lumix.MfAssistAf();
+                await MoveFocusPoint(args.Position.X, args.Position.Y, PinchStage.Single);
             }
         }
 
@@ -212,35 +279,36 @@ namespace GMaster.Views
             }
         }
 
-        private void UpdateCamera(Lumix newcamera)
+        private async Task MoveFocusPoint(double x, double y, PinchStage stage)
         {
-            if (currentLumix != null)
-            {
-                currentLumix.LiveViewUpdated -= Camera_LiveViewUpdated;
-            }
-
-            currentLumix = newcamera;
-
-            if (currentLumix != null)
-            {
-                currentLumix.LiveViewUpdated += Camera_LiveViewUpdated;
-            }
-        }
-
-        private async Task MoveFocusPoint(double x, double y)
-        {
-            var ix = (float)((x - frame.ImageRect.X) / frame.ImageRect.Width);
-            var iy = (float)((y - frame.ImageRect.Y) / frame.ImageRect.Height);
-            if (ix >= 0 && iy >= 0 && ix <= 1 && iy <= 1 && Lumix != null)
+            var fp = ToFloatPoint(x, y);
+            if (fp.IsInRange(0f, 1f) && Lumix != null)
             {
                 if (Lumix.LumixState.FocusMode != FocusMode.Manual)
                 {
-                    await Lumix.FocusPointMove(ix, iy);
+                    await Lumix.FocusPointMove(fp);
                 }
                 else
                 {
-                    await Lumix.MfAssistMove(ix, iy);
+                    await Lumix.MfAssistMove(stage, fp);
                 }
+            }
+        }
+
+        private async Task PinchZoom(PinchStage stage, FloatPoint point, float extend)
+        {
+            extend = (200f + extend) / 1000f;
+            if (Lumix.LumixState.FocusMode != FocusMode.Manual)
+            {
+                if (Lumix.LumixState.FocusAreas != null
+                    && Lumix.LumixState.FocusAreas.Boxes.Any(b => b.Props.Type == FocusAreaType.OneAreaSelected))
+                {
+                    await Lumix.FocusPointResize(stage, point, extend);
+                }
+            }
+            else
+            {
+                await Lumix.MfAssistZoom(stage, point, extend);
             }
         }
 
@@ -258,6 +326,7 @@ namespace GMaster.Views
                       case nameof(ConnectedCamera.IsAspectAnamorphingVideoOnly):
                           SetAspect();
                           break;
+
                       case nameof(ConnectedCamera.Camera):
                           UpdateCamera(Model?.SelectedCamera?.Camera);
                           break;
@@ -285,6 +354,28 @@ namespace GMaster.Views
             frame.LutEffect = (await selectedLut.LoadLut())?.GetEffectGenerator(LiveView);
         }
 
+        private FloatPoint ToFloatPoint(double x, double y)
+        {
+            var ix = (float)((x - frame.ImageRect.X) / frame.ImageRect.Width);
+            var iy = (float)((y - frame.ImageRect.Y) / frame.ImageRect.Height);
+            return new FloatPoint(ix, iy);
+        }
+
+        private void UpdateCamera(Lumix newcamera)
+        {
+            if (currentLumix != null)
+            {
+                currentLumix.LiveViewUpdated -= Camera_LiveViewUpdated;
+            }
+
+            currentLumix = newcamera;
+
+            if (currentLumix != null)
+            {
+                currentLumix.LiveViewUpdated += Camera_LiveViewUpdated;
+            }
+        }
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             LiveView.RemoveFromVisualTree();
@@ -296,28 +387,6 @@ namespace GMaster.Views
             {
                 await Model.SelectedCamera.Camera.ChangeZoom(obj);
             }
-        }
-
-        private async void Capture_OnPressed(object sender, PointerRoutedEventArgs e)
-        {
-            var lumix = Model.SelectedCamera;
-            if (lumix == null)
-            {
-                return;
-            }
-
-            await lumix.Camera.CaptureStart();
-        }
-
-        private async void Capture_OnReleased(object sender, PointerRoutedEventArgs e)
-        {
-            var lumix = Model.SelectedCamera;
-            if (lumix == null)
-            {
-                return;
-            }
-
-            await lumix.Camera.CaptureStop();
         }
     }
 }

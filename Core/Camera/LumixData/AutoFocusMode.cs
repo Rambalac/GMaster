@@ -13,7 +13,7 @@ namespace GMaster.Core.Camera.LumixData
         [EnumValue(AutoFocusModeFlags.None)]
         Unknown = -1,
 
-        [EnumValue(AutoFocusModeFlags.TouchAFRelease)]
+        [EnumValue(AutoFocusModeFlags.None)]
         Manual = 0,
 
         [EnumException(4)]

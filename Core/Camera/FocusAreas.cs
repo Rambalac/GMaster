@@ -5,19 +5,19 @@ namespace GMaster.Core.Camera
 
     public class FocusAreas
     {
-        private static readonly Dictionary<int, CameraPoint> FocusPointShifts = new Dictionary<int, CameraPoint>
+        private static readonly Dictionary<int, IntPoint> FocusPointShifts = new Dictionary<int, IntPoint>
         {
-            { 13, new CameraPoint(0, 0) },
-            { 17, new CameraPoint(0, 125) },
-            { 15, new CameraPoint(0, 58) },
-            { 10, new CameraPoint(125, 0) }
+            { 13, new IntPoint(0, 0) },
+            { 17, new IntPoint(0, 125) },
+            { 15, new IntPoint(0, 58) },
+            { 10, new IntPoint(125, 0) }
         };
 
         private readonly List<Box> boxes;
-        private readonly CameraPoint focusPointShift;
+        private readonly IntPoint focusPointShift;
         private int hashcode;
 
-        public FocusAreas(int number, CameraPoint size, bool fix)
+        public FocusAreas(int number, IntPoint size, bool fix)
         {
             boxes = new List<Box>(number);
             if (fix)
@@ -134,7 +134,7 @@ namespace GMaster.Core.Camera
                 }
             }
 
-            internal void Fix(CameraPoint p)
+            internal void Fix(IntPoint p)
             {
                 x1 -= p.X;
                 x2 -= p.X;

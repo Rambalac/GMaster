@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace GMaster.Core.Camera
 {
     using System;
@@ -29,7 +31,7 @@ namespace GMaster.Core.Camera
             return slice.ToShort(30) + 32;
         }
 
-        public void Process(Slice slice, CameraPoint size)
+        public void Process(Slice slice, IntPoint size)
         {
             try
             {
@@ -40,7 +42,7 @@ namespace GMaster.Core.Camera
                     return;
                 }
 
-                Debug.WriteLine(() => string.Join(",", slice.Skip(32).Select(a => a.ToString("X2"))), "OffFrameBytes");
+                PrintBytes(slice);
                 lumixState.Iso = GetFromShort(state.Main, 127, parser.IsoBinary);
 
                 lumixState.Shutter = GetFromShort(state.Main, 68, parser.ShutterBinary);
@@ -71,6 +73,33 @@ namespace GMaster.Core.Camera
             {
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
             }
+        }
+
+        private Slice lastPrint;
+
+        private void PrintBytes(Slice slice)
+        {
+            Debug.WriteLine(
+                () =>
+                    {
+                        if (lastPrint == null || slice.Length != lastPrint.Length)
+                        {
+                            lastPrint = slice;
+                            return string.Join(",", slice.Skip(32).Select(a => a.ToString("X2")));
+                        }
+
+                        var str = new StringBuilder();
+                        for (int i = 0; i < slice.Length; i++)
+                        {
+                            str.Append(slice[i].ToString("X2"));
+                            if (i < slice.Length - 1)
+                            {
+                                str.Append(slice[i] != lastPrint[i] || slice[i + 1] != lastPrint[i + 1] ? '#' : ',');
+                            }
+                        }
+                        lastPrint = slice;
+                        return str.ToString();
+                    }, "OffFrameBytes");
         }
 
         private static string FindClosest(IReadOnlyDictionary<int, string> dict, int value)
@@ -104,7 +133,7 @@ namespace GMaster.Core.Camera
             return slice[46] == 0xff ? 12 : 16;
         }
 
-        private static FocusAreas GetFocusPoint(Slice slice, CameraPoint size)
+        private static FocusAreas GetFocusPoint(Slice slice, IntPoint size)
         {
             var pointsNum = slice[47];
             var focusSlice = new Slice(slice, 48);

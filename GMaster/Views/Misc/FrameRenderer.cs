@@ -1,3 +1,5 @@
+using Windows.UI.Xaml;
+
 namespace GMaster.Views
 {
     using System;
@@ -92,25 +94,18 @@ namespace GMaster.Views
                         var trans = new Vector2(box.X1, box.Y1);
                         var scale = new Vector2(box.Width, box.Height);
                         CanvasGeometry geom;
-                        Color col;
+                        var col=Colors.White;
                         float strokeThickness = 2;
 
                         switch (box.Props.Type)
                         {
-                            case FocusAreaType.OneAreaSelected:
-                                geom = geomAim;
-                                col = Colors.Gold;
-                                break;
-
-                            case FocusAreaType.FaceOther:
-                                geom = geomAim;
-                                col = Colors.White;
-                                break;
-
                             case FocusAreaType.MainFace:
+                            case FocusAreaType.MfAssistSelection:
+                            case FocusAreaType.Box:
                                 geom = geomBox;
                                 col = Colors.Gold;
                                 break;
+
 
                             case FocusAreaType.Eye:
                                 geom = geomLine;
@@ -118,19 +113,22 @@ namespace GMaster.Views
                                 strokeThickness = 1;
                                 break;
 
+                            case FocusAreaType.FaceOther:
                             case FocusAreaType.TrackUnlock:
+                            case FocusAreaType.MfAssistPinP:
                                 geom = geomAim;
                                 col = Colors.White;
                                 break;
 
+                            case FocusAreaType.OneAreaSelected:
                             case FocusAreaType.TrackLock:
                                 geom = geomAim;
                                 col = Colors.Gold;
                                 break;
 
-                            case FocusAreaType.Box:
+                            case FocusAreaType.MfAssistLimit:
                                 geom = geomBox;
-                                col = Colors.Gold;
+                                col = Colors.White;
                                 break;
 
                             case FocusAreaType.Cross:
@@ -180,7 +178,7 @@ namespace GMaster.Views
             }
         }
 
-        public async Task<CameraPoint?> UpdateBitmap(Stream stream)
+        public async Task<IntPoint?> UpdateBitmap(Stream stream)
         {
             if (Interlocked.CompareExchange(ref updateBitmapFlag, 1, 0) == 0)
             {
@@ -189,6 +187,7 @@ namespace GMaster.Views
                     stream.Position = 0;
 
                     var newframe = new FrameData();
+
                     ICanvasImage content = newframe.Bitmap = await CanvasBitmap.LoadAsync(view, stream.AsRandomAccessStream());
                     if (LutEffect != null)
                     {
@@ -219,7 +218,7 @@ namespace GMaster.Views
                     }
 
                     view.Invalidate();
-                    return new CameraPoint((int)newframe.Bitmap.SizeInPixels.Width, (int)newframe.Bitmap.SizeInPixels.Height);
+                    return new IntPoint((int)newframe.Bitmap.SizeInPixels.Width, (int)newframe.Bitmap.SizeInPixels.Height);
                 }
                 finally
                 {
