@@ -32,6 +32,14 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+### 2017-04-21
+Pushed version 1.8.0 to MS Store
+
+* Improved stability and fixed instant values glitch
+* Added synchronised operations. Can start/stop recording or captrue multiple cameras at once. Separate option for parameters and focus.
+* Improved focus areas display and fixed their rendering glitches
+* Fix for TS5/FS5
+
 #### 2017-04-14
 Pushed version 1.7.5 to MS Store
 
