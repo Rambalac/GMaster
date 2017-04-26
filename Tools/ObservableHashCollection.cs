@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Linq;
+    using Core.Tools;
 
     public class ObservableHashCollection<TItem> : HashCollection<TItem>, IObservableHashCollection
         where TItem : IStringIdItem
