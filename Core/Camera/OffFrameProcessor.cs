@@ -1,10 +1,9 @@
-using System.Text;
-
 namespace GMaster.Core.Camera
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using LumixData;
     using Tools;
 
@@ -14,6 +13,8 @@ namespace GMaster.Core.Camera
 
         private readonly LumixState lumixState;
         private readonly CameraParser parser;
+
+        private Slice lastPrint;
 
         public OffFrameProcessor(string deviceName, CameraParser parser, LumixState lumixState)
         {
@@ -75,33 +76,6 @@ namespace GMaster.Core.Camera
             }
         }
 
-        private Slice lastPrint;
-
-        private void PrintBytes(Slice slice)
-        {
-            Debug.WriteLine(
-                () =>
-                    {
-                        if (lastPrint == null || slice.Length != lastPrint.Length)
-                        {
-                            lastPrint = slice;
-                            return string.Join(",", slice.Skip(32).Select(a => a.ToString("X2")));
-                        }
-
-                        var str = new StringBuilder();
-                        for (int i = 0; i < slice.Length; i++)
-                        {
-                            str.Append(slice[i].ToString("X2"));
-                            if (i < slice.Length - 1)
-                            {
-                                str.Append(slice[i] != lastPrint[i] || slice[i + 1] != lastPrint[i + 1] ? '#' : ',');
-                            }
-                        }
-                        lastPrint = slice;
-                        return str.ToString();
-                    }, "OffFrameBytes");
-        }
-
         private static string FindClosest(IReadOnlyDictionary<int, string> dict, int value)
         {
             var list = dict.Keys.ToList();
@@ -126,11 +100,6 @@ namespace GMaster.Core.Camera
             var val1 = list[index - 1];
             var val2 = list[index];
             return val2 - value > value - val1 ? dict[val1] : dict[val2];
-        }
-
-        private static int GetMultiplier(Slice slice)
-        {
-            return slice[46] == 0xff ? 12 : 16;
         }
 
         private static FocusAreas GetFocusPoint(Slice slice, IntPoint size)
@@ -160,6 +129,11 @@ namespace GMaster.Core.Camera
             return null;
         }
 
+        private static int GetMultiplier(Slice slice)
+        {
+            return slice[46] == 0xff ? 12 : 16;
+        }
+
         private TextBinValue GetFromShort(Slice slice, int index, IReadOnlyDictionary<int, string> dict)
         {
             var bin = slice.ToShort(index);
@@ -178,6 +152,31 @@ namespace GMaster.Core.Camera
                 Log.Error(new Exception("Cannot parse off-frame bytes for camera: " + deviceName, e));
                 return new TextBinValue("!", bin);
             }
+        }
+
+        private void PrintBytes(Slice slice)
+        {
+            Debug.WriteLine(
+                () =>
+                    {
+                        if (lastPrint == null || slice.Length != lastPrint.Length)
+                        {
+                            lastPrint = slice;
+                            return string.Join(",", slice.Skip(32).Select(a => a.ToString("X2")));
+                        }
+
+                        var str = new StringBuilder();
+                        for (int i = 0; i < slice.Length; i++)
+                        {
+                            str.Append(slice[i].ToString("X2"));
+                            if (i < slice.Length - 1)
+                            {
+                                str.Append(slice[i] != lastPrint[i] || slice[i + 1] != lastPrint[i + 1] ? '#' : ',');
+                            }
+                        }
+                        lastPrint = slice;
+                        return str.ToString();
+                    }, "OffFrameBytes");
         }
 
         private class ProcessState

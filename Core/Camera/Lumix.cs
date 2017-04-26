@@ -310,24 +310,6 @@
                 f => Profile.NewTouch = f);
         }
 
-        private async Task<bool> OldMfAssistZoom(PinchStage stage, FloatPoint floatPoint, float size)
-        {
-            if (stage == PinchStage.Start)
-            {
-                lastOldPinchSize = size;
-                return true;
-            }
-
-            if (LumixState.CameraMode != CameraMode.MFAssist)
-            {
-                return await MfAssistMove(stage, floatPoint);
-            }
-
-            var val = size - lastOldPinchSize > 0 ? 10 : 5;
-            Debug.WriteLine("Mag val:" + val, "MFAssist");
-            return await TryGet($"?mode=setsetting&type=mf_asst_mag&value={val}");
-        }
-
         [RunnableAction(MethodGroup.Capture)]
         public async Task<bool> RecStart()
         {
@@ -560,6 +542,24 @@
             await TryGetString($"?mode=camctrl&type=touch_trace&value=stop&value2={val2}");
             autoreviewUnlocked = false;
             return true;
+        }
+
+        private async Task<bool> OldMfAssistZoom(PinchStage stage, FloatPoint floatPoint, float size)
+        {
+            if (stage == PinchStage.Start)
+            {
+                lastOldPinchSize = size;
+                return true;
+            }
+
+            if (LumixState.CameraMode != CameraMode.MFAssist)
+            {
+                return await MfAssistMove(stage, floatPoint);
+            }
+
+            var val = size - lastOldPinchSize > 0 ? 10 : 5;
+            Debug.WriteLine("Mag val:" + val, "MFAssist");
+            return await TryGet($"?mode=setsetting&type=mf_asst_mag&value={val}");
         }
 
         private async Task<bool> OldNewAction(Func<Task<bool>> newAction, Func<Task<bool>> oldAction, bool flag, Action<bool> flagSet)

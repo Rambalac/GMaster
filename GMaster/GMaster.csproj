@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="CubeLutParser.cs" />
     <Compile Include="Views\Commands\ManualFocusAfCommand.cs" />
+    <Compile Include="Views\Commands\MfAssistPinpCommand.cs" />
     <Compile Include="Views\Commands\TouchAfReleaseCommand.cs" />
     <Compile Include="Views\Converters\FalseToVisibileConverter.cs" />
     <Compile Include="Views\Converters\GreaterToTrueConverter.cs" />

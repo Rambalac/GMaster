@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using Windows.Security.ExchangeActiveSyncProvisioning;
-
-namespace GMaster
+﻿namespace GMaster
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Core.Tools;
     using Views;
@@ -11,6 +9,7 @@ namespace GMaster
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
     using Windows.ApplicationModel.Resources;
+    using Windows.Security.ExchangeActiveSyncProvisioning;
     using Windows.Storage;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;

@@ -248,7 +248,9 @@
             public string Method { get; set; }
 
             public Severity Severity { get; set; }
+
             public string Version { get; set; }
+
             public string Device { get; set; }
         }
     }

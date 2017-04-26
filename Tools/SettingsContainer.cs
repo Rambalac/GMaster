@@ -6,7 +6,6 @@ namespace GMaster.Tools
     using System.ComponentModel;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using Core.Tools;
     using Newtonsoft.Json.Linq;
 
     public class SettingsContainer : INotifyPropertyChanged

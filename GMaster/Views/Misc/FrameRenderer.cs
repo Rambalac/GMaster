@@ -1,5 +1,3 @@
-using Windows.UI.Xaml;
-
 namespace GMaster.Views
 {
     using System;
@@ -94,7 +92,7 @@ namespace GMaster.Views
                         var trans = new Vector2(box.X1, box.Y1);
                         var scale = new Vector2(box.Width, box.Height);
                         CanvasGeometry geom;
-                        var col=Colors.White;
+                        var col = Colors.White;
                         float strokeThickness = 2;
 
                         switch (box.Props.Type)
@@ -105,7 +103,6 @@ namespace GMaster.Views
                                 geom = geomBox;
                                 col = Colors.Gold;
                                 break;
-
 
                             case FocusAreaType.Eye:
                                 geom = geomLine;

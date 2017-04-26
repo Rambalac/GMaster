@@ -7,7 +7,7 @@ namespace GMaster.Views.Commands
     using Models;
     using Tools;
 
-    public class ManualFocusAfCommand : AbstractModelCommand<CameraViewModel>
+    public class MfAssistPinpCommand : AbstractModelCommand<CameraViewModel>
     {
         protected override bool InternalCanExecute() => true;
 
@@ -23,7 +23,7 @@ namespace GMaster.Views.Commands
             {
                 if (lumix.Camera.LumixState.FocusMode == FocusMode.Manual)
                 {
-                    await lumix.Camera.MfAssistAf();
+                    await lumix.Camera.MfAssistPinp(false);
                 }
             }
             catch (Exception e)

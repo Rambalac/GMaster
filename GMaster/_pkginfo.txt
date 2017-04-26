@@ -1,1 +1,1 @@
-E:\Projects\GMaster\GMaster\bin\ARM\Release\Upload\GMaster_1.8.0.0\GMaster_1.8.0.0_x86_x64_arm.appxbundle
+E:\Projects\GMaster\GMaster\bin\ARM\Release\Upload\GMaster_1.8.1.0\GMaster_1.8.1.0_x86_x64_arm.appxbundle
