@@ -1,0 +1,2416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<camrply>
+  <result>ok</result>
+  <menuset model="FZ300" version="2.0" date="20151026">
+    <mainmenu>
+      <menu>
+        <item id="menu_item_id_connection_settings" title_id="title_connection_settings" func_type="sp_embeded_connection_settings" ></item>
+        <item id="menu_item_id_liveview_settings" title_id="title_liveview_settings" func_type="submenu" >
+          <menu>
+            <item id="menu_item_id_self_shot" title_id="title_self_shot" func_type="sp_embeded_self_shot" ></item>
+            <item id="menu_item_id_liveview_quality" title_id="title_liveview_quality" func_type="select" >
+              <group>
+                <item id="menu_item_id_liveviewsize_vga" title_id="title_liveviewsize_vga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="vga" ></item>
+                <item id="menu_item_id_liveviewsize_qvga" title_id="title_liveviewsize_qvga" cmd_mode="setsetting" cmd_type="liveviewsize" cmd_value="qvga" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_warn_lens_out" title_id="title_warn_lens_out" func_type="sp_embeded_warn_lens_out" ></item>
+            <item id="menu_item_id_jump_rec" title_id="title_jump_rec" func_type="sp_embeded_jump_rec" ></item>
+          </menu>
+        </item>
+        <item id="menu_item_id_playview_settings" title_id="title_playview_settings" func_type="sp_embeded_playview_settings" ></item>
+        <item id="menu_item_id_appset" title_id="title_appset" func_type="submenu" >
+          <menu>
+            <item id="menu_item_id_netname" title_id="title_netname" func_type="sp_embeded_netname" ></item>
+            <item id="menu_item_id_appset_scnguide" title_id="title_appset_scnguide" func_type="submenu" >
+              <menu>
+                <item id="menu_item_id_scnguid_disp_smpl" title_id="title_scnguid_disp_smpl" func_type="sp_embeded_scnguid_disp_smpl" ></item>
+              </menu>
+            </item>
+          </menu>
+        </item>
+        <item id="menu_item_id_help" title_id="title_help" func_type="sp_embeded_help" ></item>
+        <item id="menu_item_id_tou" title_id="title_tou" func_type="sp_embeded_tou" ></item>
+      </menu>
+    </mainmenu>
+    <photosettings>
+      <menu>
+        <item id="menu_item_id_crtv_ctrl" title_id="title_crtv_ctrl" func_type="sp_embeded_crtv_ctrl" >
+          <group>
+            <item id="menu_item_id_crtv_ctrl_pop" title_id="title_crtv_ctrl_pop" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="pop" ></item>
+            <item id="menu_item_id_crtv_ctrl_retro" title_id="title_crtv_ctrl_retro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="retro" ></item>
+            <item id="menu_item_id_crtv_ctrl_old_days" title_id="title_crtv_ctrl_old_days" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="old_days" ></item>
+            <item id="menu_item_id_crtv_ctrl_high_key" title_id="title_crtv_ctrl_high_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_key" ></item>
+            <item id="menu_item_id_crtv_ctrl_low_key" title_id="title_crtv_ctrl_low_key" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="low_key" ></item>
+            <item id="menu_item_id_crtv_ctrl_sepia" title_id="title_crtv_ctrl_sepia" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="sepia" ></item>
+            <item id="menu_item_id_crtv_ctrl_monochro" title_id="title_crtv_ctrl_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="monochro" ></item>
+            <item id="menu_item_id_crtv_ctrl_dynamic_monochro" title_id="title_crtv_ctrl_dynamic_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="dynamic_monochro" ></item>
+            <item id="menu_item_id_crtv_ctrl_rough_monochro" title_id="title_crtv_ctrl_rough_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="rough_monochro" ></item>
+            <item id="menu_item_id_crtv_ctrl_silky_monochro" title_id="title_crtv_ctrl_silky_monochro" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="silky_monochro" ></item>
+            <item id="menu_item_id_crtv_ctrl_impressive_art" title_id="title_crtv_ctrl_impressive_art" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="impressive_art" ></item>
+            <item id="menu_item_id_crtv_ctrl_high_dynamic" title_id="title_crtv_ctrl_high_dynamic" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="high_dynamic" ></item>
+            <item id="menu_item_id_crtv_ctrl_cross_proc" title_id="title_crtv_ctrl_cross_proc" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_proc" ></item>
+            <item id="menu_item_id_crtv_ctrl_toy_photo" title_id="title_crtv_ctrl_toy_photo" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="toy_photo" ></item>
+            <item id="menu_item_id_crtv_ctrl_toy_pop" title_id="title_crtv_ctrl_toy_pop" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="toy_pop" ></item>
+            <item id="menu_item_id_crtv_ctrl_bleach_bypass" title_id="title_crtv_ctrl_bleach_bypass" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="bleach_bypass" ></item>
+            <item id="menu_item_id_crtv_ctrl_diorama" title_id="title_crtv_ctrl_diorama" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="diorama" ></item>
+            <item id="menu_item_id_crtv_ctrl_soft_focus" title_id="title_crtv_ctrl_soft_focus" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="soft_focus" ></item>
+            <item id="menu_item_id_crtv_ctrl_fantasy" title_id="title_crtv_ctrl_fantasy" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="fantasy" ></item>
+            <item id="menu_item_id_crtv_ctrl_cross_filter" title_id="title_crtv_ctrl_cross_filter" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="cross_filter" ></item>
+            <item id="menu_item_id_crtv_ctrl_one_point_color" title_id="title_crtv_ctrl_one_point_color" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="one_point_color" ></item>
+            <item id="menu_item_id_crtv_ctrl_sunshine" title_id="title_crtv_ctrl_sunshine" cmd_mode="setsetting" cmd_type="creativectrl" cmd_value="sunshine" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_scn_gid" title_id="title_scn_gid" func_type="sp_embeded_scn_gid" >
+          <group>
+            <item id="menu_item_id_scn_gid_fixlens_portrait" title_id="title_scn_gid_fixlens_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="portrait" ></item>
+            <item id="menu_item_id_scn_gid_clear_skin" title_id="title_scn_gid_clear_skin" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="clear_skin" ></item>
+            <item id="menu_item_id_scn_gid_backlight_portrait" title_id="title_scn_gid_backlight_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_portrait" ></item>
+            <item id="menu_item_id_scn_gid_backlight_strobe" title_id="title_scn_gid_backlight_strobe" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="backlight_strobe" ></item>
+            <item id="menu_item_id_scn_gid_warm_portrait" title_id="title_scn_gid_warm_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_portrait" ></item>
+            <item id="menu_item_id_scn_gid_kids" title_id="title_scn_gid_kids" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="kids" ></item>
+            <item id="menu_item_id_scn_gid_landscape" title_id="title_scn_gid_landscape" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="landscape" ></item>
+            <item id="menu_item_id_scn_gid_blue_sky" title_id="title_scn_gid_blue_sky" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="blue_sky" ></item>
+            <item id="menu_item_id_scn_gid_magic_hour" title_id="title_scn_gid_magic_hour" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="magic_hour" ></item>
+            <item id="menu_item_id_scn_gid_sunset" title_id="title_scn_gid_sunset" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sunset" ></item>
+            <item id="menu_item_id_scn_gid_shimmering_water" title_id="title_scn_gid_shimmering_water" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="shimmering_water" ></item>
+            <item id="menu_item_id_scn_gid_night" title_id="title_scn_gid_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night" ></item>
+            <item id="menu_item_id_scn_gid_cool_night" title_id="title_scn_gid_cool_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cool_night" ></item>
+            <item id="menu_item_id_scn_gid_warm_night" title_id="title_scn_gid_warm_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="warm_night" ></item>
+            <item id="menu_item_id_scn_gid_longexpo_night" title_id="title_scn_gid_longexpo_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="longexpo_night" ></item>
+            <item id="menu_item_id_scn_gid_illumination" title_id="title_scn_gid_illumination" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="illumination" ></item>
+            <item id="menu_item_id_scn_gid_handheld_night" title_id="title_scn_gid_handheld_night" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="handheld_night" ></item>
+            <item id="menu_item_id_scn_gid_night_portrait" title_id="title_scn_gid_night_portrait" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="night_portrait" ></item>
+            <item id="menu_item_id_scn_gid_flower" title_id="title_scn_gid_flower" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="flower" ></item>
+            <item id="menu_item_id_scn_gid_cooking" title_id="title_scn_gid_cooking" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="cooking" ></item>
+            <item id="menu_item_id_scn_gid_sweets" title_id="title_scn_gid_sweets" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sweets" ></item>
+            <item id="menu_item_id_scn_gid_pet" title_id="title_scn_gid_pet" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="pet" ></item>
+            <item id="menu_item_id_scn_gid_sports" title_id="title_scn_gid_sports" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="sports" ></item>
+            <item id="menu_item_id_scn_gid_monochrome" title_id="title_scn_gid_monochrome" cmd_mode="setsetting" cmd_type="sceneguide" cmd_value="monochrome" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_ph_sty" title_id="title_ph_sty" func_type="sp_embeded_ph_sty4" >
+          <group>
+            <item id="menu_item_id_ph_sty_standard" title_id="title_ph_sty_standard" cmd_mode="setsetting" cmd_type="colormode" cmd_value="standard" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_vivid" title_id="title_ph_sty_vivid" cmd_mode="setsetting" cmd_type="colormode" cmd_value="vivid" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_natural" title_id="title_ph_sty_natural" cmd_mode="setsetting" cmd_type="colormode" cmd_value="natural" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_bw" title_id="title_ph_sty_bw" cmd_mode="setsetting" cmd_type="colormode" cmd_value="bw" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_scenery" title_id="title_ph_sty_scenery" cmd_mode="setsetting" cmd_type="colormode" cmd_value="scenery" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_portrait" title_id="title_ph_sty_portrait" cmd_mode="setsetting" cmd_type="colormode" cmd_value="portrait" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_cinelike_d" title_id="title_ph_sty_cinelike_d" cmd_mode="setsetting" cmd_type="colormode" cmd_value="cinelike_d" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_cinelike_v" title_id="title_ph_sty_cinelike_v" cmd_mode="setsetting" cmd_type="colormode" cmd_value="cinelike_v" cmd_value2="__value__" ></item>
+            <item id="menu_item_id_ph_sty_custom" title_id="title_ph_sty_custom" cmd_mode="setsetting" cmd_type="colormode" cmd_value="custom" cmd_value2="__value__" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_filter_set" title_id="title_filter_set" func_type="sp_embeded_filter_set" >
+          <group>
+            <item id="menu_item_id_filter_set_noeffect" title_id="title_filter_set_noeffect" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="noeffect" ></item>
+            <item id="menu_item_id_filter_set_pop" title_id="title_crtv_ctrl_pop" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="pop" ></item>
+            <item id="menu_item_id_filter_set_retro" title_id="title_crtv_ctrl_retro" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="retro" ></item>
+            <item id="menu_item_id_filter_set_old_days" title_id="title_crtv_ctrl_old_days" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="old_days" ></item>
+            <item id="menu_item_id_filter_set_high_key" title_id="title_crtv_ctrl_high_key" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="high_key" ></item>
+            <item id="menu_item_id_filter_set_low_key" title_id="title_crtv_ctrl_low_key" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="low_key" ></item>
+            <item id="menu_item_id_filter_set_sepia" title_id="title_crtv_ctrl_sepia" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="sepia" ></item>
+            <item id="menu_item_id_filter_set_monochro" title_id="title_crtv_ctrl_monochro" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="monochro" ></item>
+            <item id="menu_item_id_filter_set_dynamic_monochro" title_id="title_crtv_ctrl_dynamic_monochro" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="dynamic_monochro" ></item>
+            <item id="menu_item_id_filter_set_rough_monochro" title_id="title_crtv_ctrl_rough_monochro" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="rough_monochro" ></item>
+            <item id="menu_item_id_filter_set_silky_monochro" title_id="title_crtv_ctrl_silky_monochro" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="silky_monochro" ></item>
+            <item id="menu_item_id_filter_set_impressive_art" title_id="title_crtv_ctrl_impressive_art" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="impressive_art" ></item>
+            <item id="menu_item_id_filter_set_high_dynamic" title_id="title_crtv_ctrl_high_dynamic" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="high_dynamic" ></item>
+            <item id="menu_item_id_filter_set_cross_proc" title_id="title_crtv_ctrl_cross_proc" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="cross_proc" ></item>
+            <item id="menu_item_id_filter_set_toy_photo" title_id="title_crtv_ctrl_toy_photo" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="toy_photo" ></item>
+            <item id="menu_item_id_filter_set_toy_pop" title_id="title_crtv_ctrl_toy_pop" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="toy_pop" ></item>
+            <item id="menu_item_id_filter_set_bleach_bypass" title_id="title_crtv_ctrl_bleach_bypass" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="bleach_bypass" ></item>
+            <item id="menu_item_id_filter_set_diorama" title_id="title_crtv_ctrl_diorama" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="diorama" ></item>
+            <item id="menu_item_id_filter_set_soft_focus" title_id="title_crtv_ctrl_soft_focus" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="soft_focus" ></item>
+            <item id="menu_item_id_filter_set_fantasy" title_id="title_crtv_ctrl_fantasy" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="fantasy" ></item>
+            <item id="menu_item_id_filter_set_cross_filter" title_id="title_crtv_ctrl_cross_filter" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="cross_filter" ></item>
+            <item id="menu_item_id_filter_set_one_point_color" title_id="title_crtv_ctrl_one_point_color" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="one_point_color" ></item>
+            <item id="menu_item_id_filter_set_sunshine" title_id="title_crtv_ctrl_sunshine" cmd_mode="setsetting" cmd_type="filter_setting" cmd_value="sunshine" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_asprat" title_id="title_asprat" func_type="select" >
+          <group>
+            <item id="menu_item_id_asprat_4:3" title_id="title_asprat_4:3" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="4:3" ></item>
+            <item id="menu_item_id_asprat_3:2" title_id="title_asprat_3:2" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="3:2" ></item>
+            <item id="menu_item_id_asprat_16:9" title_id="title_asprat_16:9" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="16:9" ></item>
+            <item id="menu_item_id_asprat_1:1" title_id="title_asprat_1:1" cmd_mode="setsetting" cmd_type="aspectratio" cmd_value="1:1" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_pctsiz" title_id="title_pctsiz" func_type="select" >
+          <group>
+            <item id="menu_item_id_pctsiz_12m" title_id="title_pctsiz_12mL" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="12m" ></item>
+            <item id="menu_item_id_pctsiz_10.5m" title_id="title_pctsiz_10.5mL" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="10.5m" ></item>
+            <item id="menu_item_id_pctsiz_9m" title_id="title_pctsiz_9mL" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="9m" ></item>
+            <item id="menu_item_id_pctsiz_8m" title_id="title_pctsiz_8mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m" ></item>
+            <item id="menu_item_id_pctsiz_ex8m" title_id="title_pctsiz_ex8mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="8m" ></item>
+            <item id="menu_item_id_pctsiz_7m" title_id="title_pctsiz_7mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m" ></item>
+            <item id="menu_item_id_pctsiz_ex7m" title_id="title_pctsiz_ex7mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="7m" ></item>
+            <item id="menu_item_id_pctsiz_6m" title_id="title_pctsiz_6mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m" ></item>
+            <item id="menu_item_id_pctsiz_ex6m" title_id="title_pctsiz_ex6mM" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="6m" ></item>
+            <item id="menu_item_id_pctsiz_3.5m" title_id="title_pctsiz_3.5mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m" ></item>
+            <item id="menu_item_id_pctsiz_ex3.5m" title_id="title_pctsiz_ex3.5mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3.5m" ></item>
+            <item id="menu_item_id_pctsiz_3m" title_id="title_pctsiz_3mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m" ></item>
+            <item id="menu_item_id_pctsiz_ex3m" title_id="title_pctsiz_ex3mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="3m" ></item>
+            <item id="menu_item_id_pctsiz_2.5m" title_id="title_pctsiz_2.5mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2.5m" ></item>
+            <item id="menu_item_id_pctsiz_ex2.5m" title_id="title_pctsiz_ex2.5mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2.5m" ></item>
+            <item id="menu_item_id_pctsiz_2m" title_id="title_pctsiz_2mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m" ></item>
+            <item id="menu_item_id_pctsiz_ex2m" title_id="title_pctsiz_ex2mS" cmd_mode="setsetting" cmd_type="pictsize" cmd_value="2m" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_quality" title_id="title_quality" func_type="select" >
+          <group>
+            <item id="menu_item_id_quality_fine" title_id="title_quality_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="fine" ></item>
+            <item id="menu_item_id_quality_standard" title_id="title_quality_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="standard" ></item>
+            <item id="menu_item_id_quality_raw_fine" title_id="title_quality_raw_fine" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_fine" ></item>
+            <item id="menu_item_id_quality_raw_standard" title_id="title_quality_raw_standard" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw_standard" ></item>
+            <item id="menu_item_id_quality_raw" title_id="title_quality_raw" cmd_mode="setsetting" cmd_type="quality" cmd_value="raw" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_macro" title_id="title_macro" func_type="select" >
+          <group>
+            <item id="menu_item_id_macro_af" title_id="title_macro_af" cmd_mode="setsetting" cmd_type="macromode" cmd_value="af" ></item>
+            <item id="menu_item_id_macro_zoom" title_id="title_macro_zoom" cmd_mode="setsetting" cmd_type="macromode" cmd_value="zoom" ></item>
+            <item id="menu_item_id_macro_off" title_id="title_macro_off" cmd_mode="setsetting" cmd_type="macromode" cmd_value="off" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_lightmet" title_id="title_lightmet" func_type="select" >
+          <group>
+            <item id="menu_item_id_lightmet_multi" title_id="title_lightmet_multi" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="multi" ></item>
+            <item id="menu_item_id_lightmet_center" title_id="title_lightmet_center" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="center" ></item>
+            <item id="menu_item_id_lightmet_spot" title_id="title_lightmet_spot" cmd_mode="setsetting" cmd_type="lightmetering" cmd_value="spot" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_focus_select" title_id="title_focus_select" func_type="on_off" cmd_mode="setsetting" cmd_type="focusselect" cmd_value="__value__" ></item>
+        <item id="menu_item_id_focus_action" title_id="title_focus_action" func_type="select" >
+          <group>
+            <item id="menu_item_id_focus_action_mode1" title_id="title_focus_action_mode1" cmd_mode="setsetting" cmd_type="focusaction" cmd_value="mode1" ></item>
+            <item id="menu_item_id_focus_action_mode2" title_id="title_focus_action_mode2" cmd_mode="setsetting" cmd_type="focusaction" cmd_value="mode2" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_flash" title_id="title_flash" func_type="select" >
+          <group>
+            <item id="menu_item_id_flash_iauto" title_id="title_flash_iauto" cmd_mode="setsetting" cmd_type="flash" cmd_value="iauto" ></item>
+            <item id="menu_item_id_flash_forcedflashon" title_id="title_flash_forcedflashon" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashon" ></item>
+            <item id="menu_item_id_flash_forced_on_redeye" title_id="title_flash_forced_on_redeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="forced_on_redeye" ></item>
+            <item id="menu_item_id_flash_slowsync" title_id="title_flash_slowsync" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsync" ></item>
+            <item id="menu_item_id_flash_slowsyncredeye" title_id="title_flash_slowsyncredeye" cmd_mode="setsetting" cmd_type="flash" cmd_value="slowsyncredeye" ></item>
+            <item id="menu_item_id_flash_forcedflashoff" title_id="title_flash_forcedflashoff" cmd_mode="setsetting" cmd_type="flash" cmd_value="forcedflashoff" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_videoformat" title_id="title_videoformat" func_type="select" >
+          <group>
+            <item id="menu_item_id_videoformat_avchd" title_id="title_videoformat_avchd" cmd_mode="setsetting" cmd_type="videoformat" cmd_value="avchd" ></item>
+            <item id="menu_item_id_videoformat_mp4" title_id="title_videoformat_mp4" cmd_mode="setsetting" cmd_type="videoformat" cmd_value="mp4" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_v_quality" title_id="title_v_quality" func_type="select" >
+          <group>
+            <item id="menu_item_id_v_quality_avchd_60p_28mbps" title_id="title_v_quality_avchd_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60p_28mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_50p_28mbps" title_id="title_v_quality_avchd_50p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_50p_28mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_60i_17mbps" title_id="title_v_quality_avchd_60i_17mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60i_17mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_50i_17mbps" title_id="title_v_quality_avchd_50i_17mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_50i_17mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_60i_24mbps" title_id="title_v_quality_avchd_60i_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_60i_24mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_50i_24mbps" title_id="title_v_quality_avchd_50i_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_50i_24mbps" ></item>
+            <item id="menu_item_id_v_quality_avchd_24p_24mbps" title_id="title_v_quality_avchd_24p_24mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="avchd_24p_24mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_30p_100mbps_4k" title_id="title_v_quality_mp4_30p_100mbps_4k" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_100mbps_4k" ></item>
+            <item id="menu_item_id_v_quality_mp4_25p_100mbps_4k" title_id="title_v_quality_mp4_25p_100mbps_4k" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_25p_100mbps_4k" ></item>
+            <item id="menu_item_id_v_quality_mp4_24p_100mbps_4k" title_id="title_v_quality_mp4_24p_100mbps_4k" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_24p_100mbps_4k" ></item>
+            <item id="menu_item_id_v_quality_mp4_60p_28mbps" title_id="title_v_quality_mp4_60p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_60p_28mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_50p_28mbps" title_id="title_v_quality_mp4_50p_28mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_50p_28mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_30p_20mbps" title_id="title_v_quality_mp4_30p_20mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_20mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_25p_20mbps" title_id="title_v_quality_mp4_25p_20mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_25p_20mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_30p_10mbps" title_id="title_v_quality_mp4_30p_10mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_10mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_25p_10mbps" title_id="title_v_quality_mp4_25p_10mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_25p_10mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_30p_4mbps" title_id="title_v_quality_mp4_30p_4mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_30p_4mbps" ></item>
+            <item id="menu_item_id_v_quality_mp4_25p_4mbps" title_id="title_v_quality_mp4_25p_4mbps" cmd_mode="setsetting" cmd_type="videoquality" cmd_value="mp4_25p_4mbps" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_stp_mtn_anm" title_id="title_stp_mtn_anm" func_type="sp_embeded_stp_mtn_anm" ></item>
+      </menu>
+    </photosettings>
+    <qmenu2>
+      <menu>
+        <item id="menu_item_id_tch_shtr" title_id="title_tch_shtr" func_type="sp_embeded_tch_shtr" cmd_mode="setsetting" cmd_type="touch_type" cmd_value="__value__" ></item>
+        <item id="menu_item_id_tch_ae" title_id="title_tch_ae" func_type="sp_embeded_tch_ae" cmd_mode="setsetting" cmd_type="touch_type" cmd_value="__value__" ></item>
+        <item id="menu_item_id_f_and_ss" title_id="title_f_and_ss" func_type="sp_embeded_f_and_ss" ></item>
+        <item id="menu_item_id_aperture" title_id="title_aperture" func_type="sp_embeded_aperture" ></item>
+        <item id="menu_item_id_shutter_speed" title_id="title_shutter_speed" func_type="sp_embeded_shutter_speed" ></item>
+        <item id="menu_item_id_program_shift" title_id="title_program_shift" func_type="sp_embeded_program_shift" ></item>
+        <item id="menu_item_id_f" title_id="title_f" func_type="sp_embeded_f" ></item>
+        <item id="menu_item_id_ss" title_id="title_ss" func_type="sp_embeded_ss" ></item>
+        <item id="menu_item_id_exposure2" title_id="title_exposure2" func_type="sp_embeded_exposure2" >
+          <group>
+            <item id="menu_item_id_exposure_m3" title_id="title_exposure_m3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-3" ></item>
+            <item id="menu_item_id_exposure_m8_3" title_id="title_exposure_m8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-8/3" ></item>
+            <item id="menu_item_id_exposure_m7_3" title_id="title_exposure_m7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-7/3" ></item>
+            <item id="menu_item_id_exposure_m2" title_id="title_exposure_m2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2" ></item>
+            <item id="menu_item_id_exposure_m5_3" title_id="title_exposure_m5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-5/3" ></item>
+            <item id="menu_item_id_exposure_m4_3" title_id="title_exposure_m4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-4/3" ></item>
+            <item id="menu_item_id_exposure_m1" title_id="title_exposure_m1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1" ></item>
+            <item id="menu_item_id_exposure_m2_3" title_id="title_exposure_m2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-2/3" ></item>
+            <item id="menu_item_id_exposure_m1_3" title_id="title_exposure_m1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="-1/3" ></item>
+            <item id="menu_item_id_exposure_0" title_id="title_exposure_0" cmd_mode="setsetting" cmd_type="exposure" cmd_value="0" ></item>
+            <item id="menu_item_id_exposure_p1_3" title_id="title_exposure_p1_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1/3" ></item>
+            <item id="menu_item_id_exposure_p2_3" title_id="title_exposure_p2_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2/3" ></item>
+            <item id="menu_item_id_exposure_p1" title_id="title_exposure_p1" cmd_mode="setsetting" cmd_type="exposure" cmd_value="1" ></item>
+            <item id="menu_item_id_exposure_p4_3" title_id="title_exposure_p4_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="4/3" ></item>
+            <item id="menu_item_id_exposure_p5_3" title_id="title_exposure_p5_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="5/3" ></item>
+            <item id="menu_item_id_exposure_p2" title_id="title_exposure_p2" cmd_mode="setsetting" cmd_type="exposure" cmd_value="2" ></item>
+            <item id="menu_item_id_exposure_p7_3" title_id="title_exposure_p7_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="7/3" ></item>
+            <item id="menu_item_id_exposure_p8_3" title_id="title_exposure_p8_3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="8/3" ></item>
+            <item id="menu_item_id_exposure_p3" title_id="title_exposure_p3" cmd_mode="setsetting" cmd_type="exposure" cmd_value="3" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_afmode" title_id="title_afmode" func_type="sp_embeded_afmode" >
+          <group>
+            <item id="menu_item_id_afmode_facedetection" title_id="title_afmode_facedetection" cmd_mode="setsetting" cmd_type="afmode" cmd_value="facedetection" ></item>
+            <item id="menu_item_id_afmode_aftracking" title_id="title_afmode_aftracking" cmd_mode="setsetting" cmd_type="afmode" cmd_value="aftracking" ></item>
+            <item id="menu_item_id_afmode_49area" title_id="title_afmode_49area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="49area" ></item>
+            <item id="menu_item_id_afmode_custom_multi" title_id="title_afmode_custom_multi" func_type="select" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" >
+              <group>
+                <item id="menu_item_id_afmode_custom_multi_vertical" title_id="title_afmode_custom_multi_vertical" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="vertical" ></item>
+                <item id="menu_item_id_afmode_custom_multi_horizontal" title_id="title_afmode_custom_multi_horizontal" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="horizontal" ></item>
+                <item id="menu_item_id_afmode_custom_multi_center" title_id="title_afmode_custom_multi_center" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="center" ></item>
+                <item id="menu_item_id_afmode_custom_multi_free" title_id="title_afmode_custom_multi_free" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="free" ></item>
+                <item id="menu_item_id_afmode_custom_multi_custom_1" title_id="title_afmode_custom_multi_custom_1" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="custom_1" ></item>
+                <item id="menu_item_id_afmode_custom_multi_custom_2" title_id="title_afmode_custom_multi_custom_2" cmd_mode="setsetting" cmd_type="afmode" cmd_value="custom_multi" cmd_value2="custom_2" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_afmode_1area" title_id="title_afmode_1area" cmd_mode="setsetting" cmd_type="afmode" cmd_value="1area" ></item>
+            <item id="menu_item_id_afmode_pinpoint" title_id="title_afmode_pinpoint" cmd_mode="setsetting" cmd_type="afmode" cmd_value="pinpoint" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_sensitivity" title_id="title_sensitivity" func_type="sp_embeded_sensitivity" >
+          <group>
+            <item id="menu_item_id_sensitivity_auto" title_id="title_sensitivity_auto" cmd_mode="setsetting" cmd_type="iso" cmd_value="auto" ></item>
+            <item id="menu_item_id_sensitivity_i_iso" title_id="title_sensitivity_i_iso" cmd_mode="setsetting" cmd_type="iso" cmd_value="i_iso" ></item>
+            <item id="menu_item_id_sensitivity_100" title_id="title_sensitivity_100" cmd_mode="setsetting" cmd_type="iso" cmd_value="100" ></item>
+            <item id="menu_item_id_sensitivity_125" title_id="title_sensitivity_125" cmd_mode="setsetting" cmd_type="iso" cmd_value="125" ></item>
+            <item id="menu_item_id_sensitivity_160" title_id="title_sensitivity_160" cmd_mode="setsetting" cmd_type="iso" cmd_value="160" ></item>
+            <item id="menu_item_id_sensitivity_200" title_id="title_sensitivity_200" cmd_mode="setsetting" cmd_type="iso" cmd_value="200" ></item>
+            <item id="menu_item_id_sensitivity_250" title_id="title_sensitivity_250" cmd_mode="setsetting" cmd_type="iso" cmd_value="250" ></item>
+            <item id="menu_item_id_sensitivity_320" title_id="title_sensitivity_320" cmd_mode="setsetting" cmd_type="iso" cmd_value="320" ></item>
+            <item id="menu_item_id_sensitivity_400" title_id="title_sensitivity_400" cmd_mode="setsetting" cmd_type="iso" cmd_value="400" ></item>
+            <item id="menu_item_id_sensitivity_500" title_id="title_sensitivity_500" cmd_mode="setsetting" cmd_type="iso" cmd_value="500" ></item>
+            <item id="menu_item_id_sensitivity_640" title_id="title_sensitivity_640" cmd_mode="setsetting" cmd_type="iso" cmd_value="640" ></item>
+            <item id="menu_item_id_sensitivity_800" title_id="title_sensitivity_800" cmd_mode="setsetting" cmd_type="iso" cmd_value="800" ></item>
+            <item id="menu_item_id_sensitivity_1000" title_id="title_sensitivity_1000" cmd_mode="setsetting" cmd_type="iso" cmd_value="1000" ></item>
+            <item id="menu_item_id_sensitivity_1250" title_id="title_sensitivity_1250" cmd_mode="setsetting" cmd_type="iso" cmd_value="1250" ></item>
+            <item id="menu_item_id_sensitivity_1600" title_id="title_sensitivity_1600" cmd_mode="setsetting" cmd_type="iso" cmd_value="1600" ></item>
+            <item id="menu_item_id_sensitivity_2000" title_id="title_sensitivity_2000" cmd_mode="setsetting" cmd_type="iso" cmd_value="2000" ></item>
+            <item id="menu_item_id_sensitivity_2500" title_id="title_sensitivity_2500" cmd_mode="setsetting" cmd_type="iso" cmd_value="2500" ></item>
+            <item id="menu_item_id_sensitivity_3200" title_id="title_sensitivity_3200" cmd_mode="setsetting" cmd_type="iso" cmd_value="3200" ></item>
+            <item id="menu_item_id_sensitivity_4000" title_id="title_sensitivity_4000" cmd_mode="setsetting" cmd_type="iso" cmd_value="4000" ></item>
+            <item id="menu_item_id_sensitivity_5000" title_id="title_sensitivity_5000" cmd_mode="setsetting" cmd_type="iso" cmd_value="5000" ></item>
+            <item id="menu_item_id_sensitivity_6400" title_id="title_sensitivity_6400" cmd_mode="setsetting" cmd_type="iso" cmd_value="6400" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_whitebalance" title_id="title_whitebalance" func_type="sp_embeded_whitebalance" >
+          <group>
+            <item id="menu_item_id_whitebalance_auto" title_id="title_whitebalance_auto" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="auto" ></item>
+            <item id="menu_item_id_whitebalance_daylight" title_id="title_whitebalance_daylight" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="daylight" ></item>
+            <item id="menu_item_id_whitebalance_cloudy" title_id="title_whitebalance_cloudy" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="cloudy" ></item>
+            <item id="menu_item_id_whitebalance_shade" title_id="title_whitebalance_shade" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="shade" ></item>
+            <item id="menu_item_id_whitebalance_halogen" title_id="title_whitebalance_halogen" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="halogen" ></item>
+            <item id="menu_item_id_whitebalance_flash" title_id="title_whitebalance_flash" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="flash" ></item>
+            <item id="menu_item_id_whitebalance_white_set1" title_id="title_whitebalance_white_set1" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set1" ></item>
+            <item id="menu_item_id_whitebalance_white_set2" title_id="title_whitebalance_white_set2" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set2" ></item>
+            <item id="menu_item_id_whitebalance_white_set3" title_id="title_whitebalance_white_set3" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set3" ></item>
+            <item id="menu_item_id_whitebalance_white_set4" title_id="title_whitebalance_white_set4" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="white_set4" ></item>
+            <item id="menu_item_id_whitebalance_color_temp" title_id="title_whitebalance_color_temp" min_val="2500" max_val="10000" step_val="100" cmd_mode="setsetting" cmd_type="whitebalance" cmd_value="color_temp" cmd_value2="__value__" ></item>
+          </group>
+        </item>
+        <item id="menu_item_id_drivemode" title_id="title_drivemode" func_type="sp_embeded_drivemode" >
+          <menu>
+            <item id="menu_item_id_1shoot" title_id="title_1shoot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="normal" ></item>
+            <item id="menu_item_id_burst" title_id="title_burst" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" >
+              <group>
+                <item id="menu_item_id_burst_sh" title_id="title_burst_sh" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="sh" ></item>
+                <item id="menu_item_id_burst_h" title_id="title_burst_h" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="h" ></item>
+                <item id="menu_item_id_burst_m" title_id="title_burst_m" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="m" ></item>
+                <item id="menu_item_id_burst_l" title_id="title_burst_l" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="burst" cmd_value2="l" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_4kphoto" title_id="title_4kphoto" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="4k_photo" >
+              <group>
+                <item id="menu_item_id_4kphoto_burst" title_id="title_4kphoto_burst" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="4k_photo" cmd_value2="burst" ></item>
+                <item id="menu_item_id_4kphoto_start_stop" title_id="title_4kphoto_start_stop" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="4k_photo" cmd_value2="start_stop" ></item>
+                <item id="menu_item_id_4kphoto_pre_burst" title_id="title_4kphoto_pre_burst" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="4k_photo" cmd_value2="pre_burst" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_autobracket" title_id="title_autobracket" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" >
+              <group>
+                <item id="menu_item_id_autobracket_3shot_1/3ev" title_id="title_autobracket_3shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1/3ev" ></item>
+                <item id="menu_item_id_autobracket_3shot_2/3ev" title_id="title_autobracket_3shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_2/3ev" ></item>
+                <item id="menu_item_id_autobracket_3shot_1ev" title_id="title_autobracket_3shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="3shot_1ev" ></item>
+                <item id="menu_item_id_autobracket_5shot_1/3ev" title_id="title_autobracket_5shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1/3ev" ></item>
+                <item id="menu_item_id_autobracket_5shot_2/3ev" title_id="title_autobracket_5shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_2/3ev" ></item>
+                <item id="menu_item_id_autobracket_5shot_1ev" title_id="title_autobracket_5shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="5shot_1ev" ></item>
+                <item id="menu_item_id_autobracket_7shot_1/3ev" title_id="title_autobracket_7shot_1/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1/3ev" ></item>
+                <item id="menu_item_id_autobracket_7shot_2/3ev" title_id="title_autobracket_7shot_2/3ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_2/3ev" ></item>
+                <item id="menu_item_id_autobracket_7shot_1ev" title_id="title_autobracket_7shot_1ev" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="autobracket" cmd_value2="7shot_1ev" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_selftimer" title_id="title_selftimer" func_type="select" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" >
+              <group>
+                <item id="menu_item_id_selftimer_10sec" title_id="title_selftimer_10sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec" ></item>
+                <item id="menu_item_id_selftimer_10sec3shot" title_id="title_selftimer_10sec3shot" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="10sec3shot" ></item>
+                <item id="menu_item_id_selftimer_2sec" title_id="title_selftimer_2sec" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="selftimer" cmd_value2="2sec" ></item>
+              </group>
+            </item>
+            <item id="menu_item_id_drvmod_off" title_id="title_drvmod_off" cmd_mode="setsetting" cmd_type="drivemode" cmd_value="normal" ></item>
+          </menu>
+        </item>
+        <item id="menu_item_id_peaking" title_id="title_peaking" func_type="sp_embeded_peaking" >
+          <group>
+            <item id="menu_item_id_peaking_off" title_id="title_peaking_off" cmd_mode="setsetting" cmd_type="peaking" cmd_value="off" ></item>
+            <item id="menu_item_id_peaking_low" title_id="title_peaking_low" cmd_mode="setsetting" cmd_type="peaking" cmd_value="low" ></item>
+            <item id="menu_item_id_peaking_high" title_id="title_peaking_high" cmd_mode="setsetting" cmd_type="peaking" cmd_value="high" ></item>
+          </group>
+        </item>
+      </menu>
+    </qmenu2>
+    <titlelist model="FZ300" version="1.0" date="20151026">
+      <language code="en" default="yes" >
+        <title id="title_connection_settings">Set connect. dest.</title>
+        <title id="title_liveview_settings">Live Control Settings</title>
+        <title id="title_self_shot">Self shot mode</title>
+        <title id="title_liveview_quality">Live Control quality</title>
+        <title id="title_liveviewsize_vga">VGA</title>
+        <title id="title_liveviewsize_qvga">QVGA</title>
+        <title id="title_warn_lens_out">Lens extension warning</title>
+        <title id="title_jump_rec">Jump Snap</title>
+        <title id="title_playview_settings">Playback settings</title>
+        <title id="title_appset">Application function</title>
+        <title id="title_netname">Network name</title>
+        <title id="title_appset_scnguide">Scene Guide</title>
+        <title id="title_scnguid_disp_smpl">Sample display</title>
+        <title id="title_help">Help</title>
+        <title id="title_tou">Terms of use</title>
+        <title id="title_crtv_ctrl">Creative Control</title>
+        <title id="title_crtv_ctrl_pop">Expressive</title>
+        <title id="title_crtv_ctrl_retro">Retro</title>
+        <title id="title_crtv_ctrl_old_days">Old Days</title>
+        <title id="title_crtv_ctrl_high_key">High Key</title>
+        <title id="title_crtv_ctrl_low_key">Low Key</title>
+        <title id="title_crtv_ctrl_sepia">Sepia</title>
+        <title id="title_crtv_ctrl_monochro">Monochrome</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Dynamic Monochrome</title>
+        <title id="title_crtv_ctrl_rough_monochro">Rough Monochrome</title>
+        <title id="title_crtv_ctrl_silky_monochro">Silky Monochrome</title>
+        <title id="title_crtv_ctrl_impressive_art">Impressive Art</title>
+        <title id="title_crtv_ctrl_high_dynamic">High Dynamic</title>
+        <title id="title_crtv_ctrl_cross_proc">Cross Process</title>
+        <title id="title_crtv_ctrl_toy_photo">Toy Effect</title>
+        <title id="title_crtv_ctrl_toy_pop">Toy Pop</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Bleach Bypass</title>
+        <title id="title_crtv_ctrl_diorama">Miniature Effect</title>
+        <title id="title_crtv_ctrl_soft_focus">Soft Focus</title>
+        <title id="title_crtv_ctrl_fantasy">Fantasy</title>
+        <title id="title_crtv_ctrl_cross_filter">Star Filter</title>
+        <title id="title_crtv_ctrl_one_point_color">One Point Color</title>
+        <title id="title_crtv_ctrl_sunshine">Sunshine</title>
+        <title id="title_scn_gid">Scene Guide</title>
+        <title id="title_scn_gid_fixlens_portrait">Clear Portrait</title>
+        <title id="title_scn_gid_clear_skin">Silky Skin</title>
+        <title id="title_scn_gid_backlight_portrait">Backlit Softness</title>
+        <title id="title_scn_gid_backlight_strobe">Clear in Backlight</title>
+        <title id="title_scn_gid_warm_portrait">Relaxing Tone</title>
+        <title id="title_scn_gid_kids">Sweet Child&amp;apos;s Face</title>
+        <title id="title_scn_gid_landscape">Distinct Scenery</title>
+        <title id="title_scn_gid_blue_sky">Bright Blue Sky</title>
+        <title id="title_scn_gid_magic_hour">Romantic Sunset Glow</title>
+        <title id="title_scn_gid_sunset">Vivid Sunset Glow</title>
+        <title id="title_scn_gid_shimmering_water">Glistening Water</title>
+        <title id="title_scn_gid_night">Clear Nightscape</title>
+        <title id="title_scn_gid_cool_night">Cool Night Sky</title>
+        <title id="title_scn_gid_warm_night">Warm Glowing Nightscape</title>
+        <title id="title_scn_gid_longexpo_night">Artistic Nightscape</title>
+        <title id="title_scn_gid_illumination">Glittering Illuminations</title>
+        <title id="title_scn_gid_handheld_night">Handheld Night Shot</title>
+        <title id="title_scn_gid_night_portrait">Clear Night Portrait</title>
+        <title id="title_scn_gid_flower">Soft Image of a Flower</title>
+        <title id="title_scn_gid_cooking">Appetizing Food</title>
+        <title id="title_scn_gid_sweets">Cute Dessert</title>
+        <title id="title_scn_gid_pet">Freeze Animal Motion</title>
+        <title id="title_scn_gid_sports">Clear Sports Shot</title>
+        <title id="title_scn_gid_monochrome">Monochrome</title>
+        <title id="title_ph_sty">Photo Style</title>
+        <title id="title_ph_sty_standard">Standard</title>
+        <title id="title_ph_sty_vivid">Vivid</title>
+        <title id="title_ph_sty_natural">Natural</title>
+        <title id="title_ph_sty_bw">Monochrome</title>
+        <title id="title_ph_sty_scenery">Scenery</title>
+        <title id="title_ph_sty_portrait">Portrait</title>
+        <title id="title_ph_sty_cinelike_d">Cinelike D</title>
+        <title id="title_ph_sty_cinelike_v">Cinelike V</title>
+        <title id="title_ph_sty_custom">Custom</title>
+        <title id="title_filter_set">Filter Select</title>
+        <title id="title_filter_set_noeffect">No Effect</title>
+        <title id="title_asprat">Aspect Ratio</title>
+        <title id="title_asprat_4:3">4:3</title>
+        <title id="title_asprat_3:2">3:2</title>
+        <title id="title_asprat_16:9">16:9</title>
+        <title id="title_asprat_1:1">1:1</title>
+        <title id="title_pctsiz">Picture Size</title>
+        <title id="title_pctsiz_12mL">L 12M</title>
+        <title id="title_pctsiz_10.5mL">L 10.5M</title>
+        <title id="title_pctsiz_9mL">L 9M</title>
+        <title id="title_pctsiz_8mM">M 8M</title>
+        <title id="title_pctsiz_ex8mM">EX M 8M</title>
+        <title id="title_pctsiz_7mM">M 7M</title>
+        <title id="title_pctsiz_ex7mM">EX M 7M</title>
+        <title id="title_pctsiz_6mM">M 6M</title>
+        <title id="title_pctsiz_ex6mM">EX M 6M</title>
+        <title id="title_pctsiz_3.5mS">S 3.5M</title>
+        <title id="title_pctsiz_ex3.5mS">EX S 3.5M</title>
+        <title id="title_pctsiz_3mS">S 3M</title>
+        <title id="title_pctsiz_ex3mS">EX S 3M</title>
+        <title id="title_pctsiz_2.5mS">S 2.5M</title>
+        <title id="title_pctsiz_ex2.5mS">EX S 2.5M</title>
+        <title id="title_pctsiz_2mS">S 2M</title>
+        <title id="title_pctsiz_ex2mS">EX S 2M</title>
+        <title id="title_quality">Quality</title>
+        <title id="title_quality_fine">Fine</title>
+        <title id="title_quality_standard">Standard</title>
+        <title id="title_quality_raw_fine">RAW+Fine</title>
+        <title id="title_quality_raw_standard">RAW+Standard</title>
+        <title id="title_quality_raw">RAW</title>
+        <title id="title_macro">Macro Mode</title>
+        <title id="title_macro_af">AF Macro</title>
+        <title id="title_macro_zoom">Macro Zoom</title>
+        <title id="title_macro_off">Off</title>
+        <title id="title_lightmet">Metering Mode</title>
+        <title id="title_lightmet_multi">Multi Metering</title>
+        <title id="title_lightmet_center">Center Weighted</title>
+        <title id="title_lightmet_spot">Spot</title>
+        <title id="title_focus_select">Post Focus</title>
+        <title id="title_focus_action">Focus mode</title>
+        <title id="title_focus_action_mode1">Mode 1</title>
+        <title id="title_focus_action_mode2">Mode 2</title>
+        <title id="title_flash">Flash Mode</title>
+        <title id="title_flash_iauto">iAuto</title>
+        <title id="title_flash_forcedflashon">Forced Flash On</title>
+        <title id="title_flash_forced_on_redeye">Forced On/Red-Eye</title>
+        <title id="title_flash_slowsync">Slow Sync.</title>
+        <title id="title_flash_slowsyncredeye">Slow Sync./Red-Eye</title>
+        <title id="title_flash_forcedflashoff">Forced Flash Off</title>
+        <title id="title_videoformat">Rec Format</title>
+        <title id="title_videoformat_avchd">AVCHD</title>
+        <title id="title_videoformat_mp4">MP4</title>
+        <title id="title_v_quality">Video Rec Quality</title>
+        <title id="title_v_quality_avchd_60p_28mbps">AVCHD(1920x1080)60p 28M</title>
+        <title id="title_v_quality_avchd_50p_28mbps">AVCHD(1920x1080)50p 28M</title>
+        <title id="title_v_quality_avchd_60i_17mbps">AVCHD(1920x1080)60i 17M</title>
+        <title id="title_v_quality_avchd_50i_17mbps">AVCHD(1920x1080)50i 17M</title>
+        <title id="title_v_quality_avchd_60i_24mbps">AVCHD(1920x1080)30p 24M</title>
+        <title id="title_v_quality_avchd_50i_24mbps">AVCHD(1920x1080)25p 24M</title>
+        <title id="title_v_quality_avchd_24p_24mbps">AVCHD(1920x1080)24p 24M</title>
+        <title id="title_v_quality_mp4_30p_100mbps_4k">MP4(3840x2160)30p 100Mbps</title>
+        <title id="title_v_quality_mp4_25p_100mbps_4k">MP4(3840x2160)25p 100Mbps</title>
+        <title id="title_v_quality_mp4_24p_100mbps_4k">MP4(3840x2160)24p 100Mbps</title>
+        <title id="title_v_quality_mp4_60p_28mbps">MP4(1920x1080)60p 28Mbps</title>
+        <title id="title_v_quality_mp4_50p_28mbps">MP4(1920x1080)50p 28Mbps</title>
+        <title id="title_v_quality_mp4_30p_20mbps">MP4(1920x1080)30p 20Mbps</title>
+        <title id="title_v_quality_mp4_25p_20mbps">MP4(1920x1080)25p 20Mbps</title>
+        <title id="title_v_quality_mp4_30p_10mbps">MP4(1280x720)30p 10Mbps</title>
+        <title id="title_v_quality_mp4_25p_10mbps">MP4(1280x720)25p 10Mbps</title>
+        <title id="title_v_quality_mp4_30p_4mbps">MP4(640x480)30p 4Mbps</title>
+        <title id="title_v_quality_mp4_25p_4mbps">MP4(640x480)25p 4Mbps</title>
+        <title id="title_stp_mtn_anm">Stop Motion Animation</title>
+        <title id="title_tch_shtr">Touch Shutter</title>
+        <title id="title_tch_ae">Touch AE</title>
+        <title id="title_f_and_ss">Aperture/Shutter Speed</title>
+        <title id="title_aperture">Aperture</title>
+        <title id="title_shutter_speed">Shutter Speed</title>
+        <title id="title_program_shift">Program Shift</title>
+        <title id="title_f">F</title>
+        <title id="title_ss">SS</title>
+        <title id="title_exposure2">Exposure</title>
+        <title id="title_exposure_m3">-3</title>
+        <title id="title_exposure_m8_3">-2 2/3</title>
+        <title id="title_exposure_m7_3">-2 1/3</title>
+        <title id="title_exposure_m2">-2</title>
+        <title id="title_exposure_m5_3">-1 2/3</title>
+        <title id="title_exposure_m4_3">-1 1/3</title>
+        <title id="title_exposure_m1">-1</title>
+        <title id="title_exposure_m2_3">-2/3</title>
+        <title id="title_exposure_m1_3">-1/3</title>
+        <title id="title_exposure_0">0</title>
+        <title id="title_exposure_p1_3">+1/3</title>
+        <title id="title_exposure_p2_3">+2/3</title>
+        <title id="title_exposure_p1">+1</title>
+        <title id="title_exposure_p4_3">+1 1/3</title>
+        <title id="title_exposure_p5_3">+1 2/3</title>
+        <title id="title_exposure_p2">+2</title>
+        <title id="title_exposure_p7_3">+2 1/3</title>
+        <title id="title_exposure_p8_3">+2 2/3</title>
+        <title id="title_exposure_p3">+3</title>
+        <title id="title_afmode">AF Mode</title>
+        <title id="title_afmode_facedetection">Face/Eye Detection</title>
+        <title id="title_afmode_aftracking">Tracking</title>
+        <title id="title_afmode_49area">49-Area</title>
+        <title id="title_afmode_custom_multi">Custom Multi</title>
+        <title id="title_afmode_custom_multi_vertical">Vertical Pattern</title>
+        <title id="title_afmode_custom_multi_horizontal">Horizontal Pattern</title>
+        <title id="title_afmode_custom_multi_center">Central Pattern</title>
+        <title id="title_afmode_custom_multi_free">User Defined</title>
+        <title id="title_afmode_custom_multi_custom_1">Custom1</title>
+        <title id="title_afmode_custom_multi_custom_2">Custom2</title>
+        <title id="title_afmode_1area">1-Area</title>
+        <title id="title_afmode_pinpoint">Pinpoint</title>
+        <title id="title_sensitivity">Sensitivity</title>
+        <title id="title_sensitivity_auto">i.Auto</title>
+        <title id="title_sensitivity_i_iso">i.ISO</title>
+        <title id="title_sensitivity_100">100</title>
+        <title id="title_sensitivity_125">125</title>
+        <title id="title_sensitivity_160">160</title>
+        <title id="title_sensitivity_200">200</title>
+        <title id="title_sensitivity_250">250</title>
+        <title id="title_sensitivity_320">320</title>
+        <title id="title_sensitivity_400">400</title>
+        <title id="title_sensitivity_500">500</title>
+        <title id="title_sensitivity_640">640</title>
+        <title id="title_sensitivity_800">800</title>
+        <title id="title_sensitivity_1000">1000</title>
+        <title id="title_sensitivity_1250">1250</title>
+        <title id="title_sensitivity_1600">1600</title>
+        <title id="title_sensitivity_2000">2000</title>
+        <title id="title_sensitivity_2500">2500</title>
+        <title id="title_sensitivity_3200">3200</title>
+        <title id="title_sensitivity_4000">4000</title>
+        <title id="title_sensitivity_5000">5000</title>
+        <title id="title_sensitivity_6400">6400</title>
+        <title id="title_whitebalance">White Balance</title>
+        <title id="title_whitebalance_auto">Auto White Balance</title>
+        <title id="title_whitebalance_daylight">Daylight</title>
+        <title id="title_whitebalance_cloudy">Cloudy</title>
+        <title id="title_whitebalance_shade">Shade</title>
+        <title id="title_whitebalance_halogen">Incandescent</title>
+        <title id="title_whitebalance_flash">Flash</title>
+        <title id="title_whitebalance_white_set1">White Set 1</title>
+        <title id="title_whitebalance_white_set2">White Set 2</title>
+        <title id="title_whitebalance_white_set3">White Set 3</title>
+        <title id="title_whitebalance_white_set4">White Set 4</title>
+        <title id="title_whitebalance_color_temp">Color Temperature</title>
+        <title id="title_drivemode">Drive Mode</title>
+        <title id="title_1shoot">Single</title>
+        <title id="title_burst">Burst Shooting</title>
+        <title id="title_burst_sh">SH</title>
+        <title id="title_burst_h">H</title>
+        <title id="title_burst_m">M</title>
+        <title id="title_burst_l">L</title>
+        <title id="title_4kphoto">4K PHOTO</title>
+        <title id="title_4kphoto_burst">4K Burst</title>
+        <title id="title_4kphoto_start_stop">4K Burst(S/S)</title>
+        <title id="title_4kphoto_pre_burst">4K Pre-Burst</title>
+        <title id="title_autobracket">Auto Bracket</title>
+        <title id="title_autobracket_3shot_1/3ev">3 1/3</title>
+        <title id="title_autobracket_3shot_2/3ev">3 2/3</title>
+        <title id="title_autobracket_3shot_1ev">3 1</title>
+        <title id="title_autobracket_5shot_1/3ev">5 1/3</title>
+        <title id="title_autobracket_5shot_2/3ev">5 2/3</title>
+        <title id="title_autobracket_5shot_1ev">5 1</title>
+        <title id="title_autobracket_7shot_1/3ev">7 1/3</title>
+        <title id="title_autobracket_7shot_2/3ev">7 2/3</title>
+        <title id="title_autobracket_7shot_1ev">7 1</title>
+        <title id="title_selftimer">Self Timer</title>
+        <title id="title_selftimer_10sec">10sec.</title>
+        <title id="title_selftimer_10sec3shot">10s / 3pictures</title>
+        <title id="title_selftimer_2sec">2sec.</title>
+        <title id="title_drvmod_off">Drive Mode Off</title>
+        <title id="title_peaking">Peaking</title>
+        <title id="title_peaking_off">Off</title>
+        <title id="title_peaking_low">Low</title>
+        <title id="title_peaking_high">High</title>
+      </language>
+      <language code="ja" >
+        <title id="title_connection_settings">接続先設定</title>
+        <title id="title_liveview_settings">リモートビュー設定</title>
+        <title id="title_self_shot">自分撮りモード</title>
+        <title id="title_liveview_quality">リモートビュー画質</title>
+        <title id="title_warn_lens_out">レンズ飛び出し警告</title>
+        <title id="title_jump_rec">ジャンプスナップ</title>
+        <title id="title_playview_settings">再生設定</title>
+        <title id="title_appset">アプリ機能</title>
+        <title id="title_netname">ネットワーク名称</title>
+        <title id="title_appset_scnguide">シーンガイド</title>
+        <title id="title_scnguid_disp_smpl">サンプル表示</title>
+        <title id="title_help">ヘルプ</title>
+        <title id="title_tou">利用規約</title>
+        <title id="title_crtv_ctrl">クリエイティブコントロール</title>
+        <title id="title_crtv_ctrl_pop">ポップ</title>
+        <title id="title_crtv_ctrl_retro">レトロ</title>
+        <title id="title_crtv_ctrl_old_days">オールドデイズ</title>
+        <title id="title_crtv_ctrl_high_key">ハイキー</title>
+        <title id="title_crtv_ctrl_low_key">ローキー</title>
+        <title id="title_crtv_ctrl_sepia">セピア</title>
+        <title id="title_crtv_ctrl_monochro">モノクローム</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">ダイナミックモノクローム</title>
+        <title id="title_crtv_ctrl_rough_monochro">ラフモノクローム</title>
+        <title id="title_crtv_ctrl_silky_monochro">シルキーモノクローム</title>
+        <title id="title_crtv_ctrl_impressive_art">インプレッシブアート</title>
+        <title id="title_crtv_ctrl_high_dynamic">ハイダイナミック</title>
+        <title id="title_crtv_ctrl_cross_proc">クロスプロセス</title>
+        <title id="title_crtv_ctrl_toy_photo">トイフォト</title>
+        <title id="title_crtv_ctrl_toy_pop">トイポップ</title>
+        <title id="title_crtv_ctrl_bleach_bypass">ブリーチバイパス</title>
+        <title id="title_crtv_ctrl_diorama">ジオラマ</title>
+        <title id="title_crtv_ctrl_soft_focus">ソフトフォーカス</title>
+        <title id="title_crtv_ctrl_fantasy">ファンタジー</title>
+        <title id="title_crtv_ctrl_cross_filter">クロスフィルター</title>
+        <title id="title_crtv_ctrl_one_point_color">ワンポイントカラー</title>
+        <title id="title_crtv_ctrl_sunshine">サンシャイン</title>
+        <title id="title_scn_gid">シーンガイド</title>
+        <title id="title_scn_gid_fixlens_portrait">人物をきれいに撮る</title>
+        <title id="title_scn_gid_clear_skin">人物の肌をきれいに撮る</title>
+        <title id="title_scn_gid_backlight_portrait">逆光でふんわり撮る</title>
+        <title id="title_scn_gid_backlight_strobe">逆光でしっかり撮る</title>
+        <title id="title_scn_gid_warm_portrait">ほのぼのした雰囲気で撮る</title>
+        <title id="title_scn_gid_kids">子どもをかわいく撮る</title>
+        <title id="title_scn_gid_landscape">風景をきれいに撮る</title>
+        <title id="title_scn_gid_blue_sky">青空をさわやかに撮る</title>
+        <title id="title_scn_gid_magic_hour">夕焼けを幻想的に撮る</title>
+        <title id="title_scn_gid_sunset">夕焼けを印象的に撮る</title>
+        <title id="title_scn_gid_shimmering_water">水面をキラキラ撮る</title>
+        <title id="title_scn_gid_night">夜景をきれいに撮る</title>
+        <title id="title_scn_gid_cool_night">夜空をクールに撮る</title>
+        <title id="title_scn_gid_warm_night">夜景を暖かく撮る</title>
+        <title id="title_scn_gid_longexpo_night">夜景をアーティスティックに撮る</title>
+        <title id="title_scn_gid_illumination">イルミネーションをキラキラ撮る</title>
+        <title id="title_scn_gid_handheld_night">夜景を手持ちで撮る</title>
+        <title id="title_scn_gid_night_portrait">夜景をバックに人物をきれいに撮る</title>
+        <title id="title_scn_gid_flower">花をふんわり撮る</title>
+        <title id="title_scn_gid_cooking">料理をおいしそうに撮る</title>
+        <title id="title_scn_gid_sweets">スイーツをかわいく撮る</title>
+        <title id="title_scn_gid_pet">動くペットをきちんと撮る</title>
+        <title id="title_scn_gid_sports">スポーツをきれいに撮る</title>
+        <title id="title_scn_gid_monochrome">モノクロで撮る</title>
+        <title id="title_ph_sty">フォトスタイル</title>
+        <title id="title_ph_sty_standard">スタンダード</title>
+        <title id="title_ph_sty_vivid">ヴィヴィッド</title>
+        <title id="title_ph_sty_natural">ナチュラル</title>
+        <title id="title_ph_sty_bw">モノクローム</title>
+        <title id="title_ph_sty_scenery">風景</title>
+        <title id="title_ph_sty_portrait">人物</title>
+        <title id="title_ph_sty_cinelike_d">シネライクD</title>
+        <title id="title_ph_sty_cinelike_v">シネライクV</title>
+        <title id="title_ph_sty_custom">カスタム</title>
+        <title id="title_filter_set">フィルター選択</title>
+        <title id="title_filter_set_noeffect">効果なし</title>
+        <title id="title_asprat">画像横縦比</title>
+        <title id="title_pctsiz">記録画素数</title>
+        <title id="title_quality">クオリティ</title>
+        <title id="title_quality_fine">ファイン</title>
+        <title id="title_quality_standard">スタンダード</title>
+        <title id="title_quality_raw_fine">RAW+ファイン</title>
+        <title id="title_quality_raw_standard">RAW+スタンダード</title>
+        <title id="title_macro">マクロ撮影モード</title>
+        <title id="title_macro_af">AFマクロ</title>
+        <title id="title_macro_zoom">ズームマクロ</title>
+        <title id="title_macro_off">OFF</title>
+        <title id="title_lightmet">測光モード</title>
+        <title id="title_lightmet_multi">マルチ測光</title>
+        <title id="title_lightmet_center">中央重点</title>
+        <title id="title_lightmet_spot">スポット</title>
+        <title id="title_focus_select">フォーカスセレクト</title>
+        <title id="title_focus_action">フォーカス動作モード</title>
+        <title id="title_focus_action_mode1">mode1</title>
+        <title id="title_focus_action_mode2">mode2</title>
+        <title id="title_flash">フラッシュモード</title>
+        <title id="title_flash_iauto">iオート</title>
+        <title id="title_flash_forcedflashon">強制発光</title>
+        <title id="title_flash_forced_on_redeye">赤目軽減強制発光</title>
+        <title id="title_flash_slowsync">スローシンクロ</title>
+        <title id="title_flash_slowsyncredeye">赤目軽減スローシンクロ</title>
+        <title id="title_flash_forcedflashoff">発光禁止</title>
+        <title id="title_videoformat">記録方式</title>
+        <title id="title_v_quality">動画画質設定</title>
+        <title id="title_stp_mtn_anm">コマ撮りアニメ</title>
+        <title id="title_tch_shtr">タッチシャッター</title>
+        <title id="title_tch_ae">タッチAE</title>
+        <title id="title_f_and_ss">絞り/シャッタースピード</title>
+        <title id="title_aperture">絞り</title>
+        <title id="title_shutter_speed">シャッタースピード</title>
+        <title id="title_program_shift">プログラムシフト</title>
+        <title id="title_exposure2">露出補正</title>
+        <title id="title_afmode">オートフォーカスモード</title>
+        <title id="title_afmode_facedetection">顔･瞳認識</title>
+        <title id="title_afmode_aftracking">追尾</title>
+        <title id="title_afmode_49area">49点</title>
+        <title id="title_afmode_custom_multi">カスタムマルチ</title>
+        <title id="title_afmode_custom_multi_vertical">縦</title>
+        <title id="title_afmode_custom_multi_horizontal">横</title>
+        <title id="title_afmode_custom_multi_center">中央</title>
+        <title id="title_afmode_custom_multi_free">フリー</title>
+        <title id="title_afmode_custom_multi_custom_1">カスタム１</title>
+        <title id="title_afmode_custom_multi_custom_2">カスタム２</title>
+        <title id="title_afmode_1area">1点</title>
+        <title id="title_afmode_pinpoint">ピンポイント</title>
+        <title id="title_sensitivity">ISO感度</title>
+        <title id="title_sensitivity_auto">AUTO</title>
+        <title id="title_whitebalance">ホワイトバランス</title>
+        <title id="title_whitebalance_auto">オートホワイトバランス</title>
+        <title id="title_whitebalance_daylight">晴天</title>
+        <title id="title_whitebalance_cloudy">曇り</title>
+        <title id="title_whitebalance_shade">日陰</title>
+        <title id="title_whitebalance_halogen">白熱灯</title>
+        <title id="title_whitebalance_flash">フラッシュ</title>
+        <title id="title_whitebalance_white_set1">セットモード 1</title>
+        <title id="title_whitebalance_white_set2">セットモード 2</title>
+        <title id="title_whitebalance_white_set3">セットモード 3</title>
+        <title id="title_whitebalance_white_set4">セットモード 4</title>
+        <title id="title_whitebalance_color_temp">色温度</title>
+        <title id="title_drivemode">ドライブモード</title>
+        <title id="title_1shoot">単写</title>
+        <title id="title_burst">連写</title>
+        <title id="title_4kphoto">4K フォト</title>
+        <title id="title_4kphoto_burst">4K連写</title>
+        <title id="title_4kphoto_start_stop">4K連写(S/S)</title>
+        <title id="title_4kphoto_pre_burst">4Kプリ連写</title>
+        <title id="title_autobracket">オートブラケット</title>
+        <title id="title_autobracket_3shot_1/3ev">3・1/3</title>
+        <title id="title_autobracket_3shot_2/3ev">3・2/3</title>
+        <title id="title_autobracket_3shot_1ev">3・1</title>
+        <title id="title_autobracket_5shot_1/3ev">5・1/3</title>
+        <title id="title_autobracket_5shot_2/3ev">5・2/3</title>
+        <title id="title_autobracket_5shot_1ev">5・1</title>
+        <title id="title_autobracket_7shot_1/3ev">7・1/3</title>
+        <title id="title_autobracket_7shot_2/3ev">7・2/3</title>
+        <title id="title_autobracket_7shot_1ev">7・1</title>
+        <title id="title_selftimer">セルフタイマー</title>
+        <title id="title_selftimer_10sec">10秒</title>
+        <title id="title_selftimer_10sec3shot">10秒/3枚</title>
+        <title id="title_selftimer_2sec">2秒</title>
+        <title id="title_drvmod_off">ドライブモードOFF</title>
+        <title id="title_peaking">ピーキング</title>
+        <title id="title_peaking_off">OFF</title>
+        <title id="title_peaking_low">低</title>
+        <title id="title_peaking_high">高</title>
+      </language>
+      <language code="de" >
+        <title id="title_connection_settings">Verbindungsz. einst.</title>
+        <title id="title_liveview_settings">Live-Steuer.-Einst.</title>
+        <title id="title_self_shot">Selbstaufnahme-Modus</title>
+        <title id="title_liveview_quality">Bildqualität Live-Steuerung</title>
+        <title id="title_warn_lens_out">Warn.: Objektivausf.</title>
+        <title id="title_jump_rec">Sprungschnappschuss</title>
+        <title id="title_playview_settings">Wiedergabe-Einstell.</title>
+        <title id="title_appset">Applikationsfunktion</title>
+        <title id="title_netname">Netzwerkname</title>
+        <title id="title_appset_scnguide">Szenen-Guide</title>
+        <title id="title_scnguid_disp_smpl">Musteranzeige</title>
+        <title id="title_help">Hilfe</title>
+        <title id="title_tou">Nutzungsbedingungen</title>
+        <title id="title_crtv_ctrl">Kreativmodus</title>
+        <title id="title_crtv_ctrl_pop">Expressiv</title>
+        <title id="title_crtv_ctrl_old_days">Früher</title>
+        <title id="title_crtv_ctrl_low_key">Low key</title>
+        <title id="title_crtv_ctrl_monochro">Schwarz-Weiß</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Dynamisch Monochrom</title>
+        <title id="title_crtv_ctrl_rough_monochro">Grobes Schwarz-Weiß</title>
+        <title id="title_crtv_ctrl_silky_monochro">Weiches Schwarz-Weiß</title>
+        <title id="title_crtv_ctrl_impressive_art">Impressiv</title>
+        <title id="title_crtv_ctrl_high_dynamic">Hohe Dynamik</title>
+        <title id="title_crtv_ctrl_cross_proc">Cross-Prozess</title>
+        <title id="title_crtv_ctrl_toy_photo">Spielzeugeffekt</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Bleach-Bypass</title>
+        <title id="title_crtv_ctrl_diorama">Miniatureffekt</title>
+        <title id="title_crtv_ctrl_soft_focus">Weichzeichnung</title>
+        <title id="title_crtv_ctrl_fantasy">Fantasie</title>
+        <title id="title_crtv_ctrl_cross_filter">Sternfilter</title>
+        <title id="title_crtv_ctrl_one_point_color">Selektivfarbe</title>
+        <title id="title_crtv_ctrl_sunshine">Sonnenschein</title>
+        <title id="title_scn_gid">Szenen-Guide</title>
+        <title id="title_scn_gid_fixlens_portrait">Freigestelltes Portrait</title>
+        <title id="title_scn_gid_clear_skin">Seidige Haut</title>
+        <title id="title_scn_gid_backlight_portrait">Gegenlicht weich</title>
+        <title id="title_scn_gid_backlight_strobe">Gegenlicht hart</title>
+        <title id="title_scn_gid_warm_portrait">Weicher Farbton</title>
+        <title id="title_scn_gid_kids">Kindergesicht</title>
+        <title id="title_scn_gid_landscape">Landschaft</title>
+        <title id="title_scn_gid_blue_sky">Heller blauer Himmel</title>
+        <title id="title_scn_gid_magic_hour">Sonnenuntergang romantisch</title>
+        <title id="title_scn_gid_sunset">Sonnenuntergang dramatisch</title>
+        <title id="title_scn_gid_shimmering_water">Glitzerndes Wasser</title>
+        <title id="title_scn_gid_night">Klare Nachtaufnahme</title>
+        <title id="title_scn_gid_cool_night">Kühler Nachthimmel</title>
+        <title id="title_scn_gid_warm_night">Warme Nachtlandschaft</title>
+        <title id="title_scn_gid_longexpo_night">Nachtlandschaft verfremdet</title>
+        <title id="title_scn_gid_illumination">Neonlichter</title>
+        <title id="title_scn_gid_handheld_night">Hand-Nachtaufn.</title>
+        <title id="title_scn_gid_night_portrait">Nachtportrait</title>
+        <title id="title_scn_gid_flower">Weiches Bild einer Blume</title>
+        <title id="title_scn_gid_cooking">Appetitliche Speisen</title>
+        <title id="title_scn_gid_sweets">Leckeres Dessert</title>
+        <title id="title_scn_gid_pet">Bewegung einfrieren</title>
+        <title id="title_scn_gid_sports">Sportfoto</title>
+        <title id="title_scn_gid_monochrome">Monochrom</title>
+        <title id="title_ph_sty">Bildstil</title>
+        <title id="title_ph_sty_vivid">Lebhaft</title>
+        <title id="title_ph_sty_natural">Natürlich</title>
+        <title id="title_ph_sty_bw">Monochrom</title>
+        <title id="title_ph_sty_scenery">Landschaft</title>
+        <title id="title_ph_sty_portrait">Porträt</title>
+        <title id="title_ph_sty_cinelike_d">Cinema-like Dynamisch</title>
+        <title id="title_ph_sty_cinelike_v">Cinema-like Video</title>
+        <title id="title_ph_sty_custom">Individuell</title>
+        <title id="title_filter_set">Filter-Auswahl</title>
+        <title id="title_filter_set_noeffect">Kein Effekt</title>
+        <title id="title_asprat">Bildverhält.</title>
+        <title id="title_pctsiz">Bildgröße</title>
+        <title id="title_quality">Qualität</title>
+        <title id="title_quality_fine">Fein</title>
+        <title id="title_quality_raw_fine">RAW+Fein</title>
+        <title id="title_macro">Makro-Modus</title>
+        <title id="title_macro_af">AF Makro</title>
+        <title id="title_macro_zoom">Makro Zoom</title>
+        <title id="title_macro_off">Aus</title>
+        <title id="title_lightmet">Messmethode</title>
+        <title id="title_lightmet_multi">Mehrfeld-Messung</title>
+        <title id="title_lightmet_center">Mittenbetont</title>
+        <title id="title_focus_select">Post-Fokus</title>
+        <title id="title_focus_action">Fokus Modus</title>
+        <title id="title_focus_action_mode1">Modus 1</title>
+        <title id="title_focus_action_mode2">Modus 2</title>
+        <title id="title_flash">Blitzlicht-Modus</title>
+        <title id="title_flash_iauto">iAutomatik</title>
+        <title id="title_flash_forcedflashon">Forc. Blitzl. Ein</title>
+        <title id="title_flash_forced_on_redeye">Blitz Ein/Rot-Aug</title>
+        <title id="title_flash_slowsync">Langzeitsynchr.</title>
+        <title id="title_flash_slowsyncredeye">Lz-Sync/Rot-Aug</title>
+        <title id="title_flash_forcedflashoff">Forciert Aus</title>
+        <title id="title_videoformat">Aufnahmeformat</title>
+        <title id="title_v_quality">Video Aufn.-Qual.</title>
+        <title id="title_stp_mtn_anm">Stop-Motion-Animation</title>
+        <title id="title_tch_shtr">Touch-Auslöser</title>
+        <title id="title_tch_ae">Touch-AE</title>
+        <title id="title_f_and_ss">Blende/Verschlusszeit</title>
+        <title id="title_aperture">Blende</title>
+        <title id="title_shutter_speed">Verschlusszeit</title>
+        <title id="title_program_shift">Programm-wechsel</title>
+        <title id="title_exposure2">Belichtung</title>
+        <title id="title_afmode">AF-Modus</title>
+        <title id="title_afmode_facedetection">Gesichts-/Augenerkennung</title>
+        <title id="title_afmode_aftracking">Verfolgung</title>
+        <title id="title_afmode_49area">49-Feld</title>
+        <title id="title_afmode_custom_multi">Multi-Individuell</title>
+        <title id="title_afmode_custom_multi_vertical">Vertikales Muster</title>
+        <title id="title_afmode_custom_multi_horizontal">Horizontales Muster</title>
+        <title id="title_afmode_custom_multi_center">Zentral Muster</title>
+        <title id="title_afmode_custom_multi_free">Individuell</title>
+        <title id="title_afmode_custom_multi_custom_1">Benutzerspez.1</title>
+        <title id="title_afmode_custom_multi_custom_2">Benutzerspez.2</title>
+        <title id="title_afmode_1area">1-Feld</title>
+        <title id="title_afmode_pinpoint">Punkt</title>
+        <title id="title_sensitivity">Empfindlichkeit</title>
+        <title id="title_whitebalance">Weißabgleich</title>
+        <title id="title_whitebalance_auto">Autom. Weißabgl.</title>
+        <title id="title_whitebalance_daylight">Tageslicht</title>
+        <title id="title_whitebalance_cloudy">Wolken</title>
+        <title id="title_whitebalance_shade">Schatten</title>
+        <title id="title_whitebalance_halogen">Glühlampen</title>
+        <title id="title_whitebalance_flash">Blitzlicht</title>
+        <title id="title_whitebalance_white_set1">Weißabgleich-Einst. 1</title>
+        <title id="title_whitebalance_white_set2">Weißabgleich-Einst. 2</title>
+        <title id="title_whitebalance_white_set3">Weißabgleich-Einst. 3</title>
+        <title id="title_whitebalance_white_set4">Weißabgleich-Einst. 4</title>
+        <title id="title_whitebalance_color_temp">Farbtemperatur</title>
+        <title id="title_drivemode">Antriebsmodus</title>
+        <title id="title_1shoot">Einzeln</title>
+        <title id="title_burst">Serienbilder</title>
+        <title id="title_4kphoto">4K Foto</title>
+        <title id="title_4kphoto_burst">4K-Serienbilder</title>
+        <title id="title_4kphoto_start_stop">4K-Serienbilder (S/S)</title>
+        <title id="title_selftimer">Selbstausl.</title>
+        <title id="title_selftimer_10sec">10 s</title>
+        <title id="title_selftimer_10sec3shot">10 s/3 Bilder</title>
+        <title id="title_selftimer_2sec">2 s</title>
+        <title id="title_drvmod_off">Antriebsmodus Aus</title>
+        <title id="title_peaking">Focus peaking</title>
+        <title id="title_peaking_low">Niedrig</title>
+        <title id="title_peaking_high">Hoch</title>
+      </language>
+      <language code="fr" >
+        <title id="title_connection_settings">Régl destin. connex.</title>
+        <title id="title_liveview_settings">Rég. commande dynam.</title>
+        <title id="title_self_shot">Mode Autoportrait</title>
+        <title id="title_liveview_quality">Qualité comm. dynam.</title>
+        <title id="title_warn_lens_out">Aver. objec. déployé</title>
+        <title id="title_jump_rec">Instantané saut</title>
+        <title id="title_playview_settings">Réglages de lecture</title>
+        <title id="title_appset">Fonction d&apos;application</title>
+        <title id="title_netname">Nom de réseau</title>
+        <title id="title_appset_scnguide">Guide scène</title>
+        <title id="title_scnguid_disp_smpl">Exemple d’affichage</title>
+        <title id="title_help">Aide</title>
+        <title id="title_tou">Conditions d&apos;utilisation</title>
+        <title id="title_crtv_ctrl">Commande créative</title>
+        <title id="title_crtv_ctrl_pop">Expressif</title>
+        <title id="title_crtv_ctrl_retro">Rétro</title>
+        <title id="title_crtv_ctrl_old_days">Ancien temps</title>
+        <title id="title_crtv_ctrl_high_key">Tons clairs</title>
+        <title id="title_crtv_ctrl_low_key">Clair-obscur</title>
+        <title id="title_crtv_ctrl_sepia">Sépia</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Monochrome dynamique</title>
+        <title id="title_crtv_ctrl_rough_monochro">Monochrome brut</title>
+        <title id="title_crtv_ctrl_silky_monochro">Monochrome doux</title>
+        <title id="title_crtv_ctrl_impressive_art">Impressionnisme</title>
+        <title id="title_crtv_ctrl_high_dynamic">Dynamique élevée</title>
+        <title id="title_crtv_ctrl_cross_proc">Dévelop. Croisé</title>
+        <title id="title_crtv_ctrl_toy_photo">Effet jouet</title>
+        <title id="title_crtv_ctrl_toy_pop">Effet jouet vif</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Procédé sans blanchiment</title>
+        <title id="title_crtv_ctrl_diorama">Effet miniature</title>
+        <title id="title_crtv_ctrl_soft_focus">Focus doux</title>
+        <title id="title_crtv_ctrl_fantasy">Fantastique</title>
+        <title id="title_crtv_ctrl_cross_filter">Filtre étoile</title>
+        <title id="title_crtv_ctrl_one_point_color">Désatura. Partielle</title>
+        <title id="title_crtv_ctrl_sunshine">Rayon de soleil</title>
+        <title id="title_scn_gid">Guide scène</title>
+        <title id="title_scn_gid_fixlens_portrait">Portrait clair</title>
+        <title id="title_scn_gid_clear_skin">Peau soyeuse</title>
+        <title id="title_scn_gid_backlight_portrait">Douceur rétroéclairée</title>
+        <title id="title_scn_gid_backlight_strobe">Clair en rétroéclairage</title>
+        <title id="title_scn_gid_warm_portrait">Ton reposant</title>
+        <title id="title_scn_gid_kids">Visage d&apos;enfant</title>
+        <title id="title_scn_gid_landscape">Paysage net</title>
+        <title id="title_scn_gid_blue_sky">Ciel bleu clair</title>
+        <title id="title_scn_gid_magic_hour">Lueur romantique du couchant</title>
+        <title id="title_scn_gid_sunset">Vif éclat du couchant</title>
+        <title id="title_scn_gid_shimmering_water">Eau scintillante</title>
+        <title id="title_scn_gid_night">Paysage nocturne clair</title>
+        <title id="title_scn_gid_cool_night">Ciel nocturne froid</title>
+        <title id="title_scn_gid_warm_night">Paysage nocturne chaud</title>
+        <title id="title_scn_gid_longexpo_night">Paysage nocturne artistique</title>
+        <title id="title_scn_gid_illumination">Illuminations scintillantes</title>
+        <title id="title_scn_gid_handheld_night">Prise noct. manu.</title>
+        <title id="title_scn_gid_night_portrait">Portrait nuit claire</title>
+        <title id="title_scn_gid_flower">Image douce d&apos;une fleur</title>
+        <title id="title_scn_gid_cooking">Nourriture appétissante</title>
+        <title id="title_scn_gid_sweets">Beau dessert</title>
+        <title id="title_scn_gid_pet">Animal en mouvement</title>
+        <title id="title_scn_gid_sports">Photo de sport nette</title>
+        <title id="title_ph_sty">Style photo</title>
+        <title id="title_ph_sty_vivid">Éclatant</title>
+        <title id="title_ph_sty_natural">Naturel</title>
+        <title id="title_ph_sty_scenery">Paysage</title>
+        <title id="title_ph_sty_custom">Personnalisée</title>
+        <title id="title_filter_set">Sélection filtre</title>
+        <title id="title_filter_set_noeffect">Pas d&apos;effet</title>
+        <title id="title_asprat">Format</title>
+        <title id="title_pctsiz">Format imag</title>
+        <title id="title_quality">Qualité</title>
+        <title id="title_quality_fine">Fin</title>
+        <title id="title_quality_raw_fine">RAW+fin</title>
+        <title id="title_quality_raw_standard">RAW+standard</title>
+        <title id="title_macro">Mode macro</title>
+        <title id="title_macro_af">AF macro</title>
+        <title id="title_macro_zoom">Zoom macro</title>
+        <title id="title_macro_off">Non</title>
+        <title id="title_lightmet">Mode mesure</title>
+        <title id="title_lightmet_multi">Mesure multiple</title>
+        <title id="title_lightmet_center">Centre</title>
+        <title id="title_focus_select">Post focus</title>
+        <title id="title_focus_action">Mode de focus</title>
+        <title id="title_flash">Mode de flash</title>
+        <title id="title_flash_forcedflashon">Flash forcé oui</title>
+        <title id="title_flash_forced_on_redeye">Forcé/y. roug.</title>
+        <title id="title_flash_slowsync">Sync. lente</title>
+        <title id="title_flash_slowsyncredeye">Synchr lente/yx rouge</title>
+        <title id="title_flash_forcedflashoff">Forcé non</title>
+        <title id="title_videoformat">Format enregistrement</title>
+        <title id="title_v_quality">Vidéo Qualité enr.</title>
+        <title id="title_stp_mtn_anm">Anim image par image</title>
+        <title id="title_tch_shtr">Déclen. tact.</title>
+        <title id="title_tch_ae">AE tactile</title>
+        <title id="title_f_and_ss">Diaphragme/Vitesse obtur.</title>
+        <title id="title_aperture">Diaphragme</title>
+        <title id="title_shutter_speed">Vitesse obtur.</title>
+        <title id="title_program_shift">Changement progr.</title>
+        <title id="title_exposure2">Exposition</title>
+        <title id="title_afmode">Mode AF</title>
+        <title id="title_afmode_facedetection">Détection visage/œil</title>
+        <title id="title_afmode_aftracking">Suivi</title>
+        <title id="title_afmode_49area">49-zones</title>
+        <title id="title_afmode_custom_multi">Multiple personnalisé</title>
+        <title id="title_afmode_custom_multi_vertical">Motif vertical</title>
+        <title id="title_afmode_custom_multi_horizontal">Motif horizontal</title>
+        <title id="title_afmode_custom_multi_center">Motif central</title>
+        <title id="title_afmode_custom_multi_free">Défini par l&apos;utilisateur</title>
+        <title id="title_afmode_custom_multi_custom_1">Personnaliser1</title>
+        <title id="title_afmode_custom_multi_custom_2">Personnaliser2</title>
+        <title id="title_afmode_1area">1-zone</title>
+        <title id="title_afmode_pinpoint">Point precis</title>
+        <title id="title_sensitivity">Sensibilité</title>
+        <title id="title_whitebalance">Éq.blancs</title>
+        <title id="title_whitebalance_auto">Balance de blancs auto</title>
+        <title id="title_whitebalance_daylight">Jour</title>
+        <title id="title_whitebalance_cloudy">Nuageux</title>
+        <title id="title_whitebalance_shade">Fondu</title>
+        <title id="title_whitebalance_white_set1">Réglage bal. blancs 1</title>
+        <title id="title_whitebalance_white_set2">Réglage bal. blancs 2</title>
+        <title id="title_whitebalance_white_set3">Réglage bal. blancs 3</title>
+        <title id="title_whitebalance_white_set4">Réglage bal. blancs 4</title>
+        <title id="title_whitebalance_color_temp">Température couleur</title>
+        <title id="title_drivemode">Mode d&apos;entraînement</title>
+        <title id="title_1shoot">Simple</title>
+        <title id="title_burst">Prise rafale</title>
+        <title id="title_4kphoto">PHOTO 4K</title>
+        <title id="title_4kphoto_burst">Rafale 4K</title>
+        <title id="title_4kphoto_start_stop">Rafale 4K (S/S)</title>
+        <title id="title_4kphoto_pre_burst">Pré-rafale 4K</title>
+        <title id="title_autobracket">Pris. vues raf.</title>
+        <title id="title_selftimer">Retardateur</title>
+        <title id="title_selftimer_10sec">10 s</title>
+        <title id="title_selftimer_10sec3shot">10 s/3 photos</title>
+        <title id="title_selftimer_2sec">2 s</title>
+        <title id="title_drvmod_off">Mode d&apos;entraînement non</title>
+        <title id="title_peaking">Focus Peaking</title>
+        <title id="title_peaking_off">Non</title>
+        <title id="title_peaking_low">Bas</title>
+        <title id="title_peaking_high">Élevé</title>
+      </language>
+      <language code="fr-CA" >
+        <title id="title_connection_settings">Param. dest. conn.</title>
+        <title id="title_liveview_settings">Param. commande dist.</title>
+        <title id="title_self_shot">Mode autoportrait</title>
+        <title id="title_liveview_quality">Comm. dist. qual. Image</title>
+        <title id="title_warn_lens_out">Avert. extension objectif</title>
+        <title id="title_jump_rec">Instantané saut</title>
+        <title id="title_playview_settings">Param. lecture</title>
+        <title id="title_appset">Fonction de l&apos;application</title>
+        <title id="title_netname">Nom de réseau</title>
+        <title id="title_appset_scnguide">Guide scène</title>
+        <title id="title_scnguid_disp_smpl">Exemple d’affichage</title>
+        <title id="title_help">Aide</title>
+        <title id="title_tou">Conditions d&apos;utilisation</title>
+        <title id="title_crtv_ctrl">Commande créative</title>
+        <title id="title_crtv_ctrl_pop">Expressif</title>
+        <title id="title_crtv_ctrl_retro">Rétro</title>
+        <title id="title_crtv_ctrl_old_days">Ancien temps</title>
+        <title id="title_crtv_ctrl_high_key">Tons clairs</title>
+        <title id="title_crtv_ctrl_low_key">Clair-obscur</title>
+        <title id="title_crtv_ctrl_sepia">Sépia</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Monochrome dynamique</title>
+        <title id="title_crtv_ctrl_rough_monochro">Monochrome brut</title>
+        <title id="title_crtv_ctrl_silky_monochro">Monochrome doux</title>
+        <title id="title_crtv_ctrl_impressive_art">Impressionnisme</title>
+        <title id="title_crtv_ctrl_high_dynamic">Dynamique élevée</title>
+        <title id="title_crtv_ctrl_cross_proc">Dévelop. Croisé</title>
+        <title id="title_crtv_ctrl_toy_photo">Effet jouet</title>
+        <title id="title_crtv_ctrl_toy_pop">Effet jouet vif</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Procédé sans blanchiment</title>
+        <title id="title_crtv_ctrl_diorama">Effet miniature</title>
+        <title id="title_crtv_ctrl_soft_focus">Focus doux</title>
+        <title id="title_crtv_ctrl_fantasy">Fantastique</title>
+        <title id="title_crtv_ctrl_cross_filter">Filtre étoile</title>
+        <title id="title_crtv_ctrl_one_point_color">Désatura. Partielle</title>
+        <title id="title_crtv_ctrl_sunshine">Rayon de soleil</title>
+        <title id="title_scn_gid">Guide scène</title>
+        <title id="title_scn_gid_fixlens_portrait">Portrait clair</title>
+        <title id="title_scn_gid_clear_skin">Peau soyeuse</title>
+        <title id="title_scn_gid_backlight_portrait">Douceur rétroéclairée</title>
+        <title id="title_scn_gid_backlight_strobe">Clair en rétroéclairage</title>
+        <title id="title_scn_gid_warm_portrait">Ton reposant</title>
+        <title id="title_scn_gid_kids">Visage d&apos;enfant</title>
+        <title id="title_scn_gid_landscape">Paysage net</title>
+        <title id="title_scn_gid_blue_sky">Ciel bleu clair</title>
+        <title id="title_scn_gid_magic_hour">Lueur romantique du couchant</title>
+        <title id="title_scn_gid_sunset">Vif éclat du couchant</title>
+        <title id="title_scn_gid_shimmering_water">Eau scintillante</title>
+        <title id="title_scn_gid_night">Paysage nocturne clair</title>
+        <title id="title_scn_gid_cool_night">Ciel nocturne froid</title>
+        <title id="title_scn_gid_warm_night">Paysage nocturne chaud</title>
+        <title id="title_scn_gid_longexpo_night">Paysage nocturne artistique</title>
+        <title id="title_scn_gid_illumination">Illuminations scintillantes</title>
+        <title id="title_scn_gid_handheld_night">Prise noct. manu.</title>
+        <title id="title_scn_gid_night_portrait">Portrait nuit claire</title>
+        <title id="title_scn_gid_flower">Image douce d&apos;une fleur</title>
+        <title id="title_scn_gid_cooking">Nourriture appétissante</title>
+        <title id="title_scn_gid_sweets">Beau dessert</title>
+        <title id="title_scn_gid_pet">Animal en mouvement</title>
+        <title id="title_scn_gid_sports">Photo de sport nette</title>
+        <title id="title_ph_sty">Style photo</title>
+        <title id="title_ph_sty_vivid">Éclatant</title>
+        <title id="title_ph_sty_natural">Naturel</title>
+        <title id="title_ph_sty_scenery">Paysage</title>
+        <title id="title_ph_sty_custom">Personnalisée</title>
+        <title id="title_filter_set">Sélection filtre</title>
+        <title id="title_filter_set_noeffect">Pas d&apos;effet</title>
+        <title id="title_asprat">Format</title>
+        <title id="title_pctsiz">Format imag</title>
+        <title id="title_quality">Qualité</title>
+        <title id="title_quality_fine">Fin</title>
+        <title id="title_quality_raw_fine">RAW+fin</title>
+        <title id="title_quality_raw_standard">RAW+standard</title>
+        <title id="title_macro">Mode macro</title>
+        <title id="title_macro_af">AF macro</title>
+        <title id="title_macro_zoom">Zoom macro</title>
+        <title id="title_macro_off">Non</title>
+        <title id="title_lightmet">Mode mesure</title>
+        <title id="title_lightmet_multi">Mesure multiple</title>
+        <title id="title_lightmet_center">Centre</title>
+        <title id="title_focus_select">Post focus</title>
+        <title id="title_focus_action">Mode de focus</title>
+        <title id="title_flash">Mode de flash</title>
+        <title id="title_flash_forcedflashon">Flash forcé oui</title>
+        <title id="title_flash_forced_on_redeye">Forcé/y. roug.</title>
+        <title id="title_flash_slowsync">Sync. lente</title>
+        <title id="title_flash_slowsyncredeye">Synchr lente/yx rouge</title>
+        <title id="title_flash_forcedflashoff">Forcé non</title>
+        <title id="title_videoformat">Format enregistrement</title>
+        <title id="title_v_quality">Vidéo Qualité enr.</title>
+        <title id="title_stp_mtn_anm">Anim image par image</title>
+        <title id="title_tch_shtr">Déclen. tact.</title>
+        <title id="title_tch_ae">AE tactile</title>
+        <title id="title_f_and_ss">Diaphragme/Vitesse obtur.</title>
+        <title id="title_aperture">Diaphragme</title>
+        <title id="title_shutter_speed">Vitesse obtur.</title>
+        <title id="title_program_shift">Changement progr.</title>
+        <title id="title_exposure2">Exposition</title>
+        <title id="title_afmode">Mode AF</title>
+        <title id="title_afmode_facedetection">Détection visage/œil</title>
+        <title id="title_afmode_aftracking">Suivi</title>
+        <title id="title_afmode_49area">49-zones</title>
+        <title id="title_afmode_custom_multi">Multiple personnalisé</title>
+        <title id="title_afmode_custom_multi_vertical">Motif vertical</title>
+        <title id="title_afmode_custom_multi_horizontal">Motif horizontal</title>
+        <title id="title_afmode_custom_multi_center">Motif central</title>
+        <title id="title_afmode_custom_multi_free">Défini par l&apos;utilisateur</title>
+        <title id="title_afmode_custom_multi_custom_1">Personnaliser1</title>
+        <title id="title_afmode_custom_multi_custom_2">Personnaliser2</title>
+        <title id="title_afmode_1area">1-zone</title>
+        <title id="title_afmode_pinpoint">Point precis</title>
+        <title id="title_sensitivity">Sensibilité</title>
+        <title id="title_whitebalance">Éq.blancs</title>
+        <title id="title_whitebalance_auto">Balance de blancs auto</title>
+        <title id="title_whitebalance_daylight">Jour</title>
+        <title id="title_whitebalance_cloudy">Nuageux</title>
+        <title id="title_whitebalance_shade">Fondu</title>
+        <title id="title_whitebalance_white_set1">Réglage bal. blancs 1</title>
+        <title id="title_whitebalance_white_set2">Réglage bal. blancs 2</title>
+        <title id="title_whitebalance_white_set3">Réglage bal. blancs 3</title>
+        <title id="title_whitebalance_white_set4">Réglage bal. blancs 4</title>
+        <title id="title_whitebalance_color_temp">Température couleur</title>
+        <title id="title_drivemode">Mode d&apos;entraînement</title>
+        <title id="title_1shoot">Simple</title>
+        <title id="title_burst">Prise rafale</title>
+        <title id="title_4kphoto">PHOTO 4K</title>
+        <title id="title_4kphoto_burst">Rafale 4K</title>
+        <title id="title_4kphoto_start_stop">Rafale 4K (S/S)</title>
+        <title id="title_4kphoto_pre_burst">Pré-rafale 4K</title>
+        <title id="title_autobracket">Pris. vues raf.</title>
+        <title id="title_selftimer">Retardateur</title>
+        <title id="title_selftimer_10sec">10 s</title>
+        <title id="title_selftimer_10sec3shot">10 s/3 photos</title>
+        <title id="title_selftimer_2sec">2 s</title>
+        <title id="title_drvmod_off">Mode d&apos;entraînement non</title>
+        <title id="title_peaking">Focus Peaking</title>
+        <title id="title_peaking_off">Non</title>
+        <title id="title_peaking_low">Bas</title>
+        <title id="title_peaking_high">Élevé</title>
+      </language>
+      <language code="it" >
+        <title id="title_connection_settings">Imposta desti. conn.</title>
+        <title id="title_liveview_settings">Impos. Contr. “live”</title>
+        <title id="title_self_shot">Modalità autoscatto</title>
+        <title id="title_liveview_quality">Qualità Cont. “live”</title>
+        <title id="title_warn_lens_out">Avvert. esten.obiet.</title>
+        <title id="title_jump_rec">Istantanea del salto</title>
+        <title id="title_playview_settings">Impostaz. riproduz.</title>
+        <title id="title_appset">Funzione applicazione</title>
+        <title id="title_netname">Nome rete</title>
+        <title id="title_appset_scnguide">Guida scene</title>
+        <title id="title_scnguid_disp_smpl">Visualizzazione di esempio</title>
+        <title id="title_help">?</title>
+        <title id="title_tou">Termini d&apos;uso</title>
+        <title id="title_crtv_ctrl">Controllo creativo</title>
+        <title id="title_crtv_ctrl_pop">Espressivo</title>
+        <title id="title_crtv_ctrl_retro">Nostalgico</title>
+        <title id="title_crtv_ctrl_old_days">Vecchi tempi</title>
+        <title id="title_crtv_ctrl_high_key">High key</title>
+        <title id="title_crtv_ctrl_low_key">Sottoesposizione</title>
+        <title id="title_crtv_ctrl_monochro">Monocromo</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Monocromatica dinamica</title>
+        <title id="title_crtv_ctrl_rough_monochro">Monocromo sgranato</title>
+        <title id="title_crtv_ctrl_silky_monochro">Monocromo vellutato</title>
+        <title id="title_crtv_ctrl_impressive_art">Opera d&apos;arte</title>
+        <title id="title_crtv_ctrl_high_dynamic">High dynamic</title>
+        <title id="title_crtv_ctrl_cross_proc">Processo incrociato</title>
+        <title id="title_crtv_ctrl_toy_photo">Effetto giocattolo</title>
+        <title id="title_crtv_ctrl_toy_pop">Giocattolo colori vivi</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Bleach bypass</title>
+        <title id="title_crtv_ctrl_diorama">Miniature effetto</title>
+        <title id="title_crtv_ctrl_soft_focus">Messa a fuoco soft</title>
+        <title id="title_crtv_ctrl_cross_filter">Filtro a stella</title>
+        <title id="title_crtv_ctrl_one_point_color">Punto colore</title>
+        <title id="title_crtv_ctrl_sunshine">Bagliore</title>
+        <title id="title_scn_gid">Guida scene</title>
+        <title id="title_scn_gid_fixlens_portrait">Ritratto chiaro</title>
+        <title id="title_scn_gid_clear_skin">Pelle di seta</title>
+        <title id="title_scn_gid_backlight_portrait">Controluce morbido</title>
+        <title id="title_scn_gid_backlight_strobe">Controluce chiaro</title>
+        <title id="title_scn_gid_warm_portrait">Tonalità rilassante</title>
+        <title id="title_scn_gid_kids">Viso dolce di un bambino</title>
+        <title id="title_scn_gid_landscape">Paesaggio definito</title>
+        <title id="title_scn_gid_blue_sky">Cielo azzurro</title>
+        <title id="title_scn_gid_magic_hour">Bagliore romantico del tramonto</title>
+        <title id="title_scn_gid_sunset">Bagliore intenso del tramonto</title>
+        <title id="title_scn_gid_shimmering_water">Scintillio dell&apos;acqua</title>
+        <title id="title_scn_gid_night">Notturno nitido</title>
+        <title id="title_scn_gid_cool_night">Cielo notturno sofisticato</title>
+        <title id="title_scn_gid_warm_night">Notturno caldo e vivido</title>
+        <title id="title_scn_gid_longexpo_night">Notturno artistico</title>
+        <title id="title_scn_gid_illumination">Luci sfavillanti</title>
+        <title id="title_scn_gid_handheld_night">Ripr. nott. a mano</title>
+        <title id="title_scn_gid_night_portrait">Ritratto notturno chiaro</title>
+        <title id="title_scn_gid_flower">Immagine delicata di un fiore</title>
+        <title id="title_scn_gid_cooking">Manicaretti</title>
+        <title id="title_scn_gid_sweets">Dessert goloso</title>
+        <title id="title_scn_gid_pet">Animale in movimento</title>
+        <title id="title_scn_gid_sports">Eventi sportivi</title>
+        <title id="title_scn_gid_monochrome">Monocromatico</title>
+        <title id="title_ph_sty">Stile foto</title>
+        <title id="title_ph_sty_vivid">Vivida</title>
+        <title id="title_ph_sty_natural">Naturale</title>
+        <title id="title_ph_sty_bw">Monocromatica</title>
+        <title id="title_ph_sty_scenery">Panorama</title>
+        <title id="title_ph_sty_portrait">Ritratto</title>
+        <title id="title_ph_sty_cinelike_d">Gamma dinamica Cinelike</title>
+        <title id="title_ph_sty_cinelike_v">Video Cinelike</title>
+        <title id="title_ph_sty_custom">Personalizzato</title>
+        <title id="title_filter_set">Selezionare filtro</title>
+        <title id="title_filter_set_noeffect">Nessun effetto</title>
+        <title id="title_asprat">Formato</title>
+        <title id="title_pctsiz">Dim. immag.</title>
+        <title id="title_quality">Qualità</title>
+        <title id="title_quality_raw_fine">RAW+fine</title>
+        <title id="title_quality_raw_standard">RAW+standard</title>
+        <title id="title_macro">Modo macro</title>
+        <title id="title_macro_af">AF macro</title>
+        <title id="title_macro_zoom">Zoom macro</title>
+        <title id="title_lightmet">Mod. esposim.</title>
+        <title id="title_lightmet_multi">Mod. esposim. mult.</title>
+        <title id="title_lightmet_center">Centro pesato</title>
+        <title id="title_focus_action">Mod. messa a fuoco</title>
+        <title id="title_focus_action_mode1">Modo 1</title>
+        <title id="title_focus_action_mode2">Modo 2</title>
+        <title id="title_flash">Modalità Flash</title>
+        <title id="title_flash_forcedflashon">Att. forz. flash</title>
+        <title id="title_flash_forced_on_redeye">Att.forz./occhi r.</title>
+        <title id="title_flash_slowsync">Slow sync.</title>
+        <title id="title_flash_slowsyncredeye">Sinc. lenta/occhi r.</title>
+        <title id="title_flash_forcedflashoff">Disatt.forz.fl.</title>
+        <title id="title_videoformat">Formato Rec</title>
+        <title id="title_v_quality">Video Qualità reg.</title>
+        <title id="title_stp_mtn_anm">Animaz. Stop Motion</title>
+        <title id="title_tch_shtr">Scatto touch</title>
+        <title id="title_tch_ae">AE touch</title>
+        <title id="title_f_and_ss">Apertura/Vel. otturatore</title>
+        <title id="title_aperture">Apertura</title>
+        <title id="title_shutter_speed">Vel. otturatore</title>
+        <title id="title_program_shift">Cambio progr.</title>
+        <title id="title_exposure2">Esposizione</title>
+        <title id="title_afmode">Modalità AF</title>
+        <title id="title_afmode_facedetection">Face/eye detection</title>
+        <title id="title_afmode_49area">49 aree</title>
+        <title id="title_afmode_custom_multi">Personalizzazione multipla</title>
+        <title id="title_afmode_custom_multi_vertical">Schema verticale</title>
+        <title id="title_afmode_custom_multi_horizontal">Schema orizzontale</title>
+        <title id="title_afmode_custom_multi_center">Schema central</title>
+        <title id="title_afmode_custom_multi_free">Definito dall&apos;utente</title>
+        <title id="title_afmode_custom_multi_custom_1">Personalizzato1</title>
+        <title id="title_afmode_custom_multi_custom_2">Personalizzato2</title>
+        <title id="title_afmode_1area">1 area</title>
+        <title id="title_afmode_pinpoint">Messa a fuoco precisa</title>
+        <title id="title_sensitivity">Sensibilità</title>
+        <title id="title_whitebalance">Bil. bianco</title>
+        <title id="title_whitebalance_auto">Bil. autom. del bianco</title>
+        <title id="title_whitebalance_daylight">Luce diurna</title>
+        <title id="title_whitebalance_cloudy">Nuvoloso</title>
+        <title id="title_whitebalance_shade">Ombra</title>
+        <title id="title_whitebalance_halogen">Incandescenza</title>
+        <title id="title_whitebalance_white_set1">Impost. bianco 1</title>
+        <title id="title_whitebalance_white_set2">Impost. bianco 2</title>
+        <title id="title_whitebalance_white_set3">Impost. bianco 3</title>
+        <title id="title_whitebalance_white_set4">Impost. bianco 4</title>
+        <title id="title_whitebalance_color_temp">Temperatura colore</title>
+        <title id="title_drivemode">Modalità avanzamento</title>
+        <title id="title_1shoot">Sing.</title>
+        <title id="title_burst">Scatto continuo</title>
+        <title id="title_4kphoto">FOTO 4K</title>
+        <title id="title_4kphoto_burst">Scatto a raff. 4K</title>
+        <title id="title_4kphoto_start_stop">Scatto a raff. 4K (S/S)</title>
+        <title id="title_4kphoto_pre_burst">Pre-scatto a raff. 4K</title>
+        <title id="title_autobracket">Auto bracket</title>
+        <title id="title_selftimer">Autoscatto</title>
+        <title id="title_selftimer_10sec">10 sec.</title>
+        <title id="title_selftimer_10sec3shot">10 s/3immagini</title>
+        <title id="title_selftimer_2sec">2 sec.</title>
+        <title id="title_drvmod_off">Modalità avanzamento off</title>
+        <title id="title_peaking_low">Bassa</title>
+        <title id="title_peaking_high">Alta</title>
+      </language>
+      <language code="es" >
+        <title id="title_connection_settings">Ajustar dest. conex.</title>
+        <title id="title_liveview_settings">Ajustes control vivo</title>
+        <title id="title_self_shot">Modo de disparo automático</title>
+        <title id="title_liveview_quality">Calidad control vivo</title>
+        <title id="title_warn_lens_out">Aviso ext. objetivo</title>
+        <title id="title_jump_rec">Instantánea de salto</title>
+        <title id="title_playview_settings">Ajustes reproducción</title>
+        <title id="title_appset">Función de aplicación</title>
+        <title id="title_netname">Nombre de red</title>
+        <title id="title_appset_scnguide">Guía escenas</title>
+        <title id="title_scnguid_disp_smpl">Visualización de muestras</title>
+        <title id="title_help">Ayuda</title>
+        <title id="title_tou">Condiciones de uso</title>
+        <title id="title_crtv_ctrl">Control creativo</title>
+        <title id="title_crtv_ctrl_pop">Expresivo</title>
+        <title id="title_crtv_ctrl_old_days">Viejos tiempos</title>
+        <title id="title_crtv_ctrl_high_key">Tonalidad alta</title>
+        <title id="title_crtv_ctrl_low_key">Tonalidad baja</title>
+        <title id="title_crtv_ctrl_monochro">Monocromático</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Monocromo dinámico</title>
+        <title id="title_crtv_ctrl_rough_monochro">Monocromático rugoso</title>
+        <title id="title_crtv_ctrl_silky_monochro">Monocromático sedoso</title>
+        <title id="title_crtv_ctrl_impressive_art">Arte impresionante</title>
+        <title id="title_crtv_ctrl_high_dynamic">Dinámica alta</title>
+        <title id="title_crtv_ctrl_cross_proc">Proceso cruzado</title>
+        <title id="title_crtv_ctrl_toy_photo">Efecto cám. juguete</title>
+        <title id="title_crtv_ctrl_toy_pop">Juguete vívido</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Elim. blanqueamiento</title>
+        <title id="title_crtv_ctrl_diorama">Efecto miniatura</title>
+        <title id="title_crtv_ctrl_soft_focus">Enfoque suave</title>
+        <title id="title_crtv_ctrl_fantasy">Fantasía</title>
+        <title id="title_crtv_ctrl_cross_filter">Filtro de estrellas</title>
+        <title id="title_crtv_ctrl_one_point_color">Color puntual</title>
+        <title id="title_crtv_ctrl_sunshine">Soleado</title>
+        <title id="title_scn_gid">Guía escenas</title>
+        <title id="title_scn_gid_fixlens_portrait">Retrato claro</title>
+        <title id="title_scn_gid_clear_skin">Piel suave</title>
+        <title id="title_scn_gid_backlight_portrait">Contraluz suave</title>
+        <title id="title_scn_gid_backlight_strobe">Contraluz clara</title>
+        <title id="title_scn_gid_warm_portrait">Tono relajante</title>
+        <title id="title_scn_gid_kids">Carita de niño</title>
+        <title id="title_scn_gid_landscape">Escenario Distinto</title>
+        <title id="title_scn_gid_blue_sky">Cielo azul brillante</title>
+        <title id="title_scn_gid_magic_hour">Atardecer romántico</title>
+        <title id="title_scn_gid_sunset">Atardecer de colores vivos</title>
+        <title id="title_scn_gid_shimmering_water">Agua reluciente</title>
+        <title id="title_scn_gid_night">Paisaje nocturno claro</title>
+        <title id="title_scn_gid_cool_night">Cielo nocturno frío</title>
+        <title id="title_scn_gid_warm_night">Paisaje nocturno cálido</title>
+        <title id="title_scn_gid_longexpo_night">Paisaje nocturno artístico</title>
+        <title id="title_scn_gid_illumination">Luces y resplandores</title>
+        <title id="title_scn_gid_handheld_night">Foto nocturna manual</title>
+        <title id="title_scn_gid_night_portrait">Claro retrato nocturno</title>
+        <title id="title_scn_gid_flower">Suave imagen de una flor</title>
+        <title id="title_scn_gid_cooking">Comida apetecible</title>
+        <title id="title_scn_gid_sweets">Postre atractivo</title>
+        <title id="title_scn_gid_pet">Movimiento animal congelado</title>
+        <title id="title_scn_gid_sports">Foto deportiva clara</title>
+        <title id="title_scn_gid_monochrome">Monocromática</title>
+        <title id="title_ph_sty">Fotoestilo</title>
+        <title id="title_ph_sty_standard">Estándar</title>
+        <title id="title_ph_sty_vivid">Vívido</title>
+        <title id="title_ph_sty_bw">Monocromo</title>
+        <title id="title_ph_sty_scenery">Paisaje</title>
+        <title id="title_ph_sty_portrait">Retrato</title>
+        <title id="title_ph_sty_cinelike_d">Rango dinámico como cine</title>
+        <title id="title_ph_sty_cinelike_v">Vídeo como cine</title>
+        <title id="title_ph_sty_custom">Personalizar</title>
+        <title id="title_filter_set">Selección de filtro</title>
+        <title id="title_filter_set_noeffect">Sin efecto</title>
+        <title id="title_asprat">Aspecto</title>
+        <title id="title_pctsiz">Tamaño de imagen</title>
+        <title id="title_quality">Calidad</title>
+        <title id="title_quality_fine">Fina</title>
+        <title id="title_quality_standard">Estándar</title>
+        <title id="title_quality_raw_fine">RAW+fina</title>
+        <title id="title_quality_raw_standard">RAW+estándar</title>
+        <title id="title_macro">Modo macro</title>
+        <title id="title_macro_af">AF macro</title>
+        <title id="title_macro_zoom">Zoom macro</title>
+        <title id="title_lightmet">Modo medición</title>
+        <title id="title_lightmet_multi">Medición múltiple</title>
+        <title id="title_lightmet_center">Central</title>
+        <title id="title_lightmet_spot">Puntual</title>
+        <title id="title_focus_select">Post-enfoque</title>
+        <title id="title_focus_action">Modo de enfoque</title>
+        <title id="title_focus_action_mode1">Modo 1</title>
+        <title id="title_focus_action_mode2">Modo 2</title>
+        <title id="title_flash">Modo de flash</title>
+        <title id="title_flash_forcedflashon">Flash activado</title>
+        <title id="title_flash_forced_on_redeye">Forzar act./ ojo-rojo</title>
+        <title id="title_flash_slowsync">Sinc. lenta</title>
+        <title id="title_flash_slowsyncredeye">Sincro. lenta /ojo-rojo</title>
+        <title id="title_flash_forcedflashoff">Flash desact.</title>
+        <title id="title_videoformat">Formato de grabación</title>
+        <title id="title_v_quality">Calidad de grab. Video</title>
+        <title id="title_stp_mtn_anm">Anima. Movimiento D.</title>
+        <title id="title_tch_shtr">Disparo Táctil</title>
+        <title id="title_tch_ae">AE Táctil</title>
+        <title id="title_f_and_ss">Apertura/Velocidad obtur.</title>
+        <title id="title_aperture">Apertura</title>
+        <title id="title_shutter_speed">Velocidad obtur.</title>
+        <title id="title_program_shift">Cambio progr.</title>
+        <title id="title_exposure2">Exposición</title>
+        <title id="title_afmode">Modo AF</title>
+        <title id="title_afmode_facedetection">Detección de la cara/ojos</title>
+        <title id="title_afmode_aftracking">Localización</title>
+        <title id="title_afmode_49area">49 Áreas</title>
+        <title id="title_afmode_custom_multi">Personalizar múltiple</title>
+        <title id="title_afmode_custom_multi_vertical">Patrón vertical</title>
+        <title id="title_afmode_custom_multi_horizontal">Patrón horizontal</title>
+        <title id="title_afmode_custom_multi_center">Patrón central</title>
+        <title id="title_afmode_custom_multi_free">Definido por usuario</title>
+        <title id="title_afmode_custom_multi_custom_1">Personalizar 1</title>
+        <title id="title_afmode_custom_multi_custom_2">Personalizar 2</title>
+        <title id="title_afmode_1area">1 Área</title>
+        <title id="title_afmode_pinpoint">Enfoque preciso</title>
+        <title id="title_sensitivity">Sensibilidad</title>
+        <title id="title_whitebalance">Balance b.</title>
+        <title id="title_whitebalance_auto">Bal. del blanco aut.</title>
+        <title id="title_whitebalance_daylight">Luz del día</title>
+        <title id="title_whitebalance_cloudy">Nublado</title>
+        <title id="title_whitebalance_shade">Sombra</title>
+        <title id="title_whitebalance_halogen">Incandescente</title>
+        <title id="title_whitebalance_white_set1">Aj. blanco 1</title>
+        <title id="title_whitebalance_white_set2">Aj. blanco 2</title>
+        <title id="title_whitebalance_white_set3">Aj. blanco 3</title>
+        <title id="title_whitebalance_white_set4">Aj. blanco 4</title>
+        <title id="title_whitebalance_color_temp">Temperatura del color</title>
+        <title id="title_drivemode">Modo accionamiento</title>
+        <title id="title_1shoot">Único</title>
+        <title id="title_burst">Disparo de ráfaga</title>
+        <title id="title_4kphoto">Foto 4K</title>
+        <title id="title_4kphoto_burst">Ráfaga 4K</title>
+        <title id="title_4kphoto_start_stop">Ráfaga 4K (S/S)</title>
+        <title id="title_4kphoto_pre_burst">Pre-ráfaga 4K</title>
+        <title id="title_autobracket">Auto bracket</title>
+        <title id="title_selftimer">Autodisparador</title>
+        <title id="title_selftimer_10sec">10 s.</title>
+        <title id="title_selftimer_10sec3shot">10 s./3 imag.</title>
+        <title id="title_selftimer_2sec">2 s.</title>
+        <title id="title_drvmod_off">Modo accionamiento apagado</title>
+        <title id="title_peaking">Contornos máximos</title>
+        <title id="title_peaking_low">Bajo</title>
+        <title id="title_peaking_high">Alto</title>
+      </language>
+      <language code="zh-TW" >
+        <title id="title_connection_settings">連接目的地設定</title>
+        <title id="title_liveview_settings">即時控制設定</title>
+        <title id="title_self_shot">自拍模式</title>
+        <title id="title_liveview_quality">即時控制影像品質</title>
+        <title id="title_warn_lens_out">鏡頭伸縮警告</title>
+        <title id="title_jump_rec">跳躍快照</title>
+        <title id="title_playview_settings">播放設定</title>
+        <title id="title_appset">應用程式功能</title>
+        <title id="title_netname">網路名稱</title>
+        <title id="title_appset_scnguide">場景指南</title>
+        <title id="title_scnguid_disp_smpl">簡易顯示</title>
+        <title id="title_help">說明</title>
+        <title id="title_tou">使用條款</title>
+        <title id="title_crtv_ctrl">創意控制</title>
+        <title id="title_crtv_ctrl_pop">生動</title>
+        <title id="title_crtv_ctrl_retro">復古</title>
+        <title id="title_crtv_ctrl_old_days">舊時光</title>
+        <title id="title_crtv_ctrl_high_key">明調</title>
+        <title id="title_crtv_ctrl_low_key">暗色調</title>
+        <title id="title_crtv_ctrl_sepia">復古色</title>
+        <title id="title_crtv_ctrl_monochro">單色調</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">動態黑白</title>
+        <title id="title_crtv_ctrl_rough_monochro">粗粒單色調</title>
+        <title id="title_crtv_ctrl_silky_monochro">絲柔單色調</title>
+        <title id="title_crtv_ctrl_impressive_art">深刻藝術</title>
+        <title id="title_crtv_ctrl_high_dynamic">高動態</title>
+        <title id="title_crtv_ctrl_cross_proc">正片負沖</title>
+        <title id="title_crtv_ctrl_toy_photo">玩具攝影效果</title>
+        <title id="title_crtv_ctrl_toy_pop">玩具普普風</title>
+        <title id="title_crtv_ctrl_bleach_bypass">漂白效果</title>
+        <title id="title_crtv_ctrl_diorama">模型效果</title>
+        <title id="title_crtv_ctrl_soft_focus">柔焦</title>
+        <title id="title_crtv_ctrl_fantasy">夢幻</title>
+        <title id="title_crtv_ctrl_cross_filter">星芒濾鏡</title>
+        <title id="title_crtv_ctrl_one_point_color">焦點色彩</title>
+        <title id="title_crtv_ctrl_sunshine">陽光</title>
+        <title id="title_scn_gid">場景指南</title>
+        <title id="title_scn_gid_fixlens_portrait">清晰人像</title>
+        <title id="title_scn_gid_clear_skin">柔膚</title>
+        <title id="title_scn_gid_backlight_portrait">柔和背光</title>
+        <title id="title_scn_gid_backlight_strobe">清晰背光</title>
+        <title id="title_scn_gid_warm_portrait">悠閒色調</title>
+        <title id="title_scn_gid_kids">活潑小孩</title>
+        <title id="title_scn_gid_landscape">清晰風景</title>
+        <title id="title_scn_gid_blue_sky">明亮藍天</title>
+        <title id="title_scn_gid_magic_hour">浪漫夕陽</title>
+        <title id="title_scn_gid_sunset">鮮明餘暉</title>
+        <title id="title_scn_gid_shimmering_water">閃耀水面</title>
+        <title id="title_scn_gid_night">清晰夜景</title>
+        <title id="title_scn_gid_cool_night">冷調夜空</title>
+        <title id="title_scn_gid_warm_night">暖色調夜景</title>
+        <title id="title_scn_gid_longexpo_night">藝術夜景</title>
+        <title id="title_scn_gid_illumination">閃爍燈光</title>
+        <title id="title_scn_gid_handheld_night">手提式夜拍</title>
+        <title id="title_scn_gid_night_portrait">夜間人像</title>
+        <title id="title_scn_gid_flower">柔和花卉</title>
+        <title id="title_scn_gid_cooking">美味佳餚</title>
+        <title id="title_scn_gid_sweets">精緻甜點</title>
+        <title id="title_scn_gid_pet">生態攝影</title>
+        <title id="title_scn_gid_sports">運動攝影</title>
+        <title id="title_scn_gid_monochrome">單色調</title>
+        <title id="title_ph_sty">照片樣式</title>
+        <title id="title_ph_sty_standard">標準</title>
+        <title id="title_ph_sty_vivid">鮮明</title>
+        <title id="title_ph_sty_natural">自然</title>
+        <title id="title_ph_sty_bw">單色</title>
+        <title id="title_ph_sty_scenery">風景</title>
+        <title id="title_ph_sty_portrait">人像</title>
+        <title id="title_ph_sty_cinelike_d">劇院級動態範圍</title>
+        <title id="title_ph_sty_cinelike_v">劇院級影片</title>
+        <title id="title_ph_sty_custom">自訂</title>
+        <title id="title_filter_set">濾鏡選擇</title>
+        <title id="title_filter_set_noeffect">無效果</title>
+        <title id="title_asprat">寬高比</title>
+        <title id="title_pctsiz">圖片尺寸</title>
+        <title id="title_quality">畫質</title>
+        <title id="title_quality_fine">精細</title>
+        <title id="title_quality_standard">標準</title>
+        <title id="title_quality_raw_fine">RAW+精細</title>
+        <title id="title_quality_raw_standard">RAW+標準</title>
+        <title id="title_macro">近拍模式</title>
+        <title id="title_macro_af">自動對焦 微距</title>
+        <title id="title_macro_zoom">近拍特寫</title>
+        <title id="title_macro_off">關閉</title>
+        <title id="title_lightmet">測光模式</title>
+        <title id="title_lightmet_multi">多區測光</title>
+        <title id="title_lightmet_center">中央偏重</title>
+        <title id="title_lightmet_spot">單點</title>
+        <title id="title_focus_select">拍攝後對焦</title>
+        <title id="title_focus_action">對焦模式</title>
+        <title id="title_focus_action_mode1">模式 1</title>
+        <title id="title_focus_action_mode2">模式 2</title>
+        <title id="title_flash">閃光模式</title>
+        <title id="title_flash_iauto">智慧型全自動</title>
+        <title id="title_flash_forcedflashon">強制閃光開</title>
+        <title id="title_flash_forced_on_redeye">強制閃光開/紅眼降低</title>
+        <title id="title_flash_slowsync">慢速同步</title>
+        <title id="title_flash_slowsyncredeye">慢速同步/紅眼降低</title>
+        <title id="title_flash_forcedflashoff">強制閃光關</title>
+        <title id="title_videoformat">拍攝格式</title>
+        <title id="title_v_quality">影片錄影畫質</title>
+        <title id="title_stp_mtn_anm">停格動畫</title>
+        <title id="title_tch_shtr">觸碰快門</title>
+        <title id="title_tch_ae">觸控 AE</title>
+        <title id="title_f_and_ss">光圈/快門速度</title>
+        <title id="title_aperture">光圈</title>
+        <title id="title_shutter_speed">快門速度</title>
+        <title id="title_program_shift">程式切換 </title>
+        <title id="title_exposure2">曝光</title>
+        <title id="title_afmode">AF 模式</title>
+        <title id="title_afmode_facedetection">人臉/眼睛偵測</title>
+        <title id="title_afmode_aftracking">追蹤</title>
+        <title id="title_afmode_49area">49點</title>
+        <title id="title_afmode_custom_multi">自訂多點對焦</title>
+        <title id="title_afmode_custom_multi_vertical">垂直模式</title>
+        <title id="title_afmode_custom_multi_horizontal">水平模式</title>
+        <title id="title_afmode_custom_multi_center">中央模式</title>
+        <title id="title_afmode_custom_multi_free">用戶定義</title>
+        <title id="title_afmode_custom_multi_custom_1">使用者設定1</title>
+        <title id="title_afmode_custom_multi_custom_2">使用者設定2</title>
+        <title id="title_afmode_1area">1點</title>
+        <title id="title_afmode_pinpoint">定位焦點</title>
+        <title id="title_sensitivity">感光度</title>
+        <title id="title_sensitivity_auto">i.AUTO</title>
+        <title id="title_whitebalance">白平衡</title>
+        <title id="title_whitebalance_auto">自動白平衡</title>
+        <title id="title_whitebalance_daylight">晴天</title>
+        <title id="title_whitebalance_cloudy">陰天</title>
+        <title id="title_whitebalance_shade">陰影</title>
+        <title id="title_whitebalance_halogen">日光燈</title>
+        <title id="title_whitebalance_flash">閃光</title>
+        <title id="title_whitebalance_white_set1">白色設定 1</title>
+        <title id="title_whitebalance_white_set2">白色設定 2</title>
+        <title id="title_whitebalance_white_set3">白色設定 3</title>
+        <title id="title_whitebalance_white_set4">白色設定 4</title>
+        <title id="title_whitebalance_color_temp">色溫</title>
+        <title id="title_drivemode">驅動模式</title>
+        <title id="title_1shoot">單張</title>
+        <title id="title_burst">連拍</title>
+        <title id="title_4kphoto">4K照片</title>
+        <title id="title_4kphoto_burst">4K 連拍</title>
+        <title id="title_4kphoto_start_stop">4K 連拍(S/S)</title>
+        <title id="title_4kphoto_pre_burst">4K 快門前連拍</title>
+        <title id="title_autobracket">自動曝光包圍</title>
+        <title id="title_selftimer">自拍計時器</title>
+        <title id="title_selftimer_10sec">10秒鐘</title>
+        <title id="title_selftimer_10sec3shot">10秒/3張</title>
+        <title id="title_selftimer_2sec">2秒鐘</title>
+        <title id="title_drvmod_off">驅動模式關閉</title>
+        <title id="title_peaking">峰值</title>
+        <title id="title_peaking_off">OFF</title>
+        <title id="title_peaking_low">低</title>
+        <title id="title_peaking_high">高</title>
+      </language>
+      <language code="zh-CN" >
+        <title id="title_connection_settings">连接目的地设置</title>
+        <title id="title_liveview_settings">实时控制设置</title>
+        <title id="title_self_shot">自拍模式</title>
+        <title id="title_liveview_quality">实时控制画质</title>
+        <title id="title_warn_lens_out">镜头伸出警告</title>
+        <title id="title_jump_rec">跳跃快照</title>
+        <title id="title_playview_settings">回放设置</title>
+        <title id="title_appset">应用程序功能</title>
+        <title id="title_netname">网络名称</title>
+        <title id="title_appset_scnguide">场景指南</title>
+        <title id="title_scnguid_disp_smpl">样本显示</title>
+        <title id="title_help">帮助</title>
+        <title id="title_tou">使用条款</title>
+        <title id="title_crtv_ctrl">创意控制</title>
+        <title id="title_crtv_ctrl_pop">富有表现力</title>
+        <title id="title_crtv_ctrl_retro">乡愁怀旧</title>
+        <title id="title_crtv_ctrl_old_days">旧时光滤镜</title>
+        <title id="title_crtv_ctrl_high_key">高基调</title>
+        <title id="title_crtv_ctrl_low_key">暗色调</title>
+        <title id="title_crtv_ctrl_sepia">深棕色</title>
+        <title id="title_crtv_ctrl_monochro">单色</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">动态单色</title>
+        <title id="title_crtv_ctrl_rough_monochro">颗粒单色</title>
+        <title id="title_crtv_ctrl_silky_monochro">柔滑单色</title>
+        <title id="title_crtv_ctrl_impressive_art">印象艺术</title>
+        <title id="title_crtv_ctrl_high_dynamic">高动态</title>
+        <title id="title_crtv_ctrl_cross_proc">正片负冲</title>
+        <title id="title_crtv_ctrl_toy_photo">玩具相机效果</title>
+        <title id="title_crtv_ctrl_toy_pop">鲜艳玩具相机滤镜</title>
+        <title id="title_crtv_ctrl_bleach_bypass">漂白效果滤镜</title>
+        <title id="title_crtv_ctrl_diorama">微型画效果</title>
+        <title id="title_crtv_ctrl_soft_focus">柔焦</title>
+        <title id="title_crtv_ctrl_fantasy">幻觉滤镜</title>
+        <title id="title_crtv_ctrl_cross_filter">星光滤镜</title>
+        <title id="title_crtv_ctrl_one_point_color">单点色彩</title>
+        <title id="title_crtv_ctrl_sunshine">阳光滤镜</title>
+        <title id="title_scn_gid">场景指南</title>
+        <title id="title_scn_gid_fixlens_portrait">清晰肖像</title>
+        <title id="title_scn_gid_clear_skin">柔肤</title>
+        <title id="title_scn_gid_backlight_portrait">背光柔和</title>
+        <title id="title_scn_gid_backlight_strobe">背光清晰</title>
+        <title id="title_scn_gid_warm_portrait">轻松氛围</title>
+        <title id="title_scn_gid_kids">可爱孩子的脸部</title>
+        <title id="title_scn_gid_landscape">独特风景</title>
+        <title id="title_scn_gid_blue_sky">蔚蓝天空</title>
+        <title id="title_scn_gid_magic_hour">浪漫晚霞</title>
+        <title id="title_scn_gid_sunset">生动晚霞</title>
+        <title id="title_scn_gid_shimmering_water">闪光水面</title>
+        <title id="title_scn_gid_night">清晰夜景</title>
+        <title id="title_scn_gid_cool_night">酷炫夜空</title>
+        <title id="title_scn_gid_warm_night">温暖夜景</title>
+        <title id="title_scn_gid_longexpo_night">艺术夜景</title>
+        <title id="title_scn_gid_illumination">闪亮灯饰</title>
+        <title id="title_scn_gid_handheld_night">手持夜景拍摄</title>
+        <title id="title_scn_gid_night_portrait">清晰夜间肖像</title>
+        <title id="title_scn_gid_flower">花卉柔焦</title>
+        <title id="title_scn_gid_cooking">美味食物</title>
+        <title id="title_scn_gid_sweets">可爱甜品</title>
+        <title id="title_scn_gid_pet">移动宠物拍摄</title>
+        <title id="title_scn_gid_sports">清晰运动拍摄</title>
+        <title id="title_scn_gid_monochrome">单色</title>
+        <title id="title_ph_sty">照片格调</title>
+        <title id="title_ph_sty_standard">标准</title>
+        <title id="title_ph_sty_vivid">生动</title>
+        <title id="title_ph_sty_natural">自然</title>
+        <title id="title_ph_sty_bw">单色</title>
+        <title id="title_ph_sty_scenery">风景</title>
+        <title id="title_ph_sty_portrait">肖像</title>
+        <title id="title_ph_sty_cinelike_d">电影模式动态范围</title>
+        <title id="title_ph_sty_cinelike_v">电影模式视频</title>
+        <title id="title_ph_sty_custom">自定义</title>
+        <title id="title_filter_set">滤镜选择</title>
+        <title id="title_filter_set_noeffect">无效果</title>
+        <title id="title_asprat">高宽比</title>
+        <title id="title_pctsiz">图像尺寸</title>
+        <title id="title_quality">质量</title>
+        <title id="title_quality_fine">精细</title>
+        <title id="title_quality_standard">标准</title>
+        <title id="title_quality_raw_fine">RAW+精细</title>
+        <title id="title_quality_raw_standard">RAW+标准</title>
+        <title id="title_macro">微距模式</title>
+        <title id="title_macro_af">自动对焦微距模式</title>
+        <title id="title_macro_zoom">微距变焦</title>
+        <title id="title_macro_off">关闭</title>
+        <title id="title_lightmet">测光模式</title>
+        <title id="title_lightmet_multi">多点测光</title>
+        <title id="title_lightmet_center">中央重点测光</title>
+        <title id="title_lightmet_spot">定点</title>
+        <title id="title_focus_select">后对焦</title>
+        <title id="title_focus_action">对焦模式</title>
+        <title id="title_focus_action_mode1">模式 1</title>
+        <title id="title_focus_action_mode2">模式 2</title>
+        <title id="title_flash">闪光模式</title>
+        <title id="title_flash_iauto">智能自动</title>
+        <title id="title_flash_forcedflashon">强制闪光开</title>
+        <title id="title_flash_forced_on_redeye">强制闪光开/红眼降低</title>
+        <title id="title_flash_slowsync">慢速同步</title>
+        <title id="title_flash_slowsyncredeye">慢速同步/红眼降低</title>
+        <title id="title_flash_forcedflashoff">强制闪光关</title>
+        <title id="title_videoformat">录像格式</title>
+        <title id="title_v_quality">影像录制质量</title>
+        <title id="title_stp_mtn_anm">定格动画</title>
+        <title id="title_tch_shtr">触摸快门</title>
+        <title id="title_tch_ae">触摸AE</title>
+        <title id="title_f_and_ss">光圈/快门速度</title>
+        <title id="title_aperture">光圈</title>
+        <title id="title_shutter_speed">快门速度</title>
+        <title id="title_program_shift">程序切换</title>
+        <title id="title_exposure2">曝光</title>
+        <title id="title_afmode">AF 模式</title>
+        <title id="title_afmode_facedetection">人脸/眼睛探测</title>
+        <title id="title_afmode_aftracking">追踪</title>
+        <title id="title_afmode_49area">49点</title>
+        <title id="title_afmode_custom_multi">多种自定义设置</title>
+        <title id="title_afmode_custom_multi_vertical">垂直样式</title>
+        <title id="title_afmode_custom_multi_horizontal">水平样式</title>
+        <title id="title_afmode_custom_multi_center">中央样式</title>
+        <title id="title_afmode_custom_multi_free">用户定义</title>
+        <title id="title_afmode_custom_multi_custom_1">自定义1</title>
+        <title id="title_afmode_custom_multi_custom_2">自定义2</title>
+        <title id="title_afmode_1area">1点</title>
+        <title id="title_afmode_pinpoint">精确定点</title>
+        <title id="title_sensitivity">感光度</title>
+        <title id="title_sensitivity_auto">i.AUTO</title>
+        <title id="title_whitebalance">白平衡</title>
+        <title id="title_whitebalance_auto">自动白平衡</title>
+        <title id="title_whitebalance_daylight">晴天</title>
+        <title id="title_whitebalance_cloudy">阴天</title>
+        <title id="title_whitebalance_shade">阴影</title>
+        <title id="title_whitebalance_halogen">白炽灯</title>
+        <title id="title_whitebalance_flash">闪光</title>
+        <title id="title_whitebalance_white_set1">白色设置 1</title>
+        <title id="title_whitebalance_white_set2">白色设置 2</title>
+        <title id="title_whitebalance_white_set3">白色设置 3</title>
+        <title id="title_whitebalance_white_set4">白色设置 4</title>
+        <title id="title_whitebalance_color_temp">色温</title>
+        <title id="title_drivemode">驱动模式</title>
+        <title id="title_1shoot">单张</title>
+        <title id="title_burst">连拍</title>
+        <title id="title_4kphoto">4K照片</title>
+        <title id="title_4kphoto_burst">4K 连拍</title>
+        <title id="title_4kphoto_start_stop">4K 连拍(S/S)</title>
+        <title id="title_4kphoto_pre_burst">4K 快门前连拍</title>
+        <title id="title_autobracket">自动括弧式曝光</title>
+        <title id="title_selftimer">自拍定时器</title>
+        <title id="title_selftimer_10sec">10秒钟</title>
+        <title id="title_selftimer_10sec3shot">10秒/3张</title>
+        <title id="title_selftimer_2sec">2秒钟</title>
+        <title id="title_drvmod_off">驱动模式关闭</title>
+        <title id="title_peaking">峰值</title>
+        <title id="title_peaking_off">OFF</title>
+        <title id="title_peaking_low">弱</title>
+        <title id="title_peaking_high">强</title>
+      </language>
+      <language code="nl" >
+        <title id="title_connection_settings">Verbind.best. inst.</title>
+        <title id="title_liveview_settings">Inst. livebesturing</title>
+        <title id="title_self_shot">Zelfopnamemodus</title>
+        <title id="title_liveview_quality">Beeldkwal. livebest.</title>
+        <title id="title_warn_lens_out">Waarsch. lens uitg.</title>
+        <title id="title_jump_rec">Springsnapshot</title>
+        <title id="title_playview_settings">Afspeelinstellingen</title>
+        <title id="title_appset">Toepassingsfunctie</title>
+        <title id="title_netname">Netwerknaam</title>
+        <title id="title_scnguid_disp_smpl">Voorbeeldscherm</title>
+        <title id="title_tou">Gebruiksvoorwaarden</title>
+        <title id="title_crtv_ctrl">Creatieve opties</title>
+        <title id="title_crtv_ctrl_pop">Expressief</title>
+        <title id="title_crtv_ctrl_old_days">Vroeger</title>
+        <title id="title_crtv_ctrl_high_key">Overbelichting</title>
+        <title id="title_crtv_ctrl_low_key">Donker</title>
+        <title id="title_crtv_ctrl_monochro">Zwart-wit</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Dynamisch zwart/wit</title>
+        <title id="title_crtv_ctrl_rough_monochro">Ruw zwart-wit</title>
+        <title id="title_crtv_ctrl_silky_monochro">Zacht zwart-wit</title>
+        <title id="title_crtv_ctrl_impressive_art">Expressieve indruk</title>
+        <title id="title_crtv_ctrl_high_dynamic">Hoge dynamiek</title>
+        <title id="title_crtv_ctrl_cross_proc">Kruisproces</title>
+        <title id="title_crtv_ctrl_toy_photo">Speelgoedcam.effect</title>
+        <title id="title_crtv_ctrl_toy_pop">Speelgoedcamera levendig</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Bleach bypass</title>
+        <title id="title_crtv_ctrl_diorama">Miniatuureffect</title>
+        <title id="title_crtv_ctrl_soft_focus">Zachte focus</title>
+        <title id="title_crtv_ctrl_fantasy">Fantasie</title>
+        <title id="title_crtv_ctrl_cross_filter">Sterfilter</title>
+        <title id="title_crtv_ctrl_one_point_color">Kleuraccent</title>
+        <title id="title_crtv_ctrl_sunshine">Zonneschijn</title>
+        <title id="title_scn_gid_fixlens_portrait">Geprononceerd portret</title>
+        <title id="title_scn_gid_clear_skin">Zachte huid</title>
+        <title id="title_scn_gid_backlight_portrait">Zacht tegenlicht</title>
+        <title id="title_scn_gid_backlight_strobe">Scherp tegenlicht</title>
+        <title id="title_scn_gid_warm_portrait">Ontspannen atmosfeer</title>
+        <title id="title_scn_gid_kids">Kindergezicht</title>
+        <title id="title_scn_gid_landscape">Landschap</title>
+        <title id="title_scn_gid_blue_sky">Blauwe lucht</title>
+        <title id="title_scn_gid_magic_hour">Romantische zonsondergang</title>
+        <title id="title_scn_gid_sunset">Levendige zonsondergang</title>
+        <title id="title_scn_gid_shimmering_water">Glinsterend water</title>
+        <title id="title_scn_gid_night">Heldere nachtopname</title>
+        <title id="title_scn_gid_cool_night">Koele nachtopname</title>
+        <title id="title_scn_gid_warm_night">Warme nachtopname</title>
+        <title id="title_scn_gid_longexpo_night">Artistieke nachtopname</title>
+        <title id="title_scn_gid_illumination">Fonkelende verlichting</title>
+        <title id="title_scn_gid_handheld_night">Nachtop. uit hand</title>
+        <title id="title_scn_gid_night_portrait">Nachtportret</title>
+        <title id="title_scn_gid_flower">Bloemen</title>
+        <title id="title_scn_gid_cooking">Gerechten</title>
+        <title id="title_scn_gid_sweets">Desserts</title>
+        <title id="title_scn_gid_pet">Bewegende dieren</title>
+        <title id="title_scn_gid_sports">Sport</title>
+        <title id="title_scn_gid_monochrome">Monochroom</title>
+        <title id="title_ph_sty">Fotostijl</title>
+        <title id="title_ph_sty_standard">Standaard</title>
+        <title id="title_ph_sty_vivid">Levendig</title>
+        <title id="title_ph_sty_natural">Natuurlijk</title>
+        <title id="title_ph_sty_bw">Zwart-wit</title>
+        <title id="title_ph_sty_scenery">Landschap</title>
+        <title id="title_ph_sty_portrait">Portret</title>
+        <title id="title_ph_sty_cinelike_d">Cinelike dynamisch bereik</title>
+        <title id="title_ph_sty_cinelike_v">Cinelike video</title>
+        <title id="title_ph_sty_custom">Voorkeuze</title>
+        <title id="title_filter_set">Filter selecteren</title>
+        <title id="title_filter_set_noeffect">Geen effect</title>
+        <title id="title_asprat">Aspectratio</title>
+        <title id="title_pctsiz">Fotoresolutie</title>
+        <title id="title_quality">Kwaliteit</title>
+        <title id="title_quality_fine">Fijn</title>
+        <title id="title_quality_standard">Standaard</title>
+        <title id="title_quality_raw_fine">RAW+fijn</title>
+        <title id="title_quality_raw_standard">RAW+standaard</title>
+        <title id="title_macro">Macro stand</title>
+        <title id="title_macro_af">Macro-AF</title>
+        <title id="title_macro_zoom">Macro zoom</title>
+        <title id="title_macro_off">Uit</title>
+        <title id="title_lightmet">Meetfunctie</title>
+        <title id="title_lightmet_multi">Multimeting</title>
+        <title id="title_lightmet_center">Centrale meting</title>
+        <title id="title_lightmet_spot">Punt</title>
+        <title id="title_focus_action">Focus modus</title>
+        <title id="title_focus_action_mode1">Functie 1</title>
+        <title id="title_focus_action_mode2">Functie 2</title>
+        <title id="title_flash">Flitserfunctie</title>
+        <title id="title_flash_iauto">Intelligent auto</title>
+        <title id="title_flash_forcedflashon">Flitser altijd aan</title>
+        <title id="title_flash_forced_on_redeye">Gdw. aan/rode-og</title>
+        <title id="title_flash_slowsync">Langz. sync.</title>
+        <title id="title_flash_slowsyncredeye">Lngz. sync./rode-og</title>
+        <title id="title_flash_forcedflashoff">Gedwongen uit</title>
+        <title id="title_videoformat">Opname-indeling</title>
+        <title id="title_v_quality">Video Opn. kwaliteit</title>
+        <title id="title_stp_mtn_anm">Stop-motionanimatie</title>
+        <title id="title_tch_shtr">Touch sluiter</title>
+        <title id="title_f_and_ss">Diafragma/Sluitertijd</title>
+        <title id="title_aperture">Diafragma</title>
+        <title id="title_shutter_speed">Sluitertijd</title>
+        <title id="title_program_shift">Progr. wisseling</title>
+        <title id="title_exposure2">Belichting</title>
+        <title id="title_afmode">AF mode</title>
+        <title id="title_afmode_facedetection">Gezicht/ogen detecteren</title>
+        <title id="title_afmode_49area">49-zone</title>
+        <title id="title_afmode_custom_multi">Voorkeur multi</title>
+        <title id="title_afmode_custom_multi_vertical">Verticaal patroon</title>
+        <title id="title_afmode_custom_multi_horizontal">Horizontaal patroon</title>
+        <title id="title_afmode_custom_multi_center">Cent. patroon</title>
+        <title id="title_afmode_custom_multi_free">Aangepast</title>
+        <title id="title_afmode_custom_multi_custom_1">Klant1</title>
+        <title id="title_afmode_custom_multi_custom_2">Klant2</title>
+        <title id="title_afmode_1area">1-zone</title>
+        <title id="title_afmode_pinpoint">Spot</title>
+        <title id="title_sensitivity">Gevoeligheid</title>
+        <title id="title_whitebalance">Witbalans</title>
+        <title id="title_whitebalance_auto">Auto witbalans</title>
+        <title id="title_whitebalance_daylight">Daglicht</title>
+        <title id="title_whitebalance_cloudy">Bewolkt</title>
+        <title id="title_whitebalance_shade">Schaduw</title>
+        <title id="title_whitebalance_halogen">Halogeen</title>
+        <title id="title_whitebalance_flash">Flitser</title>
+        <title id="title_whitebalance_white_set1">Witinst. 1</title>
+        <title id="title_whitebalance_white_set2">Witinst. 2</title>
+        <title id="title_whitebalance_white_set3">Witinst. 3</title>
+        <title id="title_whitebalance_white_set4">Witinst. 4</title>
+        <title id="title_whitebalance_color_temp">Kleurtemperatuur</title>
+        <title id="title_drivemode">Aandrijfstand</title>
+        <title id="title_1shoot">Enkel</title>
+        <title id="title_burst">Burst shooting</title>
+        <title id="title_4kphoto">4K-FOTO</title>
+        <title id="title_4kphoto_burst">4K-burst</title>
+        <title id="title_4kphoto_start_stop">4K-burst (S/S)</title>
+        <title id="title_4kphoto_pre_burst">4K-voorburst</title>
+        <title id="title_autobracket">Auto bracket</title>
+        <title id="title_selftimer">Zelf ontsp.</title>
+        <title id="title_selftimer_10sec">10 sec.</title>
+        <title id="title_selftimer_10sec3shot">10 s/3beelden</title>
+        <title id="title_selftimer_2sec">2 sec.</title>
+        <title id="title_drvmod_off">Aandrijfstand uit</title>
+        <title id="title_peaking_low">Laag</title>
+        <title id="title_peaking_high">Hoog</title>
+      </language>
+      <language code="pt-BR" >
+        <title id="title_connection_settings">Conf. dest. conexão</title>
+        <title id="title_liveview_settings">Conf. Contr. ao Vivo</title>
+        <title id="title_self_shot">Modo autoretrato</title>
+        <title id="title_liveview_quality">Qual. Contr. ao Vivo</title>
+        <title id="title_warn_lens_out">Aviso extensão lente</title>
+        <title id="title_jump_rec">Foto de salto</title>
+        <title id="title_playview_settings">Config. reprodução</title>
+        <title id="title_appset">Função do aplicativo</title>
+        <title id="title_netname">Nome da rede</title>
+        <title id="title_appset_scnguide">Guia de Cena</title>
+        <title id="title_scnguid_disp_smpl">Exemplo de exibição</title>
+        <title id="title_help">Ajuda</title>
+        <title id="title_tou">Termos de uso</title>
+        <title id="title_crtv_ctrl">Controle criativo</title>
+        <title id="title_crtv_ctrl_pop">Vivas</title>
+        <title id="title_crtv_ctrl_old_days">Velhos tempos</title>
+        <title id="title_crtv_ctrl_high_key">Alto contraste</title>
+        <title id="title_crtv_ctrl_low_key">Tom escuro</title>
+        <title id="title_crtv_ctrl_sepia">Sépia</title>
+        <title id="title_crtv_ctrl_monochro">Monocromático</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Monocromático Dinâmico</title>
+        <title id="title_crtv_ctrl_rough_monochro">Monocromático áspero</title>
+        <title id="title_crtv_ctrl_silky_monochro">Monocromático suave</title>
+        <title id="title_crtv_ctrl_impressive_art">Arte Impressiva</title>
+        <title id="title_crtv_ctrl_high_dynamic">Dinâmica elev.</title>
+        <title id="title_crtv_ctrl_cross_proc">Processo Cruzado</title>
+        <title id="title_crtv_ctrl_toy_photo">Efeito brinquedo</title>
+        <title id="title_crtv_ctrl_toy_pop">Pop brinquedo</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Eliminar branqueamento</title>
+        <title id="title_crtv_ctrl_diorama">Efeito miniat.</title>
+        <title id="title_crtv_ctrl_soft_focus">Focagem Suave</title>
+        <title id="title_crtv_ctrl_fantasy">Fantasia</title>
+        <title id="title_crtv_ctrl_cross_filter">Filtro Estrela</title>
+        <title id="title_crtv_ctrl_one_point_color">Cor em Um Ponto</title>
+        <title id="title_crtv_ctrl_sunshine">Brilho do sol</title>
+        <title id="title_scn_gid">Guia de Cena</title>
+        <title id="title_scn_gid_fixlens_portrait">Retrato Nítido</title>
+        <title id="title_scn_gid_clear_skin">Pele Sedosa</title>
+        <title id="title_scn_gid_backlight_portrait">Suavidade Retro-iluminada</title>
+        <title id="title_scn_gid_backlight_strobe">Claro c/ Retroiluminação</title>
+        <title id="title_scn_gid_warm_portrait">Tom Relaxante</title>
+        <title id="title_scn_gid_kids">Rosto de Criança Amável</title>
+        <title id="title_scn_gid_landscape">Cenário Distinto</title>
+        <title id="title_scn_gid_blue_sky">Céu Azul Brilhante</title>
+        <title id="title_scn_gid_magic_hour">Iluminação Romântica Pôr-do-Sol</title>
+        <title id="title_scn_gid_sunset">Iluminação Vívida do Pôr-do-Sol</title>
+        <title id="title_scn_gid_shimmering_water">Água com Reflexo</title>
+        <title id="title_scn_gid_night">Cena Noturna Nítida</title>
+        <title id="title_scn_gid_cool_night">Céu Noturno Agradável</title>
+        <title id="title_scn_gid_warm_night">Cena Noturna Quente Iluminada</title>
+        <title id="title_scn_gid_longexpo_night">Cena Noturna Artística</title>
+        <title id="title_scn_gid_illumination">Iluminações Brilhantes</title>
+        <title id="title_scn_gid_handheld_night">Foto noturna man.</title>
+        <title id="title_scn_gid_night_portrait">Retrato Noturno Nítido</title>
+        <title id="title_scn_gid_flower">Imagem Suave de uma Flor</title>
+        <title id="title_scn_gid_cooking">Comida Apetitosa</title>
+        <title id="title_scn_gid_sweets">Sobremesa Atraente</title>
+        <title id="title_scn_gid_pet">Congelar o Movimento do Animal</title>
+        <title id="title_scn_gid_sports">Fotografia Nítida Desportiva</title>
+        <title id="title_scn_gid_monochrome">Monocromática</title>
+        <title id="title_ph_sty">Estilo foto</title>
+        <title id="title_ph_sty_standard">Padrão</title>
+        <title id="title_ph_sty_vivid">Vívido</title>
+        <title id="title_ph_sty_bw">Monocromático</title>
+        <title id="title_ph_sty_scenery">Cenário</title>
+        <title id="title_ph_sty_portrait">Retrato</title>
+        <title id="title_ph_sty_cinelike_d">Interv. dinâm. como cinema</title>
+        <title id="title_ph_sty_cinelike_v">Vídeo como cinema</title>
+        <title id="title_ph_sty_custom">Personaliz.</title>
+        <title id="title_filter_set">Selecionar filtro</title>
+        <title id="title_filter_set_noeffect">Sem efeito</title>
+        <title id="title_asprat">Formato</title>
+        <title id="title_pctsiz">Tamanho foto</title>
+        <title id="title_quality">Qualidade</title>
+        <title id="title_quality_fine">Alto</title>
+        <title id="title_quality_standard">Padrão</title>
+        <title id="title_quality_raw_fine">RAW+Alto</title>
+        <title id="title_quality_raw_standard">RAW+padrão</title>
+        <title id="title_macro">Modo macro</title>
+        <title id="title_macro_af">AF macro</title>
+        <title id="title_macro_zoom">Zoom macro</title>
+        <title id="title_macro_off">Desligado</title>
+        <title id="title_lightmet">Medição</title>
+        <title id="title_lightmet_multi">Multi medição</title>
+        <title id="title_lightmet_center">Centralizado</title>
+        <title id="title_focus_select">Pós-focagem</title>
+        <title id="title_focus_action">Modo de focagem</title>
+        <title id="title_focus_action_mode1">Modo 1</title>
+        <title id="title_focus_action_mode2">Modo 2</title>
+        <title id="title_flash">Modo flash</title>
+        <title id="title_flash_forcedflashon">Flash forçado</title>
+        <title id="title_flash_forced_on_redeye">Lig for/olh verm</title>
+        <title id="title_flash_slowsync">Sinc lenta</title>
+        <title id="title_flash_slowsyncredeye">Sinc lent/olh verm</title>
+        <title id="title_flash_forcedflashoff">Flash desligado</title>
+        <title id="title_videoformat">Formato de gravação</title>
+        <title id="title_v_quality">Vídeo Quald. grav.</title>
+        <title id="title_stp_mtn_anm">Animaç. Stop Motion</title>
+        <title id="title_tch_shtr">Toque obtur.</title>
+        <title id="title_tch_ae">AE de toque</title>
+        <title id="title_f_and_ss">Abertura/Vel. obtur.</title>
+        <title id="title_aperture">Abertura</title>
+        <title id="title_shutter_speed">Vel. obtur.</title>
+        <title id="title_program_shift">Mudança de programa</title>
+        <title id="title_exposure2">Exposição</title>
+        <title id="title_afmode">Modo AF</title>
+        <title id="title_afmode_facedetection">Detectar face/olho</title>
+        <title id="title_afmode_aftracking">Busca</title>
+        <title id="title_afmode_49area">49 áreas</title>
+        <title id="title_afmode_custom_multi">Multi Utilizador</title>
+        <title id="title_afmode_custom_multi_vertical">Padrão vertical</title>
+        <title id="title_afmode_custom_multi_horizontal">Padrão horizontal</title>
+        <title id="title_afmode_custom_multi_center">Padrão central</title>
+        <title id="title_afmode_custom_multi_free">Definido pelo utilizador</title>
+        <title id="title_afmode_custom_multi_custom_1">Personalizado1</title>
+        <title id="title_afmode_custom_multi_custom_2">Personalizado2</title>
+        <title id="title_afmode_1area">1 área</title>
+        <title id="title_afmode_pinpoint">Foco pontual</title>
+        <title id="title_sensitivity">Sensibilidade</title>
+        <title id="title_whitebalance">Bal. brancos</title>
+        <title id="title_whitebalance_auto">Balanço auto brancos</title>
+        <title id="title_whitebalance_daylight">Luz do dia</title>
+        <title id="title_whitebalance_cloudy">Nublado</title>
+        <title id="title_whitebalance_shade">Sombra</title>
+        <title id="title_whitebalance_halogen">Incandescente</title>
+        <title id="title_whitebalance_white_set1">Bal. brancos 1</title>
+        <title id="title_whitebalance_white_set2">Bal. brancos 2</title>
+        <title id="title_whitebalance_white_set3">Bal. brancos 3</title>
+        <title id="title_whitebalance_white_set4">Bal. brancos 4</title>
+        <title id="title_whitebalance_color_temp">Temperatura de cor</title>
+        <title id="title_drivemode">Modo drive</title>
+        <title id="title_1shoot">Única</title>
+        <title id="title_burst">Cap. contínua</title>
+        <title id="title_4kphoto">FOTO 4K</title>
+        <title id="title_4kphoto_burst">Disp. contínuo 4K</title>
+        <title id="title_4kphoto_start_stop">Disp. contínuo 4K(S/S)</title>
+        <title id="title_4kphoto_pre_burst">Pré-Disp. contínuo 4K</title>
+        <title id="title_autobracket">Enquad auto</title>
+        <title id="title_selftimer">Temporizador</title>
+        <title id="title_selftimer_10sec">10 segundos</title>
+        <title id="title_selftimer_10sec3shot">10 seg/3 fotos</title>
+        <title id="title_selftimer_2sec">2 segundos</title>
+        <title id="title_drvmod_off">Modo drive off</title>
+        <title id="title_peaking">Realçar contorno</title>
+        <title id="title_peaking_off">OFF</title>
+        <title id="title_peaking_low">Baixa</title>
+        <title id="title_peaking_high">Alta</title>
+      </language>
+      <language code="ru" >
+        <title id="title_connection_settings">Настройка назн.соед.</title>
+        <title id="title_liveview_settings">Настр.жив.контроля</title>
+        <title id="title_self_shot">Режим автосъемки</title>
+        <title id="title_liveview_quality">Кач.из.жив.контроля</title>
+        <title id="title_warn_lens_out">Предуп.о выдв.объек.</title>
+        <title id="title_jump_rec">Снимок прыжка</title>
+        <title id="title_playview_settings">Настр.воспроизвед.</title>
+        <title id="title_appset">Функция приложения</title>
+        <title id="title_netname">Имя сети</title>
+        <title id="title_appset_scnguide">Руковод. по созданию сцен</title>
+        <title id="title_scnguid_disp_smpl">Показ примера</title>
+        <title id="title_help">Справка</title>
+        <title id="title_tou">Соглашен.об использ.</title>
+        <title id="title_crtv_ctrl">Творческий контроль</title>
+        <title id="title_crtv_ctrl_pop">Выразительн.</title>
+        <title id="title_crtv_ctrl_retro">Ретро</title>
+        <title id="title_crtv_ctrl_old_days">Старые времена</title>
+        <title id="title_crtv_ctrl_high_key">Высокотональный</title>
+        <title id="title_crtv_ctrl_low_key">Недоэкспонирование</title>
+        <title id="title_crtv_ctrl_sepia">Сепия</title>
+        <title id="title_crtv_ctrl_monochro">Монохромный</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">Динамический монохром</title>
+        <title id="title_crtv_ctrl_rough_monochro">Грубый монохромный</title>
+        <title id="title_crtv_ctrl_silky_monochro">Мягкий монохромный</title>
+        <title id="title_crtv_ctrl_impressive_art">Выраз. искусство</title>
+        <title id="title_crtv_ctrl_high_dynamic">Высокодинамичный</title>
+        <title id="title_crtv_ctrl_cross_proc">Кросс-процесс</title>
+        <title id="title_crtv_ctrl_toy_photo">Эффект мыльницы</title>
+        <title id="title_crtv_ctrl_toy_pop">Ярк.изобр.с эфф.мыльн.</title>
+        <title id="title_crtv_ctrl_bleach_bypass">Пропуск отбеливания</title>
+        <title id="title_crtv_ctrl_diorama">Эффект миниатюры</title>
+        <title id="title_crtv_ctrl_soft_focus">Нерезкое изображение</title>
+        <title id="title_crtv_ctrl_fantasy">Фэнтези</title>
+        <title id="title_crtv_ctrl_cross_filter">Звездный фильтр</title>
+        <title id="title_crtv_ctrl_one_point_color">Цветовой акцент</title>
+        <title id="title_crtv_ctrl_sunshine">Солнечное сияние</title>
+        <title id="title_scn_gid">Руковод. по созданию сцен</title>
+        <title id="title_scn_gid_fixlens_portrait">Четкий портрет</title>
+        <title id="title_scn_gid_clear_skin">Шелковистая кожа</title>
+        <title id="title_scn_gid_backlight_portrait">Мягкость подсветки</title>
+        <title id="title_scn_gid_backlight_strobe">Четкость на фоне подсветки</title>
+        <title id="title_scn_gid_warm_portrait">Непринужденность</title>
+        <title id="title_scn_gid_kids">Милое детское лицо</title>
+        <title id="title_scn_gid_landscape">Отчетливый пейзаж</title>
+        <title id="title_scn_gid_blue_sky">Яркое голубое небо</title>
+        <title id="title_scn_gid_magic_hour">Романтич. отсветы заката</title>
+        <title id="title_scn_gid_sunset">Яркие отсветы заката</title>
+        <title id="title_scn_gid_shimmering_water">Сверкающая вода</title>
+        <title id="title_scn_gid_night">Четкий ночной пейзаж</title>
+        <title id="title_scn_gid_cool_night">Прохладное ночное небо</title>
+        <title id="title_scn_gid_warm_night">Ярк. и тепл. ночной пейзаж</title>
+        <title id="title_scn_gid_longexpo_night">Худож. ночной пейзаж</title>
+        <title id="title_scn_gid_illumination">Сверкающее освещение</title>
+        <title id="title_scn_gid_handheld_night">Портат.ноч.снимок</title>
+        <title id="title_scn_gid_night_portrait">Четкий ночной портрет</title>
+        <title id="title_scn_gid_flower">Нежное изображение цветка</title>
+        <title id="title_scn_gid_cooking">Аппетитная еда</title>
+        <title id="title_scn_gid_sweets">Соблазнительный десерт</title>
+        <title id="title_scn_gid_pet">Застывшее в движ. животное</title>
+        <title id="title_scn_gid_sports">Четкие спортивные снимки</title>
+        <title id="title_scn_gid_monochrome">Монохромный</title>
+        <title id="title_ph_sty">Фото стиль</title>
+        <title id="title_ph_sty_standard">Стандарт</title>
+        <title id="title_ph_sty_vivid">Яркий</title>
+        <title id="title_ph_sty_natural">Естественный</title>
+        <title id="title_ph_sty_bw">Монохром</title>
+        <title id="title_ph_sty_scenery">Пейзаж</title>
+        <title id="title_ph_sty_portrait">Портрет</title>
+        <title id="title_ph_sty_cinelike_d">Дин. диап. эф. кинотеатра</title>
+        <title id="title_ph_sty_cinelike_v">Видео с эф. кинотеатра</title>
+        <title id="title_ph_sty_custom">Ручн.настр.</title>
+        <title id="title_filter_set">Выбор фильтра</title>
+        <title id="title_filter_set_noeffect">Нет эффекта</title>
+        <title id="title_asprat">Формат</title>
+        <title id="title_pctsiz">Разм. кадра</title>
+        <title id="title_quality">Качество</title>
+        <title id="title_quality_fine">Выс/качество</title>
+        <title id="title_quality_standard">Стандарт</title>
+        <title id="title_quality_raw_fine">RAW+выс/кач.</title>
+        <title id="title_quality_raw_standard">RAW+стандарт.</title>
+        <title id="title_macro">Режим макро</title>
+        <title id="title_macro_af">АФ макро</title>
+        <title id="title_macro_zoom">Макро зум</title>
+        <title id="title_macro_off">Выкл</title>
+        <title id="title_lightmet">Режим замера</title>
+        <title id="title_lightmet_multi">Многозон. замер</title>
+        <title id="title_lightmet_center">Центр.взвеш. эксп.</title>
+        <title id="title_lightmet_spot">Точечный</title>
+        <title id="title_focus_select">Пост-фокус</title>
+        <title id="title_focus_action">Режим фокусировки</title>
+        <title id="title_focus_action_mode1">Режим 1</title>
+        <title id="title_focus_action_mode2">Режим 2</title>
+        <title id="title_flash">Режим вспышки</title>
+        <title id="title_flash_iauto">Iавто</title>
+        <title id="title_flash_forcedflashon">Прин. всп. вкл</title>
+        <title id="title_flash_forced_on_redeye">Прин вкл/кр гл</title>
+        <title id="title_flash_slowsync">Медл. синхронизация</title>
+        <title id="title_flash_slowsyncredeye">Зам синх/кр гл</title>
+        <title id="title_flash_forcedflashoff">Прин. всп выкл</title>
+        <title id="title_videoformat">Формат записи</title>
+        <title id="title_v_quality">Видео Кач-во зап.</title>
+        <title id="title_stp_mtn_anm">Покадр. анимация</title>
+        <title id="title_tch_shtr">Затвор кас.</title>
+        <title id="title_tch_ae">АЭ касанием</title>
+        <title id="title_f_and_ss">Диафрагма/Скор. затвора</title>
+        <title id="title_aperture">Диафрагма</title>
+        <title id="title_shutter_speed">Скор. затвора</title>
+        <title id="title_program_shift">Смена прогр.</title>
+        <title id="title_exposure2">Экспозиция</title>
+        <title id="title_afmode">Режим АФ</title>
+        <title id="title_afmode_facedetection">Распознавание лиц/глаз</title>
+        <title id="title_afmode_aftracking">Следящий</title>
+        <title id="title_afmode_49area">49-зонный</title>
+        <title id="title_afmode_custom_multi">Пользов. мульти</title>
+        <title id="title_afmode_custom_multi_vertical">Вертикальный шаблон</title>
+        <title id="title_afmode_custom_multi_horizontal">Горизонтальный шаблон</title>
+        <title id="title_afmode_custom_multi_center">Централ. шаблон</title>
+        <title id="title_afmode_custom_multi_free">Опред. пользов.</title>
+        <title id="title_afmode_custom_multi_custom_1">Пользов.1</title>
+        <title id="title_afmode_custom_multi_custom_2">Пользов.2</title>
+        <title id="title_afmode_1area">1-зонный</title>
+        <title id="title_afmode_pinpoint">Очень точно</title>
+        <title id="title_sensitivity">Светочувст.</title>
+        <title id="title_whitebalance">Бал. бел.</title>
+        <title id="title_whitebalance_auto">Автом. баланс белого</title>
+        <title id="title_whitebalance_daylight">Дневной свет</title>
+        <title id="title_whitebalance_cloudy">Облачно</title>
+        <title id="title_whitebalance_shade">Тень</title>
+        <title id="title_whitebalance_halogen">Накаливание</title>
+        <title id="title_whitebalance_flash">Вспышка</title>
+        <title id="title_whitebalance_white_set1">Уст. бал. бел. 1</title>
+        <title id="title_whitebalance_white_set2">Уст. бал. бел. 2</title>
+        <title id="title_whitebalance_white_set3">Уст. бал. бел. 3</title>
+        <title id="title_whitebalance_white_set4">Уст. бал. бел. 4</title>
+        <title id="title_whitebalance_color_temp">Цветовая темпер.</title>
+        <title id="title_drivemode">Режим съемки</title>
+        <title id="title_1shoot">Один сн.</title>
+        <title id="title_burst">Серийная съемка</title>
+        <title id="title_4kphoto">4K ФОТО</title>
+        <title id="title_4kphoto_burst">Сер.съемка 4K</title>
+        <title id="title_4kphoto_start_stop">Сер.съемк 4K (S/S)</title>
+        <title id="title_4kphoto_pre_burst">Предв. сер.съемка 4K</title>
+        <title id="title_autobracket">Авт.брекетинг</title>
+        <title id="title_selftimer">Авт. таймер</title>
+        <title id="title_selftimer_10sec">10 сек</title>
+        <title id="title_selftimer_10sec3shot">10 сек / 3 изобр.</title>
+        <title id="title_selftimer_2sec">2 сек</title>
+        <title id="title_drvmod_off">Режим накопителя выкл</title>
+        <title id="title_peaking">Усиление контуров</title>
+        <title id="title_peaking_low">Низк.</title>
+        <title id="title_peaking_high">Высок.</title>
+      </language>
+      <language code="ko" >
+        <title id="title_connection_settings">연결 대상 설정</title>
+        <title id="title_liveview_settings">라이브 컨트롤 설정</title>
+        <title id="title_self_shot">셀프 촬영 모드</title>
+        <title id="title_liveview_quality">라이브 컨트롤 품질</title>
+        <title id="title_warn_lens_out">렌즈 돌출 경고</title>
+        <title id="title_jump_rec">점프 스냅</title>
+        <title id="title_playview_settings">재생 설정</title>
+        <title id="title_appset">응용 프로그램 기능</title>
+        <title id="title_netname">네트워크 이름</title>
+        <title id="title_appset_scnguide">장면 가이드</title>
+        <title id="title_scnguid_disp_smpl">샘플 표시</title>
+        <title id="title_help">도움말</title>
+        <title id="title_tou">이용 약관</title>
+        <title id="title_crtv_ctrl">크리에이티브 콘트롤</title>
+        <title id="title_crtv_ctrl_pop">생동감</title>
+        <title id="title_crtv_ctrl_retro">복고</title>
+        <title id="title_crtv_ctrl_old_days">올드 데이즈</title>
+        <title id="title_crtv_ctrl_high_key">하이키</title>
+        <title id="title_crtv_ctrl_low_key">로우 키</title>
+        <title id="title_crtv_ctrl_sepia">세피아</title>
+        <title id="title_crtv_ctrl_monochro">흑백</title>
+        <title id="title_crtv_ctrl_dynamic_monochro">다이내믹 흑백 효과</title>
+        <title id="title_crtv_ctrl_rough_monochro">거친 흑백</title>
+        <title id="title_crtv_ctrl_silky_monochro">실크 흑백</title>
+        <title id="title_crtv_ctrl_impressive_art">인상적인 아트</title>
+        <title id="title_crtv_ctrl_high_dynamic">하이 다이내믹</title>
+        <title id="title_crtv_ctrl_cross_proc">크로스 프로세스</title>
+        <title id="title_crtv_ctrl_toy_photo">장난감 효과</title>
+        <title id="title_crtv_ctrl_toy_pop">토이 팝</title>
+        <title id="title_crtv_ctrl_bleach_bypass">표백 바이패스</title>
+        <title id="title_crtv_ctrl_diorama">미니어처 효과</title>
+        <title id="title_crtv_ctrl_soft_focus">소프트 포커스</title>
+        <title id="title_crtv_ctrl_fantasy">판타지</title>
+        <title id="title_crtv_ctrl_cross_filter">스타 필터</title>
+        <title id="title_crtv_ctrl_one_point_color">원 포인트 컬러</title>
+        <title id="title_crtv_ctrl_sunshine">선샤인</title>
+        <title id="title_scn_gid">장면 가이드</title>
+        <title id="title_scn_gid_fixlens_portrait">선명한 인물 사진</title>
+        <title id="title_scn_gid_clear_skin">피부 보정</title>
+        <title id="title_scn_gid_backlight_portrait">부드러운 역광</title>
+        <title id="title_scn_gid_backlight_strobe">선명한 역광</title>
+        <title id="title_scn_gid_warm_portrait">따뜻한 색조</title>
+        <title id="title_scn_gid_kids">사랑스런 아이 얼굴</title>
+        <title id="title_scn_gid_landscape">특색있는 풍경</title>
+        <title id="title_scn_gid_blue_sky">밝은 푸른빛 하늘</title>
+        <title id="title_scn_gid_magic_hour">낭만적인 저녁노을</title>
+        <title id="title_scn_gid_sunset">선명한 저녁노을</title>
+        <title id="title_scn_gid_shimmering_water">반짝이는 물</title>
+        <title id="title_scn_gid_night">선명한 야경</title>
+        <title id="title_scn_gid_cool_night">근사한 밤 하늘</title>
+        <title id="title_scn_gid_warm_night">따뜻한 느낌의 야경</title>
+        <title id="title_scn_gid_longexpo_night">예술적인 야경</title>
+        <title id="title_scn_gid_illumination">반짝이는 조명</title>
+        <title id="title_scn_gid_handheld_night">핸드헬드 야경</title>
+        <title id="title_scn_gid_night_portrait">선명한 야경 인물</title>
+        <title id="title_scn_gid_flower">부드러운 꽃 이미지</title>
+        <title id="title_scn_gid_cooking">먹음직스러운 음식</title>
+        <title id="title_scn_gid_sweets">예쁜 디저트</title>
+        <title id="title_scn_gid_pet">움직이는 동물 촬영</title>
+        <title id="title_scn_gid_sports">선명한 스포츠 샷</title>
+        <title id="title_scn_gid_monochrome">흑백 사진</title>
+        <title id="title_ph_sty">사진 스타일</title>
+        <title id="title_ph_sty_standard">표준</title>
+        <title id="title_ph_sty_vivid">선명</title>
+        <title id="title_ph_sty_natural">내추럴</title>
+        <title id="title_ph_sty_bw">모노크롬</title>
+        <title id="title_ph_sty_scenery">풍경</title>
+        <title id="title_ph_sty_portrait">인물</title>
+        <title id="title_ph_sty_cinelike_d">영화같은 다이내믹 레인지</title>
+        <title id="title_ph_sty_cinelike_v">영화같은 비디오</title>
+        <title id="title_ph_sty_custom">사용자 모드</title>
+        <title id="title_filter_set">필터 선택</title>
+        <title id="title_filter_set_noeffect">효과 없음</title>
+        <title id="title_asprat">화면비율</title>
+        <title id="title_pctsiz">기록화소수</title>
+        <title id="title_quality">화질</title>
+        <title id="title_quality_fine">고화질</title>
+        <title id="title_quality_standard">표준</title>
+        <title id="title_quality_raw_fine">RAW+고화질</title>
+        <title id="title_quality_raw_standard">RAW+표준</title>
+        <title id="title_macro">매크로 모드</title>
+        <title id="title_macro_af">AF 매크로</title>
+        <title id="title_macro_zoom">매크로 줌</title>
+        <title id="title_macro_off">꺼짐</title>
+        <title id="title_lightmet">측광모드</title>
+        <title id="title_lightmet_multi">다중 측광</title>
+        <title id="title_lightmet_center">중앙중점측광</title>
+        <title id="title_lightmet_spot">스포트</title>
+        <title id="title_focus_select">포스트 포커스</title>
+        <title id="title_focus_action">초점 모드</title>
+        <title id="title_focus_action_mode1">모드1</title>
+        <title id="title_focus_action_mode2">모드2</title>
+        <title id="title_flash">플래시 모드</title>
+        <title id="title_flash_iauto">i오토</title>
+        <title id="title_flash_forcedflashon">강제발광</title>
+        <title id="title_flash_forced_on_redeye">강제발광/적목</title>
+        <title id="title_flash_slowsync">슬로우싱크로</title>
+        <title id="title_flash_slowsyncredeye">슬로우 싱크/적목</title>
+        <title id="title_flash_forcedflashoff">발광금지</title>
+        <title id="title_videoformat">촬영포맷</title>
+        <title id="title_v_quality">동영상 화질</title>
+        <title id="title_stp_mtn_anm">스톱 모션 애니메이션</title>
+        <title id="title_tch_shtr">터치 셔터</title>
+        <title id="title_tch_ae">터치 AE</title>
+        <title id="title_f_and_ss">구경 값/셔터 속도</title>
+        <title id="title_aperture">구경 값</title>
+        <title id="title_shutter_speed">셔터 속도</title>
+        <title id="title_program_shift">프로그램 시프트</title>
+        <title id="title_exposure2">노출보정</title>
+        <title id="title_afmode">AF 모드</title>
+        <title id="title_afmode_facedetection">얼굴/눈인식</title>
+        <title id="title_afmode_aftracking">트래킹</title>
+        <title id="title_afmode_49area">49영역</title>
+        <title id="title_afmode_custom_multi">사용자 멀티</title>
+        <title id="title_afmode_custom_multi_vertical">세로 패턴</title>
+        <title id="title_afmode_custom_multi_horizontal">가로 패턴</title>
+        <title id="title_afmode_custom_multi_center">중앙 패턴</title>
+        <title id="title_afmode_custom_multi_free">사용자 정의</title>
+        <title id="title_afmode_custom_multi_custom_1">사용자1</title>
+        <title id="title_afmode_custom_multi_custom_2">사용자2</title>
+        <title id="title_afmode_1area">1영역</title>
+        <title id="title_afmode_pinpoint">핀포인트</title>
+        <title id="title_sensitivity">ISO감도</title>
+        <title id="title_sensitivity_auto">i.AUTO</title>
+        <title id="title_whitebalance">화이트 밸런스</title>
+        <title id="title_whitebalance_auto">오토화이트밸런스</title>
+        <title id="title_whitebalance_daylight">맑음</title>
+        <title id="title_whitebalance_cloudy">흐림</title>
+        <title id="title_whitebalance_shade">그늘</title>
+        <title id="title_whitebalance_halogen">백열등</title>
+        <title id="title_whitebalance_flash">플래시</title>
+        <title id="title_whitebalance_white_set1">화이트 설정 1</title>
+        <title id="title_whitebalance_white_set2">화이트 설정 2</title>
+        <title id="title_whitebalance_white_set3">화이트 설정 3</title>
+        <title id="title_whitebalance_white_set4">화이트 설정 4</title>
+        <title id="title_whitebalance_color_temp">색온도</title>
+        <title id="title_drivemode">드라이브 모드</title>
+        <title id="title_1shoot">1매</title>
+        <title id="title_burst">연사</title>
+        <title id="title_4kphoto">4K 포토</title>
+        <title id="title_4kphoto_burst">4K 연사</title>
+        <title id="title_4kphoto_start_stop">4K 연사(S/S)</title>
+        <title id="title_4kphoto_pre_burst">4K 사전 연사</title>
+        <title id="title_autobracket">오토 브래킷</title>
+        <title id="title_selftimer">셀프타이머</title>
+        <title id="title_selftimer_10sec">10초</title>
+        <title id="title_selftimer_10sec3shot">10초/3매</title>
+        <title id="title_selftimer_2sec">2초</title>
+        <title id="title_drvmod_off">드라이브 모드 꺼짐</title>
+        <title id="title_peaking">피킹</title>
+        <title id="title_peaking_off">OFF</title>
+        <title id="title_peaking_low">약</title>
+        <title id="title_peaking_high">강</title>
+      </language>
+    </titlelist>
+  </menuset>
+</camrply>

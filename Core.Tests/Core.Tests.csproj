@@ -66,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestCurMenu.xml" />
+    <Content Include="TestMenuSetFZ300.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="TestMenuSetGH3.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

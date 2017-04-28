@@ -29,6 +29,7 @@ namespace Gmaster.Core.Camera
         [InlineData("TestMenuSetGH3_S.xml")]
         [InlineData("TestMenuSetGH4.xml")]
         [InlineData("TestMenuSetGH5.xml")]
+        [InlineData("TestMenuSetFZ300.xml")]
         public void TestLiveviewQualiyty(string filename)
         {
             Load(filename);
