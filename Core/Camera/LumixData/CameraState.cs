@@ -9,7 +9,7 @@
         public OnOff AddLocationData { get; set; }
 
         [XmlElement(ElementName = "batt")]
-        public string Batt { get; set; }
+        public string Battery { get; set; }
 
         [XmlElement(ElementName = "burst_interval_status")]
         public string BurstIntervalStatus { get; set; }
@@ -92,7 +92,7 @@
         {
             unchecked
             {
-                var hashCode = Batt?.GetHashCode() ?? 0;
+                var hashCode = Battery?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (Cammode?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ Remaincapacity;
                 hashCode = (hashCode * 397) ^ (Sdcardstatus?.GetHashCode() ?? 0);
@@ -119,7 +119,7 @@
 
         protected bool Equals(CameraState other)
         {
-            return string.Equals(Batt, other.Batt) &&
+            return string.Equals(Battery, other.Battery) &&
                    string.Equals(Cammode, other.Cammode) &&
                    Remaincapacity == other.Remaincapacity &&
                    string.Equals(Sdcardstatus, other.Sdcardstatus) &&

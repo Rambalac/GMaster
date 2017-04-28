@@ -51,14 +51,34 @@
         public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
 
         public bool CanReleaseTouchAf => (AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
-                                          && FocusAreas != null && FocusAreas.Boxes.Count > 0)
+                                            && FocusAreas != null && FocusAreas.Boxes.Count > 0)
                                          || lumixState?.CameraMode == CameraMode.MFAssist
-                                        || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP
-                                                || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
+                                         || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP
+                                         || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
 
         public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.Manual && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
 
         public int CurentZoom => lumixState?.Zoom ?? 0;
+
+        public float BatteryLevel
+        {
+            get
+            {
+                var numbers = lumixState?.State.Battery.Split('/');
+                if (numbers?.Length != 2)
+                {
+                    return 0;
+                }
+
+                if (!float.TryParse(numbers[0], out var val1)
+                    || !int.TryParse(numbers[1], out var val2) || val2 == 0)
+                {
+                    return 0;
+                }
+
+                return val1 / val2;
+            }
+        }
 
         public string CurrentAperture
         {
@@ -312,6 +332,9 @@
                         case nameof(LumixState.IsBusy):
                             OnPropertyChanged(nameof(IsConnectionActive));
                             break;
+                        case nameof(LumixState.State):
+                            OnPropertyChanged(nameof(BatteryLevel));
+                            break;
                     }
                 }
                 catch (Exception ex)
@@ -350,6 +373,7 @@
                 OnPropertyChanged(nameof(CurentZoom));
 
                 OnPropertyChanged(nameof(FocusAreas));
+                OnPropertyChanged(nameof(BatteryLevel));
             }
             catch (Exception ex)
             {
