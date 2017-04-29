@@ -9,6 +9,7 @@
     <commands:MfAssistPinpCommand x:Key="MfAssistPinpCommand" Model="{Binding}" />
     <converters:RecStateToIconConvertor x:Key="RecStateConvertor" />
     <converters:BatteryToIconConverter x:Key="BatteryToIconConverter"/>
+    
     <Style x:Key="TransparentButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />

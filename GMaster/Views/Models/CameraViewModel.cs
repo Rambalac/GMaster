@@ -40,26 +40,6 @@
 
         public AutoFocusMode AutoFocusMode => lumixState?.AutoFocusMode ?? AutoFocusMode.Unknown;
 
-        public bool CanCapture => lumixState?.CanCapture ?? false;
-
-        public bool CanChangeAperture => lumixState?.CanChangeAperture ?? true;
-
-        public bool CanChangeShutter => lumixState?.CanChangeShutter ?? true;
-
-        public object CanManualFocus => lumixState?.CanManualFocus ?? false;
-
-        public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
-
-        public bool CanReleaseTouchAf => (AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
-                                            && FocusAreas != null && FocusAreas.Boxes.Count > 0)
-                                         || lumixState?.CameraMode == CameraMode.MFAssist
-                                         || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP
-                                         || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
-
-        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.Manual && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
-
-        public int CurentZoom => lumixState?.Zoom ?? 0;
-
         public float BatteryLevel
         {
             get
@@ -79,6 +59,26 @@
                 return val1 / val2;
             }
         }
+
+        public bool CanCapture => lumixState?.CanCapture ?? false;
+
+        public bool CanChangeAperture => lumixState?.CanChangeAperture ?? true;
+
+        public bool CanChangeShutter => lumixState?.CanChangeShutter ?? true;
+
+        public object CanManualFocus => lumixState?.CanManualFocus ?? false;
+
+        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.Manual && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
+
+        public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
+
+        public bool CanReleaseTouchAf => (AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
+                                            && FocusAreas != null && FocusAreas.Boxes.Count > 0)
+                                         || lumixState?.CameraMode == CameraMode.MFAssist
+                                         || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP
+                                         || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
+
+        public int CurentZoom => lumixState?.Zoom ?? 0;
 
         public string CurrentAperture
         {
@@ -160,6 +160,38 @@
         public int MinZoom => lumixState?.LensInfo?.MinZoom ?? 0;
 
         public RecState RecState => lumixState?.RecState ?? RecState.Stopped;
+
+        public bool MemoryCardAccess => lumixState?.State.SdAccess == OnOff.On;
+
+        public bool MemoryCardError => lumixState.State.SdMemory == SdMemorySet.Unset || lumixState.State.SdCardStatus != SdCardStatus.WriteEnable;
+
+        public string MemoryCardInfo
+        {
+            get
+            {
+                if (lumixState?.State == null)
+                {
+                    return string.Empty;
+                }
+
+                if (lumixState.State.SdMemory == SdMemorySet.Unset)
+                {
+                    return "Not inserted";
+                }
+
+                if (lumixState.State.SdCardStatus != SdCardStatus.WriteEnable)
+                {
+                    return "Read Only";
+                }
+
+                if (lumixState.State.RemainDisplayType == RemainDisplayType.Time)
+                {
+                    return TimeSpan.FromSeconds(lumixState.State.VideoRemainCapacity).ToString("hh'h:'mm'm:'ss's'").TrimStart('0', 'h', 'm', ':');
+                }
+
+                return lumixState.State.RemainCapacity.ToString();
+            }
+        }
 
         public ConnectedCamera SelectedCamera
         {
@@ -256,6 +288,7 @@
                             OnPropertyChanged(nameof(CanManualFocusAf));
 
                             break;
+
                         case nameof(LumixState.CameraMode):
                             OnPropertyChanged(nameof(CanReleaseTouchAf));
                             break;
@@ -329,11 +362,16 @@
                             OnPropertyChanged(nameof(AutoFocusMode));
                             OnPropertyChanged(nameof(CanReleaseTouchAf));
                             break;
+
                         case nameof(LumixState.IsBusy):
                             OnPropertyChanged(nameof(IsConnectionActive));
                             break;
+
                         case nameof(LumixState.State):
                             OnPropertyChanged(nameof(BatteryLevel));
+                            OnPropertyChanged(nameof(MemoryCardInfo));
+                            OnPropertyChanged(nameof(MemoryCardAccess));
+                            OnPropertyChanged(nameof(MemoryCardError));
                             break;
                     }
                 }
@@ -374,6 +412,7 @@
 
                 OnPropertyChanged(nameof(FocusAreas));
                 OnPropertyChanged(nameof(BatteryLevel));
+                OnPropertyChanged(nameof(MemoryCardInfo));
             }
             catch (Exception ex)
             {

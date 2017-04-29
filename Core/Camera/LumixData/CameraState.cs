@@ -2,7 +2,28 @@
 {
     using System.Xml.Serialization;
 
-    [XmlRoot(ElementName = "state")]
+    public enum SdCardStatus
+    {
+        Unknown = 0,
+
+        [XmlEnum(Name = "write_protected")]
+        WriteProtected = 2,
+
+        [XmlEnum(Name = "write_enable")]
+        WriteEnable = 1
+    }
+
+    public enum RemainDisplayType
+    {
+        Unknown = 0,
+
+        [XmlEnum(Name = "time")]
+        Time = 1,
+
+        [XmlEnum(Name = "num")]
+        Num = 2
+    }
+
     public class CameraState
     {
         [XmlElement(ElementName = "add_location_data")]
@@ -33,22 +54,22 @@
         public OnOff Rec { get; set; }
 
         [XmlElement(ElementName = "remaincapacity")]
-        public int Remaincapacity { get; set; }
+        public int RemainCapacity { get; set; }
 
         [XmlElement(ElementName = "rem_disp_typ")]
-        public string RemDispTyp { get; set; }
+        public RemainDisplayType RemainDisplayType { get; set; }
 
         [XmlElement(ElementName = "sd_access")]
-        public string SdAccess { get; set; }
+        public OnOff SdAccess { get; set; } = OnOff.On;
 
         [XmlElement(ElementName = "sdcardstatus")]
-        public string Sdcardstatus { get; set; }
+        public SdCardStatus SdCardStatus { get; set; }
 
         [XmlElement(ElementName = "sdi_state")]
         public string SdiState { get; set; }
 
         [XmlElement(ElementName = "sd_memory")]
-        public string SdMemory { get; set; }
+        public SdMemorySet SdMemory { get; set; }
 
         [XmlElement(ElementName = "stop_motion")]
         public OnOff StopMotion { get; set; }
@@ -63,7 +84,7 @@
         public string Version { get; set; }
 
         [XmlElement(ElementName = "video_remaincapacity")]
-        public int VideoRemaincapacity { get; set; }
+        public int VideoRemainCapacity { get; set; }
 
         [XmlElement(ElementName = "warn_disp")]
         public string WarnDisp { get; set; }
@@ -94,14 +115,14 @@
             {
                 var hashCode = Battery?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (Cammode?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ Remaincapacity;
-                hashCode = (hashCode * 397) ^ (Sdcardstatus?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (SdMemory?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ VideoRemaincapacity;
+                hashCode = (hashCode * 397) ^ RemainCapacity;
+                hashCode = (hashCode * 397) ^ (int)SdCardStatus;
+                hashCode = (hashCode * 397) ^ (int)SdMemory;
+                hashCode = (hashCode * 397) ^ VideoRemainCapacity;
                 hashCode = (hashCode * 397) ^ (int)Rec;
                 hashCode = (hashCode * 397) ^ (BurstIntervalStatus?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (SdAccess?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (RemDispTyp?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (int)SdAccess;
+                hashCode = (hashCode * 397) ^ (int)RemainDisplayType;
                 hashCode = (hashCode * 397) ^ ProgressTime;
                 hashCode = (hashCode * 397) ^ (Operate?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ StopMotionNum;
@@ -121,13 +142,13 @@
         {
             return string.Equals(Battery, other.Battery) &&
                    string.Equals(Cammode, other.Cammode) &&
-                   Remaincapacity == other.Remaincapacity &&
-                   string.Equals(Sdcardstatus, other.Sdcardstatus) &&
+                   RemainCapacity == other.RemainCapacity &&
+                   Equals(SdCardStatus, other.SdCardStatus) &&
                    string.Equals(SdMemory, other.SdMemory) &&
-                   VideoRemaincapacity == other.VideoRemaincapacity && Rec == other.Rec &&
+                   VideoRemainCapacity == other.VideoRemainCapacity && Rec == other.Rec &&
                    string.Equals(BurstIntervalStatus, other.BurstIntervalStatus) &&
                    string.Equals(SdAccess, other.SdAccess) &&
-                   string.Equals(RemDispTyp, other.RemDispTyp) &&
+                   Equals(RemainDisplayType, other.RemainDisplayType) &&
                    ProgressTime == other.ProgressTime &&
                    string.Equals(Operate, other.Operate) &&
                    StopMotionNum == other.StopMotionNum &&

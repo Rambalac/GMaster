@@ -85,10 +85,16 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,100,0" Height="40">
                         <Viewbox>
+                            <TextBlock Width="120">
+                                <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"></Run>
+                                <Run Text="{Binding MemoryCardInfo, Mode=TwoWay}"></Run>
+                            </TextBlock>
+                        </Viewbox>
+                        <Viewbox Margin="20,0,0,0">
                             <Viewbox.RenderTransform>
                                 <ScaleTransform ScaleX="-1" CenterX="20"/>
                             </Viewbox.RenderTransform>
-                        <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}}" FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" FontFamily="Segoe MDL2 Assets"/>
                         </Viewbox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="70">
