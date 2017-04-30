@@ -163,7 +163,18 @@
 
         public bool MemoryCardAccess => lumixState?.State.SdAccess == OnOff.On;
 
-        public bool MemoryCardError => lumixState.State.SdMemory == SdMemorySet.Unset || lumixState.State.SdCardStatus != SdCardStatus.WriteEnable;
+        public bool MemoryCardError
+        {
+            get
+            {
+                if (lumixState == null)
+                {
+                    return false;
+                }
+
+                return lumixState.State.SdMemory == SdMemorySet.Unset || lumixState.State.SdCardStatus != SdCardStatus.WriteEnable;
+            }
+        }
 
         public string MemoryCardInfo
         {

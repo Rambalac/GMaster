@@ -27,9 +27,9 @@ namespace GMaster.Views
             InitializeComponent();
         }
 
-        public event Action<ChangeDirection> PressedReleased;
+        public event EventHandler<ChangeDirection> PressedReleased;
 
-        public event Action<ChangeDirection> RepeatClick;
+        public event EventHandler<ChangeDirection> RepeatClick;
 
         public int Maximum
         {
@@ -82,47 +82,47 @@ namespace GMaster.Views
 
         private void OnReleased(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
-            PressedReleased?.Invoke(ChangeDirection.ZoomStop);
+            PressedReleased?.Invoke(this, ChangeDirection.ZoomStop);
         }
 
         private void TeleFast_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
-            PressedReleased?.Invoke(ChangeDirection.TeleFast);
+            PressedReleased?.Invoke(this, ChangeDirection.TeleFast);
         }
 
         private void TeleFast_Repeat(object sender, EventArgs e)
         {
-            RepeatClick?.Invoke(ChangeDirection.TeleFast);
+            RepeatClick?.Invoke(this, ChangeDirection.TeleFast);
         }
 
         private void TeleNormal_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
-            PressedReleased?.Invoke(ChangeDirection.TeleNormal);
+            PressedReleased?.Invoke(this, ChangeDirection.TeleNormal);
         }
 
         private void TeleNormal_Repeat(object sender, EventArgs eventArgs)
         {
-            RepeatClick?.Invoke(ChangeDirection.TeleNormal);
+            RepeatClick?.Invoke(this, ChangeDirection.TeleNormal);
         }
 
         private void WideFast_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
-            PressedReleased?.Invoke(ChangeDirection.WideFast);
+            PressedReleased?.Invoke(this, ChangeDirection.WideFast);
         }
 
         private void WideFast_Repeat(object sender, EventArgs e)
         {
-            RepeatClick?.Invoke(ChangeDirection.WideFast);
+            RepeatClick?.Invoke(this, ChangeDirection.WideFast);
         }
 
         private void WideNormal_OnPressed(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
-            PressedReleased?.Invoke(ChangeDirection.WideNormal);
+            PressedReleased?.Invoke(this, ChangeDirection.WideNormal);
         }
 
         private void WideNormal_Repeat(object sender, EventArgs e)
         {
-            RepeatClick?.Invoke(ChangeDirection.WideNormal);
+            RepeatClick?.Invoke(this, ChangeDirection.WideNormal);
         }
     }
 }

@@ -16,7 +16,9 @@
     <Border BorderThickness="1" BorderBrush="Gray">
         <Grid Background="DarkBlue">
             <Viewbox Visibility="{Binding IsConnected, Converter={StaticResource FalseToVisibileConverter}, Mode=TwoWay}">
-                <TextBlock Foreground="White">NO CONNECTION</TextBlock>
+                <TextBlock Foreground="White">
+                    NO CONNECTION
+                </TextBlock>
             </Viewbox>
             <!---->
             <ContentControl IsEnabled="{Binding IsConnectionActive, Mode=TwoWay}"
@@ -86,8 +88,28 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,100,0" Height="40">
                         <Viewbox>
                             <TextBlock Width="120">
-                                <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"></Run>
-                                <Run Text="{Binding MemoryCardInfo, Mode=TwoWay}"></Run>
+                                <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
+                                     tools:StoryboardManager.Trigger="{Binding MemoryCardAccess}">
+                                    <tools:StoryboardManager.Storyboard>
+                                        <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Red"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="White" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </tools:StoryboardManager.Storyboard>
+                                </Run>
+                                <Run Text="{Binding MemoryCardInfo, Mode=TwoWay}" 
+                                     tools:StoryboardManager.Trigger="{Binding MemoryCardError}">
+                                    <tools:StoryboardManager.Storyboard>
+                                        <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Red"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="White" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </tools:StoryboardManager.Storyboard>
+                                </Run>
                             </TextBlock>
                         </Viewbox>
                         <Viewbox Margin="20,0,0,0">

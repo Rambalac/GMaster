@@ -138,7 +138,7 @@ namespace GMaster.Views
             await lumix.Camera.CaptureStop();
         }
 
-        private async void FocusAdjuster_OnRepeatClick(ChangeDirection obj)
+        private async void FocusAdjuster_OnRepeatClick(object sender, ChangeDirection obj)
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
@@ -381,7 +381,7 @@ namespace GMaster.Views
             LiveView.RemoveFromVisualTree();
         }
 
-        private async void ZoomAdjuster_OnPressedReleased(ChangeDirection obj)
+        private async void ZoomAdjuster_OnPressedReleased(object sender, ChangeDirection obj)
         {
             if (Model?.SelectedCamera?.Camera != null)
             {
