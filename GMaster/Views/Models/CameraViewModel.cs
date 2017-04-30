@@ -153,6 +153,8 @@
             }
         }
 
+        public CameraMode CameraMode => lumixState?.CameraMode ?? CameraMode.Unknown;
+
         public int MaximumFocus => lumixState?.MaximumFocus ?? 0;
 
         public int MaxZoom => lumixState?.LensInfo?.MaxZoom ?? 0;
@@ -302,6 +304,7 @@
 
                         case nameof(LumixState.CameraMode):
                             OnPropertyChanged(nameof(CanReleaseTouchAf));
+                            OnPropertyChanged(nameof(CameraMode));
                             break;
 
                         case nameof(LumixState.CanManualFocus):
@@ -424,6 +427,9 @@
                 OnPropertyChanged(nameof(FocusAreas));
                 OnPropertyChanged(nameof(BatteryLevel));
                 OnPropertyChanged(nameof(MemoryCardInfo));
+                OnPropertyChanged(nameof(MemoryCardError));
+                OnPropertyChanged(nameof(MemoryCardAccess));
+                OnPropertyChanged(nameof(CameraMode));
             }
             catch (Exception ex)
             {

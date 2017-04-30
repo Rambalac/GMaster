@@ -85,7 +85,11 @@
                             </Viewbox>
                         </tools:PressButton>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,100,0" Height="40">
+                    
+                    <Grid Margin="70,10,50,0" Height="40" VerticalAlignment="Top">
+                    <Image HorizontalAlignment="Left" Source="{Binding CameraMode, Converter={StaticResource CameraModeToIconPathConverter}}"></Image>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
                         <Viewbox>
                             <TextBlock Width="120">
                                 <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
@@ -112,13 +116,14 @@
                                 </Run>
                             </TextBlock>
                         </Viewbox>
-                        <Viewbox Margin="20,0,0,0">
+                        <Viewbox Margin="20,-15,0,-5">
                             <Viewbox.RenderTransform>
                                 <ScaleTransform ScaleX="-1" CenterX="20"/>
                             </Viewbox.RenderTransform>
                             <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" FontFamily="Segoe MDL2 Assets"/>
                         </Viewbox>
                     </StackPanel>
+                    </Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="70">
                         <Button Padding="-15"
                             Visibility="{Binding CanManualFocusAf, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"
