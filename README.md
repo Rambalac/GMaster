@@ -32,6 +32,14 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+### 2017-05-1
+Pushed version 1.8.2 to MS Store
+
+Added indicators:
+* Focus and autofocus modes
+* Memory card left with access and error indication
+* Battery
+
 ### 2017-04-26
 Pushed version 1.8.1 to MS Store
 
