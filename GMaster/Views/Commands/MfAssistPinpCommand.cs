@@ -21,7 +21,7 @@ namespace GMaster.Views.Commands
 
             try
             {
-                if (lumix.Camera.LumixState.FocusMode == FocusMode.Manual)
+                if (lumix.Camera.LumixState.FocusMode == FocusMode.MF)
                 {
                     await lumix.Camera.MfAssistPinp(false);
                 }

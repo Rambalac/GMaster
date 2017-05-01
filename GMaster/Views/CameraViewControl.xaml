@@ -81,7 +81,7 @@
                         Style="{StaticResource TransparentButtonStyle}"
                         IsEnabled="{Binding CanCapture}">
                             <Viewbox>
-                                <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE722;" />
+                                    <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE722;" />
                             </Viewbox>
                         </tools:PressButton>
                     </StackPanel>
@@ -90,7 +90,13 @@
                     <Image HorizontalAlignment="Left" Source="{Binding CameraMode, Converter={StaticResource CameraModeToIconPathConverter}}"></Image>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <Viewbox>
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                            <Viewbox>
+                                    <TextBlock Text="{Binding FocusMode, Mode=TwoWay}"/>
+                            </Viewbox>
+                            <Image Source="{Binding AutoFocusMode, Converter={StaticResource AutofocusModeToIconPathConverter}, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <Viewbox Margin="20,0,0,0">
                             <TextBlock Width="120">
                                 <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
                                      tools:StoryboardManager.Trigger="{Binding MemoryCardAccess}">
@@ -120,7 +126,18 @@
                             <Viewbox.RenderTransform>
                                 <ScaleTransform ScaleX="-1" CenterX="20"/>
                             </Viewbox.RenderTransform>
-                            <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" 
+                                       FontFamily="Segoe MDL2 Assets"
+                                       tools:StoryboardManager.Trigger="{Binding BatteryCritical}">
+                                <tools:StoryboardManager.Storyboard>
+                                    <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Red"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="White" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </tools:StoryboardManager.Storyboard>
+                            </TextBlock>
                         </Viewbox>
                     </StackPanel>
                     </Grid>

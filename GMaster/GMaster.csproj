@@ -111,6 +111,7 @@
     <Compile Include="Views\Commands\ManualFocusAfCommand.cs" />
     <Compile Include="Views\Commands\MfAssistPinpCommand.cs" />
     <Compile Include="Views\Commands\TouchAfReleaseCommand.cs" />
+    <Compile Include="Views\Converters\AutofocusModeToIconPathConverter.cs" />
     <Compile Include="Views\Converters\BatteryToIconConverter.cs" />
     <Compile Include="Views\Converters\CameraModeToIconPathConverter.cs" />
     <Compile Include="Views\Converters\FalseToVisibileConverter.cs" />
@@ -236,6 +237,12 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="images\AutofocusMode\Face.png" />
+    <Content Include="images\AutofocusMode\FreeMultiArea.png" />
+    <Content Include="images\AutofocusMode\MultiArea.png" />
+    <Content Include="images\AutofocusMode\OneArea.png" />
+    <Content Include="images\AutofocusMode\Pinpoint.png" />
+    <Content Include="images\AutofocusMode\Track.png" />
     <Content Include="images\CameraMode\Movie.png" />
     <Content Include="images\CameraMode\MovieA.png" />
     <Content Include="images\CameraMode\MovieM.png" />

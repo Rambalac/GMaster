@@ -160,7 +160,7 @@ namespace GMaster.Views
             }
             else
             {
-                if (Lumix.LumixState.FocusMode == FocusMode.Manual)
+                if (Lumix.LumixState.FocusMode == FocusMode.MF)
                 {
                     if (args.PointerDeviceType != PointerDeviceType.Mouse)
                     {
@@ -284,7 +284,7 @@ namespace GMaster.Views
             var fp = ToFloatPoint(x, y);
             if (fp.IsInRange(0f, 1f) && Lumix != null)
             {
-                if (Lumix.LumixState.FocusMode != FocusMode.Manual)
+                if (Lumix.LumixState.FocusMode != FocusMode.MF)
                 {
                     await Lumix.FocusPointMove(fp);
                 }
@@ -298,7 +298,7 @@ namespace GMaster.Views
         private async Task PinchZoom(PinchStage stage, FloatPoint point, float extend)
         {
             extend = (200f + extend) / 1000f;
-            if (Lumix.LumixState.FocusMode != FocusMode.Manual)
+            if (Lumix.LumixState.FocusMode != FocusMode.MF)
             {
                 if (Lumix.LumixState.FocusAreas != null
                     && Lumix.LumixState.FocusAreas.Boxes.Any(b => b.Props.Type == FocusAreaType.OneAreaSelected))

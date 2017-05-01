@@ -68,7 +68,7 @@
 
         public object CanManualFocus => lumixState?.CanManualFocus ?? false;
 
-        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.Manual && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
+        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.MF && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
 
         public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
 
@@ -258,6 +258,10 @@
             }
         }
 
+        public FocusMode FocusMode => lumixState?.FocusMode ?? FocusMode.Unknown;
+
+        public bool BatteryCritical => BatteryLevel == 0;
+
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -299,7 +303,7 @@
                     {
                         case nameof(LumixState.FocusMode):
                             OnPropertyChanged(nameof(CanManualFocusAf));
-
+                            OnPropertyChanged(nameof(FocusMode));
                             break;
 
                         case nameof(LumixState.CameraMode):
@@ -383,6 +387,7 @@
 
                         case nameof(LumixState.State):
                             OnPropertyChanged(nameof(BatteryLevel));
+                            OnPropertyChanged(nameof(BatteryCritical));
                             OnPropertyChanged(nameof(MemoryCardInfo));
                             OnPropertyChanged(nameof(MemoryCardAccess));
                             OnPropertyChanged(nameof(MemoryCardError));
@@ -430,6 +435,10 @@
                 OnPropertyChanged(nameof(MemoryCardError));
                 OnPropertyChanged(nameof(MemoryCardAccess));
                 OnPropertyChanged(nameof(CameraMode));
+                OnPropertyChanged(nameof(FocusMode));
+                OnPropertyChanged(nameof(AutoFocusMode));
+                OnPropertyChanged(nameof(BatteryCritical));
+
             }
             catch (Exception ex)
             {

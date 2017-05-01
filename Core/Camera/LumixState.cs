@@ -84,7 +84,7 @@ namespace GMaster.Core.Camera
 
         public bool CanChangeShutter => CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Shutter);
 
-        public bool CanManualFocus => FocusMode == FocusMode.Manual;
+        public bool CanManualFocus => FocusMode == FocusMode.MF;
 
         public CurMenu CurMenu
         {

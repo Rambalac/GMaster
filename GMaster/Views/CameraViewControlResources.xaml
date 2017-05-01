@@ -10,6 +10,7 @@
     <converters:RecStateToIconConvertor x:Key="RecStateConvertor" />
     <converters:BatteryToIconConverter x:Key="BatteryToIconConverter"/>
     <converters:CameraModeToIconPathConverter x:Key="CameraModeToIconPathConverter"/>
+    <converters:AutofocusModeToIconPathConverter x:Key="AutofocusModeToIconPathConverter"/>
     <Style x:Key="TransparentButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />

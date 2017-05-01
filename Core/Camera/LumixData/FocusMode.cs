@@ -9,7 +9,7 @@ namespace GMaster.Core.Camera.LumixData
     {
         [EnumException(0x5)]
         [XmlEnum(Name = "mf")]
-        Manual = 0xff,
+        MF = 0xff,
 
         [XmlEnum(Name = "afc")]
         AFC = 0x3,
