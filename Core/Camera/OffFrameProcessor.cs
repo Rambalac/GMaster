@@ -25,7 +25,7 @@ namespace GMaster.Core.Camera
 
         public event Action LensChanged;
 
-        public bool OffframeBytesSupported { get; } = true;
+        public bool OffFrameBytesSupported { get; } = true;
 
         public int CalcImageStart(Slice slice)
         {
@@ -38,7 +38,7 @@ namespace GMaster.Core.Camera
             {
                 var state = new ProcessState(slice, GetMultiplier(slice));
 
-                if (!OffframeBytesSupported || slice.Length < 130)
+                if (!OffFrameBytesSupported || slice.Length < 130)
                 {
                     return;
                 }
@@ -50,7 +50,11 @@ namespace GMaster.Core.Camera
 
                 lumixState.Aperture = GetFromShort(state.Main, 56, parser.ApertureBinary);
 
-                lumixState.CameraMode = state.Main[92].ToEnum(CameraMode.Unknown);
+                var newmode = state.Main[92].ToEnum(CameraMode.Unknown);
+                if (newmode != CameraMode.VideoRecording)
+                {
+                    lumixState.CameraMode = newmode;
+                }
 
                 lumixState.Orientation = state.Original[42].ToEnum(CameraOrientation.Undefined);
 

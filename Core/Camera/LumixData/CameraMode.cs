@@ -34,6 +34,8 @@ namespace GMaster.Core.Camera.LumixData
         [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Photo)]
         M = 04,
 
+        VideoRecording = 05,
+
         [EnumValue(CameraModeFlags.Video)]
         vP = 0x3c,
 
