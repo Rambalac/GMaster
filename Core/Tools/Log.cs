@@ -1,4 +1,6 @@
-﻿namespace GMaster.Core.Tools
+﻿using Newtonsoft.Json.Converters;
+
+namespace GMaster.Core.Tools
 {
     using System;
     using System.Collections.Concurrent;
@@ -247,6 +249,7 @@
             [JsonProperty(Order = 2)]
             public string Method { get; set; }
 
+            [JsonConverter(typeof(StringEnumConverter))]
             public Severity Severity { get; set; }
 
             public string Version { get; set; }
