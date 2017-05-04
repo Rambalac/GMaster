@@ -79,7 +79,7 @@ namespace GMaster.Core.Tools
 
         public static void Stop()
         {
-            cancellation.Cancel();
+            cancellation?.Cancel();
         }
 
         public static void Trace(string message, Severity severity = Severity.Trace, object data = null, string tags = null, [CallerFilePath] string fileName = null, [CallerMemberName] string methodName = null)
@@ -196,6 +196,10 @@ namespace GMaster.Core.Tools
                             Debug.WriteLine(result, "Loggly");
                         }
                     }
+                    catch (TaskCanceledException)
+                    {
+                        throw;
+                    }
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex);
@@ -205,6 +209,7 @@ namespace GMaster.Core.Tools
             catch (OperationCanceledException)
             {
                 cancellation.Dispose();
+                cancellation = null;
             }
         }
 

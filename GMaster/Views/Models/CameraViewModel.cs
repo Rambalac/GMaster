@@ -44,7 +44,7 @@
         {
             get
             {
-                var numbers = lumixState?.State.Battery.Split('/');
+                var numbers = lumixState?.State?.Battery?.Split('/');
                 if (numbers?.Length != 2)
                 {
                     return 0;

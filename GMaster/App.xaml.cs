@@ -29,10 +29,35 @@
         {
             InitializeComponent();
             Suspending += OnSuspending;
+            Resuming += App_Resuming;
             UnhandledException += App_UnhandledException;
 
             Debug.AddCategory("OffFrameBytes", false);
             Debug.AddCategory("Discovery", false);
+        }
+
+        private async void App_Resuming(object sender, object e)
+        {
+            await OnResuming();
+        }
+
+        private async Task OnResuming()
+        {
+            var ver = Package.Current.Id.Version;
+
+            var eas = new EasClientDeviceInformation();
+            var deviceName = string.Concat(eas.SystemProductName.Where(char.IsLetterOrDigit));
+            if (deviceName == "SystemProductName")
+            {
+                deviceName = "PC";
+            }
+
+            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", deviceName, 500);
+
+            if (MainModel != null)
+            {
+                await MainModel.ConnectionsManager.StartListening();
+            }
         }
 
         public MainPageModel MainModel { get; private set; }
@@ -54,23 +79,9 @@
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            var ver = Package.Current.Id.Version;
-
-            var eas = new EasClientDeviceInformation();
-            var deviceName = string.Concat(eas.SystemProductName.Where(char.IsLetterOrDigit));
-            if (deviceName == "SystemProductName")
-            {
-                deviceName = "PC";
-            }
-
-            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", deviceName, 500);
-
             MainModel = Resources[nameof(MainModel)] as MainPageModel;
 
-            if (MainModel != null)
-            {
-                await MainModel.ConnectionsManager.StartListening();
-            }
+            await OnResuming();
 
             IfDebug(() =>
             {

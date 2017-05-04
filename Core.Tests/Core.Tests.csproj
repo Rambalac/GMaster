@@ -65,6 +65,9 @@
     <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CapabilityGH5.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="TestCurMenu.xml" />
     <Content Include="TestMenuSetFZ300.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

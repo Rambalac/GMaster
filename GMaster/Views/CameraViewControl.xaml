@@ -33,10 +33,11 @@
                                           HorizontalContentAlignment="Center"
                                           SelectedItem="{Binding CurrentAperture, Mode=TwoWay}"
                                           Visibility="{Binding CanChangeAperture, Converter={StaticResource TrueToVisibileConverter}}" />
-                            <TextBox HorizontalAlignment="Stretch"
+                            <Border Padding="4" BorderThickness="2" BorderBrush="Gray" Visibility="{Binding CanChangeAperture, Converter={StaticResource FalseToVisibileConverter}}" Background="#22222222">
+                            <TextBlock HorizontalAlignment="Stretch" 
                                            Text="{Binding CurrentAperture}"
-                                           VerticalAlignment="Stretch" TextAlignment="Center"
-                                           Visibility="{Binding CanChangeAperture, Converter={StaticResource FalseToVisibileConverter}}" />
+                                           VerticalAlignment="Stretch" TextAlignment="Center"/>
+                            </Border>
                         </StackPanel>
                         <StackPanel Width="100" Margin="0,0,10,0">
                             <ComboBox HorizontalAlignment="Stretch"
@@ -44,10 +45,11 @@
                                           HorizontalContentAlignment="Center"
                                           SelectedItem="{Binding CurrentShutter, Mode=TwoWay}"
                                           Visibility="{Binding CanChangeShutter, Converter={StaticResource TrueToVisibileConverter}}" />
-                            <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <Border Padding="4" BorderThickness="2" BorderBrush="Gray" Visibility="{Binding CanChangeShutter, Converter={StaticResource FalseToVisibileConverter}}">
+                            <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                            Text="{Binding CurrentShutter}"
-                                           TextAlignment="Center"
-                                           Visibility="{Binding CanChangeShutter, Converter={StaticResource FalseToVisibileConverter}}" />
+                                           TextAlignment="Center"/>
+                            </Border>
                         </StackPanel>
                         <StackPanel Width="100" Margin="0,0,10,0">
                             <ComboBox HorizontalAlignment="Stretch"
