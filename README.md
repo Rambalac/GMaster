@@ -1,5 +1,7 @@
-# GMaster
+# LMaster
 Application can remotly control Panasonic Lumix Cameras from Windows 10 devices (PC, Mobile, ... Xbox, Hololens!?)
+
+Former name **GMaster**.
 
 Application can do no more than original app from Panasonic for Android/iOS. 
 While for now app does not support all remote features but Supports features work in a better and faster way. 
@@ -32,6 +34,13 @@ App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
 ## News
 ※ It can take from 12 hours to several days from pushing to MS Store til update appears for all users.
+### 2017-05-08
+Pushed version 1.8.5 to MS Store
+
+* Renamed app to LMaster as GMaster is lens trademark.
+* Added button to reset focus area to center
+* Minor UI change moving camera settings to flyout menu item and adding menu item to open camera in new windows directly.
+
 ### 2017-05-04
 Pushed version 1.8.4 to MS Store
 
