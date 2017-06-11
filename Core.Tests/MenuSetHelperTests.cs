@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using GMaster.Core.Camera;
-using GMaster.Core.Camera.LumixData;
+using GMaster.Core.Camera.Panasonic;
+using GMaster.Core.Camera.Panasonic.LumixData;
 using Newtonsoft.Json;
 
 namespace Gmaster.Core.Camera

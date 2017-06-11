@@ -114,10 +114,16 @@
     <Compile Include="AbstractParameterModelCommand.cs" />
     <Compile Include="AbstractSimpleCommand.cs" />
     <Compile Include="AbstractSimpleParameterCommand.cs" />
+    <Compile Include="CubeLutParser.cs" />
     <Compile Include="DelegateConverter.cs" />
     <Compile Include="DelegateParameterConverter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ILutEffectGenerator.cs" />
+    <Compile Include="ILutParser.cs" />
     <Compile Include="IObservableHashCollection.cs" />
+    <Compile Include="Lut.cs" />
+    <Compile Include="Lut1DEffectGenerator.cs" />
+    <Compile Include="Lut3DEffectGenerator.cs" />
     <Compile Include="NotifyProperty.cs" />
     <Compile Include="ObservableHashCollection.cs" />
     <Compile Include="PressButton.cs" />

@@ -1,5 +1,8 @@
 ﻿// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
+using GMaster.Core.Camera.Panasonic;
+using GMaster.Core.Camera.Panasonic.LumixData;
+
 namespace GMaster.Views
 {
     using System;
@@ -7,7 +10,6 @@ namespace GMaster.Views
     using System.Linq;
     using System.Threading.Tasks;
     using Core.Camera;
-    using Core.Camera.LumixData;
     using Core.Tools;
     using Microsoft.Graphics.Canvas.UI.Xaml;
     using Models;
@@ -301,7 +303,7 @@ namespace GMaster.Views
             if (Lumix.LumixState.FocusMode != FocusMode.MF)
             {
                 if (Lumix.LumixState.FocusAreas != null
-                    && Lumix.LumixState.FocusAreas.Boxes.Any(b => b.Props.Type == FocusAreaType.OneAreaSelected))
+                    && Lumix.LumixState.FocusAreas.Boxes.Any(b => b.Props.Type == FocusAreaType.OneAreaSelected || b.Props.Type == FocusAreaType.FaceOther))
                 {
                     await Lumix.FocusPointResize(stage, point, extend);
                 }

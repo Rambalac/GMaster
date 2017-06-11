@@ -7,8 +7,8 @@
     <ProjectGuid>{F361EA15-EF81-4B2D-9D9B-B32B4D174934}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GMaster</RootNamespace>
-    <AssemblyName>GMaster</AssemblyName>
+    <RootNamespace>LMaster</RootNamespace>
+    <AssemblyName>LMaster</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
@@ -107,7 +107,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CubeLutParser.cs" />
+    <Compile Include="Views\CameraContentPage.xaml.cs">
+      <DependentUpon>CameraContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Commands\FocusPosResetCommand.cs" />
     <Compile Include="Views\Commands\ManualFocusAfCommand.cs" />
     <Compile Include="Views\Commands\MfAssistPinpCommand.cs" />
     <Compile Include="Views\Commands\TouchAfReleaseCommand.cs" />
@@ -131,12 +134,7 @@
     <Compile Include="Views\Models\DebugCategoryEnable.cs" />
     <Compile Include="Donations.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ILutParser.cs" />
-    <Compile Include="Lut.cs" />
     <Compile Include="Views\Commands\DeleteLutCommand.cs" />
-    <Compile Include="Views\Misc\ILutEffectGenerator.cs" />
-    <Compile Include="Views\Misc\Lut1DEffectGenerator.cs" />
-    <Compile Include="Views\Misc\Lut3DEffectGenerator.cs" />
     <Compile Include="Views\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
@@ -264,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\CameraContentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -320,7 +322,9 @@
       <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

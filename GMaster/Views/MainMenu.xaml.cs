@@ -1,6 +1,7 @@
 namespace GMaster.Views
 {
     using System;
+    using System.Threading.Tasks;
     using Models;
     using Windows.ApplicationModel.Core;
     using Windows.UI.Core;
@@ -124,11 +125,23 @@ namespace GMaster.Views
 
         private async void NewWindow_OnClick(object sender, RoutedEventArgs e)
         {
+            await OpenNewWindow(null);
+        }
+
+        private async void NewWindowCam_Click(object sender, RoutedEventArgs e)
+        {
+            await OpenNewWindow((ConnectedCamera)((FrameworkElement)sender).DataContext);
+        }
+
+        private async Task OpenNewWindow(ConnectedCamera cam)
+        {
             var newView = CoreApplication.CreateNewView();
             var newViewId = 0;
             await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Window.Current.Content = new NewWindowsPage();
+                var newpage = new NewWindowsPage();
+                newpage.SelectCamera(cam);
+                Window.Current.Content = newpage;
                 Window.Current.Activate();
 
                 newViewId = ApplicationView.GetForCurrentView().Id;

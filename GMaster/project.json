@@ -1,12 +1,12 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
-    "Microsoft.Services.Store.SDK": "10.1703.19001",
+    "Microsoft.Services.Store.SDK": "10.1705.11001",
     "Newtonsoft.Json": "10.0.2",
     "Nito.AsyncEx.Coordination": "1.0.2",
-    "Rssdp": "3.0.1",
+    "Rssdp": "3.5.3",
     "StyleCop.Analyzers": "1.0.0",
-    "System.ValueTuple": "4.3.0",
+    "System.ValueTuple": "4.3.1",
     "Win2D.uwp": "1.20.0"
   },
   "frameworks": {

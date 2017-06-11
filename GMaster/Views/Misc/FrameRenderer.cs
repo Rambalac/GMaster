@@ -1,3 +1,6 @@
+using GMaster.Core.Camera.Panasonic;
+using GMaster.Core.Camera.Panasonic.LumixData;
+
 namespace GMaster.Views
 {
     using System;
@@ -6,12 +9,12 @@ namespace GMaster.Views
     using System.Threading;
     using System.Threading.Tasks;
     using Core.Camera;
-    using Core.Camera.LumixData;
     using Core.Tools;
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.Geometry;
     using Microsoft.Graphics.Canvas.UI;
     using Microsoft.Graphics.Canvas.UI.Xaml;
+    using Tools;
     using Windows.Foundation;
     using Windows.UI;
 

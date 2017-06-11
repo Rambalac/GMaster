@@ -99,9 +99,25 @@
                             <Image Source="{Binding AutoFocusMode, Converter={StaticResource AutofocusModeToIconPathConverter}, Mode=TwoWay}"/>
                         </StackPanel>
                         <Viewbox Margin="20,0,0,0">
-                            <TextBlock Width="120">
-                                <Run FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
-                                     tools:StoryboardManager.Trigger="{Binding MemoryCardAccess}">
+                            <StackPanel Orientation="Horizontal" Width="120">
+                                <Grid Margin="2">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
+                                         tools:StoryboardManager.Trigger="{Binding MemoryCardAccess}">
+                                        <tools:StoryboardManager.Storyboard>
+                                            <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Red"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="White" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </tools:StoryboardManager.Storyboard>
+                                    </TextBlock>
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10A;" FontSize="21" Margin="-3" 
+                                               Visibility="{Binding MemoryCardPresent, Mode=TwoWay, Converter={StaticResource FalseToVisibileConverter}}"/>
+                                </Grid>
+                                <TextBlock Margin="2" FontFamily="Segoe MDL2 Assets" Text="&#xE7F1;"
+                                           Visibility="{Binding MemoryCard2Present, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"
+                                     tools:StoryboardManager.Trigger="{Binding MemoryCard2Access}">
                                     <tools:StoryboardManager.Storyboard>
                                         <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
@@ -110,8 +126,8 @@
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </tools:StoryboardManager.Storyboard>
-                                </Run>
-                                <Run Text="{Binding MemoryCardInfo, Mode=TwoWay}" 
+                                </TextBlock>
+                                <TextBlock Text="{Binding MemoryCardInfo, Mode=TwoWay}" 
                                      tools:StoryboardManager.Trigger="{Binding MemoryCardError}">
                                     <tools:StoryboardManager.Storyboard>
                                         <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
@@ -121,8 +137,8 @@
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </tools:StoryboardManager.Storyboard>
-                                </Run>
-                            </TextBlock>
+                                </TextBlock>
+                            </StackPanel>
                         </Viewbox>
                         <Viewbox Margin="20,-15,0,-5">
                             <Viewbox.RenderTransform>
@@ -131,6 +147,23 @@
                             <TextBlock Text="{Binding BatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" 
                                        FontFamily="Segoe MDL2 Assets"
                                        tools:StoryboardManager.Trigger="{Binding BatteryCritical}">
+                                <tools:StoryboardManager.Storyboard>
+                                    <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Red"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="White" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </tools:StoryboardManager.Storyboard>
+                            </TextBlock>
+                        </Viewbox>
+                        <Viewbox Margin="20,-15,0,-5" Visibility="{Binding GripBatteryPresent, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}">
+                            <Viewbox.RenderTransform>
+                                <ScaleTransform ScaleX="-1" CenterX="20"/>
+                            </Viewbox.RenderTransform>
+                            <TextBlock Text="{Binding GripBatteryLevel, Converter={StaticResource BatteryToIconConverter}, Mode=TwoWay}" 
+                                       FontFamily="Segoe MDL2 Assets"
+                                       tools:StoryboardManager.Trigger="{Binding GripBatteryCritical}">
                                 <tools:StoryboardManager.Storyboard>
                                     <Storyboard RepeatBehavior="Forever" Duration="0:0:1">
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="{Binding}">
@@ -155,11 +188,19 @@
                             </Viewbox>
                         </Button>
                         <Button Padding="-15"
-                            Visibility="{Binding CanManualFocusAf, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"
-                            Command="{StaticResource MfAssistPinpCommand}"
-                            Style="{StaticResource TransparentButtonStyle}">
+                                Visibility="{Binding CanManualFocusAf, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"
+                                Command="{StaticResource MfAssistPinpCommand}"
+                                Style="{StaticResource TransparentButtonStyle}">
                             <Viewbox>
                                 <TextBlock Padding="5" FontFamily="Segoe MDL2 Assets" Text="&#xE191;" />
+                            </Viewbox>
+                        </Button>
+                        <Button Padding="-5"  Width="70" Height="70" 
+                                         Visibility="{Binding CanResetTouchAf, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"
+                                         Command="{StaticResource FocusPosResetCommand}"
+                                         Style="{StaticResource TransparentButtonStyle}">
+                            <Viewbox Stretch="Fill">
+                                <TextBlock Padding="5" Text="Reset" />
                             </Viewbox>
                         </Button>
                         <Button Padding="-15"

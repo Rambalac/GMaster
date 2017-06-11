@@ -2,6 +2,7 @@
 
 namespace GMaster.Views
 {
+    using Models;
     using Windows.UI.Xaml.Controls;
 
     /// <summary>
@@ -12,6 +13,11 @@ namespace GMaster.Views
         public NewWindowsPage()
         {
             InitializeComponent();
+        }
+
+        public void SelectCamera(ConnectedCamera cam)
+        {
+            CameraView.Model.SelectedCamera = cam;
         }
     }
 }

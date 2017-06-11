@@ -1,8 +1,9 @@
+using GMaster.Core.Camera.Panasonic.LumixData;
+
 namespace GMaster.Views.Converters
 {
     using System;
     using System.Collections.Generic;
-    using Core.Camera.LumixData;
     using Tools;
 
     public class CameraModeToIconPathConverter : DelegateConverter<CameraMode, string>

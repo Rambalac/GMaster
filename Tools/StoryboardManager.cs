@@ -1,7 +1,6 @@
-﻿using GMaster.Core.Tools;
-
-namespace GMaster.Tools
+﻿namespace GMaster.Tools
 {
+    using Core.Tools;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Media.Animation;
 

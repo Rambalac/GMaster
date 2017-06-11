@@ -1,4 +1,6 @@
-﻿namespace GMaster.Views.Models
+﻿using GMaster.Core.Camera.Panasonic;
+
+namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;

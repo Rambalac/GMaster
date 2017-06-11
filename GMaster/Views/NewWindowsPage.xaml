@@ -8,7 +8,7 @@
     xmlns:models="using:GMaster.Views.Models"
     mc:Ignorable="d" RequestedTheme="Dark" >
     <Grid>
-        <local:CameraViewControl>
+        <local:CameraViewControl x:Name="CameraView">
             <local:CameraViewControl.DataContext>
                 <models:CameraViewModel/>
             </local:CameraViewControl.DataContext>

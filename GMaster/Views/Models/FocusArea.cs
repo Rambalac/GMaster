@@ -1,3 +1,5 @@
+using GMaster.Core.Camera.Panasonic;
+
 namespace GMaster.Views.Models
 {
     using System.ComponentModel;
