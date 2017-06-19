@@ -30,6 +30,9 @@ GX85, GX80, GX7, G7, G85
 ### Other
 App may work with other Panasonic Lumix cameras, but I have no way to test it.
 
+## Demo video and screenshots
+[![Demo video](https://img.youtube.com/vi/vNGZ-mhqius/0.jpg)](https://www.youtube.com/watch?v=vNGZ-mhqius)
+
 ![Screenshot](/images/screenshots/PC-4.jpg)
 
 ## News
