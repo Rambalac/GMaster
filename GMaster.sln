@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{3DC1817B-E178-47B3-A6A3-45FD2BEB868B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Panasonic", "Core.Panasonic\Core.Panasonic.csproj", "{5849E7F4-843A-46AB-8A07-7DBA693928FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraApi.Panasonic", "CameraApi.Panasonic\CameraApi.Panasonic.csproj", "{E051F426-E394-4497-A0EA-B0B3D57B899D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Sony", "Core.Sony\Core.Sony.csproj", "{6FF2EEA7-E13F-47F4-A438-FD2B3167EF3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraApi.Core", "CameraApi.Core\CameraApi.Core.csproj", "{1C4D7C88-8F3B-4536-8D34-383D3CB96DF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
