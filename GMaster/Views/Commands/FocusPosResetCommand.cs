@@ -1,12 +1,11 @@
-using GMaster.Core.Camera.Panasonic;
-using GMaster.Core.Camera.Panasonic.LumixData;
-
 namespace GMaster.Views.Commands
 {
     using System;
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
+    using Core.Camera.Panasonic.LumixData;
     using Models;
     using Tools;
 

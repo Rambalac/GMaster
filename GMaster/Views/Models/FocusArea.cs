@@ -1,11 +1,10 @@
-using GMaster.Core.Camera.Panasonic;
-
 namespace GMaster.Views.Models
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Annotations;
     using Core.Camera;
+    using Core.Camera.Panasonic;
     using Windows.Foundation;
 
     public class FocusArea : INotifyPropertyChanged

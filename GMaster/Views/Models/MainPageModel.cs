@@ -1,6 +1,4 @@
-﻿using GMaster.Core.Camera.Panasonic;
-
-namespace GMaster.Views.Models
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace GMaster.Views.Models
     using Annotations;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
     using Windows.ApplicationModel;
     using Windows.Devices.WiFi;
     using Windows.UI.Core;

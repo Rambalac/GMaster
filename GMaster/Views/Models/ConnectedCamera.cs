@@ -1,6 +1,4 @@
-﻿using GMaster.Core.Camera.Panasonic;
-
-namespace GMaster.Views.Models
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -9,10 +7,11 @@ namespace GMaster.Views.Models
     using System.Runtime.CompilerServices;
     using Annotations;
     using Core.Camera;
+    using Core.Camera.Panasonic;
 
     public class ConnectedCamera : INotifyPropertyChanged
     {
-        private Lumix camera;
+        private ICamera camera;
         private bool isAspectAnamorphingVideoOnly;
         private string selectedAspect;
         private LutInfo selectedLut;
@@ -23,7 +22,7 @@ namespace GMaster.Views.Models
 
         public string[] Aspects => new[] { "1", "1.33", "1.5", "1.75", "2" };
 
-        public Lumix Camera
+        public ICamera Camera
         {
             get => camera;
             set
@@ -34,7 +33,7 @@ namespace GMaster.Views.Models
                 }
 
                 camera = value;
-                camera.LumixState.PropertyChanged += LumixState_PropertyChanged2;
+                camera.State.PropertyChanged += LumixState_PropertyChanged2;
 
                 OnPropertyChanged(nameof(Camera));
             }
@@ -55,7 +54,7 @@ namespace GMaster.Views.Models
             }
         }
 
-        public bool IsBusy => Camera.LumixState.IsBusy;
+        public bool IsBusy => Camera.State.IsBusy;
 
         public bool IsRemembered => Settings.GeneralSettings.Cameras.Contains(Settings);
 

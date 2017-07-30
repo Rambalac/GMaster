@@ -1,7 +1,4 @@
-﻿using GMaster.Core.Camera.Panasonic;
-using GMaster.Core.Camera.Panasonic.LumixData;
-
-namespace GMaster.Views.Models
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +9,8 @@ namespace GMaster.Views.Models
     using Annotations;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
+    using Core.Camera.Panasonic.LumixData;
     using Windows.UI.Core;
 
     public class CameraViewModel : INotifyPropertyChanged

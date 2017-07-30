@@ -1,6 +1,4 @@
-﻿using GMaster.Core.Camera.Panasonic;
-
-namespace GMaster.Views.Models
+﻿namespace GMaster.Views.Models
 {
     using System;
     using System.Globalization;
@@ -8,6 +6,7 @@ namespace GMaster.Views.Models
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
     using Windows.UI.Xaml;
 
     public class ConnectionsManager
@@ -43,7 +42,7 @@ namespace GMaster.Views.Models
             var camera = connected.Camera;
             camera.StateUpdateFailed -= Lumix_StateUpdateFailed;
             camera.ActionCalled -= model.LumixActionCalled;
-            await camera.StopStream();
+            await camera.StopLiveview();
             camera.Disconnect();
             camera.Dispose();
         }
