@@ -1,11 +1,11 @@
-namespace GMaster.Core.Camera
+namespace CameraApi.Core
 {
     using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Annotations;
 
-    public class CameraState : INotifyPropertyChanged
+    public class CameraState
     {
         private string aperture;
         private AutoFocusMode autoFocusMode;
@@ -29,65 +29,13 @@ namespace GMaster.Core.Camera
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Aperture
-        {
-            get => aperture;
-            set
-            {
-                if (value.Equals(aperture))
-                {
-                    return;
-                }
+        public string Aperture { get; set; }
 
-                aperture = value;
-                OnPropertyChanged();
-            }
-        }
+        public AutoFocusMode AutoFocusMode { get; set; }
 
-        public AutoFocusMode AutoFocusMode
-        {
-            get => autoFocusMode;
-            set
-            {
-                if (value == autoFocusMode)
-                {
-                    return;
-                }
+        public CameraMode CameraMode { get; set; }
 
-                autoFocusMode = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public CameraMode CameraMode
-        {
-            get => cameraMode;
-            set
-            {
-                if (value == cameraMode)
-                {
-                    return;
-                }
-
-                cameraMode = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool CanCapture
-        {
-            get => canCapture;
-            set
-            {
-                if (value == canCapture)
-                {
-                    return;
-                }
-
-                canCapture = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool CanCapture { get; set; }
 
         public bool CanChangeAperture
         {

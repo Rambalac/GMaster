@@ -1,10 +1,10 @@
-namespace GMaster.Core.Camera
+namespace CameraApi.Core
 {
     using Rssdp;
 
-    public class DeviceInfo
+    public class SsdpDeviceInfo
     {
-        internal DeviceInfo(SsdpRootDevice dev, string usn)
+        internal SsdpDeviceInfo(SsdpRootDevice dev, string usn)
         {
             Usn = usn;
             Uuid = dev.Uuid;
@@ -40,7 +40,7 @@ namespace GMaster.Core.Camera
                 return false;
             }
 
-            return Equals((DeviceInfo)obj);
+            return Equals((SsdpDeviceInfo)obj);
         }
 
         public override int GetHashCode()
@@ -48,7 +48,7 @@ namespace GMaster.Core.Camera
             return Uuid != null ? Uuid.GetHashCode() : 0;
         }
 
-        protected bool Equals(DeviceInfo other)
+        protected bool Equals(SsdpDeviceInfo other)
         {
             return string.Equals(Uuid, other.Uuid);
         }

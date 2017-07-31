@@ -1,7 +1,5 @@
-namespace GMaster.Core.Camera
+namespace CameraApi.Core
 {
-    using Tools;
-
     public enum ChangeDirection
     {
         WideFast,

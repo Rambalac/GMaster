@@ -1,4 +1,4 @@
-namespace GMaster.Core.Camera
+namespace CameraApi.Core
 {
     public struct FloatPoint
     {
