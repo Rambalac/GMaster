@@ -1,4 +1,4 @@
-namespace GMaster.Core.Camera
+﻿namespace CameraApi
 {
     using System;
     using System.Collections.Concurrent;
@@ -6,10 +6,10 @@ namespace GMaster.Core.Camera
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Network;
-    using Tools;
     using Rssdp;
     using Rssdp.Infrastructure;
+    using GMaster.Core.Network;
+    using CameraApi.Core;
 
     public class CamerasManager
     {
@@ -30,7 +30,7 @@ namespace GMaster.Core.Camera
             network.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
         }
 
-        public event Action<DeviceInfo, ICamera> DeviceDiscovered2;
+        public event Action<SsdpDeviceInfo, ICamera> DeviceDiscovered2;
 
         public async Task<bool> ConnectCamera(ICamera camera)
         {

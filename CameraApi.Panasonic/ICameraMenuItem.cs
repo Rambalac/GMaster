@@ -1,14 +1,12 @@
-﻿using GMaster.Core.Tools;
-
-namespace GMaster.Core.Camera.Panasonic
+﻿namespace CameraApi.Panasonic
 {
-    public interface ICameraMenuItem : IStringIdItem
+    using CameraApi.Core;
+
+    public interface ICameraMenuItem : IActionItem
     {
         string Command { get; }
 
         string CommandType { get; }
-
-        string Text { get; }
 
         string Value { get; }
     }

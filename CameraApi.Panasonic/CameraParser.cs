@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using GMaster.Core.Camera.Panasonic.LumixData;
+using CameraApi.Panasonic.LumixData;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public abstract class CameraParser
     {

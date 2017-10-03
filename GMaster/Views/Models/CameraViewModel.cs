@@ -6,17 +6,14 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using Annotations;
-    using Core.Camera;
     using Core.Tools;
-    using Core.Camera.Panasonic;
-    using Core.Camera.Panasonic.LumixData;
     using Windows.UI.Core;
+    using CameraApi.Core;
 
     public class CameraViewModel : INotifyPropertyChanged
     {
         private int lastFocusAreasCount;
-        private LumixState lumixState;
+        private CameraState cameraState;
         private ConnectedCamera selectedCamera;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -25,21 +22,16 @@
         {
             get
             {
-                if (lumixState?.LensInfo == null)
-                {
-                    return new List<string>();
-                }
-
-                var openedAperture = lumixState.OpenedAperture;
+                var openedAperture = cameraState.OpenedAperture;
                 return new[] { openedAperture }
-                    .Concat(lumixState.MenuSet.Apertures.
-                            Where(a => a.IntValue <= lumixState.LensInfo.ClosedAperture &&
+                    .Concat(cameraState.Apertures.
+                            Where(a => a.IntValue <= cameraState.LensInfo.ClosedAperture &&
                                     a.IntValue > openedAperture.IntValue))
                     .Select(a => a.Text).ToList();
             }
         }
 
-        public AutoFocusMode AutoFocusMode => lumixState?.AutoFocusMode ?? AutoFocusMode.Unknown;
+        public AutoFocusMode AutoFocusMode => cameraState?.AutoFocusMode ?? AutoFocusMode.Unknown;
 
         public bool BatteryCritical => Math.Abs(BatteryLevel) < 0.01;
 
@@ -47,73 +39,73 @@
 
         public bool GripBatteryPresent => GripBatteryLevel >= 0;
 
-        public float BatteryLevel => GetBatteryLevel(lumixState?.State?.Battery);
+        public float BatteryLevel => GetBatteryLevel(cameraState?.State?.Battery);
 
-        public float GripBatteryLevel => GetBatteryLevel(lumixState?.State?.GripBattery);
+        public float GripBatteryLevel => GetBatteryLevel(cameraState?.State?.GripBattery);
 
-        public CameraMode CameraMode => lumixState?.CameraMode ?? CameraMode.Unknown;
+        public CameraMode CameraMode => cameraState?.CameraMode ?? CameraMode.Unknown;
 
-        public bool CanCapture => lumixState?.CanCapture ?? false;
+        public bool CanCapture => cameraState?.CanCapture ?? false;
 
-        public bool CanChangeAperture => lumixState?.CanChangeAperture ?? true;
+        public bool CanChangeAperture => cameraState?.CanChangeAperture ?? true;
 
-        public bool CanChangeShutter => lumixState?.CanChangeShutter ?? true;
+        public bool CanChangeShutter => cameraState?.CanChangeShutter ?? true;
 
-        public bool CanManualFocus => lumixState?.CanManualFocus ?? false;
+        public bool CanManualFocus => cameraState?.CanManualFocus ?? false;
 
-        public bool CanManualFocusAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.MF && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
+        public bool CanManualFocusAf => (cameraState?.FocusMode ?? FocusMode.Unknown) == FocusMode.MF && (selectedCamera?.Camera.Profile.ManualFocusAF ?? false);
 
-        public bool CanPowerZoom => lumixState?.LensInfo?.HasPowerZoom ?? false;
+        public bool CanPowerZoom => cameraState?.LensInfo?.HasPowerZoom ?? false;
 
         public bool CanReleaseTouchAf => (AutoFocusMode.ToValue<AutoFocusModeFlags>().HasFlag(AutoFocusModeFlags.TouchAFRelease)
                                             && FocusAreas != null && FocusAreas.Boxes.Count > 0)
-                                         || lumixState?.CameraMode == CameraMode.MFAssist
+                                         || cameraState?.CameraMode == CameraMode.MFAssist
                                          || (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.MfAssistPinP || b.Props.Type == FocusAreaType.MfAssistFullscreen) ?? false);
 
-        public bool CanResetTouchAf => (lumixState?.FocusMode ?? FocusMode.Unknown) == FocusMode.MF ||
+        public bool CanResetTouchAf => (cameraState?.FocusMode ?? FocusMode.Unknown) == FocusMode.MF ||
                                        (FocusAreas?.Boxes.Any(b => b.Props.Type == FocusAreaType.OneAreaSelected || b.Props.Type == FocusAreaType.FaceOther) ?? false);
 
-        public int CurentZoom => lumixState?.Zoom ?? 0;
+        public int CurentZoom => cameraState?.Zoom ?? 0;
 
         public string CurrentAperture
         {
-            get => lumixState?.Aperture.Text;
+            get => cameraState?.Aperture.Text;
 
             set
             {
-                AsyncMenuItemSetter(lumixState.MenuSet.Apertures.SingleOrDefault(a => a.Text == value) ?? lumixState.OpenedAperture);
+                AsyncMenuItemSetter(cameraState.MenuSet.Apertures.SingleOrDefault(a => a.Text == value) ?? cameraState.OpenedAperture);
             }
         }
 
-        public int CurrentFocus => lumixState?.CurrentFocus ?? 0;
+        public int CurrentFocus => cameraState?.CurrentFocus ?? 0;
 
         public string CurrentIso
         {
             get
             {
-                if (lumixState?.Iso.Text == null)
+                if (cameraState?.Iso.Text == null)
                 {
                     return null;
                 }
 
-                return lumixState.MenuSet.IsoValues.FirstOrDefault(i => i.Text.EndsWith(lumixState.Iso.Text, StringComparison.OrdinalIgnoreCase)).Text;
+                return cameraState.MenuSet.IsoValues.FirstOrDefault(i => i.Text.EndsWith(cameraState.Iso.Text, StringComparison.OrdinalIgnoreCase)).Text;
             }
 
             set
             {
-                AsyncMenuItemSetter(lumixState?.MenuSet?.IsoValues.SingleOrDefault(a => a.Text == value));
+                AsyncMenuItemSetter(cameraState?.MenuSet?.IsoValues.SingleOrDefault(a => a.Text == value));
             }
         }
 
         public string CurrentShutter
         {
-            get => lumixState?.Shutter.Text;
+            get => cameraState?.Shutter.Text;
 
             set
             {
                 Debug.WriteLine("Shutter set to: " + value, "LumixState");
 
-                AsyncMenuItemSetter(lumixState?.MenuSet?.ShutterSpeeds.SingleOrDefault(a => a.Text == value));
+                AsyncMenuItemSetter(cameraState?.MenuSet?.ShutterSpeeds.SingleOrDefault(a => a.Text == value));
             }
         }
 
@@ -123,7 +115,7 @@
         {
             get
             {
-                var newval = lumixState?.FocusAreas;
+                var newval = cameraState?.FocusAreas;
                 if (lastFocusAreasCount != (newval?.Boxes.Count ?? 0))
                 {
                     lastFocusAreasCount = newval?.Boxes.Count ?? 0;
@@ -134,73 +126,73 @@
             }
         }
 
-        public FocusMode FocusMode => lumixState?.FocusMode ?? FocusMode.Unknown;
+        public FocusMode FocusMode => cameraState?.FocusMode ?? FocusMode.Unknown;
 
         public bool IsConnected => selectedCamera != null;
 
-        public bool IsConnectionActive => !(lumixState?.IsBusy ?? true);
+        public bool IsConnectionActive => !(cameraState?.IsBusy ?? true);
 
         public ICollection<string> IsoValues
         {
             get
             {
-                return lumixState?.MenuSet?.IsoValues
-                    .Where(i => lumixState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList()
+                return cameraState?.MenuSet?.IsoValues
+                    .Where(i => cameraState.CurMenu.Enabled.ContainsKey(i.Id)).Select(i => i.Text).ToList()
                     ?? new List<string>();
             }
         }
 
-        public int MaximumFocus => lumixState?.MaximumFocus ?? 0;
+        public int MaximumFocus => cameraState?.MaximumFocus ?? 0;
 
-        public int MaxZoom => lumixState?.LensInfo?.MaxZoom ?? 0;
+        public int MaxZoom => cameraState?.LensInfo?.MaxZoom ?? 0;
 
-        public bool MemoryCardAccess => lumixState?.State.SdAccess == OnOff.On;
+        public bool MemoryCardAccess => cameraState?.State.SdAccess == OnOff.On;
 
-        public bool MemoryCard2Access => lumixState?.State.Sd2Access == OnOff.On;
+        public bool MemoryCard2Access => cameraState?.State.Sd2Access == OnOff.On;
 
-        public bool MemoryCardError => lumixState != null && (lumixState.State.SdMemory == SdMemorySet.Unset
-                                                              || lumixState.State.SdCardStatus != SdCardStatus.WriteEnable);
+        public bool MemoryCardError => cameraState != null && (cameraState.State.SdMemory == SdMemorySet.Unset
+                                                              || cameraState.State.SdCardStatus != SdCardStatus.WriteEnable);
 
-        public bool MemoryCard2Error => lumixState != null && (lumixState.State.Sd2Memory == SdMemorySet.Unset
-                                                              || lumixState.State.Sd2CardStatus != SdCardStatus.WriteEnable);
+        public bool MemoryCard2Error => cameraState != null && (cameraState.State.Sd2Memory == SdMemorySet.Unset
+                                                              || cameraState.State.Sd2CardStatus != SdCardStatus.WriteEnable);
 
-        public bool MemoryCardPresent => (lumixState?.State?.SdMemory ?? SdMemorySet.Unset) == SdMemorySet.Set;
+        public bool MemoryCardPresent => (cameraState?.State?.SdMemory ?? SdMemorySet.Unset) == SdMemorySet.Set;
 
-        public bool MemoryCard2Present => (lumixState?.State?.Sd2Memory ?? SdMemorySet.Unset) == SdMemorySet.Set;
+        public bool MemoryCard2Present => (cameraState?.State?.Sd2Memory ?? SdMemorySet.Unset) == SdMemorySet.Set;
 
         public string MemoryCardInfo
         {
             get
             {
-                if (lumixState?.State == null)
+                if (cameraState?.State == null)
                 {
                     return string.Empty;
                 }
 
-                if (lumixState.State.SdMemory == SdMemorySet.Unset
-                    && lumixState.State.Sd2Memory == SdMemorySet.Unset)
+                if (cameraState.State.SdMemory == SdMemorySet.Unset
+                    && cameraState.State.Sd2Memory == SdMemorySet.Unset)
                 {
                     return "Not inserted";
                 }
 
-                if (lumixState.State.SdCardStatus != SdCardStatus.WriteEnable
-                    && lumixState.State.Sd2CardStatus != SdCardStatus.WriteEnable)
+                if (cameraState.State.SdCardStatus != SdCardStatus.WriteEnable
+                    && cameraState.State.Sd2CardStatus != SdCardStatus.WriteEnable)
                 {
                     return "Read Only";
                 }
 
-                if (lumixState.State.RemainDisplayType == RemainDisplayType.Time)
+                if (cameraState.State.RemainDisplayType == RemainDisplayType.Time)
                 {
-                    return TimeSpan.FromSeconds(lumixState.State.VideoRemainCapacity).ToString("hh'h:'mm'm:'ss's'").TrimStart('0', 'h', 'm', ':');
+                    return TimeSpan.FromSeconds(cameraState.State.VideoRemainCapacity).ToString("hh'h:'mm'm:'ss's'").TrimStart('0', 'h', 'm', ':');
                 }
 
-                return lumixState.State.RemainCapacity.ToString();
+                return cameraState.State.RemainCapacity.ToString();
             }
         }
 
-        public int MinZoom => lumixState?.LensInfo?.MinZoom ?? 0;
+        public int MinZoom => cameraState?.LensInfo?.MinZoom ?? 0;
 
-        public RecState RecState => lumixState?.RecState ?? RecState.Stopped;
+        public RecState RecState => cameraState?.RecState ?? RecState.Stopped;
 
         public ConnectedCamera SelectedCamera
         {
@@ -215,7 +207,7 @@
 
                 if (selectedCamera != null)
                 {
-                    lumixState.PropertyChanged -= Camera_PropertyChanged;
+                    cameraState.PropertyChanged -= Camera_PropertyChanged;
                     selectedCamera.Removed -= SelectedCamera_Removed;
                     selectedCamera.Camera.ProfileUpdated -= Camera_ProfileUpdated;
                 }
@@ -226,8 +218,8 @@
                 {
                     selectedCamera.Removed += SelectedCamera_Removed;
                     selectedCamera.Camera.ProfileUpdated += Camera_ProfileUpdated;
-                    lumixState = selectedCamera.Camera.LumixState;
-                    lumixState.PropertyChanged += Camera_PropertyChanged;
+                    cameraState = selectedCamera.Camera.LumixState;
+                    cameraState.PropertyChanged += Camera_PropertyChanged;
                     SetTime = DateTime.UtcNow;
                 }
                 else
@@ -250,7 +242,7 @@
         {
             get
             {
-                return lumixState?.MenuSet?.ShutterSpeeds.Select(s => s.Text).ToList() ?? new List<string>();
+                return cameraState?.MenuSet?.ShutterSpeeds.Select(s => s.Text).ToList() ?? new List<string>();
             }
         }
 

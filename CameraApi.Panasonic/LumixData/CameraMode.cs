@@ -5,7 +5,7 @@ using GMaster.Core.Tools;
 
 #pragma warning disable SA1300 // Element must begin with upper-case letter
 
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namespace CameraApi.Panasonic.LumixData
 {
     [Flags]
     public enum CameraModeFlags

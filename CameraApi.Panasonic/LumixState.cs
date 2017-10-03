@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GMaster.Annotations;
-using GMaster.Core.Camera.Panasonic.LumixData;
+using CameraApi.Panasonic.LumixData;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class LumixState : INotifyPropertyChanged
     {

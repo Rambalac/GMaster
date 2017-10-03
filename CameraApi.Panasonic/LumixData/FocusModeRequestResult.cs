@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namesapce CameraApi.Panasonic.LumixData
 {
     [XmlRoot(ElementName = "camrply")]
     public class FocusModeRequestResult : BaseRequestResult

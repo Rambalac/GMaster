@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GMaster.Core.Camera.Panasonic.LumixData;
+using CameraApi.Panasonic.LumixData;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class GH4Parser : CameraParser
     {

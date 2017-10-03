@@ -313,6 +313,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CameraApi.Core\CameraApi.Core.csproj">
+      <Project>{1c4d7c88-8f3b-4536-8d34-383d3cb96df2}</Project>
+      <Name>CameraApi.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{6FA17036-459D-4967-A31B-8E8C7264E497}</Project>
       <Name>Core</Name>

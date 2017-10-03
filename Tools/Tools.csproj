@@ -127,7 +127,6 @@
     <Compile Include="NotifyProperty.cs" />
     <Compile Include="ObservableHashCollection.cs" />
     <Compile Include="PressButton.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsContainer.cs" />
     <Compile Include="StoryboardManager.cs" />

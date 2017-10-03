@@ -1,4 +1,4 @@
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public struct TextBinValue
     {

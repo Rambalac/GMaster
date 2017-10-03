@@ -1,6 +1,6 @@
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namesapce CameraApi.Panasonic.LumixData
 {
     public enum ChangeDirection
     {

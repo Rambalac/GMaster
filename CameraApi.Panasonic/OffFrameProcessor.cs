@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GMaster.Core.Camera.Panasonic.LumixData;
+using CameraApi.Panasonic.LumixData;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class OffFrameProcessor
     {

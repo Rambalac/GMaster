@@ -1,7 +1,7 @@
-using GMaster.Core.Tools;
-
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namespace CameraApi.Panasonic.LumixData
 {
+    using GMaster.Core.Tools;
+
     public enum AutoFocusModeFlags
     {
         None,

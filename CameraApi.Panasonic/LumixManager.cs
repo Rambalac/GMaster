@@ -9,7 +9,7 @@ using GMaster.Core.Tools;
 using Rssdp;
 using Rssdp.Infrastructure;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class LumixManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class LumixException : Exception
     {

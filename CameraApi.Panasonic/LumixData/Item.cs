@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namesapce CameraApi.Panasonic.LumixData
 {
     [XmlRoot(ElementName = "item")]
     public class Item : IStringIdItem

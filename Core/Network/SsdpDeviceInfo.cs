@@ -1,4 +1,4 @@
-namespace CameraApi.Core
+﻿namespace CameraApi.Core
 {
     using Rssdp;
 

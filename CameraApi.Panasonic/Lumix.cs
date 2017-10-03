@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GMaster.Core.Camera.Panasonic.LumixData;
+using CameraApi.Panasonic.LumixData;
 using GMaster.Core.Network;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public partial class Lumix : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GMaster.Core.Tools;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class TitledList<TItem> : HashCollection<TItem>
         where TItem : IStringIdItem

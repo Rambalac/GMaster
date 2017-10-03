@@ -1,23 +1,22 @@
 namespace CameraApi.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Annotations;
+    using JetBrains.Annotations;
 
     public class CameraState
     {
         private string aperture;
-        private AutoFocusMode autoFocusMode;
-        private CameraMode cameraMode = CameraMode.Unknown;
+        private CameraMode cameraMode = null;
         private float currentFocus;
         private float exposureShift;
         private FocusMode focusMode;
-        private FocusAreas focusPoints;
         private bool isBusy = true;
         private string iso;
         private int maximumFocus;
-        private CameraOrientation orientation;
         private RecState recState;
         private string shutter;
         private int zoom;
@@ -30,8 +29,6 @@ namespace CameraApi.Core
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Aperture { get; set; }
-
-        public AutoFocusMode AutoFocusMode { get; set; }
 
         public CameraMode CameraMode { get; set; }
 
@@ -115,21 +112,6 @@ namespace CameraApi.Core
             }
         }
 
-        public FocusAreas FocusAreas
-        {
-            get => focusPoints;
-            set
-            {
-                if (Equals(value, focusPoints))
-                {
-                    return;
-                }
-
-                focusPoints = value;
-                OnPropertyChanged();
-            }
-        }
-
         public FocusMode FocusMode
         {
             get => focusMode;
@@ -206,21 +188,6 @@ namespace CameraApi.Core
             }
         }
 
-        public CameraOrientation Orientation
-        {
-            get => orientation;
-            set
-            {
-                if (value == orientation)
-                {
-                    return;
-                }
-
-                orientation = value;
-                OnPropertyChanged();
-            }
-        }
-
         public RecState RecState
         {
             get => recState;
@@ -265,6 +232,8 @@ namespace CameraApi.Core
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<IActionItem> Apertures { get; set; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

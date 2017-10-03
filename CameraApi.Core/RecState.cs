@@ -1,4 +1,4 @@
-namespace GMaster.Core.Camera.Panasonic.LumixData
+namespace CameraApi.Core
 {
     public enum RecState
     {

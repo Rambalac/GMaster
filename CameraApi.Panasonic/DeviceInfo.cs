@@ -1,6 +1,6 @@
 using Rssdp;
 
-namespace GMaster.Core.Camera.Panasonic
+namespace CameraApi.Panasonic
 {
     public class DeviceInfo
     {
