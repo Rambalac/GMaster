@@ -1,7 +1,7 @@
-using System.Xml.Serialization;
-
 namespace CameraApi.Panasonic.LumixData
 {
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "camrply")]
     public class BaseRequestResult
     {

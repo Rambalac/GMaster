@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Tools;
-
 namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Tools;
+
     public class OffFrameProcessor
     {
         private readonly string deviceName;
@@ -50,8 +50,8 @@ namespace CameraApi.Panasonic
 
                 lumixState.Aperture = GetFromShort(state.Main, 56, parser.ApertureBinary);
 
-                var newmode = state.Main[92].ToEnum(CameraMode.Unknown);
-                if (newmode != CameraMode.VideoRecording)
+                var newmode = state.Main[92].ToEnum(LumixCameraMode.Unknown);
+                if (newmode != LumixCameraMode.VideoRecording)
                 {
                     lumixState.CameraMode = newmode;
                 }
@@ -70,9 +70,9 @@ namespace CameraApi.Panasonic
 
                 lumixState.FocusAreas = GetFocusPoint(state.Original, size);
 
-                lumixState.FocusMode = state.Main[107].ToEnum(FocusMode.Unknown);
+                lumixState.FocusMode = state.Main[107].ToEnum(LumixFocusMode.Unknown);
 
-                lumixState.AutoFocusMode = state.Main[109].ToEnum(AutoFocusMode.Unknown);
+                lumixState.AutoFocusMode = state.Main[109].ToEnum(LumixAutoFocusMode.Unknown);
             }
             catch (Exception e)
             {

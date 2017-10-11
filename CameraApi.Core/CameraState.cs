@@ -7,238 +7,42 @@ namespace CameraApi.Core
     using System.Runtime.CompilerServices;
     using JetBrains.Annotations;
 
-    public class CameraState
+    public interface ICameraState : INotifyPropertyChanged
     {
-        private string aperture;
-        private CameraMode cameraMode = null;
-        private float currentFocus;
-        private float exposureShift;
-        private FocusMode focusMode;
-        private bool isBusy = true;
-        private string iso;
-        private int maximumFocus;
-        private RecState recState;
-        private string shutter;
-        private int zoom;
-        private bool canCapture;
-        private bool canChangeAperture;
-        private bool canChangeShutter;
-        private bool canManualFocus;
-        private bool isVideoMode;
+        string Aperture { get; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        string CameraMode { get; }
 
-        public string Aperture { get; set; }
+        bool CanCapture { get; }
 
-        public CameraMode CameraMode { get; set; }
+        bool CanChangeAperture { get; }
 
-        public bool CanCapture { get; set; }
+        bool CanChangeShutter { get; }
 
-        public bool CanChangeAperture
-        {
-            get => canChangeAperture;
+        bool CanManualFocus { get; }
 
-            set
-            {
-                if (value == canChangeAperture)
-                {
-                    return;
-                }
+        float Focus { get; }
 
-                canChangeAperture = value;
-                OnPropertyChanged();
-            }
-        }
+        float ExposureShift { get; }
 
-        public bool CanChangeShutter
-        {
-            get => canChangeShutter;
+        string FocusMode { get; }
 
-            set
-            {
-                if (value == canChangeShutter)
-                {
-                    return;
-                }
+        bool IsBusy { get; }
 
-                canChangeShutter = value;
-                OnPropertyChanged();
-            }
-        }
+        string Iso { get; }
 
-        public bool CanManualFocus
-        {
-            get => canManualFocus;
+        bool IsVideoMode { get; }
 
-            set
-            {
-                if (value == canManualFocus)
-                {
-                    return;
-                }
+        int MaximumFocus { get; }
 
-                canManualFocus = value;
-                OnPropertyChanged();
-            }
-        }
+        RecState RecState { get; }
 
-        public float CurrentFocus
-        {
-            get => currentFocus;
-            set
-            {
-                if (value == currentFocus)
-                {
-                    return;
-                }
+        string Shutter { get; }
 
-                currentFocus = value;
-                OnPropertyChanged();
-            }
-        }
+        int Zoom { get; }
 
-        public float ExposureShift
-        {
-            get => exposureShift;
-            set
-            {
-                if (value == exposureShift)
-                {
-                    return;
-                }
+        ObservableCollection<IActionItem> Apertures { get; }
 
-                exposureShift = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public FocusMode FocusMode
-        {
-            get => focusMode;
-            set
-            {
-                if (value == focusMode)
-                {
-                    return;
-                }
-
-                focusMode = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsBusy
-        {
-            get => isBusy;
-            set
-            {
-                if (value == isBusy)
-                {
-                    return;
-                }
-
-                isBusy = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Iso
-        {
-            get => iso;
-            set
-            {
-                if (value.Equals(iso))
-                {
-                    return;
-                }
-
-                iso = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsVideoMode
-        {
-            get => isVideoMode;
-
-            set
-            {
-                if (value == isVideoMode)
-                {
-                    return;
-                }
-
-                isVideoMode = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int MaximumFocus
-        {
-            get => maximumFocus;
-            set
-            {
-                if (value == maximumFocus)
-                {
-                    return;
-                }
-
-                maximumFocus = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public RecState RecState
-        {
-            get => recState;
-            set
-            {
-                if (value == recState)
-                {
-                    return;
-                }
-
-                recState = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Shutter
-        {
-            get => shutter;
-            set
-            {
-                if (shutter == value)
-                {
-                    return;
-                }
-
-                shutter = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int Zoom
-        {
-            get => zoom;
-            set
-            {
-                if (value == zoom)
-                {
-                    return;
-                }
-
-                zoom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<IActionItem> Apertures { get; set; }
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        ObservableCollection<IActionItem> Shutters { get; }
     }
 }

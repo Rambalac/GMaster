@@ -1,4 +1,4 @@
-﻿namesapce CameraApi.Panasonic.LumixData
+﻿namespace CameraApi.Panasonic.LumixData
 {
     public class FocusPosition
     {

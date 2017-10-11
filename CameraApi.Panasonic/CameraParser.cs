@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Tools;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Tools;
+
     public abstract class CameraParser
     {
         protected static readonly TitledList<CameraMenuItemText> DefaultIsoValues = new List<string>

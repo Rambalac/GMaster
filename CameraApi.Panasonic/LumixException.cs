@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System;
+
     public class LumixException : Exception
     {
         public LumixException(LumixError error, string result, Exception exception = null)

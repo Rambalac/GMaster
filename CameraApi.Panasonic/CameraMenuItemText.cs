@@ -1,7 +1,7 @@
-﻿using CameraApi.Panasonic.LumixData;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using CameraApi.Panasonic.LumixData;
+
     public class CameraMenuItemText : ICameraMenuItem
     {
         public CameraMenuItemText(Item i, string text)

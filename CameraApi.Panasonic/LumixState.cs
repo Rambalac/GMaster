@@ -1,20 +1,22 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GMaster.Annotations;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Tools;
-
 namespace CameraApi.Panasonic
 {
-    public class LumixState : INotifyPropertyChanged
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using CameraApi.Core;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Tools;
+    using JetBrains.Annotations;
+
+    public class LumixState : ICameraState
     {
         private TextBinValue aperture;
-        private AutoFocusMode autoFocusMode;
-        private CameraMode cameraMode = CameraMode.Unknown;
+        private LumixAutoFocusMode lumixAutoFocusMode;
+        private LumixCameraMode lumixCameraMode = LumixCameraMode.Unknown;
         private CurMenu curMenu;
         private int currentFocus;
         private int exposureShift;
-        private FocusMode focusMode;
+        private LumixFocusMode focusMode;
         private FocusAreas focusPoints;
         private bool isBusy = true;
         private TextBinValue iso;
@@ -29,7 +31,12 @@ namespace CameraApi.Panasonic
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TextBinValue Aperture
+        public string Aperture
+        {
+            get => aperture.Text;
+        }
+
+        public TextBinValue LumixAperture
         {
             get => aperture;
             set
@@ -44,32 +51,58 @@ namespace CameraApi.Panasonic
             }
         }
 
+        private readonly Dictionary<LumixAutoFocusMode, AutoFocusMode> ToAutoFocusMode = new Dictionary<LumixAutoFocusMode, AutoFocusMode>
+        {
+            { LumixAutoFocusMode.Face, AutoFocusMode.Face}
+        };
+
         public AutoFocusMode AutoFocusMode
         {
-            get => autoFocusMode;
+            get => ToAutoFocusMode[lumixAutoFocusMode];
+        }
+
+        public LumixAutoFocusMode LumixAutoFocusMode
+        {
+            get => lumixAutoFocusMode;
             set
             {
-                if (value == autoFocusMode)
+                if (value == lumixAutoFocusMode)
                 {
                     return;
                 }
 
-                autoFocusMode = value;
+                lumixAutoFocusMode = value;
                 OnPropertyChanged();
             }
         }
 
+        private readonly Dictionary<LumixCameraMode, CameraMode> ToCameraMode = new Dictionary<LumixCameraMode, CameraMode>
+        {
+            { LumixCameraMode.A, CameraMode.A},
+            { LumixCameraMode.S, CameraMode.S},
+            { LumixCameraMode.M, CameraMode.M},
+            { LumixCameraMode.iA, CameraMode.iA},
+            { LumixCameraMode.vA, CameraMode.vA},
+            { LumixCameraMode.vS, CameraMode.vS},
+            { LumixCameraMode.vM, CameraMode.vM},
+        };
+
         public CameraMode CameraMode
         {
-            get => cameraMode;
+            get => ToCameraMode[lumixCameraMode];
+        }
+
+        public LumixCameraMode LumixCameraMode
+        {
+            get => lumixCameraMode;
             set
             {
-                if (value == cameraMode)
+                if (value == lumixCameraMode)
                 {
                     return;
                 }
 
-                cameraMode = value;
+                lumixCameraMode = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanChangeAperture));
                 OnPropertyChanged(nameof(CanChangeShutter));
@@ -78,11 +111,11 @@ namespace CameraApi.Panasonic
             }
         }
 
-        public bool CanCapture => CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Photo);
+        public bool CanCapture => CameraMode.ToValue<LumixCameraModeFlags>().HasFlag(LumixCameraModeFlags.Photo);
 
-        public bool CanChangeAperture => CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Aperture);
+        public bool CanChangeAperture => CameraMode.ToValue<LumixCameraModeFlags>().HasFlag(LumixCameraModeFlags.Aperture);
 
-        public bool CanChangeShutter => CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Shutter);
+        public bool CanChangeShutter => CameraMode.ToValue<LumixCameraModeFlags>().HasFlag(LumixCameraModeFlags.Shutter);
 
         public bool CanManualFocus => FocusMode == FocusMode.MF;
 
@@ -141,7 +174,18 @@ namespace CameraApi.Panasonic
             }
         }
 
+        private readonly Dictionary<LumixFocusMode, FocusMode> ToFocusMode = new Dictionary<LumixFocusMode, FocusMode>
+        {
+            {LumixFocusMode.AFC, FocusMode.AFC }
+        };
+
         public FocusMode FocusMode
+        {
+            get => ToFocusMode[focusMode];
+
+        }
+
+        public LumixFocusMode LumixFocusMode
         {
             get => focusMode;
             set
@@ -189,7 +233,7 @@ namespace CameraApi.Panasonic
             }
         }
 
-        public bool IsVideoMode => CameraMode.ToValue<CameraModeFlags>().HasFlag(CameraModeFlags.Video);
+        public bool IsVideoMode => CameraMode.ToValue<LumixCameraModeFlags>().HasFlag(LumixCameraModeFlags.Video);
 
         public LensInfo LensInfo
         {
@@ -318,12 +362,12 @@ namespace CameraApi.Panasonic
 
         public void Reset()
         {
-            Aperture = default(TextBinValue);
+            Aperture = "";
             Shutter = default(TextBinValue);
             Iso = default(TextBinValue);
-            CameraMode = CameraMode.Unknown;
+            LumixCameraMode = LumixCameraMode.Unknown;
             FocusAreas = null;
-            FocusMode = FocusMode.Unknown;
+            LumixFocusMode = LumixCameraMode.Unknown;
             Zoom = 0;
             RecState = RecState.Unknown;
             Orientation = CameraOrientation.Undefined;

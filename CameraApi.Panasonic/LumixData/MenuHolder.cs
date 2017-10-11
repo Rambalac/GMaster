@@ -1,8 +1,8 @@
-﻿using System.Xml.Serialization;
-using GMaster.Core.Tools;
-
-namesapce CameraApi.Panasonic.LumixData
+﻿namespace CameraApi.Panasonic.LumixData
 {
+    using System.Xml.Serialization;
+    using GMaster.Core.Tools;
+
     public class MenuHolder
     {
         [XmlArray("menu")]

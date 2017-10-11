@@ -13,7 +13,7 @@
     public class CameraViewModel : INotifyPropertyChanged
     {
         private int lastFocusAreasCount;
-        private CameraState cameraState;
+        private ICameraState cameraState;
         private ConnectedCamera selectedCamera;
 
         public event PropertyChangedEventHandler PropertyChanged;

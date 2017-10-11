@@ -1,7 +1,7 @@
-using System;
-
 namespace CameraApi.Panasonic
 {
+    using System;
+
     public struct IntPoint
     {
         public IntPoint(int x, int y)

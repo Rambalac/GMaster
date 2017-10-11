@@ -1,8 +1,8 @@
-using GMaster.Core.Tools;
-
-namesapce CameraApi.Panasonic.LumixData
+namespace CameraApi.Panasonic.LumixData
 {
-    public enum ChangeDirection
+    using GMaster.Core.Tools;
+
+    public enum LumixChangeDirection
     {
         [EnumValue("wide-fast")]
         WideFast,

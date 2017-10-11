@@ -1,7 +1,7 @@
-﻿using System.Xml.Serialization;
-
-namesapce CameraApi.Panasonic.LumixData
+﻿namespace CameraApi.Panasonic.LumixData
 {
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "camrply")]
     public class FocusModeRequestResult : BaseRequestResult
     {
@@ -14,7 +14,7 @@ namesapce CameraApi.Panasonic.LumixData
         public class FocusModeElement
         {
             [XmlAttribute("focusmode")]
-            public FocusMode FocusMode { get; set; }
+            public LumixFocusMode FocusMode { get; set; }
         }
     }
 }

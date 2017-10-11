@@ -1,17 +1,26 @@
 ﻿namespace CameraApi.Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
-    /// Camera Focus mode
+    /// Camera AutoFocus mode
     /// </summary>
-    public class FocusMode : GeneralMode
+    public enum AutoFocusMode
     {
-        public FocusMode(string shortdesc, string longdesc)
-            : base(shortdesc, longdesc)
-        {
-        }
+        Unknown,
+        Manual,
+        Face,
+        Track,
+        MultiArea,
+        FreeMultiArea,
+        OneArea,
+        Pinpoint
+    }
+
+    public enum FocusMode
+    {
+        MF,
+        AFC,
+        AFF,
+        AFS,
+        Unknown
     }
 }

@@ -1,8 +1,9 @@
-using System.Collections.Generic;
-using CameraApi.Panasonic.LumixData;
-
 namespace CameraApi.Panasonic
 {
+    using System.Collections.Generic;
+    using CameraApi.Core;
+    using CameraApi.Panasonic.LumixData;
+
     public class FocusAreas
     {
         private static readonly Dictionary<int, IntPoint> FocusPointShifts = new Dictionary<int, IntPoint>

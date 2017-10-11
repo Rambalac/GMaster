@@ -1,14 +1,14 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using System;
-using GMaster.Core.Tools;
-
 #pragma warning disable SA1300 // Element must begin with upper-case letter
 
 namespace CameraApi.Panasonic.LumixData
 {
+    using System;
+    using GMaster.Core.Tools;
+
     [Flags]
-    public enum CameraModeFlags
+    public enum LumixCameraModeFlags
     {
         None = 0,
         Shutter = 1 << 0,
@@ -17,41 +17,41 @@ namespace CameraApi.Panasonic.LumixData
         Photo = 1 << 3
     }
 
-    public enum CameraMode
+    public enum LumixCameraMode
     {
-        [EnumValue(CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Photo)]
         iA = 09,
 
-        [EnumValue(CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Photo)]
         P = 01,
 
-        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Aperture | LumixCameraModeFlags.Photo)]
         A = 02,
 
-        [EnumValue(CameraModeFlags.Shutter | CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Shutter | LumixCameraModeFlags.Photo)]
         S = 03,
 
-        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Aperture | LumixCameraModeFlags.Shutter | LumixCameraModeFlags.Photo)]
         M = 04,
 
         VideoRecording = 05,
 
-        [EnumValue(CameraModeFlags.Video)]
+        [EnumValue(LumixCameraModeFlags.Video)]
         vP = 0x3c,
 
-        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Video)]
+        [EnumValue(LumixCameraModeFlags.Aperture | LumixCameraModeFlags.Video)]
         vA = 0x3d,
 
-        [EnumValue(CameraModeFlags.Shutter | CameraModeFlags.Video)]
+        [EnumValue(LumixCameraModeFlags.Shutter | LumixCameraModeFlags.Video)]
         vS = 0x3e,
 
-        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Video)]
+        [EnumValue(LumixCameraModeFlags.Aperture | LumixCameraModeFlags.Shutter | LumixCameraModeFlags.Video)]
         vM = 0x3f,
 
-        [EnumValue(CameraModeFlags.Aperture | CameraModeFlags.Shutter | CameraModeFlags.Photo)]
+        [EnumValue(LumixCameraModeFlags.Aperture | LumixCameraModeFlags.Shutter | LumixCameraModeFlags.Photo)]
         Unknown = 0,
 
-        [EnumValue(CameraModeFlags.None)]
+        [EnumValue(LumixCameraModeFlags.None)]
         MFAssist = 0xff
     }
 }

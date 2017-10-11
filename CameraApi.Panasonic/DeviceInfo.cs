@@ -1,7 +1,7 @@
-using Rssdp;
-
 namespace CameraApi.Panasonic
 {
+    using Rssdp;
+
     public class DeviceInfo
     {
         internal DeviceInfo(SsdpRootDevice dev, string usn)

@@ -1,7 +1,7 @@
-﻿using GMaster.Core.Tools;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using GMaster.Core.Tools;
+
     public enum PinchStage
     {
         [EnumValue("start")]

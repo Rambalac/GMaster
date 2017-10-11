@@ -1,7 +1,7 @@
-﻿using System.Xml.Serialization;
-
-namesapce CameraApi.Panasonic.LumixData
+﻿namespace CameraApi.Panasonic.LumixData
 {
+    using System.Xml.Serialization;
+
     public enum SdCardStatus
     {
         Unknown = 0,

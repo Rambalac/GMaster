@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CameraApi.Panasonic.LumixData;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using CameraApi.Panasonic.LumixData;
+
     public class GH3Parser : CameraParser
     {
         public override IReadOnlyDictionary<int, string> IsoBinary { get; } = new Dictionary<int, string>

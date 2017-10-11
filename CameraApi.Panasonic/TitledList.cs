@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using GMaster.Core.Tools;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System.Collections.Generic;
+    using GMaster.Core.Tools;
+
     public class TitledList<TItem> : HashCollection<TItem>
-        where TItem : IStringIdItem
+        where TItem : ICameraMenuItem
     {
         public TitledList()
         {

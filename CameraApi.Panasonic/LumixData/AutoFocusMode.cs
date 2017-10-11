@@ -8,7 +8,7 @@ namespace CameraApi.Panasonic.LumixData
         TouchAFRelease
     }
 
-    public enum AutoFocusMode
+    public enum LumixAutoFocusMode
     {
         [EnumValue(AutoFocusModeFlags.None)]
         Unknown = -1,

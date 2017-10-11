@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using GMaster.Core.Network;
-using GMaster.Core.Tools;
-using Rssdp;
-using Rssdp.Infrastructure;
-
 namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using GMaster.Core.Network;
+    using GMaster.Core.Tools;
+    using Rssdp;
+    using Rssdp.Infrastructure;
+
     public class LumixManager
     {
         private const int LiveViewPort = 49152;

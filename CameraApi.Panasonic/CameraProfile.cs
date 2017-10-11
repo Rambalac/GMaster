@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace CameraApi.Panasonic
 {
+    using System.Collections.Generic;
+
     public class CameraProfile
     {
         private static readonly CameraParser GH3Parser = new GH3Parser();

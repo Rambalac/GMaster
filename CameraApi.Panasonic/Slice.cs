@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class Slice : IEnumerable<byte>
     {
         private readonly byte[] array;

@@ -24,11 +24,11 @@
 
     public interface ICameraStateProvider
     {
-        event Action<CameraState> StateChanged;
+        event Action<ICameraState> StateChanged;
 
         event Action<ICamera, UpdateStateFailReason> StateUpdateFailed;
 
-        CameraState State { get; }
+        ICameraState State { get; }
     }
 
     public interface ICameraUdpConnector
@@ -38,6 +38,20 @@
         Task<bool> Connect(int liveViewPort);
     }
 
+    public interface ICameraMFAssistController
+    {
+        Task MfAssistZoom(PinchStage stop, FloatPoint floatPoint, float f);
+
+        Task MfAssistMove(PinchStage stage, FloatPoint fp);
+    }
+
+    public interface ICameraAutofocusController
+    {
+        Task FocusPointMove(FloatPoint fp);
+
+        Task FocusPointResize(PinchStage stage, FloatPoint point, float extend);
+    }
+
     public interface ICameraStateController
     {
         Task CaptureStart();
@@ -45,17 +59,9 @@
         Task CaptureStop();
 
         Task ChangeFocus(ChangeDirection changeDirection);
-
-        Task MfAssistZoom(PinchStage stop, FloatPoint floatPoint, float f);
-
-        Task MfAssistMove(PinchStage stage, FloatPoint fp);
-
-        Task FocusPointMove(FloatPoint fp);
-
-        Task FocusPointResize(PinchStage stage, FloatPoint point, float extend);
     }
 
-    public interface ICamera : ILiveviewProvider, ICameraStateProvider, ICameraStateController, IDisposable
+    public interface ICamera : IDisposable
     {
         void Disconnect();
     }

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Network;
-using GMaster.Core.Tools;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Network;
+    using GMaster.Core.Tools;
+
     public class Http : IDisposable
     {
         private readonly Uri baseUri;

@@ -1,11 +1,12 @@
 // ReSharper disable InconsistentNaming
 
-using System.Xml.Serialization;
-using GMaster.Core.Tools;
-
-namesapce CameraApi.Panasonic.LumixData
+namespace CameraApi.Panasonic.LumixData
 {
-    public enum FocusMode
+    using System.Xml.Serialization;
+    using CameraApi.Core;
+    using GMaster.Core.Tools;
+
+    public enum LumixFocusMode
     {
         [EnumException(0x5)]
         [XmlEnum(Name = "mf")]

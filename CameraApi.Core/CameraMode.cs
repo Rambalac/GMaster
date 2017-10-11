@@ -7,11 +7,17 @@
     /// <summary>
     /// Camera Mode wheel
     /// </summary>
-    public class CameraMode : GeneralMode
+    public enum CameraMode
     {
-        public CameraMode(string shortdesc, string longdesc)
-            : base(shortdesc, longdesc)
-        {
-        }
+        iA,
+        P,
+        A,
+        S,
+        M,
+        vP,
+        vA,
+        vS,
+        vM,
+        Unknown
     }
 }

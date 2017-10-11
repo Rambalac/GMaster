@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Network;
-using GMaster.Core.Tools;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
-    public partial class Lumix : IDisposable
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CameraApi.Core;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Network;
+    using GMaster.Core.Tools;
+
+    public partial class Lumix : ICamera, ILiveviewProvider
     {
         private float lastOldPinchSize;
 
@@ -226,17 +227,26 @@ namespace CameraApi.Panasonic
                 f => Profile.NewTouch = f);
         }
 
+        private readonly IDictionary<LumixFocusMode, FocusMode> ToFocusMode = new Dictionary<LumixFocusMode, FocusMode>
+        {
+            { LumixFocusMode.MF, FocusMode.MF },
+            { LumixFocusMode.AFC, FocusMode.AFC },
+            { LumixFocusMode.AFF, FocusMode.AFF },
+            { LumixFocusMode.AFS, FocusMode.AFS },
+            { LumixFocusMode.Unknown, FocusMode.Unknown }
+        };
+
         public async Task<FocusMode> GetFocusMode()
         {
             try
             {
                 var result = await http.Get<FocusModeRequestResult>("?mode=getsetting&type=focusmode");
-                return result.Value.FocusMode;
+                return ToFocusMode[result.Value.FocusMode];
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return FocusMode.Unknown;
+                return ToFocusMode[LumixFocusMode.Unknown];
             }
         }
 

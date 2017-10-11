@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using CameraApi.Panasonic.LumixData;
-using GMaster.Core.Network;
-using GMaster.Core.Tools;
-using Nito.AsyncEx;
-
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CameraApi.Panasonic.LumixData;
+    using GMaster.Core.Network;
+    using GMaster.Core.Tools;
+    using Nito.AsyncEx;
+
     public partial class Lumix
     {
         private static readonly Dictionary<string, RunnableCommandInfo> RunnableCommands;
