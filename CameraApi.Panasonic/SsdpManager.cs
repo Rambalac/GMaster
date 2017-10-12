@@ -1,50 +1,49 @@
-namespace CameraApi.Panasonic
+﻿namespace CameraApi.Panasonic
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
+    using CameraApi.Core;
     using GMaster.Core.Network;
     using GMaster.Core.Tools;
     using Rssdp;
     using Rssdp.Infrastructure;
 
-    public class LumixManager
+    public class SsdpManager
     {
         private const int LiveViewPort = 49152;
 
         private readonly HashSet<string> foundDevices = new HashSet<string>();
         private readonly string lang;
         private readonly INetwork network;
-        private readonly ConcurrentDictionary<string, Lumix> ipToLumix = new ConcurrentDictionary<string, Lumix>();
-        private readonly ConcurrentDictionary<string, Lumix> usnToLumix = new ConcurrentDictionary<string, Lumix>();
+        private readonly ConcurrentDictionary<string, IEthernetCamera> ipToLumix = new ConcurrentDictionary<string, IEthernetCamera>();
+        private readonly ConcurrentDictionary<string, IEthernetCamera> usnToLumix = new ConcurrentDictionary<string, IEthernetCamera>();
         private List<SsdpDeviceLocator> deviceLocators;
         private List<IDatagramSocket> liveviewUdpSockets;
 
-        public LumixManager(string lang, INetwork network)
+        public SsdpManager(string lang, INetwork network)
         {
             this.lang = lang;
             this.network = network;
             network.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
         }
 
-        public event Action<DeviceInfo, Lumix> DeviceDiscovered2;
+        public event Action<DeviceInfo, IEthernetCamera> DeviceDiscovered2;
 
-        public async Task<bool> ConnectCamera(Lumix camera)
+        public async Task<bool> ConnectCamera(IEthernetCamera camera, CancellationToken cancel)
         {
             try
             {
-                var connectResult = await camera.Connect(LiveViewPort, lang);
-                if (connectResult)
-                {
-                    ipToLumix[camera.CameraHost] = camera;
-                    usnToLumix[camera.Device.Usn] = camera;
-                    Debug.WriteLine("Add listener: " + camera.CameraHost, "UDP");
-                }
+                await camera.Connect(cancel);
+                ipToLumix[camera.CameraHost] = camera;
+                usnToLumix[camera.Usn] = camera;
+                Debug.WriteLine("Add listener: " + camera.CameraHost, "UDP");
 
-                return connectResult;
+                return true;
             }
             catch (Exception ex)
             {
@@ -235,12 +234,15 @@ namespace CameraApi.Panasonic
         {
             try
             {
-                if (!ipToLumix.TryGetValue(args.RemoteAddress, out Lumix camera))
+                if (!ipToLumix.TryGetValue(args.RemoteAddress, out var camera))
                 {
                     return;
                 }
 
-                Task.Run(() => camera.ProcessMessage(args.Data));
+                if (camera is IUdpCamera udpCamera)
+                {
+                    Task.Run(() => udpCamera.ProcessMessage(args.Data));
+                }
             }
             catch (Exception e)
             {

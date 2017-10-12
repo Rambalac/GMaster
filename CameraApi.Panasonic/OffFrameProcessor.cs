@@ -4,6 +4,8 @@ namespace CameraApi.Panasonic
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
     using CameraApi.Panasonic.LumixData;
     using GMaster.Core.Tools;
 
@@ -23,7 +25,7 @@ namespace CameraApi.Panasonic
             this.deviceName = deviceName;
         }
 
-        public event Action LensChanged;
+        public event Func<CancellationToken, Task> LensChanged;
 
         public bool OffFrameBytesSupported { get; } = true;
 

@@ -22,7 +22,6 @@
         private readonly Timer stateTimer;
         private readonly AsyncLock stateUpdatingLock = new AsyncLock();
         private bool autoreviewUnlocked;
-        private CancellationTokenSource connectCancellation = new CancellationTokenSource();
         private bool firstconnect = true;
         private bool isConnecting = true;
         private int isUpdatingState;
@@ -81,6 +80,8 @@
 
         public string CameraHost => Device.Host;
 
+        public string Usn => Device.Usn;
+
         public DeviceInfo Device { get; }
 
         public LumixState LumixState { get; } = new LumixState();
@@ -95,8 +96,6 @@
 
         public void Dispose()
         {
-            connectCancellation.Cancel();
-            connectCancellation.Dispose();
             http.Dispose();
             stateTimer.Dispose();
         }
@@ -121,7 +120,7 @@
             return Uuid?.GetHashCode() ?? 0;
         }
 
-        internal async Task ProcessMessage(byte[] buf)
+        public async Task ProcessMessage(byte[] buf)
         {
             try
             {
@@ -221,11 +220,11 @@
             Log.Trace(message, Log.Severity.Trace, new { Camera = Device.ModelName }, $"{placeText}camera.{Device.ModelName}", fileName, methodName);
         }
 
-        private async void OffFrameProcessor_LensChanged()
+        private async Task OffFrameProcessor_LensChanged(CancellationToken cancel)
         {
             try
             {
-                LumixState.MenuSet = await GetMenuSet();
+                LumixState.MenuSet = await GetMenuSet(cancel);
             }
             catch (Exception ex)
             {
@@ -330,12 +329,15 @@
                 try
                 {
                     var lastState = LumixState.State;
-                    var state = LumixState.State = await GetState();
-                    if (lastState.Operate != null && state.Operate == null)
+                    using (var cancellation = new CancellationTokenSource(100))
                     {
-                        Debug.WriteLine("Not connected?", "StateUpdate");
-                        StateUpdateFailed?.Invoke(this, UpdateStateFailReason.NotConnected);
-                        return;
+                        var state = LumixState.State = await GetState(cancellation.Token);
+                        if (lastState.Operate != null && state.Operate == null)
+                        {
+                            Debug.WriteLine("Not connected?", "StateUpdate");
+                            StateUpdateFailed?.Invoke(this, UpdateStateFailReason.NotConnected);
+                            return;
+                        }
                     }
 
                     stateFiledTimes = 0;
@@ -368,11 +370,11 @@
             }
         }
 
-        private async Task<bool> Try<T>(Func<Task<T>> act)
+        private async Task<bool> Try<T>(Func<CancellationToken, Task<T>> act, CancellationToken token)
         {
             try
             {
-                await act();
+                await act(token);
                 return true;
             }
             catch (ConnectionLostException)
@@ -387,19 +389,26 @@
             }
         }
 
-        private async Task<bool> TryGet(string path)
+        private async Task<bool> TryGet(string path, CancellationToken token)
         {
-            return await Try(async () => await http.Get<BaseRequestResult>(path));
+            return await Try(async cancel => await http.Get<BaseRequestResult>(path, cancel), token);
         }
 
-        private async Task<bool> TryGetString(string path)
+        private async Task<bool> TryGet(Dictionary<string, string> dict, CancellationToken token)
         {
-            return await Try(async () =>
-            {
-                var res = await http.GetString(path);
-                Debug.WriteLine(res, "GetString");
-                return res;
-            });
+            return await Try(async cancel => await http.Get<BaseRequestResult>(dict, cancel), token);
+        }
+
+        private async Task<bool> TryGetString(string path, CancellationToken token)
+        {
+            return await Try(
+                async cancel =>
+                {
+                    var res = await http.GetString(path, cancel);
+                    Debug.WriteLine(res, "GetString");
+                    return res;
+                },
+                token);
         }
 
         private class RunnableCommandInfo

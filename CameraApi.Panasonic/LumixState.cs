@@ -315,7 +315,7 @@ namespace CameraApi.Panasonic
             }
         }
 
-        public TextBinValue Shutter
+        public TextBinValue LumixShutter
         {
             get => shutter;
             set
@@ -362,12 +362,12 @@ namespace CameraApi.Panasonic
 
         public void Reset()
         {
-            Aperture = "";
-            Shutter = default(TextBinValue);
+            LumixAperture = default(TextBinValue);
+            LumixShutter = default(TextBinValue);
             Iso = default(TextBinValue);
             LumixCameraMode = LumixCameraMode.Unknown;
             FocusAreas = null;
-            LumixFocusMode = LumixCameraMode.Unknown;
+            LumixFocusMode = LumixFocusMode.Unknown;
             Zoom = 0;
             RecState = RecState.Unknown;
             Orientation = CameraOrientation.Undefined;

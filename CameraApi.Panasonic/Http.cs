@@ -33,21 +33,21 @@
             camcgi.Dispose();
         }
 
-        public async Task<TResponse> Get<TResponse>(string path)
-            where TResponse : BaseRequestResult
-        {
-            try
-            {
-                using (var source = new CancellationTokenSource(1000))
-                {
-                    return await Get<TResponse>(path, source.Token);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                throw new TimeoutException();
-            }
-        }
+        //public async Task<TResponse> Get<TResponse>(string path)
+        //    where TResponse : BaseRequestResult
+        //{
+        //    try
+        //    {
+        //        using (var source = new CancellationTokenSource(1000))
+        //        {
+        //            return await Get<TResponse>(path, source.Token);
+        //        }
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        throw new TimeoutException();
+        //    }
+        //}
 
         public async Task<TResponse> Get<TResponse>(string path, CancellationToken token)
                     where TResponse : BaseRequestResult
@@ -87,26 +87,26 @@
             }
         }
 
-        public async Task<TResponse> Get<TResponse>(Dictionary<string, string> parameters)
+        public async Task<TResponse> Get<TResponse>(Dictionary<string, string> parameters, CancellationToken cancel)
             where TResponse : BaseRequestResult
         {
-            return await Get<TResponse>("?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)));
+            return await Get<TResponse>("?" + string.Join("&", parameters.Select(p => p.Key + "=" + p.Value)), cancel);
         }
 
-        public async Task<string> GetString(string path)
-        {
-            try
-            {
-                using (var source = new CancellationTokenSource(1000))
-                {
-                    return await GetString(path, source.Token);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                throw new TimeoutException();
-            }
-        }
+        //public async Task<string> GetString(string path)
+        //{
+        //    try
+        //    {
+        //        using (var source = new CancellationTokenSource(1000))
+        //        {
+        //            return await GetString(path, source.Token);
+        //        }
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        throw new TimeoutException();
+        //    }
+        //}
 
         public async Task<string> GetString(string path, CancellationToken token)
         {

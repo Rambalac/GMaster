@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public delegate void LiveviewReceiver(ArraySegment<byte> segment);
@@ -15,11 +16,11 @@
         NotConnected = 2
     }
 
-    public interface ILiveviewProvider
+    public interface ILiveviewProvider : ICamera
     {
-        Task StartLiveview(LiveviewReceiver receiver);
+        Task StartLiveview(LiveviewReceiver receiver, CancellationToken token);
 
-        Task StopLiveview();
+        Task StopLiveview(CancellationToken token);
     }
 
     public interface ICameraStateProvider
@@ -61,9 +62,23 @@
         Task ChangeFocus(ChangeDirection changeDirection);
     }
 
+    public interface IEthernetCamera : ICamera
+    {
+        string CameraHost { get; }
+
+        string Usn { get; }
+    }
+
+    public interface IUdpCamera : IEthernetCamera
+    {
+        Task ProcessMessage(byte[] data);
+    }
+
     public interface ICamera : IDisposable
     {
-        void Disconnect();
+        Task Connect(CancellationToken token);
+
+        Task Disconnect(CancellationToken token);
     }
 
     public interface IFocusAreas
