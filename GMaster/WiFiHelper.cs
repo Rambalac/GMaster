@@ -8,8 +8,8 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using Annotations;
     using Core.Tools;
+    using JetBrains.Annotations;
     using Windows.Devices.WiFi;
     using Windows.Security.Credentials;
     using Windows.UI.Xaml;

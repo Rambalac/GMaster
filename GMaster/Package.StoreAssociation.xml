@@ -361,6 +361,7 @@
     <MainPackageIdentityName>51338Rambalac.GMaster</MainPackageIdentityName>
     <ReservedNames>
       <ReservedName>GMaster</ReservedName>
+      <ReservedName>LMaster</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>

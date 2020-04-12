@@ -1,9 +1,10 @@
 ﻿using System.Linq;
-using GMaster.Core.Camera;
-using GMaster.Core.Camera.LumixData;
+using CameraApi;
+using CameraApi.Panasonic;
+using CameraApi.Panasonic.LumixData;
 using Newtonsoft.Json;
 
-namespace Gmaster.Core.Camera
+namespace CameraApi
 {
     using Xunit;
     using System.IO;

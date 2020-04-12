@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
     using Windows.UI.Xaml;
 
     public class ConnectionsManager
@@ -41,7 +42,7 @@
             var camera = connected.Camera;
             camera.StateUpdateFailed -= Lumix_StateUpdateFailed;
             camera.ActionCalled -= model.LumixActionCalled;
-            await camera.StopStream();
+            await camera.StopLiveview();
             camera.Disconnect();
             camera.Dispose();
         }

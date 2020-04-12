@@ -36,30 +36,6 @@
             Debug.AddCategory("Discovery", false);
         }
 
-        private async void App_Resuming(object sender, object e)
-        {
-            await OnResuming();
-        }
-
-        private async Task OnResuming()
-        {
-            var ver = Package.Current.Id.Version;
-
-            var eas = new EasClientDeviceInformation();
-            var deviceName = string.Concat(eas.SystemProductName.Where(char.IsLetterOrDigit));
-            if (deviceName == "SystemProductName")
-            {
-                deviceName = "PC";
-            }
-
-            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", deviceName, 500);
-
-            if (MainModel != null)
-            {
-                await MainModel.ConnectionsManager.StartListening();
-            }
-        }
-
         public MainPageModel MainModel { get; private set; }
 
         public static async Task<StorageFolder> GetLutsFolder()
@@ -123,12 +99,18 @@
             }
         }
 
+        private async void App_Resuming(object sender, object e)
+        {
+            await OnResuming();
+        }
+
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             switch (e.Exception)
             {
                 case ObjectDisposedException ex:
                     Debug.WriteLine("ObjectDisposedException in " + ex.Source, "UnhandledException");
+                    e.Handled = true;
                     break;
 
                 default:
@@ -148,6 +130,25 @@
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        private async Task OnResuming()
+        {
+            var ver = Package.Current.Id.Version;
+
+            var eas = new EasClientDeviceInformation();
+            var deviceName = string.Concat(eas.SystemProductName.Where(char.IsLetterOrDigit));
+            if (deviceName == "SystemProductName")
+            {
+                deviceName = "PC";
+            }
+
+            Log.Init(new WindowsHttpClient(), "deb4bd35-6ddd-4044-b3e8-ac76330e559b", $"{ver.Major}.{ver.Minor}.{ver.Build}", deviceName, 500);
+
+            if (MainModel != null)
+            {
+                await MainModel.ConnectionsManager.StartListening();
+            }
         }
 
         /// <summary>

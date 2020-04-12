@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-
-namespace GMaster.Core.Tools
+﻿namespace GMaster.Core.Tools
 {
     using System;
     using System.Collections.Concurrent;
@@ -10,6 +8,7 @@ namespace GMaster.Core.Tools
     using System.Threading.Tasks;
     using Network;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Nito.AsyncEx;
 
     public static class Log

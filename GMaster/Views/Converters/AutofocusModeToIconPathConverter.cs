@@ -2,7 +2,7 @@ namespace GMaster.Views.Converters
 {
     using System;
     using System.Collections.Generic;
-    using Core.Camera.LumixData;
+    using Core.Camera.Panasonic.LumixData;
     using Tools;
 
     public class AutofocusModeToIconPathConverter : DelegateConverter<AutoFocusMode, string>

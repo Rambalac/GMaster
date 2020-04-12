@@ -4,8 +4,8 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using Annotations;
     using Core.Tools;
+    using JetBrains.Annotations;
     using Windows.Services.Store;
 
     public class Donations : INotifyPropertyChanged

@@ -18,8 +18,14 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Click="CameraSettings_Click">
+                <Button Grid.Column="0">
                     <SymbolIcon Symbol="Setting" />
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Settings" Click="CameraSettings_Click"/>
+                            <MenuFlyoutItem Text="New Window" Click="NewWindowCam_Click"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
                 </Button>
                 <ProgressBar IsIndeterminate="True" Grid.Column="1" VerticalAlignment="Top" Margin="0,10,0,0" Visibility="{Binding IsBusy, Mode=TwoWay, Converter={StaticResource TrueToVisibileConverter}}"/>
                 <TextBlock Grid.Column="1" Text="{x:Bind Name}" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,5,0"/>
@@ -83,7 +89,7 @@
                 <Image Source="/images/X4.png" Stretch="None"/>
             </Button>
             <Button Grid.Column="4" Click="NewWindow_OnClick" Margin="1">
-                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xECC4;" HorizontalAlignment="Center" />
+                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="30" Text="&#xECC4;" HorizontalAlignment="Center"/>
             </Button>
             <Button Grid.Column="5" IsEnabled="{Binding ConnectedCameras.Count, Mode=TwoWay, Converter={StaticResource GreaterToTrueConverter}, ConverterParameter=1}">
                 <Button.Flyout>

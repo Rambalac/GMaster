@@ -6,6 +6,7 @@ namespace GMaster.Views
     using System.Threading.Tasks;
     using Core.Tools;
     using Newtonsoft.Json;
+    using Tools;
     using Windows.Storage;
     using Windows.Storage.Streams;
 

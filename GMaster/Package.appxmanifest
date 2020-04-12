@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="51338Rambalac.GMaster" Publisher="CN=92765C0E-C69D-491B-9315-91859F5319B9" Version="1.8.4.0" />
-  <mp:PhoneIdentity PhoneProductId="19ca5020-d17a-4012-ad2c-663f57d568c7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="51338Rambalac.GMaster" Publisher="CN=92765C0E-C69D-491B-9315-91859F5319B9" Version="1.8.6.0" />
+  <mp:PhoneIdentity PhoneProductId="09757e39-4564-4c90-ac40-4b4846f3fc15" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>GMaster</DisplayName>
+    <DisplayName>LMaster</DisplayName>
     <PublisherDisplayName>Rambalac</PublisherDisplayName>
     <Logo>Assets\PackageLogo.png</Logo>
   </Properties>
@@ -14,8 +14,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GMaster.App">
-      <uap:VisualElements DisplayName="GMaster" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Control Panasonic Lumix camera remotly via WiFi" BackgroundColor="transparent">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="LMaster.App">
+      <uap:VisualElements DisplayName="LMaster" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Control Panasonic Lumix camera remotly via WiFi" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\Square71x71Logo.png" Square310x310Logo="Assets\Square310x310Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

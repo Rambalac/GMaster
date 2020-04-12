@@ -7,6 +7,7 @@
     <commands:TouchAfReleaseCommand x:Key="TouchAfReleaseCommand" Model="{Binding}" />
     <commands:ManualFocusAfCommand x:Key="ManualFocusAfCommand" Model="{Binding}" />
     <commands:MfAssistPinpCommand x:Key="MfAssistPinpCommand" Model="{Binding}" />
+    <commands:FocusPosResetCommand x:Key="FocusPosResetCommand" Model="{Binding}" />
     <converters:RecStateToIconConvertor x:Key="RecStateConvertor" />
     <converters:BatteryToIconConverter x:Key="BatteryToIconConverter"/>
     <converters:CameraModeToIconPathConverter x:Key="CameraModeToIconPathConverter"/>

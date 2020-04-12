@@ -12,6 +12,7 @@
     using Annotations;
     using Core.Camera;
     using Core.Tools;
+    using Core.Camera.Panasonic;
     using Windows.ApplicationModel;
     using Windows.Devices.WiFi;
     using Windows.UI.Core;

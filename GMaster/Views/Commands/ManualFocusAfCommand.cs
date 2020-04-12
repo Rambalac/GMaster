@@ -2,8 +2,8 @@ namespace GMaster.Views.Commands
 {
     using System;
     using System.Threading.Tasks;
-    using Core.Camera.LumixData;
     using Core.Tools;
+    using Core.Camera.Panasonic.LumixData;
     using Models;
     using Tools;
 
